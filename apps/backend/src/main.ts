@@ -1,19 +1,15 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import express from 'express';
 import * as path from 'path';
 import {prisma} from "database";
+import {toNodeHandler} from "better-auth/node";
+import {auth} from "auth";
 
 const app = express();
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.all("/api/auth/*any", toNodeHandler(auth));
 
 app.get('/api', (req, res) => {
   const all = prisma.user.findMany()
-  console.log(all)
   res.send({ message: 'Welcome to backend!' });
 });
 
