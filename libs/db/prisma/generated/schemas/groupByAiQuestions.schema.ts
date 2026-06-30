@@ -1,0 +1,13 @@
+import type { Prisma } from '../../../generated/prisma/client';
+import * as z from 'zod';
+import { AiQuestionsWhereInputObjectSchema as AiQuestionsWhereInputObjectSchema } from './objects/AiQuestionsWhereInput.schema';
+import { AiQuestionsOrderByWithAggregationInputObjectSchema as AiQuestionsOrderByWithAggregationInputObjectSchema } from './objects/AiQuestionsOrderByWithAggregationInput.schema';
+import { AiQuestionsScalarWhereWithAggregatesInputObjectSchema as AiQuestionsScalarWhereWithAggregatesInputObjectSchema } from './objects/AiQuestionsScalarWhereWithAggregatesInput.schema';
+import { AiQuestionsScalarFieldEnumSchema } from './enums/AiQuestionsScalarFieldEnum.schema';
+import { AiQuestionsCountAggregateInputObjectSchema as AiQuestionsCountAggregateInputObjectSchema } from './objects/AiQuestionsCountAggregateInput.schema';
+import { AiQuestionsMinAggregateInputObjectSchema as AiQuestionsMinAggregateInputObjectSchema } from './objects/AiQuestionsMinAggregateInput.schema';
+import { AiQuestionsMaxAggregateInputObjectSchema as AiQuestionsMaxAggregateInputObjectSchema } from './objects/AiQuestionsMaxAggregateInput.schema';
+
+export const AiQuestionsGroupBySchema: z.ZodType<Prisma.AiQuestionsGroupByArgs> = z.object({ where: AiQuestionsWhereInputObjectSchema.optional(), orderBy: z.union([AiQuestionsOrderByWithAggregationInputObjectSchema, AiQuestionsOrderByWithAggregationInputObjectSchema.array()]).optional(), having: AiQuestionsScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(AiQuestionsScalarFieldEnumSchema), _count: z.union([ z.literal(true), AiQuestionsCountAggregateInputObjectSchema ]).optional(), _min: AiQuestionsMinAggregateInputObjectSchema.optional(), _max: AiQuestionsMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.AiQuestionsGroupByArgs>;
+
+export const AiQuestionsGroupByZodSchema = z.object({ where: AiQuestionsWhereInputObjectSchema.optional(), orderBy: z.union([AiQuestionsOrderByWithAggregationInputObjectSchema, AiQuestionsOrderByWithAggregationInputObjectSchema.array()]).optional(), having: AiQuestionsScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(AiQuestionsScalarFieldEnumSchema), _count: z.union([ z.literal(true), AiQuestionsCountAggregateInputObjectSchema ]).optional(), _min: AiQuestionsMinAggregateInputObjectSchema.optional(), _max: AiQuestionsMaxAggregateInputObjectSchema.optional() }).strict();

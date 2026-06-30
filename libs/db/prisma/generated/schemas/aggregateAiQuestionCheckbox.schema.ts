@@ -1,0 +1,12 @@
+import type { Prisma } from '../../../generated/prisma/client';
+import * as z from 'zod';
+import { AiQuestionCheckboxOrderByWithRelationInputObjectSchema as AiQuestionCheckboxOrderByWithRelationInputObjectSchema } from './objects/AiQuestionCheckboxOrderByWithRelationInput.schema';
+import { AiQuestionCheckboxWhereInputObjectSchema as AiQuestionCheckboxWhereInputObjectSchema } from './objects/AiQuestionCheckboxWhereInput.schema';
+import { AiQuestionCheckboxWhereUniqueInputObjectSchema as AiQuestionCheckboxWhereUniqueInputObjectSchema } from './objects/AiQuestionCheckboxWhereUniqueInput.schema';
+import { AiQuestionCheckboxCountAggregateInputObjectSchema as AiQuestionCheckboxCountAggregateInputObjectSchema } from './objects/AiQuestionCheckboxCountAggregateInput.schema';
+import { AiQuestionCheckboxMinAggregateInputObjectSchema as AiQuestionCheckboxMinAggregateInputObjectSchema } from './objects/AiQuestionCheckboxMinAggregateInput.schema';
+import { AiQuestionCheckboxMaxAggregateInputObjectSchema as AiQuestionCheckboxMaxAggregateInputObjectSchema } from './objects/AiQuestionCheckboxMaxAggregateInput.schema';
+
+export const AiQuestionCheckboxAggregateSchema: z.ZodType<Prisma.AiQuestionCheckboxAggregateArgs> = z.object({ orderBy: z.union([AiQuestionCheckboxOrderByWithRelationInputObjectSchema, AiQuestionCheckboxOrderByWithRelationInputObjectSchema.array()]).optional(), where: AiQuestionCheckboxWhereInputObjectSchema.optional(), cursor: AiQuestionCheckboxWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), AiQuestionCheckboxCountAggregateInputObjectSchema ]).optional(), _min: AiQuestionCheckboxMinAggregateInputObjectSchema.optional(), _max: AiQuestionCheckboxMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.AiQuestionCheckboxAggregateArgs>;
+
+export const AiQuestionCheckboxAggregateZodSchema = z.object({ orderBy: z.union([AiQuestionCheckboxOrderByWithRelationInputObjectSchema, AiQuestionCheckboxOrderByWithRelationInputObjectSchema.array()]).optional(), where: AiQuestionCheckboxWhereInputObjectSchema.optional(), cursor: AiQuestionCheckboxWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), AiQuestionCheckboxCountAggregateInputObjectSchema ]).optional(), _min: AiQuestionCheckboxMinAggregateInputObjectSchema.optional(), _max: AiQuestionCheckboxMaxAggregateInputObjectSchema.optional() }).strict();

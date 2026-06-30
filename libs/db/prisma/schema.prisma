@@ -8,6 +8,10 @@ generator client {
   output   = "../generated/prisma"
 }
 
+generator zod {
+  provider = "prisma-zod-generator"
+}
+
 datasource db {
   provider = "postgresql"
 }
@@ -22,6 +26,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  guides        Guide[]
 
   @@unique([email])
   @@map("user")
@@ -75,3 +80,107 @@ model Verification {
   @@map("verification")
 }
 
+enum GuideStatus {
+  INIT
+  QUESTIONS_GENERATION
+  QUESTIONS_GENERATED
+  GUIDE_GENERATION
+  GUIDE_GENERATED
+}
+
+model Guide {
+  id                        String       @id @default(cuid())
+  prompt                    String
+  user                      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                    String
+  title                     String       @default("")
+  description               String       @default("")
+  steps                     GuideStep[]
+  questions                 AiQuestions?
+  externalAiQuestionsStatus Boolean      @default(false)
+  status                    GuideStatus  @default(INIT)
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @updatedAt
+}
+
+model GuideStep {
+  id          String   @id @default(cuid())
+  guide       Guide    @relation(fields: [guideId], references: [id], onDelete: Cascade)
+  guideId     String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AiQuestions {
+  id                 String              @id @default(cuid())
+  guide              Guide               @relation(fields: [guideId], references: [id], onDelete: Cascade)
+  guideId            String              @unique
+  AiQuestionABCD     AiQuestionABCD?
+  AiQuestionRange    AiQuestionRange?
+  AiQuestion         AiQuestion?
+  AiQuestionCheckbox AiQuestionCheckbox?
+}
+
+enum AiQuestionABCD_Answers {
+  A
+  B
+  C
+  D
+  CUSTOM
+}
+
+model AiQuestionABCD {
+  id            String                  @id @default(cuid())
+  question      String
+  aiQuestions   AiQuestions             @relation(fields: [aiQuestionsId], references: [id], onDelete: Cascade)
+  aiQuestionsId String                  @unique
+  A             String
+  B             String
+  C             String
+  D             String
+  answer        AiQuestionABCD_Answers?
+  customAnswer  String?
+}
+
+model AiQuestionRange {
+  id            String      @id @default(cuid())
+  question      String
+  aiQuestions   AiQuestions @relation(fields: [aiQuestionsId], references: [id], onDelete: Cascade)
+  aiQuestionsId String      @unique
+  start         Int         @default(0)
+  end           Int         @default(100)
+  answer        Int?
+}
+
+model AiQuestion {
+  id            String      @id @default(cuid())
+  question      String
+  aiQuestions   AiQuestions @relation(fields: [aiQuestionsId], references: [id], onDelete: Cascade)
+  aiQuestionsId String      @unique
+  answer        String?
+}
+
+enum AiQuestionCheckbox_Answers {
+  A
+  B
+  C
+  D
+  E
+  F
+}
+
+model AiQuestionCheckbox {
+  id            String                       @id @default(cuid())
+  question      String
+  aiQuestions   AiQuestions                  @relation(fields: [aiQuestionsId], references: [id], onDelete: Cascade)
+  aiQuestionsId String                       @unique
+  A             String
+  B             String
+  C             String
+  D             String
+  E             String
+  F             String
+  answer        AiQuestionCheckbox_Answers[]
+}

@@ -1,0 +1,12 @@
+import type { Prisma } from '../../../generated/prisma/client';
+import * as z from 'zod';
+import { AiQuestionABCDOrderByWithRelationInputObjectSchema as AiQuestionABCDOrderByWithRelationInputObjectSchema } from './objects/AiQuestionABCDOrderByWithRelationInput.schema';
+import { AiQuestionABCDWhereInputObjectSchema as AiQuestionABCDWhereInputObjectSchema } from './objects/AiQuestionABCDWhereInput.schema';
+import { AiQuestionABCDWhereUniqueInputObjectSchema as AiQuestionABCDWhereUniqueInputObjectSchema } from './objects/AiQuestionABCDWhereUniqueInput.schema';
+import { AiQuestionABCDCountAggregateInputObjectSchema as AiQuestionABCDCountAggregateInputObjectSchema } from './objects/AiQuestionABCDCountAggregateInput.schema';
+import { AiQuestionABCDMinAggregateInputObjectSchema as AiQuestionABCDMinAggregateInputObjectSchema } from './objects/AiQuestionABCDMinAggregateInput.schema';
+import { AiQuestionABCDMaxAggregateInputObjectSchema as AiQuestionABCDMaxAggregateInputObjectSchema } from './objects/AiQuestionABCDMaxAggregateInput.schema';
+
+export const AiQuestionABCDAggregateSchema: z.ZodType<Prisma.AiQuestionABCDAggregateArgs> = z.object({ orderBy: z.union([AiQuestionABCDOrderByWithRelationInputObjectSchema, AiQuestionABCDOrderByWithRelationInputObjectSchema.array()]).optional(), where: AiQuestionABCDWhereInputObjectSchema.optional(), cursor: AiQuestionABCDWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), AiQuestionABCDCountAggregateInputObjectSchema ]).optional(), _min: AiQuestionABCDMinAggregateInputObjectSchema.optional(), _max: AiQuestionABCDMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.AiQuestionABCDAggregateArgs>;
+
+export const AiQuestionABCDAggregateZodSchema = z.object({ orderBy: z.union([AiQuestionABCDOrderByWithRelationInputObjectSchema, AiQuestionABCDOrderByWithRelationInputObjectSchema.array()]).optional(), where: AiQuestionABCDWhereInputObjectSchema.optional(), cursor: AiQuestionABCDWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), AiQuestionABCDCountAggregateInputObjectSchema ]).optional(), _min: AiQuestionABCDMinAggregateInputObjectSchema.optional(), _max: AiQuestionABCDMaxAggregateInputObjectSchema.optional() }).strict();

@@ -1,23 +1,36 @@
 import express from 'express';
-import * as path from 'path';
-import {prisma} from "database";
+import cors from 'cors';
+
 import {toNodeHandler} from "better-auth/node";
 import {auth} from "auth";
-
+import {guidesRouter} from "@/apps/backend/src/features/guides/guides.routes";
+import Redis from "ioredis";
+import {Queue} from "bullmq";
+import initWorkers from "./workers/workers";
 export const app = express();
+
+export const redis = new Redis();
+export const guideGenerationQueue = new Queue('guideGenerationQueue');
+export const guideQuestionsGenerationQueue = new Queue('guideQuestionsGenerationQueue');
+export const guideGenerationWithAnsweredQuestionsQueue = new Queue('guideGenerationWithAnsweredQuestionsQueue');
 
 const port = process.env.PORT || 3333;
 
-// app.all("/api/auth/*any", toNodeHandler(auth));
-//
-// app.get('/api', (req, res) => {
-//   const all = prisma.user.findMany()
-//   res.send({ message: 'Welcome to backend!' });
-// });
+app.use(cors({
+  origin: 'http://localhost:4444',
+  credentials: true,
+}))
 
+app.all("/api/auth/*any", toNodeHandler(auth))
+
+app.use(express.json());
+
+app.use(guidesRouter);
 
 const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
+  initWorkers();
 });
 
 server.on('error', console.error);
+
+

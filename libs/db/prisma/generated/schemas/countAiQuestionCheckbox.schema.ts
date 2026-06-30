@@ -1,0 +1,10 @@
+import type { Prisma } from '../../../generated/prisma/client';
+import * as z from 'zod';
+import { AiQuestionCheckboxOrderByWithRelationInputObjectSchema as AiQuestionCheckboxOrderByWithRelationInputObjectSchema } from './objects/AiQuestionCheckboxOrderByWithRelationInput.schema';
+import { AiQuestionCheckboxWhereInputObjectSchema as AiQuestionCheckboxWhereInputObjectSchema } from './objects/AiQuestionCheckboxWhereInput.schema';
+import { AiQuestionCheckboxWhereUniqueInputObjectSchema as AiQuestionCheckboxWhereUniqueInputObjectSchema } from './objects/AiQuestionCheckboxWhereUniqueInput.schema';
+import { AiQuestionCheckboxCountAggregateInputObjectSchema as AiQuestionCheckboxCountAggregateInputObjectSchema } from './objects/AiQuestionCheckboxCountAggregateInput.schema';
+
+export const AiQuestionCheckboxCountSchema: z.ZodType<Prisma.AiQuestionCheckboxCountArgs> = z.object({ orderBy: z.union([AiQuestionCheckboxOrderByWithRelationInputObjectSchema, AiQuestionCheckboxOrderByWithRelationInputObjectSchema.array()]).optional(), where: AiQuestionCheckboxWhereInputObjectSchema.optional(), cursor: AiQuestionCheckboxWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), select: z.union([ z.literal(true), AiQuestionCheckboxCountAggregateInputObjectSchema ]).optional() }).strict() as unknown as z.ZodType<Prisma.AiQuestionCheckboxCountArgs>;
+
+export const AiQuestionCheckboxCountZodSchema = z.object({ orderBy: z.union([AiQuestionCheckboxOrderByWithRelationInputObjectSchema, AiQuestionCheckboxOrderByWithRelationInputObjectSchema.array()]).optional(), where: AiQuestionCheckboxWhereInputObjectSchema.optional(), cursor: AiQuestionCheckboxWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), select: z.union([ z.literal(true), AiQuestionCheckboxCountAggregateInputObjectSchema ]).optional() }).strict();

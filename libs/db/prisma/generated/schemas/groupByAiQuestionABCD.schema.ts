@@ -1,0 +1,13 @@
+import type { Prisma } from '../../../generated/prisma/client';
+import * as z from 'zod';
+import { AiQuestionABCDWhereInputObjectSchema as AiQuestionABCDWhereInputObjectSchema } from './objects/AiQuestionABCDWhereInput.schema';
+import { AiQuestionABCDOrderByWithAggregationInputObjectSchema as AiQuestionABCDOrderByWithAggregationInputObjectSchema } from './objects/AiQuestionABCDOrderByWithAggregationInput.schema';
+import { AiQuestionABCDScalarWhereWithAggregatesInputObjectSchema as AiQuestionABCDScalarWhereWithAggregatesInputObjectSchema } from './objects/AiQuestionABCDScalarWhereWithAggregatesInput.schema';
+import { AiQuestionABCDScalarFieldEnumSchema } from './enums/AiQuestionABCDScalarFieldEnum.schema';
+import { AiQuestionABCDCountAggregateInputObjectSchema as AiQuestionABCDCountAggregateInputObjectSchema } from './objects/AiQuestionABCDCountAggregateInput.schema';
+import { AiQuestionABCDMinAggregateInputObjectSchema as AiQuestionABCDMinAggregateInputObjectSchema } from './objects/AiQuestionABCDMinAggregateInput.schema';
+import { AiQuestionABCDMaxAggregateInputObjectSchema as AiQuestionABCDMaxAggregateInputObjectSchema } from './objects/AiQuestionABCDMaxAggregateInput.schema';
+
+export const AiQuestionABCDGroupBySchema: z.ZodType<Prisma.AiQuestionABCDGroupByArgs> = z.object({ where: AiQuestionABCDWhereInputObjectSchema.optional(), orderBy: z.union([AiQuestionABCDOrderByWithAggregationInputObjectSchema, AiQuestionABCDOrderByWithAggregationInputObjectSchema.array()]).optional(), having: AiQuestionABCDScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(AiQuestionABCDScalarFieldEnumSchema), _count: z.union([ z.literal(true), AiQuestionABCDCountAggregateInputObjectSchema ]).optional(), _min: AiQuestionABCDMinAggregateInputObjectSchema.optional(), _max: AiQuestionABCDMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.AiQuestionABCDGroupByArgs>;
+
+export const AiQuestionABCDGroupByZodSchema = z.object({ where: AiQuestionABCDWhereInputObjectSchema.optional(), orderBy: z.union([AiQuestionABCDOrderByWithAggregationInputObjectSchema, AiQuestionABCDOrderByWithAggregationInputObjectSchema.array()]).optional(), having: AiQuestionABCDScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(AiQuestionABCDScalarFieldEnumSchema), _count: z.union([ z.literal(true), AiQuestionABCDCountAggregateInputObjectSchema ]).optional(), _min: AiQuestionABCDMinAggregateInputObjectSchema.optional(), _max: AiQuestionABCDMaxAggregateInputObjectSchema.optional() }).strict();
