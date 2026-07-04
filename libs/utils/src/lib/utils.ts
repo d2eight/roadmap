@@ -6,24 +6,14 @@ export async function getGuide(userId: string, guideId: string) {
     where: {
       id: guideId,
       userId: userId
-    },
-    include: {
-      questions: {
-        include: {
-          AiQuestionABCD: true,
-          AiQuestionRange: true,
-          AiQuestion: true,
-          AiQuestionCheckbox: true,
-        }
-      }
     }
   });
 }
 
-export async function createEmptyGuide(promptData: promptSchemaType, userId: string) {
+export async function createEmptyGuide(userPrompt: string, userId: string) {
   return prisma.guide.create({
     data: {
-      prompt: promptData.prompt,
+      prompt: userPrompt,
       userId: userId
     }
   })

@@ -10,6 +10,7 @@ export const GuideInputSchema = z.object({
     description: z.string(),
     steps: z.array(z.unknown()),
     questions: z.unknown().optional().nullable(),
+    answeredQuestions: z.unknown().optional().nullable(),
     externalAiQuestionsStatus: z.boolean(),
     status: GuideStatusSchema,
     createdAt: z.date(),

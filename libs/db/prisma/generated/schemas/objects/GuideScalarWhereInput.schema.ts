@@ -1,6 +1,7 @@
 import * as z from 'zod';
 import type { Prisma } from '../../../../generated/prisma/client';
 import { StringFilterObjectSchema as StringFilterObjectSchema } from './StringFilter.schema';
+import { JsonNullableFilterObjectSchema as JsonNullableFilterObjectSchema } from './JsonNullableFilter.schema';
 import { BoolFilterObjectSchema as BoolFilterObjectSchema } from './BoolFilter.schema';
 import { EnumGuideStatusFilterObjectSchema as EnumGuideStatusFilterObjectSchema } from './EnumGuideStatusFilter.schema';
 import { GuideStatusSchema } from '../enums/GuideStatus.schema';
@@ -15,6 +16,8 @@ const guidescalarwhereinputSchema = z.object({
   userId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   title: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   description: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
+  questions: z.lazy(() => JsonNullableFilterObjectSchema).optional(),
+  answeredQuestions: z.lazy(() => JsonNullableFilterObjectSchema).optional(),
   externalAiQuestionsStatus: z.union([z.lazy(() => BoolFilterObjectSchema), z.boolean()]).optional(),
   status: z.union([z.lazy(() => EnumGuideStatusFilterObjectSchema), GuideStatusSchema]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),

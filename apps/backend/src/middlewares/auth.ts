@@ -7,7 +7,7 @@ export async function authMiddleware(req: express.Request, res: express.Response
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
   })
-
+  console.log(session);
   if (!session) {
     return res.status(401).json({
       success: false,

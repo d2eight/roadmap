@@ -2,7 +2,6 @@ import * as z from 'zod';
 import type { Prisma } from '../../../../generated/prisma/client';
 import { UserArgsObjectSchema as UserArgsObjectSchema } from './UserArgs.schema';
 import { GuideStepFindManySchema as GuideStepFindManySchema } from '../findManyGuideStep.schema';
-import { AiQuestionsArgsObjectSchema as AiQuestionsArgsObjectSchema } from './AiQuestionsArgs.schema';
 import { GuideCountOutputTypeArgsObjectSchema as GuideCountOutputTypeArgsObjectSchema } from './GuideCountOutputTypeArgs.schema'
 
 const makeSchema = () => z.object({
@@ -13,7 +12,8 @@ const makeSchema = () => z.object({
   title: z.boolean().optional(),
   description: z.boolean().optional(),
   steps: z.union([z.boolean(), z.lazy(() => GuideStepFindManySchema)]).optional(),
-  questions: z.union([z.boolean(), z.lazy(() => AiQuestionsArgsObjectSchema)]).optional(),
+  questions: z.boolean().optional(),
+  answeredQuestions: z.boolean().optional(),
   externalAiQuestionsStatus: z.boolean().optional(),
   status: z.boolean().optional(),
   createdAt: z.boolean().optional(),

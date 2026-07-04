@@ -1,6 +1,7 @@
 import * as z from 'zod';
 import type { Prisma } from '../../../../generated/prisma/client';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
+import { SortOrderInputObjectSchema as SortOrderInputObjectSchema } from './SortOrderInput.schema';
 import { GuideCountOrderByAggregateInputObjectSchema as GuideCountOrderByAggregateInputObjectSchema } from './GuideCountOrderByAggregateInput.schema';
 import { GuideMaxOrderByAggregateInputObjectSchema as GuideMaxOrderByAggregateInputObjectSchema } from './GuideMaxOrderByAggregateInput.schema';
 import { GuideMinOrderByAggregateInputObjectSchema as GuideMinOrderByAggregateInputObjectSchema } from './GuideMinOrderByAggregateInput.schema'
@@ -11,6 +12,8 @@ const makeSchema = () => z.object({
   userId: SortOrderSchema.optional(),
   title: SortOrderSchema.optional(),
   description: SortOrderSchema.optional(),
+  questions: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  answeredQuestions: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   externalAiQuestionsStatus: SortOrderSchema.optional(),
   status: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),

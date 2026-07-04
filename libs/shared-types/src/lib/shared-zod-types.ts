@@ -1,10 +1,4 @@
 import {z} from "zod";
-import {
-  AiQuestionABCDModelSchema, AiQuestionCheckboxModelSchema, AiQuestionModelSchema,
-  AiQuestionRangeModelSchema,
-  AiQuestionsModelSchema
-} from "@/libs/db/prisma/generated/schemas";
-import {AiQuestionABCD_Answers, AiQuestionCheckbox_Answers} from "@/libs/db/generated/prisma/enums";
 
 export const userSignUpSchema = z.object({
   name: z.string().min(5, {message: "Name must be at least 5 characters"}),
@@ -41,110 +35,61 @@ export const aiGuideGenerationSchema = z.object({
 
 export type aiGuideGenerationSchemaType = z.infer<typeof aiGuideGenerationSchema>
 
-export const aiQuestionABCDSchema = AiQuestionABCDModelSchema.omit({
-  id: true,
-  aiQuestions: true,
-  aiQuestionsId: true,
-  answer: true,
-  customAnswer: true,
+export const aiQuestionABCDSchema = z.object({
+  question: z.string().min(20),
+  options: z.array(z.string().min(10)).length(4)
 })
 
-export const aiQuestionRangeSchema = AiQuestionRangeModelSchema.omit({
-  id: true,
-  aiQuestions: true,
-  aiQuestionsId: true,
-  answer: true
+export const aiQuestionRange = z.object({
+  question: z.string().min(10),
+  start: z.literal(1),
+  end: z.literal(100),
 })
 
-export const aiQuestionSchema = AiQuestionModelSchema.omit({
-  id: true,
-  aiQuestions: true,
-  aiQuestionsId: true,
-  answer: true,
+export const aiQuestionCheckbox = z.object({
+  question: z.string().min(10),
+  options: z.array(z.string().min(10)).min(5).max(8)
 })
 
-export const aiQuestionCheckboxSchema = AiQuestionCheckboxModelSchema.omit({
-  id: true,
-  aiQuestions: true,
-  aiQuestionsId: true,
-  answer: true,
+export const aiQuestionText = z.object({
+  question: z.string().min(20),
 })
 
-export const aiQuestionsSchema =
-  AiQuestionsModelSchema
-    .omit({
-      id: true,
-      guideId: true,
-      guide: true
-    })
-    .extend({
-      AiQuestionABCD: aiQuestionABCDSchema,
-      AiQuestionRange: aiQuestionRangeSchema,
-      AiQuestion: aiQuestionSchema,
-      AiQuestionCheckbox: aiQuestionCheckboxSchema,
-    })
+
+export const aiQuestionsSchema = z.object({
+  aiQuestionABCDSchema: aiQuestionABCDSchema,
+  aiQuestionRange: aiQuestionRange,
+  aiQuestionCheckbox: aiQuestionCheckbox,
+  aiQuestionText: aiQuestionText,
+})
 
 export type aiQuestionsSchemaType = z.infer<typeof aiQuestionsSchema>;
 
-export const questionsSchema = z.object({
-  AiQuestionABCD: z.object({
-    answer: z.enum(AiQuestionABCD_Answers),
-    customAnswer: z.string().min(5).optional(),
-  }).optional(),
-  AiQuestionRange: z.number().min(1).max(100).optional(),
-  AiQuestion: z.string().min(5).optional(),
-  AiQuestionCheckbox: z.array(z.enum(AiQuestionCheckbox_Answers)).optional()
-}).superRefine((data, ctx) => {
-  if(data?.AiQuestionABCD?.answer === "CUSTOM" && !data.AiQuestionABCD.customAnswer) {
-    ctx.addIssue({
-      code: "custom",
-      message: "Custom answer must be added",
-      path: ["AiQuestionABCD.customAnswer"],
-    })
-  }
+export const questionABCDSchema = aiQuestionABCDSchema.extend({
+  answer: z.string().min(10),
 })
 
-export type questionsSchemaType = z.infer<typeof questionsSchema>;
+export const questionRange = aiQuestionRange.extend({
+  answer: z.number().min(1).max(100)
+})
 
-// export const formQuestionABCDSchema = AiQuestionABCDModelSchema.omit({
-//   id: true,
-//   aiQuestions: true,
-//   aiQuestionsId: true
-// })
-//
-// export const formQuestionRangeSchema = AiQuestionRangeModelSchema.omit({
-//   id: true,
-//   aiQuestions: true,
-//   aiQuestionsId: true
-// })
-//
-// export const formQuestionSchema = AiQuestionModelSchema.omit({
-//   id: true,
-//   aiQuestions: true,
-//   aiQuestionsId: true
-// })
-//
-// export const formQuestionCheckboxSchema = AiQuestionCheckboxModelSchema.omit({
-//   id: true,
-//   aiQuestions: true,
-//   aiQuestionsId: true
-// })
-//
-// export const formQuestionsSchema =
-//   AiQuestionsModelSchema
-//     .omit({
-//       id: true,
-//       guideId: true,
-//       guide: true
-//     })
-//     .extend({
-//       AiQuestionABCD: aiQuestionABCDSchema,
-//       AiQuestionRange: aiQuestionRangeSchema,
-//       AiQuestion: aiQuestionSchema,
-//       AiQuestionCheckbox: aiQuestionCheckboxSchema,
-//     })
-//
-// export type formQuestionsSchemaType = z.infer<typeof formQuestionsSchema>;
+export const questionCheckbox = aiQuestionCheckbox.extend({
+  answer: z.array(z.string().min(10)).min(1).max(8)
+})
+
+export const questionText = aiQuestionText.extend({
+  answer: z.string().min(10),
+})
+
+export const questionsSchema = z.object({
+  questionABCD: questionABCDSchema,
+  questionRange: questionRange,
+  questionCheckbox: questionCheckbox,
+  questionText: questionText,
+})
+
+export type questionsSchemaType = z.infer<typeof questionsSchema>
+
 
 
 

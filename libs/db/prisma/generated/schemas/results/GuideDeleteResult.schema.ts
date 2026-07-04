@@ -8,6 +8,7 @@ export const GuideDeleteResultSchema = z.nullable(z.object({
   description: z.string(),
   steps: z.array(z.unknown()),
   questions: z.unknown().optional(),
+  answeredQuestions: z.unknown().optional(),
   externalAiQuestionsStatus: z.boolean(),
   status: z.unknown(),
   createdAt: z.date(),

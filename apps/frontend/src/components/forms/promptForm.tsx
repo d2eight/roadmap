@@ -29,8 +29,8 @@ export function PromptForm() {
 
   const {mutate} = useMutation({
     mutationFn: createGuide,
-    onSuccess: async (responseBody: ApiSuccessResponse<GuideModel>) => {
-      const newGuideId = responseBody.data.id;
+    onSuccess: async (responseBody: ApiSuccessResponse<string>) => {
+      const newGuideId = responseBody.data;
       router.push(`/guides/${newGuideId}`);
     },
     onError: async (error: ApiError) => {
@@ -43,13 +43,13 @@ export function PromptForm() {
       ? await fetch('http://localhost:3333/api/create-guide', requestBody)
       : await fetch('http://localhost:3333/api/create-guide-questions', requestBody);
 
-    const body: ApiResponse<GuideModel> = await response.json();
+    const body: ApiResponse<string> = await response.json();
 
     if (!response.ok && !body.success) {
       throw new ApiError(response.status, (body.error.message ?? response.statusText));
     }
 
-    return body as ApiSuccessResponse<GuideModel>;
+    return body as ApiSuccessResponse<string>;
   }
 
   async function onSubmit(data: promptSchemaType) {

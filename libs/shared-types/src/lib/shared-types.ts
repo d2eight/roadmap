@@ -1,6 +1,6 @@
 import {Session, User} from "better-auth";
-import {GuideGetPayload} from "@/libs/db/generated/prisma/models/Guide";
 import {Prisma} from "../../../db/generated/prisma/client";
+import {questionsSchemaType} from "@/libs/shared-types/src";
 
 export type BetterAuthSession = {
   session: Session;
@@ -24,18 +24,9 @@ export type ApiResponse<T> =
   | ApiSuccessResponse<T>
   | ApiErrorResponse;
 
-export type GuideWithQuestions = Prisma.GuideGetPayload<{
-  include: {
-    questions: {
-      include: {
-        AiQuestionABCD: true,
-        AiQuestionRange: true,
-        AiQuestion: true,
-        AiQuestionCheckbox: true,
-      }
-    }
-
-  }
-}>
-
-// export type GuideWithQuestions = GuideGetPayload
+export type GuideJob = {
+  userId: string,
+  guideId: string,
+  prompt: string,
+  answeredQuestions?: questionsSchemaType
+}
