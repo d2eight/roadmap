@@ -1,8 +1,12 @@
-import { Button } from "@/apps/frontend/src/components/ui/button"
-import { SignUpForm } from "@/apps/frontend/src/components/forms/signUpForm"
+import { SignUpForm } from '../../../components/forms/signUpForm';
+import { FormProcessor } from '../../../components/wrappers/FormProcessor';
 
 export default function SignUpPage() {
-  return <>
-    <SignUpForm />
-  </>
+  return (
+    <>
+      <FormProcessor>
+        <SignUpForm />
+      </FormProcessor>
+    </>
+  );
 }
