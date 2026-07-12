@@ -1,18 +1,26 @@
-import express from "express";
-import * as guidesService from "./guides.service"
-import {ApiResponse, promptSchemaType, questionsSchemaType} from "shared-types";
-import {GuideModel} from "@/libs/db/generated/prisma/models/Guide";
+import express from 'express';
+import * as guidesService from './guides.service';
+import {
+  ApiResponse,
+  promptSchemaType,
+  questionsSchemaType,
+} from 'shared-types';
+import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 
-export async function createGuideBasic(req: express.Request, res: express.Response<ApiResponse<string>>, next: express.NextFunction) {
+export async function createGuideBasic(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) {
   const promptData: promptSchemaType = res.locals.promptData;
 
-  if(promptData.externalAiQuestionsStatus) {
+  if (promptData.externalAiQuestionsStatus) {
     return res.status(422).json({
       success: false,
       error: {
-        message: "Invalid data",
-      }
-    })
+        message: 'Invalid data',
+      },
+    });
   }
 
   const userId: string = res.locals.userId;
@@ -22,74 +30,87 @@ export async function createGuideBasic(req: express.Request, res: express.Respon
 
     return res.status(200).json({
       success: true,
-      data: guideId
+      data: guideId,
     });
   } catch (error) {
-    console.error("Failed to create guide:", error);
+    console.error('Failed to create guide:', error);
 
     return res.status(500).json({
       success: false,
       error: {
-        message: "Something went wrong",
-      }
-    })
+        message: 'Something went wrong',
+      },
+    });
   }
 }
 
-export async function createGuideQuestions(req: express.Request, res: express.Response<ApiResponse<string>>, next: express.NextFunction) {
+export async function createGuideQuestions(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) {
   const promptData: promptSchemaType = res.locals.promptData;
 
-  if(!promptData.externalAiQuestionsStatus) {
+  if (!promptData.externalAiQuestionsStatus) {
     return res.status(422).json({
       success: false,
       error: {
-        message: "Invalid data",
-      }
-    })
+        message: 'Invalid data',
+      },
+    });
   }
 
   const userId: string = res.locals.userId;
 
   try {
-    const guideId = await guidesService.createQuestions(promptData.prompt, userId);
+    const guideId = await guidesService.createQuestions(
+      promptData.prompt,
+      userId,
+    );
 
     return res.status(200).json({
       success: true,
-      data: guideId
+      data: guideId,
     });
   } catch (error) {
-    console.error("Failed to create guide:", error);
+    console.error('Failed to create guide:', error);
 
     return res.status(500).json({
       success: false,
       error: {
-        message: "Something went wrong",
-      }
-    })
+        message: 'Something went wrong',
+      },
+    });
   }
 }
 
-export async function createGuideAnsweredQuestions(req: express.Request, res: express.Response<ApiResponse<GuideModel>>, next: express.NextFunction) {
+export async function createGuideAnsweredQuestions(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) {
   const answeredQuestions: questionsSchemaType = res.locals.answeredQuestions;
   const userId: string = res.locals.userId;
   const guideId: string = req.params.guideId as string;
   const prompt: string = res.locals.prompt;
 
   try {
-    await guidesService.createWithAnsweredQuestions(prompt, answeredQuestions, guideId, userId);
+    await guidesService.createWithAnsweredQuestions(
+      prompt,
+      answeredQuestions,
+      guideId,
+      userId,
+    );
 
     return res.status(200);
   } catch (error) {
-    console.error("Failed to create guide:", error);
+    console.error('Failed to create guide:', error);
 
     return res.status(500).json({
       success: false,
       error: {
-        message: "Something went wrong",
-      }
-    })
+        message: 'Something went wrong',
+      },
+    });
   }
 }
-
-
-

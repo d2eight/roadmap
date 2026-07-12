@@ -3,7 +3,9 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
 import { cn } from '../lib/utils';
 import Providers from '../providers';
-
+import { Header } from '../components/custom-ui/Header';
+import AuthContextParent from '@/apps/frontend/src/context/AuthContext';
+import { Toaster } from '../components/ui/sonner';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
@@ -21,7 +23,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -39,7 +41,17 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-screen bg-background font-sans antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          <AuthContextParent>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-1 mt-[70px] max-w-[1400px] w-full mx-auto">
+                {children}
+                <Toaster richColors />
+              </main>
+            </div>
+          </AuthContextParent>
+        </Providers>
       </body>
     </html>
   );

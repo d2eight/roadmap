@@ -1,4 +1,4 @@
-import { SignUpForm } from '../../../components/forms/signUpForm';
+import { SignUpForm } from '../../../components/forms/SignUpForm';
 import { FormProcessor } from '../../../components/wrappers/FormProcessor';
 
 export default function SignUpPage() {

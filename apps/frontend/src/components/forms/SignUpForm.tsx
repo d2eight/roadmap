@@ -19,13 +19,19 @@ import { authClient } from '../../lib/auth-client';
 import { useContext } from 'react';
 import { FormProcessingContext } from '../wrappers/FormProcessor';
 import { useRouter } from 'next/navigation';
+import { AuthContext } from '../../context/AuthContext';
+import { toast } from 'sonner';
+import { useMutation } from '@tanstack/react-query';
+import { isAPIError } from 'better-auth/api';
 
 export function SignUpForm() {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<userSignUpSchemaType>({
+  const router = useRouter();
+  const { setProcessingStatus, setErrorMessage, FormAlert } = useContext(
+    FormProcessingContext,
+  );
+  const { refetch, isError } = useContext(AuthContext);
+
+  const form = useForm<userSignUpSchemaType>({
     resolver: zodResolver(userSignUpSchema),
     defaultValues: {
       name: '',
@@ -36,28 +42,40 @@ export function SignUpForm() {
     mode: 'onChange',
   });
 
-  const router = useRouter();
-  const setProcessingStatus = useContext(FormProcessingContext);
+  const { mutate } = useMutation({
+    mutationFn: signUp,
+    onSuccess: async (response) => {
+      setProcessingStatus(false);
+      await refetch();
+      toast.success('You have successfully signed up!');
+      router.push('/prompting');
+    },
+    onError: (error: Error) => {
+      setProcessingStatus(false);
+      setErrorMessage(error.message);
+      form.setError('root.serverError', {
+        message: error.message,
+      });
+    },
+  });
 
-  async function onSubmit(data: userSignUpSchemaType) {
+  async function signUp(formData: userSignUpSchemaType) {
+    const response = await authClient.signUp.email({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (response.error && isAPIError(response.error)) {
+      throw new Error(response.error.message);
+    }
+
+    return response;
+  }
+
+  function onSubmit(formData: userSignUpSchemaType) {
     setProcessingStatus(true);
-    await authClient.signUp.email(
-      {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        callbackURL: '/prompting',
-      },
-      {
-        onError: (ctx) => {
-          setProcessingStatus(false);
-        },
-        onSuccess: (ctx) => {
-          setProcessingStatus(false);
-          return router.push('/prompting');
-        },
-      },
-    );
+    mutate(formData);
   }
 
   return (
@@ -67,10 +85,10 @@ export function SignUpForm() {
         <CardDescription>Create an account</CardDescription>
       </CardHeader>
       <CardContent>
-        <form id="sign-up-form" onSubmit={handleSubmit(onSubmit)}>
+        <form id="sign-up-form" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
-              control={control}
+              control={form.control}
               name="name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.error}>
@@ -89,7 +107,7 @@ export function SignUpForm() {
               )}
             />
             <Controller
-              control={control}
+              control={form.control}
               name="email"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.error}>
@@ -108,7 +126,7 @@ export function SignUpForm() {
               )}
             />
             <Controller
-              control={control}
+              control={form.control}
               name="password"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.error}>
@@ -127,7 +145,7 @@ export function SignUpForm() {
               )}
             />
             <Controller
-              control={control}
+              control={form.control}
               name="confirmPassword"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.error}>
@@ -148,9 +166,16 @@ export function SignUpForm() {
           </FieldGroup>
         </form>
       </CardContent>
+      <CardContent>
+        {form.formState.errors.root?.serverError && FormAlert()}
+      </CardContent>
       <CardFooter>
         <Field>
-          <Button type="submit" form="sign-up-form">
+          <Button
+            disabled={form.formState.isSubmitting}
+            type="submit"
+            form="sign-up-form"
+          >
             Submit
           </Button>
         </Field>

@@ -19,8 +19,19 @@ import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Spinner } from '../ui/spinner';
 import { useRouter } from 'next/navigation';
 import { FormProcessingContext } from '../wrappers/FormProcessor';
+import { AuthContext } from '../../context/AuthContext';
+import { toast } from 'sonner';
+import { useMutation } from '@tanstack/react-query';
+import { RedAlert } from '../custom-ui/RedAlert';
+import { isAPIError } from 'better-auth/api';
 
 export function SignInForm() {
+  const router = useRouter();
+  const { setProcessingStatus, setErrorMessage, FormAlert } = useContext(
+    FormProcessingContext,
+  );
+  const { refetch, isError } = useContext(AuthContext);
+
   const form = useForm<userSignInSchemaType>({
     resolver: zodResolver(userSignInSchema),
     defaultValues: {
@@ -28,26 +39,40 @@ export function SignInForm() {
       password: '',
     },
   });
-  const router = useRouter();
-  const setProcessingStatus = useContext(FormProcessingContext);
 
-  async function onSubmit(data: userSignInSchemaType) {
+  const { mutate } = useMutation({
+    mutationFn: signIn,
+    onSuccess: async (response) => {
+      setProcessingStatus(false);
+      await refetch();
+      toast.success('You have successfully signed in!');
+      router.push('/prompting');
+    },
+    onError: async (error) => {
+      setProcessingStatus(false);
+      setErrorMessage(error.message);
+      form.setError('root.serverError', {
+        message: error.message,
+      });
+    },
+  });
+
+  async function signIn(formData: userSignInSchemaType) {
+    const response = await authClient.signIn.email({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (response.error && isAPIError(response.error)) {
+      throw new Error(response.error.message);
+    }
+
+    return response;
+  }
+
+  function onSubmit(data: userSignInSchemaType) {
     setProcessingStatus(true);
-    await authClient.signIn.email(
-      {
-        email: data.email,
-        password: data.password,
-      },
-      {
-        onError: (context) => {
-          setProcessingStatus(false);
-        },
-        onSuccess: async () => {
-          setProcessingStatus(false);
-          return router.push('/prompting');
-        },
-      },
-    );
+    mutate(data);
   }
 
   return (
@@ -108,8 +133,15 @@ export function SignInForm() {
           </FieldGroup>
         </form>
       </CardContent>
+      <CardContent>
+        {form.formState.errors.root?.serverError && FormAlert()}
+      </CardContent>
       <CardFooter>
-        <Button form="sign-in-form" type="submit">
+        <Button
+          disabled={form.formState.isSubmitting}
+          form="sign-in-form"
+          type="submit"
+        >
           Sign In
         </Button>
       </CardFooter>
