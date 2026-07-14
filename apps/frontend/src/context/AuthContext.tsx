@@ -9,29 +9,22 @@ import {
 } from 'react';
 import { AuthContextType } from 'shared-types';
 import { authClient } from '../lib/auth-client';
-import { useQuery } from '@tanstack/react-query';
 
 export const AuthContext = createContext<AuthContextType>(null!);
 
-export default function AuthContextParent({
+export default function AuthContextProvider({
   children,
 }: {
   children: ReactNode;
 }) {
-  const { data, isError, refetch } = useQuery({
-    queryKey: ['session'],
-    queryFn: async () => {
-      const response = await authClient.getSession();
-      return response.data;
-    },
-  });
-
+  const { data, isPending, refetch, error } = authClient.useSession();
   return (
     <AuthContext
       value={{
         data,
+        isPending,
         refetch,
-        isError,
+        error,
       }}
     >
       {children}

@@ -10,12 +10,11 @@ import { toast } from 'sonner';
 
 export function AuthButtons() {
   const router = useRouter();
-  const { data, refetch, isError } = useContext(AuthContext);
+  const { data, refetch, error } = useContext(AuthContext);
 
   const handleSignOut = async () => {
     await authClient.signOut();
-    await refetch();
-    if (isError) {
+    if (error) {
       toast.error('Something went wrong, try again.');
     } else {
       toast.info('You have successfully logged out.');

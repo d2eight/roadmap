@@ -4,6 +4,7 @@ import { QueryObserverBaseResult, UseQueryResult } from '@tanstack/react-query';
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import { Dispatch, SetStateAction } from 'react';
 import { Prisma } from '@/libs/db/generated/prisma/client';
+import { BetterFetchError } from '@better-fetch/fetch';
 
 export type BetterAuthSession = {
   session: Session;
@@ -34,8 +35,9 @@ export type GuideJob = {
 
 export type AuthContextType = {
   data: BetterAuthSession;
-  refetch: UseQueryResult<BetterAuthSession, Error>['refetch'];
-  isError: boolean;
+  refetch: () => Promise<void>;
+  isPending: boolean;
+  error: BetterFetchError | null;
 };
 
 export type GuideContextType = {

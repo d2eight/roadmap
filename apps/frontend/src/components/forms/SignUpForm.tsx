@@ -29,7 +29,7 @@ export function SignUpForm() {
   const { setProcessingStatus, setErrorMessage, FormAlert } = useContext(
     FormProcessingContext,
   );
-  const { refetch, isError } = useContext(AuthContext);
+  const { refetch, error } = useContext(AuthContext);
 
   const form = useForm<userSignUpSchemaType>({
     resolver: zodResolver(userSignUpSchema),
@@ -44,9 +44,8 @@ export function SignUpForm() {
 
   const { mutate } = useMutation({
     mutationFn: signUp,
-    onSuccess: async (response) => {
+    onSuccess: async () => {
       setProcessingStatus(false);
-      await refetch();
       toast.success('You have successfully signed up!');
       router.push('/prompting');
     },

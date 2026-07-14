@@ -30,7 +30,7 @@ export function SignInForm() {
   const { setProcessingStatus, setErrorMessage, FormAlert } = useContext(
     FormProcessingContext,
   );
-  const { refetch, isError } = useContext(AuthContext);
+  const { refetch, error } = useContext(AuthContext);
 
   const form = useForm<userSignInSchemaType>({
     resolver: zodResolver(userSignInSchema),
@@ -42,9 +42,8 @@ export function SignInForm() {
 
   const { mutate } = useMutation({
     mutationFn: signIn,
-    onSuccess: async (response) => {
+    onSuccess: async () => {
       setProcessingStatus(false);
-      await refetch();
       toast.success('You have successfully signed in!');
       router.push('/prompting');
     },
