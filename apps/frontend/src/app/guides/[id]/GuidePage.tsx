@@ -13,6 +13,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { SocketContext } from '../../../context/SocketContext';
 import { SkeletonBasic } from '../../../components/custom-ui/SkeletonBasic';
 import { GuideModelWithRelations } from 'shared-types';
+import { FormProcessor } from '../../../components/wrappers/FormProcessor';
 
 export default function GuidePage() {
   const { guide, setGuide } = useContext(GuideContext);
@@ -32,7 +33,11 @@ export default function GuidePage() {
       case 'GUIDE_GENERATION':
         return <SkeletonBasic />;
       case 'QUESTIONS_GENERATED':
-        return <GuideQuestionsForm />;
+        return (
+          <FormProcessor>
+            <GuideQuestionsForm />
+          </FormProcessor>
+        );
       case 'GUIDE_GENERATED':
         return <GuideComponent />;
       default:
