@@ -1,9 +1,17 @@
-import {useContext} from "react";
-import {GuideContext} from "@/apps/frontend/src/app/guides/[id]/GuideContextParent";
+import { useContext } from 'react';
+import { GuideContext } from './GuideContextParent';
 
 export default function GuideComponent() {
-  const guide = useContext(GuideContext);
-  console.log(guide);
+  const { guide } = useContext(GuideContext);
 
-  return <></>
+  return (
+    <div>
+      <h1>{guide.title}</h1>
+      <div>
+        {guide.steps.map((item) => {
+          return <p>{item.title}</p>;
+        })}
+      </div>
+    </div>
+  );
 }

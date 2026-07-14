@@ -1,9 +1,14 @@
-import {Job} from "bullmq";
-import {generateText, Output} from "ai";
-import {prisma} from "database";
-import {aiGuideGenerationSchema, GuideJob, questionsSchemaType} from "shared-types";
-import {openai} from "@ai-sdk/openai";
-import {GuideStepCreateManyInput} from "@/libs/db/generated/prisma/models/GuideStep";
+import { Job } from 'bullmq';
+import { generateText, Output } from 'ai';
+import { prisma } from 'database';
+import {
+  aiGuideGenerationSchema,
+  GuideJob,
+  questionsSchemaType,
+} from 'shared-types';
+import { openai } from '@ai-sdk/openai';
+import { GuideStepCreateManyInput } from '@/libs/db/generated/prisma/models/GuideStep';
+import { io } from '../../main';
 
 export async function aiCreateGuide(job: Job<GuideJob>) {
   const answeredQuestions: questionsSchemaType = job.data.answeredQuestions;
@@ -14,36 +19,40 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
   await prisma.guide.update({
     where: {
       id: guideId,
-      userId: userId
+      userId: userId,
     },
     data: {
-      status: "GUIDE_GENERATION",
-      ...(answeredQuestions && {answeredQuestions: answeredQuestions})
-    }
+      status: 'GUIDE_GENERATION',
+      ...(answeredQuestions && { answeredQuestions: answeredQuestions }),
+    },
+  });
+
+  io.to(userId).emit('guide_update', {
+    status: 'GUIDE_GENERATION',
   });
 
   const aiPrompt: string = answeredQuestions
     ? `Generate a new guide, for this user prompt: ${prompt}. Generate it, like you are a expert in requested topic. We've asked our user questions, and he answered them. Create a highly personalized guide based on these answers: ${JSON.stringify(answeredQuestions)}. Follow the output schema`
-    : `Generate a new guide, for this user prompt: ${prompt}. Generate it, like you are a expert in requested topic. Follow the output schema`
+    : `Generate a new guide, for this user prompt: ${prompt}. Generate it, like you are a expert in requested topic. Follow the output schema`;
 
-  const {output} = await generateText({
-    model: openai("gpt-5.4-mini"),
+  const { output } = await generateText({
+    model: openai('gpt-5.4-mini'),
     output: Output.object({
       schema: aiGuideGenerationSchema,
     }),
     prompt: aiPrompt,
-  })
+  });
 
   await prisma.guide.update({
     where: {
       id: guideId,
-      userId: userId
+      userId: userId,
     },
     data: {
       title: output.title,
       description: output.title,
-      status: "GUIDE_GENERATED"
-    }
+      status: 'GUIDE_GENERATED',
+    },
   });
 
   const guideSteps: GuideStepCreateManyInput[] = output.steps.map((step) => {
@@ -51,10 +60,17 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
       title: step.title,
       description: step.description,
       guideId: guideId,
-    }
-  })
+    };
+  });
 
   await prisma.guideStep.createMany({
     data: guideSteps,
-  })
+  });
+
+  io.to(userId).emit('guide_update', {
+    title: output.title,
+    description: output.description,
+    status: 'GUIDE_GENERATED',
+    steps: guideSteps,
+  });
 }

@@ -1,15 +1,29 @@
-"use client"
+'use client';
 
-import {GuideModel} from "@/libs/db/generated/prisma/models/Guide";
-import {createContext, ReactNode} from "react";
+import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
+import { createContext, ReactNode, useState } from 'react';
+import { GuideContextType, GuideModelWithRelations } from 'shared-types';
+import { Prisma } from '@/libs/db/generated/prisma/client';
 
-export const GuideContext = createContext<GuideModel>(null!);
+export const GuideContext = createContext<GuideContextType>(null!);
 
-export default function GuideContextParent({guide, children}: {guide: GuideModel, children: ReactNode}) {
+export default function GuideContextProvider({
+  guideProps,
+  children,
+}: {
+  guideProps: GuideModelWithRelations;
+  children: ReactNode;
+}) {
+  const [guide, setGuide] = useState<GuideModelWithRelations>(guideProps);
 
   return (
-    <GuideContext value={guide}>
+    <GuideContext
+      value={{
+        guide,
+        setGuide,
+      }}
+    >
       {children}
     </GuideContext>
-  )
+  );
 }

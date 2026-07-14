@@ -6,6 +6,7 @@ import {
   questionsSchemaType,
 } from 'shared-types';
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
+import { io } from '../../main';
 
 export async function createGuideBasic(
   req: express.Request,

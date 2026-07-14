@@ -6,6 +6,7 @@ import GuidePage from '@/apps/frontend/src/app/guides/[id]/GuidePage';
 import { authClient } from '../../../lib/auth-client';
 import { headers } from 'next/headers';
 import { getUserIdFromHeaders } from '../../../utils/getUserId';
+import GuideContextProvider from '@/apps/frontend/src/app/guides/[id]/GuideContextParent';
 
 type PageProps = {
   params: Promise<{
@@ -26,9 +27,9 @@ export default async function GuideServerPage({ params }: PageProps) {
 
   return (
     <>
-      <GuideContextParent guide={guide}>
+      <GuideContextProvider guideProps={guide}>
         <GuidePage />
-      </GuideContextParent>
+      </GuideContextProvider>
     </>
   );
 }

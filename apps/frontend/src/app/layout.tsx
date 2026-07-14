@@ -6,6 +6,7 @@ import Providers from '../providers';
 import { Header } from '../components/custom-ui/Header';
 import AuthContextParent from '@/apps/frontend/src/context/AuthContext';
 import { Toaster } from '../components/ui/sonner';
+import { io } from 'socket.io-client';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
@@ -45,7 +46,7 @@ export default async function RootLayout({
           <AuthContextParent>
             <div className="flex flex-col min-h-screen">
               <Header />
-              <main className="flex-1 mt-[70px] max-w-[1400px] w-full mx-auto">
+              <main className="flex-1 mt-[70px] max-w-[1400px] py-[50px] w-full mx-auto">
                 {children}
                 <Toaster richColors />
               </main>
