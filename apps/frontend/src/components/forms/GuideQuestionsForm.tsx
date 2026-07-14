@@ -1,6 +1,6 @@
 'use client';
 
-import { GuideContext } from '../../app/guides/[id]/GuideContextParent';
+import { GuideContext } from '../../context/GuideContextParent';
 import { useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

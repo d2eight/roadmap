@@ -1,19 +1,15 @@
 'use client';
 
-import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
-import GuideQuestionsForm from '@/apps/frontend/src/components/forms/GuideQuestionsForm';
-import GuideComponent from '@/apps/frontend/src/app/guides/[id]/GuideComponent';
+import GuideQuestionsForm from '../../../components/forms/GuideQuestionsForm';
+import GuideComponent from './GuideComponent';
 import { notFound } from 'next/navigation';
-import { GuideContext } from './GuideContextParent';
 import { JSX, useContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
-import { Socket } from 'node:net';
 import { GuideStatus } from '@/libs/db/generated/prisma/enums';
-import { AuthContext } from '../../../context/AuthContext';
 import { SocketContext } from '../../../context/SocketContext';
 import { SkeletonBasic } from '../../../components/custom-ui/SkeletonBasic';
 import { GuideModelWithRelations } from 'shared-types';
 import { FormProcessor } from '../../../components/wrappers/FormProcessor';
+import { GuideContext } from '../../../context/GuideContext';
 
 export default function GuidePage() {
   const { guide, setGuide } = useContext(GuideContext);
