@@ -1,4 +1,4 @@
-import './global.css';
+import './globals.css';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Inter } from 'next/font/google';
 import { cn } from '../lib/utils';
@@ -7,7 +7,7 @@ import { Header } from '../components/custom-ui/Header';
 import AuthContextParent from '@/apps/frontend/src/context/AuthContext';
 import { Toaster } from '../components/ui/sonner';
 import { io } from 'socket.io-client';
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'RoadmapAI',
@@ -38,7 +38,8 @@ export default async function RootLayout({
         geistSans.variable,
         geistMono.variable,
         'font-sans',
-        inter.variable,
+        'font-sans',
+        geist.variable,
       )}
     >
       <body className="min-h-screen bg-background font-sans antialiased">
