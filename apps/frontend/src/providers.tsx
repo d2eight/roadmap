@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { io } from 'socket.io-client';
 import { SocketContextProvider } from './context/SocketContext';
+import { GuidesContextProvider } from './context/GuidesContext';
 
 const queryClient = new QueryClient();
 

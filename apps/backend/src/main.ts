@@ -66,6 +66,10 @@ io.use(async (socket, next) => {
 
 io.on('connection', (socket) => {
   socket.join(socket.data.id);
+
+  // socket.on('guide_room', (data) => {
+  //   socket.join(data.guideId);
+  // });
 });
 
 server.on('error', console.error);

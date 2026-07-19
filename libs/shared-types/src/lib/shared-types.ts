@@ -5,6 +5,7 @@ import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import { Dispatch, SetStateAction } from 'react';
 import { Prisma } from '@/libs/db/generated/prisma/client';
 import { BetterFetchError } from '@better-fetch/fetch';
+import { Socket } from 'socket.io-client';
 
 export type BetterAuthSession = {
   session: Session;
@@ -43,6 +44,10 @@ export type AuthContextType = {
 export type GuideContextType = {
   guide: GuideModelWithRelations;
   setGuide: Dispatch<SetStateAction<GuideModelWithRelations>>;
+};
+
+export type SocketContextType = {
+  socket: Socket;
 };
 
 export type GuideModelWithRelations = Prisma.GuideGetPayload<{

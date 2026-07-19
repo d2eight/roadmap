@@ -19,7 +19,7 @@ export async function Header() {
             <Link href="/prompting">Prompting</Link>
           </Button>
           <Button asChild variant="link">
-            <Link href="/">Dashboard</Link>
+            <Link href="/guides">Dashboard</Link>
           </Button>
         </div>
         <div className="flex items-center gap-2">

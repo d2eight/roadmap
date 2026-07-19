@@ -9,6 +9,9 @@ export default async function DashboardServerPage() {
     where: {
       userId: userId,
     },
+    include: {
+      steps: true,
+    },
   });
 
   return (

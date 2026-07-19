@@ -11,7 +11,7 @@ export async function aiCreateGuideQuestions(job: Job<GuideJob>) {
   const userId: string = job.data.userId;
   const prompt: string = job.data.prompt;
 
-  await prisma.guide.update({
+  const firstGuideUpdate = await prisma.guide.update({
     where: {
       id: guideId,
       userId: userId,
@@ -22,7 +22,7 @@ export async function aiCreateGuideQuestions(job: Job<GuideJob>) {
   });
 
   io.to(userId).emit('guide_update', {
-    status: 'QUESTIONS_GENERATION',
+    ...firstGuideUpdate,
   });
 
   const { output } = await generateText({
@@ -33,7 +33,7 @@ export async function aiCreateGuideQuestions(job: Job<GuideJob>) {
     prompt: `Generate a questions, which will improve our understanding for this user prompt: ${prompt}. We will use them, to ask a user for more deep undarstanding of his purposes, competencies about requested topic. Do not create any questions about timestamps. You must create four questions. Question with A B C D answers, where the only one can be choosen. Question with range answer, where user answers on the question by choosing some number from 1 to 100. Question, where user answers with text input. Question with checkboxes, where user can choose multiple answers. Follow the schema for generation such a questions.`,
   });
 
-  await prisma.guide.update({
+  const secondGuideUpdate = await prisma.guide.update({
     where: {
       id: guideId,
       userId: userId,
@@ -45,7 +45,6 @@ export async function aiCreateGuideQuestions(job: Job<GuideJob>) {
   });
 
   io.to(userId).emit('guide_update', {
-    status: 'QUESTIONS_GENERATED',
-    questions: JSON.stringify(output),
+    ...secondGuideUpdate,
   });
 }

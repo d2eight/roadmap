@@ -1,6 +1,5 @@
 'use client';
 
-import { GuideContext } from '../../context/GuideContextParent';
 import { useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,9 +18,10 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { ApiError } from '../../customClasses/apiError';
 import { handleApiFormError } from '../../utils/apiErrorsHandler';
+import { GuideContext } from '../../context/GuideContext';
 
 export default function GuideQuestionsForm() {
-  const { guide, setGuide } = useContext(GuideContext);
+  const guide = useContext(GuideContext);
   const router = useRouter();
 
   if (!guide.questions) {

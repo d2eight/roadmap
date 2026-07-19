@@ -16,7 +16,7 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
   const userId: string = job.data.userId;
   const prompt: string = job.data.prompt;
 
-  await prisma.guide.update({
+  const firstGuideUpdate = await prisma.guide.update({
     where: {
       id: guideId,
       userId: userId,
@@ -28,7 +28,7 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
   });
 
   io.to(userId).emit('guide_update', {
-    status: 'GUIDE_GENERATION',
+    ...firstGuideUpdate,
   });
 
   const aiPrompt: string = answeredQuestions
@@ -43,7 +43,9 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
     prompt: aiPrompt,
   });
 
-  await prisma.guide.update({
+  console.log(output);
+
+  const secondGuideUpdate = await prisma.guide.update({
     where: {
       id: guideId,
       userId: userId,
@@ -68,9 +70,7 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
   });
 
   io.to(userId).emit('guide_update', {
-    title: output.title,
-    description: output.description,
-    status: 'GUIDE_GENERATED',
+    ...secondGuideUpdate,
     steps: guideSteps,
   });
 }
