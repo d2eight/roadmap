@@ -1,6 +1,5 @@
 'use client';
 
-import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import {
   Card,
   CardAction,
@@ -16,9 +15,24 @@ import { GuideContext } from '../../context/GuideContext';
 import { MessageCircleQuestionMark, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { Spinner } from '../ui/spinner';
+import { useMutation } from '@tanstack/react-query';
+import { ApiError } from '../../customClasses/apiError';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { GuidesContext } from '@/context/GuidesContext';
 
 export function GuideCard() {
   const guide = useContext(GuideContext);
+  const { guides, setGuides } = useContext(GuidesContext);
 
   let cardTitle = guide.prompt;
   let cardDescription = 'Here will be guide description';
@@ -52,23 +66,74 @@ export function GuideCard() {
       break;
   }
 
+  const { mutate } = useMutation({
+    mutationFn: removeGuide,
+    onSuccess: (response) => {
+      const removedGuideId = response.data;
+      const newGuidesArray = guides.filter((item) => item.id !== removedGuideId);
+      setGuides(newGuidesArray);
+    },
+  });
+
+  async function removeGuide() {
+    const response = await fetch(
+      `http://localhost:3333/api/remove-guide/${guide.id}`,
+      {
+        method: 'DELETE',
+        credentials: 'include',
+      },
+    );
+
+    const body = await response.json();
+
+    if (!response.ok && !body.success) {
+      throw new ApiError(
+        response.status,
+        body.error.message ?? response.statusText,
+      );
+    }
+
+    return body;
+  }
+
   return (
-    <Link href={`guides/${guide.id}`}>
-      <Card>
-        <CardHeader>
-          <CardTitle>{cardTitle}</CardTitle>
-          <CardDescription className="truncate">
-            {cardDescription}
-          </CardDescription>
-          <CardAction>
-            <Button variant="destructive">
-              <Trash2 />
-            </Button>
-          </CardAction>
-        </CardHeader>
-        {/*<CardContent>123</CardContent>*/}
-        <CardFooter>{cardFooter}</CardFooter>
-      </Card>
-    </Link>
+    <Card>
+      <CardHeader>
+        <CardTitle>{cardTitle}</CardTitle>
+        <CardDescription className="truncate">
+          {cardDescription}
+        </CardDescription>
+        <CardAction>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                className="cursor-pointer"
+                variant="destructive"
+                size="icon-sm"
+              >
+                <Trash2 />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure that you want to delete this guide?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => mutate()}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </CardAction>
+      </CardHeader>
+      <CardFooter>{cardFooter}</CardFooter>
+    </Card>
   );
 }

@@ -2,11 +2,13 @@ import express from 'express';
 import * as guidesService from './guides.service';
 import {
   ApiResponse,
+  GuideModelWithRelations,
   promptSchemaType,
   questionsSchemaType,
 } from 'shared-types';
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import { io } from '../../main';
+import { authMiddleware } from '../../middlewares/auth';
 
 export async function createGuideBasic(
   req: express.Request,
@@ -113,5 +115,22 @@ export async function createGuideAnsweredQuestions(
         message: 'Something went wrong',
       },
     });
+  }
+}
+
+export async function removeGuide(req: express.Request, res: express.Response) {
+  const userId: string = res.locals.userId;
+  const guideId = req.params.guideId as string;
+
+  try {
+    await guidesService.remove(guideId, userId);
+    return res.status(200).json({
+      success: true,
+      data: guideId,
+    });
+  } catch (error) {
+    console.error('Failed to delete guide:', error);
+
+    return res.status(500);
   }
 }

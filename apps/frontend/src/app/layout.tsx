@@ -4,9 +4,9 @@ import { Geist, Geist_Mono, Inter } from 'next/font/google';
 import { cn } from '../lib/utils';
 import Providers from '../providers';
 import { Header } from '../components/custom-ui/Header';
-import AuthContextParent from '@/apps/frontend/src/context/AuthContext';
 import { Toaster } from '../components/ui/sonner';
 import { io } from 'socket.io-client';
+import AuthContextProvider from '@/context/AuthContext';
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
@@ -44,7 +44,7 @@ export default async function RootLayout({
     >
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>
-          <AuthContextParent>
+          <AuthContextProvider>
             <div className="flex flex-col min-h-screen">
               <Header />
               <main className="flex-1 mt-[70px] max-w-[1400px] py-[50px] w-full mx-auto">
@@ -52,7 +52,7 @@ export default async function RootLayout({
                 <Toaster richColors />
               </main>
             </div>
-          </AuthContextParent>
+          </AuthContextProvider>
         </Providers>
       </body>
     </html>

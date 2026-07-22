@@ -4,6 +4,7 @@ import {
   createGuideAnsweredQuestions,
   createGuideBasic,
   createGuideQuestions,
+  removeGuide,
 } from './guides.controller';
 import { promptValidationMiddleware } from '../../middlewares/prompt';
 import { guideMiddleware } from '../../middlewares/guide';
@@ -32,3 +33,5 @@ guidesRouter.post(
   guideMiddleware,
   createGuideAnsweredQuestions,
 );
+
+guidesRouter.delete('/api/remove-guide/:guideId', authMiddleware, removeGuide);

@@ -1,11 +1,9 @@
 import { Session, User } from 'better-auth';
 import { questionsSchemaType } from './shared-zod-types';
-import { QueryObserverBaseResult, UseQueryResult } from '@tanstack/react-query';
-import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import { Dispatch, SetStateAction } from 'react';
-import { Prisma } from '@/libs/db/generated/prisma/client';
 import { BetterFetchError } from '@better-fetch/fetch';
 import { Socket } from 'socket.io-client';
+import { Prisma } from 'database';
 
 export type BetterAuthSession = {
   session: Session;
@@ -54,4 +52,5 @@ export type GuideModelWithRelations = Prisma.GuideGetPayload<{
   include: {
     steps: true;
   };
-}>;
+}>
+

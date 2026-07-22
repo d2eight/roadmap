@@ -7,8 +7,8 @@ import {
   ReactNode,
   SetStateAction,
 } from 'react';
-import { AuthContextType } from 'shared-types';
 import { authClient } from '../lib/auth-client';
+import { AuthContextType } from 'shared-types';
 
 export const AuthContext = createContext<AuthContextType>(null!);
 

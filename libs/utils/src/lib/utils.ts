@@ -1,3 +1,5 @@
+'use server';
+
 import { prisma } from 'database';
 import { promptSchemaType } from 'shared-types';
 
@@ -20,4 +22,32 @@ export async function createEmptyGuide(userPrompt: string, userId: string) {
       userId: userId,
     },
   });
+}
+
+export async function getGuidesInPagination({
+  currentPage,
+  pageSize,
+  userId,
+}: {
+  currentPage: number;
+  pageSize: number;
+  userId: string;
+}) {
+  return prisma.$transaction([
+    prisma.guide.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        steps: true,
+      },
+      skip: (currentPage - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.guide.count({
+      where: {
+        userId: userId,
+      },
+    }),
+  ]);
 }

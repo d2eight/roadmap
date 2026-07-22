@@ -12,44 +12,29 @@ import { GuideModelWithRelations } from 'shared-types';
 export const GuidesContext = createContext<{
   guides: GuideModelWithRelations[];
   setGuides: Dispatch<SetStateAction<GuideModelWithRelations[]>>;
-  updateGuideInGlobalContext: (data: GuideModelWithRelations) => void;
-  addGuideToGlobalContext: (data: GuideModelWithRelations) => void;
+  guidesCount: number;
+  setGuidesCount: Dispatch<SetStateAction<number>>;
 }>(null!);
 
-export function GuidesContextProvider({ children }: { children: ReactNode }) {
-  const [guides, setGuides] = useState<GuideModelWithRelations[]>([]);
-
-  function updateGuideInGlobalContext(data: GuideModelWithRelations) {
-    const guideToUpdate = guides.find((guid) => guid.id === data.id);
-
-    if (guideToUpdate) {
-      const newGuidesArray = guides.map((guide) => {
-        if (guide.id === guideToUpdate.id) {
-          return {
-            ...guide,
-            ...data,
-          };
-        }
-        return guide;
-      });
-      setGuides(newGuidesArray);
-    } else {
-      addGuideToGlobalContext(data);
-    }
-  }
-
-  function addGuideToGlobalContext(data: GuideModelWithRelations) {
-    console.log('addGuideToGlobalContext', data);
-    setGuides((prev) => [...prev, data]);
-  }
+export function GuidesContextProvider({
+  children,
+  guidesProps,
+  guidesCountProps,
+}: {
+  children: ReactNode;
+  guidesProps: GuideModelWithRelations[];
+  guidesCountProps: number;
+}) {
+  const [guides, setGuides] = useState<GuideModelWithRelations[]>(guidesProps);
+  const [guidesCount, setGuidesCount] = useState<number>(guidesCountProps);
 
   return (
     <GuidesContext
       value={{
         guides,
         setGuides,
-        updateGuideInGlobalContext,
-        addGuideToGlobalContext,
+        guidesCount,
+        setGuidesCount,
       }}
     >
       {children}

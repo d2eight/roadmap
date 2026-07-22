@@ -1,13 +1,13 @@
-import express from "express";
-import {promptSchemaType, questionsSchemaType} from "shared-types";
-import {prisma} from "database";
-import {GuideModel} from "@/libs/db/generated/prisma/models/Guide";
+import express from 'express';
+import { promptSchemaType, questionsSchemaType } from 'shared-types';
+import { prisma } from 'database';
+import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import {
   guideGenerationQueue,
   guideGenerationWithAnsweredQuestionsQueue,
-  guideQuestionsGenerationQueue
-} from "@/apps/backend/src/main";
-import {createEmptyGuide} from "utils";
+  guideQuestionsGenerationQueue,
+} from '../../main';
+import { createEmptyGuide } from 'utils';
 
 export async function create(prompt: string, userId: string): Promise<string> {
   const newGuide = await createEmptyGuide(prompt, userId);
@@ -17,15 +17,18 @@ export async function create(prompt: string, userId: string): Promise<string> {
     {
       guideId: newGuide.id,
       userId: userId,
-      prompt: prompt
+      prompt: prompt,
     },
-    { jobId: newGuide.id }
+    { jobId: newGuide.id },
   );
 
   return newGuide.id;
 }
 
-export async function createQuestions(prompt: string, userId: string): Promise<string> {
+export async function createQuestions(
+  prompt: string,
+  userId: string,
+): Promise<string> {
   const newGuide = await createEmptyGuide(prompt, userId);
 
   await guideQuestionsGenerationQueue.add(
@@ -33,23 +36,37 @@ export async function createQuestions(prompt: string, userId: string): Promise<s
     {
       guideId: newGuide.id,
       userId: userId,
-      prompt: prompt
+      prompt: prompt,
     },
-    { jobId: newGuide.id }
+    { jobId: newGuide.id },
   );
 
   return newGuide.id;
 }
 
-export async function createWithAnsweredQuestions(prompt: string, answeredQuestions: questionsSchemaType, guideId: string, userId: string) {
+export async function createWithAnsweredQuestions(
+  prompt: string,
+  answeredQuestions: questionsSchemaType,
+  guideId: string,
+  userId: string,
+) {
   await guideGenerationQueue.add(
     'newGuide_withAnsweredQuestions',
     {
       prompt: prompt,
       answeredQuestions: answeredQuestions,
       userId: userId,
-      guideId: guideId
+      guideId: guideId,
     },
-    { jobId: guideId }
-  )
+    { jobId: guideId },
+  );
+}
+
+export async function remove(guideId: string, userId: string) {
+  await prisma.guide.delete({
+    where: {
+      id: guideId,
+      userId: userId,
+    },
+  });
 }
