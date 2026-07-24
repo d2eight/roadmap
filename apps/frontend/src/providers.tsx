@@ -5,13 +5,16 @@ import { ReactNode } from 'react';
 import { io } from 'socket.io-client';
 import { SocketContextProvider } from './context/SocketContext';
 import { GuidesContextProvider } from './context/GuidesContext';
+import { TooltipProvider } from './components/ui/tooltip';
 
 const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
     <SocketContextProvider>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>{children}</TooltipProvider>
+      </QueryClientProvider>
     </SocketContextProvider>
   );
 }

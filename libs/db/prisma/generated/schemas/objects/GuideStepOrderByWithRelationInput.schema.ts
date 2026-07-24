@@ -8,6 +8,7 @@ const makeSchema = () => z.object({
   guideId: SortOrderSchema.optional(),
   title: SortOrderSchema.optional(),
   description: SortOrderSchema.optional(),
+  status: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional(),
   guide: z.lazy(() => GuideOrderByWithRelationInputObjectSchema).optional()

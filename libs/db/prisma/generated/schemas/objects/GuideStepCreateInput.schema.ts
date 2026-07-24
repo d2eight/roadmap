@@ -6,6 +6,7 @@ const makeSchema = () => z.object({
   id: z.string().optional(),
   title: z.string(),
   description: z.string(),
+  status: z.boolean().optional(),
   createdAt: z.coerce.date().optional(),
   guide: z.lazy(() => GuideCreateNestedOneWithoutStepsInputObjectSchema)
 }).strict();

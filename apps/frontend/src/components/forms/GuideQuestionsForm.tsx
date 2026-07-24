@@ -21,7 +21,7 @@ import { handleApiFormError } from '../../utils/apiErrorsHandler';
 import { GuideContext } from '../../context/GuideContext';
 
 export default function GuideQuestionsForm() {
-  const guide = useContext(GuideContext);
+  const { guide } = useContext(GuideContext);
   const router = useRouter();
 
   if (!guide.questions) {

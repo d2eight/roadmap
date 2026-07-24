@@ -5,6 +5,7 @@ export const GuideStepAggregateResultSchema = z.object({  _count: z.object({
     guideId: z.number(),
     title: z.number(),
     description: z.number(),
+    status: z.number(),
     createdAt: z.number(),
     updatedAt: z.number()
   }).optional(),

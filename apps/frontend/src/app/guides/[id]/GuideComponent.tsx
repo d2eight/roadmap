@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { GuideContext } from '../../../context/GuideContext';
 
 export default function GuideComponent() {
-  const guide = useContext(GuideContext);
+  const { guide } = useContext(GuideContext);
 
   return (
     <div>

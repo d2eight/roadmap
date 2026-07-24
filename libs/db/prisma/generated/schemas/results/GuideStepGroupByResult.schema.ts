@@ -4,6 +4,7 @@ export const GuideStepGroupByResultSchema = z.array(z.object({
   guideId: z.string(),
   title: z.string(),
   description: z.string(),
+  status: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
   _count: z.object({
@@ -12,6 +13,7 @@ export const GuideStepGroupByResultSchema = z.array(z.object({
     guideId: z.number(),
     title: z.number(),
     description: z.number(),
+    status: z.number(),
     createdAt: z.number(),
     updatedAt: z.number()
   }).optional(),

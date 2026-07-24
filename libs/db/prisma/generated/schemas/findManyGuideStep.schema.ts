@@ -15,6 +15,7 @@ export const GuideStepFindManySelectSchema: z.ZodType<Prisma.GuideStepSelect> = 
     guideId: z.boolean().optional(),
     title: z.boolean().optional(),
     description: z.boolean().optional(),
+    status: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional()
   }).strict() as unknown as z.ZodType<Prisma.GuideStepSelect>;
@@ -25,6 +26,7 @@ export const GuideStepFindManySelectZodSchema = z.object({
     guideId: z.boolean().optional(),
     title: z.boolean().optional(),
     description: z.boolean().optional(),
+    status: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional()
   }).strict();

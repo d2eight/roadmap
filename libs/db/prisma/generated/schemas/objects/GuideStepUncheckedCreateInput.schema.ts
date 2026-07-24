@@ -7,6 +7,7 @@ const makeSchema = () => z.object({
   guideId: z.string(),
   title: z.string(),
   description: z.string(),
+  status: z.boolean().optional(),
   createdAt: z.coerce.date().optional()
 }).strict();
 export const GuideStepUncheckedCreateInputObjectSchema: z.ZodType<Prisma.GuideStepUncheckedCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.GuideStepUncheckedCreateInput>;

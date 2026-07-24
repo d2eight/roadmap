@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "generatorVersion": "unknown",
-  "generatedAt": "2026-07-02T18:20:22.123Z",
+  "generatedAt": "2026-07-23T13:23:35.531Z",
   "outputPath": "/home/d2eight/programming/nxtest/roadmapainx/libs/db/prisma/generated",
   "files": [
     "schemas/enums/TransactionIsolationLevel.schema.ts",

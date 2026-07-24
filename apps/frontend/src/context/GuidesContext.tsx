@@ -5,9 +5,15 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useContext,
+  useEffect,
   useState,
 } from 'react';
 import { GuideModelWithRelations } from 'shared-types';
+import { useQuery } from '@tanstack/react-query';
+import { getGuidesInPagination } from 'utils';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { AuthContext } from '@/context/AuthContext';
 
 export const GuidesContext = createContext<{
   guides: GuideModelWithRelations[];
@@ -27,6 +33,48 @@ export function GuidesContextProvider({
 }) {
   const [guides, setGuides] = useState<GuideModelWithRelations[]>(guidesProps);
   const [guidesCount, setGuidesCount] = useState<number>(guidesCountProps);
+
+  useEffect(() => {
+    setGuides(guidesProps);
+  }, [guidesProps]);
+
+  useEffect(() => {
+    setGuidesCount(guidesCountProps);
+  }, [guidesCountProps]);
+
+  // const { data, refetch, error } = useContext(AuthContext);
+  //
+  // const pageSize = 8;
+  // const pagesCount = Math.ceil(guidesCount / pageSize);
+  //
+  //
+
+  // useEffect(() => {
+  //   navigateToPage(currentPage);
+  // }, []);
+  //
+  // const query = useQuery({
+  //   queryKey: ['guides', currentPage],
+  //   queryFn: () =>
+  //     getGuidesInPagination({
+  //       currentPage: parseInt(currentPage),
+  //       pageSize: pageSize,
+  //       userId: data!.user.id,
+  //     }),
+  // });
+  //
+  // useEffect(() => {
+  //   if (query.isSuccess) {
+  //     const [newGuides, newGuidesCount] = query.data;
+  //     setGuides(newGuides);
+  //     setGuidesCount(newGuidesCount);
+  //   }
+  // }, [query.data]);
+  //
+  // function navigateToPage(page: string) {
+  //   params.set('page', page);
+  //   router.push(`/guides/?${params}`);
+  // }
 
   return (
     <GuidesContext

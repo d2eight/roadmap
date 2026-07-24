@@ -12,7 +12,7 @@ import {
 import { Button } from '../ui/button';
 import { JSX, useContext } from 'react';
 import { GuideContext } from '../../context/GuideContext';
-import { MessageCircleQuestionMark, Trash2 } from 'lucide-react';
+import { ArrowRight, LucideNotebookPen, MessageCircleQuestionMark, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { Spinner } from '../ui/spinner';
 import { useMutation } from '@tanstack/react-query';
@@ -28,26 +28,62 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { GuidesContext } from '@/context/GuidesContext';
+import { GuidesContext, GuidesContextProvider } from '@/context/GuidesContext';
+import { CompletedSteps } from '@/components/custom-ui/CompletedSteps';
+import { GuideDate } from '@/components/custom-ui/GuideDate';
+import { getGuidesInPagination } from 'utils';
+import { Guides } from '@/components/custom-ui/Guides';
+import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
+import { useSearchParams } from 'next/navigation';
+import { AuthContext } from '@/context/AuthContext';
 
 export function GuideCard() {
-  const guide = useContext(GuideContext);
-  const { guides, setGuides } = useContext(GuidesContext);
+  const { guide, completedSteps } = useContext(GuideContext);
+  const { guides, setGuides, setGuidesCount } = useContext(GuidesContext);
+  const {data} = useContext(AuthContext)
+  // const { updatePagination, currentPage } = useContext(PaginationContext);
+  const searchParams = useSearchParams();
+  const currentPage = searchParams.get('page') ?? '1';
+
 
   let cardTitle = guide.prompt;
   let cardDescription = 'Here will be guide description';
+  let cardContent;
   let cardFooter: JSX.Element = <></>;
 
   switch (guide.status) {
     case 'INIT':
-    case 'QUESTIONS_GENERATION':
     case 'GUIDE_GENERATION':
       cardFooter = (
+        <Button className="w-full" variant="secondary" asChild>
+          <Link href={`/guides/${guide.id}`}>
+            Generating a guide
+            <Spinner />
+          </Link>
+        </Button>
+      );
+      cardContent = (
         <div className="flex items-center gap-2">
           <p className="shimmer text-sm text-muted-foreground">
-            Generating response&hellip;
+            Please wait&hellip;
           </p>
-          <Spinner />
+        </div>
+      );
+      break;
+    case 'QUESTIONS_GENERATION':
+      cardFooter = (
+        <Button className="w-full" variant="secondary" asChild>
+          <Link href={`/guides/${guide.id}`}>
+            Generating questions
+            <Spinner />
+          </Link>
+        </Button>
+      );
+      cardContent = (
+        <div className="flex items-center gap-2">
+          <p className="shimmer text-sm text-muted-foreground">
+            Please wait&hellip;
+          </p>
         </div>
       );
       break;
@@ -63,15 +99,37 @@ export function GuideCard() {
     case 'GUIDE_GENERATED':
       cardTitle = guide.title;
       cardDescription = guide.description;
+      cardContent = (
+        <div className="flex items-center justify-between gap-2">
+          <CompletedSteps
+            guideLength={guide.steps.length}
+            completedSteps={completedSteps}
+          />
+          <GuideDate guideDate={guide.createdAt} />
+        </div>
+      );
+      cardFooter = (
+        <Button className="w-full" asChild>
+          <Link href={`/guides/${guide.id}`}>
+            Open guide
+            <ArrowRight />
+          </Link>
+        </Button>
+      );
       break;
   }
 
   const { mutate } = useMutation({
     mutationFn: removeGuide,
-    onSuccess: (response) => {
-      const removedGuideId = response.data;
-      const newGuidesArray = guides.filter((item) => item.id !== removedGuideId);
-      setGuides(newGuidesArray);
+    onSuccess: async (response) => {
+      const [guides, guidesCount] = await getGuidesInPagination({
+        currentPage: parseInt(currentPage),
+        pageSize: 9,
+        userId: data!.user.id,
+      });
+
+      setGuides(guides);
+      setGuidesCount(guidesCount);
     },
   });
 
@@ -97,9 +155,9 @@ export function GuideCard() {
   }
 
   return (
-    <Card>
+    <Card className="flex flex-col justify-between">
       <CardHeader>
-        <CardTitle>{cardTitle}</CardTitle>
+        <CardTitle className="truncate">{cardTitle}</CardTitle>
         <CardDescription className="truncate">
           {cardDescription}
         </CardDescription>
@@ -133,6 +191,9 @@ export function GuideCard() {
           </AlertDialog>
         </CardAction>
       </CardHeader>
+      <CardContent>
+        {cardContent}
+      </CardContent>
       <CardFooter>{cardFooter}</CardFooter>
     </Card>
   );

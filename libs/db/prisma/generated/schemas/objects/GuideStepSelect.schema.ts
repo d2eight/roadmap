@@ -8,6 +8,7 @@ const makeSchema = () => z.object({
   guideId: z.boolean().optional(),
   title: z.boolean().optional(),
   description: z.boolean().optional(),
+  status: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional()
 }).strict();

@@ -1,6 +1,5 @@
 'use client';
 
-import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import {
   createContext,
   ReactNode,
@@ -9,10 +8,12 @@ import {
   useState,
 } from 'react';
 import { GuideContextType, GuideModelWithRelations } from 'shared-types';
-import { Prisma } from '@/libs/db/generated/prisma/client';
 import { SocketContext } from './SocketContext';
 
-export const GuideContext = createContext<GuideModelWithRelations>(null!);
+export const GuideContext = createContext<{
+  guide: GuideModelWithRelations;
+  completedSteps: number
+}>(null!);
 
 export default function GuideContextProvider({
   guideProps,
@@ -23,6 +24,9 @@ export default function GuideContextProvider({
 }) {
   const [guide, setGuide] = useState<GuideModelWithRelations>(guideProps);
   const { socketGuideData } = useContext(SocketContext);
+  const completedSteps = guide.steps.reduce((acc, curr) => {
+    return curr.status ? (acc += 1) : acc;
+  }, 0);
 
   useEffect(() => {
     if (socketGuideData && guide.id === socketGuideData.id) {
@@ -33,5 +37,10 @@ export default function GuideContextProvider({
     }
   }, [socketGuideData]);
 
-  return <GuideContext value={guide}>{children}</GuideContext>;
+
+
+  return <GuideContext value={{
+    guide,
+    completedSteps
+  }}>{children}</GuideContext>;
 }

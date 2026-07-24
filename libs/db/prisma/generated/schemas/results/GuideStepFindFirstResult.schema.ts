@@ -5,6 +5,7 @@ export const GuideStepFindFirstResultSchema = z.nullable(z.object({
   guideId: z.string(),
   title: z.string(),
   description: z.string(),
+  status: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date()
 }));

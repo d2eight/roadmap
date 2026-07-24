@@ -34,7 +34,7 @@ function PaginationContent({
 }
 
 function PaginationItem({ ...props }: React.ComponentProps<'li'>) {
-  return <li className="list-none" data-slot="pagination-item" {...props} />;
+  return <li className="cursor-pointer list-none" data-slot="pagination-item" {...props} />;
 }
 
 type PaginationLinkProps = {

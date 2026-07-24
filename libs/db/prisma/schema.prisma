@@ -110,6 +110,7 @@ model GuideStep {
   guideId     String
   title       String
   description String
+  status      Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
