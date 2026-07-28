@@ -1,47 +1,131 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
+import { JSX, useContext, useEffect, useState } from 'react';
 import {
   Pagination,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
+  PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { PaginationContext } from '@/context/PaginationContext';
 import { GuidesContext } from '@/context/GuidesContext';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { EllipsisPaginationItem } from '@/components/custom-ui/EllipsisPaginationItem';
+import { DefaultPaginationItem } from '@/components/custom-ui/DefaultPaginationItem';
+import { PreviousPagePaginationItem } from '@/components/custom-ui/PreviousPagePaginationItem';
+import { NextPagePaginationItem } from '@/components/custom-ui/NextPagePaginationItem';
 
 export function GuidesPagination({pageSize}: {pageSize: number}) {
   const { guidesCount } = useContext(GuidesContext);
 
   const searchParams = useSearchParams();
   const router = useRouter();
-  const currentPage = searchParams.get('page') ?? '1';
-  const params = new URLSearchParams(searchParams);
+  const currentPage = Number(searchParams.get('page') ?? 1);
   const pagesCount = Math.ceil(guidesCount / pageSize);
+  const firstPage = 1;
+  const lastPage = pagesCount;
+  const params = new URLSearchParams(searchParams);
 
-  function navigateToPage(page: string) {
-    params.set('page', page);
+  function navigateToPage(page: number) {
+    params.set('page', page.toString());
     router.push(`/guides/?${params}`);
+  }
+
+  function generatePaginationArray(): ('...' | number)[] {
+    if(pagesCount <= 5) {
+      return Array.from({length: pagesCount}, (_, index) => index + 1);
+    }
+
+    const paginationArray: number[] = Array(5);
+    paginationArray[0] = firstPage;
+    paginationArray[4] = lastPage;
+
+    if (currentPage === firstPage) {
+      for (let i = 1; i <= 3; i++) {
+        paginationArray[i] = paginationArray[i - 1] + 1;
+      }
+      return generatePaginationDots(paginationArray);
+    } else if (currentPage === lastPage) {
+      for (let i = 3; i >= 1; i--) {
+        paginationArray[i] = paginationArray[i + 1] - 1;
+      }
+      return generatePaginationDots(paginationArray);
+    }
+
+    const prevPage = currentPage - 1;
+    const nextPage = currentPage + 1;
+
+    if(prevPage !== firstPage && nextPage !== lastPage) {
+      paginationArray[1] = prevPage;
+      paginationArray[2] = currentPage;
+      paginationArray[3] = nextPage;
+    } else if (prevPage === firstPage ) {
+      paginationArray[1] = currentPage;
+      paginationArray[2] = currentPage + 1;
+      paginationArray[3] = currentPage + 2;
+    } else if (nextPage === lastPage) {
+      paginationArray[1] = currentPage - 2;
+      paginationArray[2] = currentPage - 1;
+      paginationArray[3] = currentPage;
+    }
+
+    return generatePaginationDots(paginationArray);
+
+  }
+
+  function generatePaginationDots(paginationArray: ('...' | number)[]) {
+    const afterFirstPage = paginationArray[1] as number;
+    const beforeLastPage = paginationArray[3] as number;
+
+    if (afterFirstPage - firstPage >= 2) {
+      paginationArray.splice(paginationArray.indexOf(firstPage) + 1, 0, '...');
+    }
+
+    if (lastPage - beforeLastPage >= 2) {
+      paginationArray.splice(paginationArray.indexOf(lastPage), 0, '...');
+    }
+
+    return paginationArray;
+  }
+
+  function generatePaginationItems() {
+    const paginationArray: ('...' | number)[] = generatePaginationArray();
+
+    const paginationItemsArray: JSX.Element[] = paginationArray.map(
+      (item, index) => {
+        if (item === '...') {
+          return <EllipsisPaginationItem key={index} />;
+        } else {
+          return (
+            <DefaultPaginationItem
+              key={index}
+              thisPage={item}
+              navigateToPage={navigateToPage}
+              currentPage={currentPage}
+            />
+          );
+        }
+      },
+    );
+
+    return paginationItemsArray;
   }
 
   return (
     <Pagination>
-      <PaginationItem>
-        <PaginationPrevious />
-      </PaginationItem>
-      {Array.from({ length: pagesCount }).map((_, index) => (
-        <PaginationItem key={index}>
-          <PaginationLink
-            onClick={() => {
-              navigateToPage((index + 1).toString());
-            }}
-            isActive={index + 1 === parseInt(currentPage)}
-          >
-            {index + 1}
-          </PaginationLink>
-        </PaginationItem>
-      ))}
+      <PreviousPagePaginationItem
+        navigateToPage={navigateToPage}
+        currentPage={currentPage}
+        firstPage={firstPage}
+      />
+      {generatePaginationItems()}
+      <NextPagePaginationItem
+        navigateToPage={navigateToPage}
+        currentPage={currentPage}
+        lastPage={lastPage}
+      />
     </Pagination>
   );
 }
