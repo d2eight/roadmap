@@ -1,0 +1,64 @@
+'use client';
+
+import {
+  LucideCircleCheck,
+  LucideCircleDashed,
+  LucideCircleFadingArrowUp,
+  LucideX,
+  LucideXCircle,
+} from 'lucide-react';
+import { GuidStepStatus } from '../../../../../libs/db/generated/prisma/enums';
+import { ToggleGroupItem } from '@/components/ui/toggle-group';
+
+export function StepStatusButton({ status, className }: { status: GuidStepStatus, className?: string }) {
+  switch (status) {
+    case 'PENDING': {
+      return (
+        <ToggleGroupItem
+          variant="secondary"
+          value="PENDING"
+          className={className}
+        >
+          <div className="w-full h-full flex items-center justify-center gap-1">
+            <span>Pending</span>
+            <LucideCircleDashed />
+          </div>
+        </ToggleGroupItem>
+      );
+    }
+    case 'INWORK': {
+      return (
+        <ToggleGroupItem className={className} value="INWORK" variant="inwork">
+          <div className="w-full h-full flex items-center justify-center gap-1">
+            <span>In work</span>
+            <LucideCircleFadingArrowUp color="#A85D00" />
+          </div>
+        </ToggleGroupItem>
+      );
+    }
+    case 'REJECTED': {
+      return (
+        <ToggleGroupItem
+          className={className}
+          variant="destructive"
+          value="REJECTED"
+        >
+          <div className="w-full h-full flex items-center justify-center gap-1">
+            <span>Reject</span>
+            <LucideXCircle />
+          </div>
+        </ToggleGroupItem>
+      );
+    }
+    case 'DONE': {
+      return (
+        <ToggleGroupItem className={className} variant="success" value="DONE">
+          <div className="w-full h-full flex items-center justify-center gap-1">
+            <span>Done</span>
+            <LucideCircleCheck />
+          </div>
+        </ToggleGroupItem>
+      );
+    }
+  }
+}

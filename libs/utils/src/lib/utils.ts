@@ -10,7 +10,18 @@ export async function getGuide(userId: string, guideId: string) {
       userId: userId,
     },
     include: {
-      steps: true,
+      steps: {
+        select: {
+          id: true,
+          guideId: true,
+          title: true,
+          description: true,
+          status: true
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
     },
   });
 }

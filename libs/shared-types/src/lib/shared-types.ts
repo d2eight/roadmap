@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { BetterFetchError } from '@better-fetch/fetch';
 import { Socket } from 'socket.io-client';
 import { Prisma } from 'database';
+import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 
 export type BetterAuthSession = {
   session: Session;
@@ -50,7 +51,25 @@ export type SocketContextType = {
 
 export type GuideModelWithRelations = Prisma.GuideGetPayload<{
   include: {
-    steps: true;
+    steps: {
+      select: {
+        id: true;
+        guideId: true;
+        title: true;
+        description: true;
+        status: true;
+      };
+    };
   };
-}>
+}>;
+
+export type GuideStepModelFetched = Prisma.GuideStepGetPayload<{
+  select: {
+    id: true;
+    guideId: true;
+    title: true;
+    description: true;
+    status: true;
+  };
+}>;
 

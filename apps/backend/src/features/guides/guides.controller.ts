@@ -9,6 +9,7 @@ import {
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import { io } from '../../main';
 import { authMiddleware } from '../../middlewares/auth';
+import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 
 export async function createGuideBasic(
   req: express.Request,
@@ -130,6 +131,25 @@ export async function removeGuide(req: express.Request, res: express.Response) {
     });
   } catch (error) {
     console.error('Failed to delete guide:', error);
+
+    return res.status(500);
+  }
+}
+
+export async function updateGuide(req: express.Request, res: express.Response) {
+  const userId: string = res.locals.userId;
+  const guideId = req.params.guideId as string;
+  const steps: GuideStepModel[] = res.locals.steps;
+
+  try {
+    await guidesService.update(guideId, userId, steps);
+
+    return res.status(200).json({
+      success: true,
+      data: steps,
+    })
+  } catch (error) {
+    console.error('Failed to update guide:', error);
 
     return res.status(500);
   }

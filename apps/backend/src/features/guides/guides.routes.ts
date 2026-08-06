@@ -5,10 +5,12 @@ import {
   createGuideBasic,
   createGuideQuestions,
   removeGuide,
+  updateGuide,
 } from './guides.controller';
 import { promptValidationMiddleware } from '../../middlewares/prompt';
 import { guideMiddleware } from '../../middlewares/guide';
 import { questionsValidationMiddleware } from '../../middlewares/promptWithQuestions';
+import { stepsValidationMiddleware } from '../../middlewares/steps';
 
 export const guidesRouter = express.Router();
 
@@ -35,3 +37,11 @@ guidesRouter.post(
 );
 
 guidesRouter.delete('/api/remove-guide/:guideId', authMiddleware, removeGuide);
+
+guidesRouter.put(
+  '/api/update-guide-progress/:guideId',
+  authMiddleware,
+  stepsValidationMiddleware,
+  updateGuide,
+);
+

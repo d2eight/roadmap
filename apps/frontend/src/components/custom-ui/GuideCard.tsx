@@ -45,7 +45,6 @@ export function GuideCard() {
   const searchParams = useSearchParams();
   const currentPage = searchParams.get('page') ?? '1';
 
-
   let cardTitle = guide.prompt;
   let cardDescription = 'Here will be guide description';
   let cardContent;

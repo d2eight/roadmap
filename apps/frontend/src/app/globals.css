@@ -251,3 +251,30 @@ code {
         @apply font-sans;
     }
 }
+
+@utility pressedButton {
+    background-color: var(--orig-bg) !important;
+    border: 1px solid var(--border);
+    color: var(--text);
+    & > div {
+        background-color: var(--pressed-bg);
+        border-radius: 5px;
+        border: 1px solid var(--border);
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.25)
+    }
+    &:hover {
+        background-color: var(--hover-bg) !important;
+        color: var(--text);
+    }
+}
+
+@utility unPressedButton {
+    background-color: var(--orig-bg) !important;
+    color: var(--text);
+    border: 1px solid var(--border);
+    &:hover {
+        background-color: var(--hover-bg) !important;
+        color: var(--text);
+    }
+}
+

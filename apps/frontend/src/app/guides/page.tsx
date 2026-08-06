@@ -1,11 +1,9 @@
-import { prisma } from 'database';
 import { getUserIdFromHeaders } from '../../utils/getUserId';
 import { Guides } from '../../components/custom-ui/Guides';
 import { GuidesContext, GuidesContextProvider } from '@/context/GuidesContext';
 import { SearchParams } from 'next/dist/server/request/search-params';
 import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
 import { getGuidesInPagination } from 'utils';
-import { PaginationContextProvider } from '@/context/PaginationContext';
 
 export default async function DashboardServerPage({
   searchParams,

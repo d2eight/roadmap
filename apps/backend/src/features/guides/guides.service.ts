@@ -8,6 +8,7 @@ import {
   guideQuestionsGenerationQueue,
 } from '../../main';
 import { createEmptyGuide } from 'utils';
+import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 
 export async function create(prompt: string, userId: string): Promise<string> {
   const newGuide = await createEmptyGuide(prompt, userId);
@@ -69,4 +70,19 @@ export async function remove(guideId: string, userId: string) {
       userId: userId,
     },
   });
+}
+
+export async function update(guideId: string, userId: string, steps: GuideStepModel[]) {
+  const stepsUpdateOperations = steps.map((step: GuideStepModel) => {
+    return prisma.guideStep.update({
+      where: {
+        id: step.id,
+        guideId: guideId,
+      },
+      data: {
+        status: step.status,
+      }
+    })
+  })
+  await prisma.$transaction(stepsUpdateOperations);
 }

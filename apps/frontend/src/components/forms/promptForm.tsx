@@ -13,7 +13,7 @@ import { Field, FieldError, FieldLabel } from '../ui/field';
 import { Input } from '../ui/input';
 import { Checkbox } from '../ui/checkbox';
 import { Button } from '../ui/button';
-import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
+import { GuideModel } from 'database';
 import { useMutation } from '@tanstack/react-query';
 
 import { useRouter } from 'next/navigation';

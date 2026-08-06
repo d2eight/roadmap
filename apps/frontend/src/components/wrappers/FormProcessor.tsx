@@ -13,7 +13,6 @@ import {
   useState,
 } from 'react';
 import { Spinner } from '../ui/spinner';
-import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import { RedAlert } from '../custom-ui/RedAlert';
 
 export const FormProcessingContext = createContext<{
@@ -26,7 +25,7 @@ export function FormProcessor({ children }: { children: ReactElement }) {
   const [processingStatus, setProcessingStatus] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('Try again');
   const FormAlert = () => (
-    <RedAlert tile={'Something went wrong'} message={errorMessage} />
+    <RedAlert title={'Something went wrong'} message={errorMessage} />
   );
 
   return (

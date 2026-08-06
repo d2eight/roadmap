@@ -5,6 +5,7 @@ import GuideContextProvider, { GuideContext } from '../../context/GuideContext';
 import { GuideModelWithRelations } from 'shared-types';
 import { useContext, useState } from 'react';
 import { GuidesContext } from '@/context/GuidesContext';
+import { Prisma } from 'database';
 
 export function Guides() {
   const { guides } = useContext(GuidesContext);

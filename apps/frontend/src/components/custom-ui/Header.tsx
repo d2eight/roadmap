@@ -8,7 +8,7 @@ import { AuthButtons } from './AuthButtons';
 
 export async function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 w-full h-[70px] bg-white shadow-md">
+    <header className="fixed top-0 left-0 right-0 w-full h-[70px] bg-white shadow-md z-50">
       <div className="px-[20px] flex items-center justify-between h-full">
         <img src="../../../public/logo.png" alt="logo" />
         <div>

@@ -6,7 +6,7 @@ export const GuideStepFindManyResultSchema = z.object({
   guideId: z.string(),
   title: z.string(),
   description: z.string(),
-  status: z.boolean(),
+  status: z.unknown(),
   createdAt: z.date(),
   updatedAt: z.date()
 })),

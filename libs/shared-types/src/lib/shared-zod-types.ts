@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { GuideStepModelSchema } from 'database/schemas';
 
 const passwordSchema = z
   .string()
@@ -115,3 +116,10 @@ export const questionsSchema = z.object({
 });
 
 export type questionsSchemaType = z.infer<typeof questionsSchema>;
+
+export const guideStepsSchema = z.object({
+  steps: z.array(GuideStepModelSchema.omit({guide: true, createdAt: true, updatedAt: true})),
+})
+
+export type guideStepsSchemaType = z.infer<typeof guideStepsSchema>;
+

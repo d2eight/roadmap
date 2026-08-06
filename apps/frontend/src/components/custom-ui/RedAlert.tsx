@@ -3,11 +3,11 @@
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { AlertCircleIcon } from 'lucide-react';
 
-export function RedAlert({ tile, message }: { tile: string; message: string }) {
+export function RedAlert({ title, message }: { title: string; message: string }) {
   return (
     <Alert variant="destructive">
       <AlertCircleIcon />
-      <AlertTitle>{tile}</AlertTitle>
+      <AlertTitle>{title}</AlertTitle>
       <AlertDescription>{message}</AlertDescription>
     </Alert>
   );

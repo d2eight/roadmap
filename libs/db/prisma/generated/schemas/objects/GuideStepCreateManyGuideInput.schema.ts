@@ -1,12 +1,12 @@
 import * as z from 'zod';
 import type { Prisma } from '../../../../generated/prisma/client';
-
+import { GuidStepStatusSchema } from '../enums/GuidStepStatus.schema'
 
 const makeSchema = () => z.object({
   id: z.string().optional(),
   title: z.string(),
   description: z.string(),
-  status: z.boolean().optional(),
+  status: GuidStepStatusSchema.optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional()
 }).strict();

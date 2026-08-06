@@ -7,6 +7,8 @@
       "shared-types": ["../../libs/shared-types/src/index.ts"],
       "auth": ["../../libs/auth/src/index.ts"],
       "database": ["../../libs/db/src/index.ts"],
+      "database/schemas": ["../../libs/db/src/schemas.ts"],
+      "database/models": ["../../libs/db/src/models.ts"],
       "utils": ["../../libs/utils/src/index.ts"],
       "validation": ["../../libs/validation/src/index.ts"]
     },

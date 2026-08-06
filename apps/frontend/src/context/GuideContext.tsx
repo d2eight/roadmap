@@ -2,7 +2,9 @@
 
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -12,7 +14,8 @@ import { SocketContext } from './SocketContext';
 
 export const GuideContext = createContext<{
   guide: GuideModelWithRelations;
-  completedSteps: number
+  setGuide: Dispatch<SetStateAction<GuideModelWithRelations>>;
+  completedSteps: number;
 }>(null!);
 
 export default function GuideContextProvider({
@@ -37,10 +40,15 @@ export default function GuideContextProvider({
     }
   }, [socketGuideData]);
 
-
-
-  return <GuideContext value={{
-    guide,
-    completedSteps
-  }}>{children}</GuideContext>;
+  return (
+    <GuideContext
+      value={{
+        guide,
+        setGuide,
+        completedSteps,
+      }}
+    >
+      {children}
+    </GuideContext>
+  );
 }
