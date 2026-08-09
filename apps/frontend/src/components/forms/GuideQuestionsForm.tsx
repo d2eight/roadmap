@@ -12,11 +12,12 @@ import { Slider } from '../ui/slider';
 import { Checkbox } from '../ui/checkbox';
 import {
   aiQuestionsSchemaType,
+  ApiError,
+  ApiResponse,
   questionsSchema,
   questionsSchemaType,
 } from 'shared-types';
 import { useMutation } from '@tanstack/react-query';
-import { ApiError } from '../../customClasses/apiError';
 import { handleApiFormError } from '../../utils/apiErrorsHandler';
 import { GuideContext } from '../../context/GuideContext';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
@@ -81,13 +82,18 @@ export default function GuideQuestionsForm() {
       requestBody,
     );
 
-    const body = await response.json();
+    const body: ApiResponse = await response.json();
 
-    if (!response.ok && !body.success) {
+    if (!body.success) {
       throw new ApiError(
         response.status,
-        body.error.message ?? response.statusText,
+        body.error.message,
+        body.error.issues,
       );
+    }
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
 
     return body;

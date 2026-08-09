@@ -18,8 +18,15 @@ export async function questionsValidationMiddleware(
         success: false,
         error: {
           message: 'Invalid questions data',
+          issues: error.issues,
         },
       });
     }
+    return res.status(500).json({
+      success: false,
+      error: {
+        message: 'Something went wrong',
+      },
+    });
   }
 }

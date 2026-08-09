@@ -9,15 +9,21 @@ export async function stepsValidationMiddleware(req: express.Request, res: expre
     res.locals.steps = guideStepsSchema.parse(data).steps;
     next();
   } catch (error) {
-    console.error(error);
     if (error instanceof z.ZodError) {
       return res.status(422).json({
         success: false,
         error: {
-          message: 'Invalid step data',
+          message: 'Invalid questions data',
+          issues: error.issues,
         },
       });
     }
+    return res.status(500).json({
+      success: false,
+      error: {
+        message: 'Something went wrong',
+      },
+    });
   }
 }
 

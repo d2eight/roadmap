@@ -5,15 +5,14 @@ import { GuideContext } from '@/context/GuideContext';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  ApiError,
   ApiResponse,
   GuideStepModelFetched,
   guideStepsSchema,
   guideStepsSchemaType,
 } from 'shared-types';
 import { StepCard } from '@/components/custom-ui/StepCard';
-import { Button } from '@/components/ui/button';
 import { useMutation } from '@tanstack/react-query';
-import { ApiError } from '@/customClasses/apiError';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 import { toast } from 'sonner';
 import { handleApiFormError } from '@/utils/apiErrorsHandler';
@@ -79,7 +78,7 @@ export function GuideForm() {
     const body: ApiResponse<GuideStepModelFetched[]> = await response.json();
 
     if (!body.success) {
-      throw new ApiError(response.status, body.error.message);
+      throw new ApiError(response.status, body.error.message, body.error.issues);
     }
 
     if (!response.ok) {

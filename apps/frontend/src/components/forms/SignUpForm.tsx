@@ -2,7 +2,7 @@
 
 import { useFormState } from 'react-dom';
 import { Controller, useForm } from 'react-hook-form';
-import { userSignUpSchema, userSignUpSchemaType } from 'shared-types';
+import { ApiError, userSignUpSchema, userSignUpSchemaType } from 'shared-types';
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field';
 import { Input } from '../ui/input';
 import {
@@ -24,7 +24,6 @@ import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { isAPIError } from 'better-auth/api';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
-import { ApiError } from '@/customClasses/apiError';
 import { handleApiFormError } from '@/utils/apiErrorsHandler';
 
 export function SignUpForm() {

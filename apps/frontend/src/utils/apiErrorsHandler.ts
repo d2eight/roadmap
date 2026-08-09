@@ -1,7 +1,7 @@
-import { ApiError } from '../customClasses/apiError';
 import { usePathname, useRouter } from 'next/navigation';
-import { FieldValues, UseFormReturn } from 'react-hook-form';
+import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { ApiError } from 'shared-types';
 
 export function handleApiFormError<T extends FieldValues>(
   error: ApiError,
@@ -21,10 +21,11 @@ export function handleApiFormError<T extends FieldValues>(
     case 422:
       if(error.issues) {
         error.issues.forEach((issue) => {
-          form.setError(issue.path[0], {
-            type: "manual",
-            message: issue.message
-          })
+          const path = issue.path.join('.') as Path<T>;
+          form.setError(path, {
+            type: 'manual',
+            message: issue.message,
+          });
         })
       } else {
         form.setError('root.serverError', {

@@ -2,7 +2,7 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userSignInSchema, userSignInSchemaType } from 'shared-types';
+import { ApiError, userSignInSchema, userSignInSchemaType } from 'shared-types';
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field';
 import { Input } from '../ui/input';
 import {
@@ -24,7 +24,6 @@ import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { RedAlert } from '../custom-ui/RedAlert';
 import { isAPIError } from 'better-auth/api';
-import { ApiError } from '@/customClasses/apiError';
 import { handleApiFormError } from '@/utils/apiErrorsHandler';
 
 export function SignInForm() {

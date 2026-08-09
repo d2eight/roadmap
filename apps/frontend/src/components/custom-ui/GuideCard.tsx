@@ -16,7 +16,6 @@ import { ArrowRight, LucideNotebookPen, MessageCircleQuestionMark, Trash2 } from
 import Link from 'next/link';
 import { Spinner } from '../ui/spinner';
 import { useMutation } from '@tanstack/react-query';
-import { ApiError } from '../../customClasses/apiError';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,6 +35,7 @@ import { Guides } from '@/components/custom-ui/Guides';
 import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
 import { useSearchParams } from 'next/navigation';
 import { AuthContext } from '@/context/AuthContext';
+import { ApiError } from 'shared-types';
 
 export function GuideCard() {
   const { guide, completedSteps } = useContext(GuideContext);

@@ -2,6 +2,7 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import {
+  ApiError,
   ApiResponse,
   promptSchema,
   promptSchemaType,
@@ -16,7 +17,6 @@ import { GuideModel } from 'database/models';
 import { useMutation } from '@tanstack/react-query';
 
 import { useRouter } from 'next/navigation';
-import { ApiError } from '../../customClasses/apiError';
 import { handleApiFormError } from '../../utils/apiErrorsHandler';
 import { useContext } from 'react';
 import { FormProcessingContext } from '../wrappers/FormProcessor';
@@ -88,9 +88,7 @@ export function PromptForm() {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify({
-        prompt: data.prompt,
-      }),
+      body: JSON.stringify(data),
     };
 
     mutate({ requestBody, externalAiQuestionsStatus });
