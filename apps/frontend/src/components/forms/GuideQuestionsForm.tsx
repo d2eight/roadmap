@@ -19,9 +19,14 @@ import { useMutation } from '@tanstack/react-query';
 import { ApiError } from '../../customClasses/apiError';
 import { handleApiFormError } from '../../utils/apiErrorsHandler';
 import { GuideContext } from '../../context/GuideContext';
+import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
+import { toast } from 'sonner';
+import { RedAlert } from '@/components/custom-ui/RedAlert';
 
 export default function GuideQuestionsForm() {
   const { guide } = useContext(GuideContext);
+  const { setProcessingStatus } = useContext(FormProcessingContext);
+
   const router = useRouter();
 
   if (!guide.questions) {
@@ -60,7 +65,12 @@ export default function GuideQuestionsForm() {
 
   const { mutate } = useMutation({
     mutationFn: createGuideWithAnsweredQuestions,
+    onSuccess: () => {
+      setProcessingStatus(false);
+      toast.success('Successfully consumed your answers to create guide');
+    },
     onError: async (error: ApiError) => {
+      setProcessingStatus(false);
       handleApiFormError(error, router, form);
     },
   });
@@ -84,6 +94,8 @@ export default function GuideQuestionsForm() {
   }
 
   async function onSubmit(data: questionsSchemaType) {
+    setProcessingStatus(true);
+
     const requestBody: RequestInit = {
       method: 'POST',
       headers: {
@@ -236,7 +248,10 @@ export default function GuideQuestionsForm() {
           )}
         />
         {form.formState.errors.root?.serverError && (
-          <p>{form.formState.errors.root.serverError.message}</p>
+          <RedAlert
+            title={'Something went wrong'}
+            message={form.formState.errors.root?.serverError.message as string}
+          />
         )}
         <Button type="submit" form="guide-questions">
           Apply

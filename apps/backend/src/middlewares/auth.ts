@@ -5,7 +5,7 @@ import { ApiResponse } from 'shared-types';
 
 export async function authMiddleware(
   req: express.Request,
-  res: express.Response<ApiResponse>,
+  res: express.Response,
   next: express.NextFunction,
 ) {
   const session = await auth.api.getSession({
@@ -17,7 +17,6 @@ export async function authMiddleware(
       success: false,
       error: {
         message: 'Unauthorized user, please sign in',
-        code: 401,
       },
     });
   }

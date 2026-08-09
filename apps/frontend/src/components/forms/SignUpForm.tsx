@@ -23,10 +23,13 @@ import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { isAPIError } from 'better-auth/api';
+import { RedAlert } from '@/components/custom-ui/RedAlert';
+import { ApiError } from '@/customClasses/apiError';
+import { handleApiFormError } from '@/utils/apiErrorsHandler';
 
 export function SignUpForm() {
   const router = useRouter();
-  const { setProcessingStatus, setErrorMessage, FormAlert } = useContext(
+  const { setProcessingStatus } = useContext(
     FormProcessingContext,
   );
   const { refetch, error } = useContext(AuthContext);
@@ -49,12 +52,10 @@ export function SignUpForm() {
       toast.success('You have successfully signed up!');
       router.push('/prompting');
     },
-    onError: (error: Error) => {
+    onError: (error: ApiError) => {
       setProcessingStatus(false);
-      setErrorMessage(error.message);
-      form.setError('root.serverError', {
-        message: error.message,
-      });
+      handleApiFormError(error, router, form, true);
+      toast.error(error.message);
     },
   });
 
@@ -65,8 +66,9 @@ export function SignUpForm() {
       password: formData.password,
     });
 
-    if (response.error && isAPIError(response.error)) {
-      throw new Error(response.error.message);
+    if (response.error) {
+      const message = response.error.message || "Something went wrong, user was not registered!";
+      throw new ApiError(response.error.status, message);
     }
 
     return response;
@@ -166,7 +168,12 @@ export function SignUpForm() {
         </form>
       </CardContent>
       <CardContent>
-        {form.formState.errors.root?.serverError && FormAlert()}
+        {form.formState.errors.root?.serverError && (
+          <RedAlert
+            title={'Something went wrong'}
+            message={form.formState.errors.root?.serverError.message as string}
+          />
+        )}{' '}
       </CardContent>
       <CardFooter>
         <Field>

@@ -17,20 +17,21 @@ import { Button } from '../ui/button';
 import { authClient } from '../../lib/auth-client';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Spinner } from '../ui/spinner';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { FormProcessingContext } from '../wrappers/FormProcessor';
 import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { RedAlert } from '../custom-ui/RedAlert';
 import { isAPIError } from 'better-auth/api';
+import { ApiError } from '@/customClasses/apiError';
+import { handleApiFormError } from '@/utils/apiErrorsHandler';
 
 export function SignInForm() {
   const router = useRouter();
-  const { setProcessingStatus, setErrorMessage, FormAlert } = useContext(
+  const { setProcessingStatus } = useContext(
     FormProcessingContext,
   );
-  const { refetch, error } = useContext(AuthContext);
 
   const form = useForm<userSignInSchemaType>({
     resolver: zodResolver(userSignInSchema),
@@ -47,12 +48,10 @@ export function SignInForm() {
       toast.success('You have successfully signed in!');
       router.push('/prompting');
     },
-    onError: async (error) => {
+    onError: async (error: ApiError) => {
       setProcessingStatus(false);
-      setErrorMessage(error.message);
-      form.setError('root.serverError', {
-        message: error.message,
-      });
+      handleApiFormError(error, router, form, true);
+      toast.error(error.message);
     },
   });
 
@@ -62,8 +61,11 @@ export function SignInForm() {
       password: formData.password,
     });
 
-    if (response.error && isAPIError(response.error)) {
-      throw new Error(response.error.message);
+    if (response.error) {
+      const message =
+        response.error.message ||
+        'Something went wrong, user was not signed in!';
+      throw new ApiError(response.error.status, message);
     }
 
     return response;
@@ -133,7 +135,12 @@ export function SignInForm() {
         </form>
       </CardContent>
       <CardContent>
-        {form.formState.errors.root?.serverError && FormAlert()}
+        {form.formState.errors.root?.serverError && (
+          <RedAlert
+            title={'Something went wrong'}
+            message={form.formState.errors.root?.serverError.message as string}
+          />
+        )}{' '}
       </CardContent>
       <CardFooter>
         <Button

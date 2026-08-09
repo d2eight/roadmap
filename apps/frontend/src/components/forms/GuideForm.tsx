@@ -16,10 +16,14 @@ import { useMutation } from '@tanstack/react-query';
 import { ApiError } from '@/customClasses/apiError';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 import { toast } from 'sonner';
+import { handleApiFormError } from '@/utils/apiErrorsHandler';
+import { useRouter } from 'next/navigation';
+import { RedAlert } from '@/components/custom-ui/RedAlert';
 
 export function GuideForm() {
   const { guide, setGuide } = useContext(GuideContext);
-  const { setProcessingStatus, setErrorMessage, FormAlert } = useContext(FormProcessingContext);
+  const { setProcessingStatus } = useContext(FormProcessingContext);
+  const router = useRouter();
 
   const form = useForm<guideStepsSchemaType>({
     resolver: zodResolver(guideStepsSchema),
@@ -33,7 +37,7 @@ export function GuideForm() {
     name: 'steps'
   })
 
-  const { mutate } = useMutation({
+  const { mutate, isSuccess } = useMutation({
     mutationFn: updateGuide,
     onSuccess: (steps: GuideStepModelFetched[]) => {
       setGuide({
@@ -43,13 +47,9 @@ export function GuideForm() {
       setProcessingStatus(false);
       toast.success("Successfully updated your progress");
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (error: ApiError) => {
       setProcessingStatus(false);
-      setErrorMessage(error.message);
-      form.setError('root.serverError', {
-        message: error.message,
-      });
+      handleApiFormError(error, router, form);
     }
   });
 
@@ -67,7 +67,6 @@ export function GuideForm() {
 
     mutate(requestBody);
   }
-
 
   async function updateGuide(
     requestBody: RequestInit,
@@ -90,7 +89,6 @@ export function GuideForm() {
     return body.data;
   }
 
-
   return (
     <div className="relative">
       <form
@@ -105,7 +103,12 @@ export function GuideForm() {
         })}
       </form>
       <div className="mt-[50px] sticky left-[0] bottom-[50px] z-[9999]">
-        {form.formState.errors.root?.serverError && FormAlert()}
+        {form.formState.errors.root?.serverError && (
+          <RedAlert
+            title={'Something went wrong'}
+            message={form.formState.errors.root?.serverError.message as string}
+          />
+        )}
       </div>
     </div>
   );

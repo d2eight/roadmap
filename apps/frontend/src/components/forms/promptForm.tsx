@@ -3,7 +3,6 @@
 import { Controller, useForm } from 'react-hook-form';
 import {
   ApiResponse,
-  ApiSuccessResponse,
   promptSchema,
   promptSchemaType,
 } from 'shared-types';
@@ -13,7 +12,7 @@ import { Field, FieldError, FieldLabel } from '../ui/field';
 import { Input } from '../ui/input';
 import { Checkbox } from '../ui/checkbox';
 import { Button } from '../ui/button';
-import { GuideModel } from 'database';
+import { GuideModel } from 'database/models';
 import { useMutation } from '@tanstack/react-query';
 
 import { useRouter } from 'next/navigation';
@@ -21,10 +20,12 @@ import { ApiError } from '../../customClasses/apiError';
 import { handleApiFormError } from '../../utils/apiErrorsHandler';
 import { useContext } from 'react';
 import { FormProcessingContext } from '../wrappers/FormProcessor';
+import { toast } from 'sonner';
+import { RedAlert } from '@/components/custom-ui/RedAlert';
 
 export function PromptForm() {
   const router = useRouter();
-  const { setProcessingStatus, setErrorMessage, FormAlert } = useContext(
+  const { setProcessingStatus,  } = useContext(
     FormProcessingContext,
   );
 
@@ -39,15 +40,14 @@ export function PromptForm() {
 
   const { mutate } = useMutation({
     mutationFn: createGuide,
-    onSuccess: async (responseBody) => {
+    onSuccess: async (newGuideId) => {
       setProcessingStatus(false);
-      const newGuideId = responseBody.data;
       router.push(`/guides/${newGuideId}`);
+      toast.success('Successfully initiated to create guide');
     },
     onError: async (error: ApiError) => {
-      console.log(error.message);
-      console.log(error.statusCode);
-      // handleApiFormError(error, router, form);
+      setProcessingStatus(false);
+      handleApiFormError(error, router, form);
     },
   });
 
@@ -57,7 +57,7 @@ export function PromptForm() {
   }: {
     requestBody: RequestInit;
     externalAiQuestionsStatus: boolean;
-  }): Promise<ApiResponse<GuideModel>> {
+  }): Promise<string> {
     const response = !externalAiQuestionsStatus
       ? await fetch('http://localhost:3333/api/create-guide', requestBody)
       : await fetch(
@@ -65,13 +65,17 @@ export function PromptForm() {
           requestBody,
         );
 
-    const body: ApiResponse<GuideModel> = await response.json();
+    const body: ApiResponse<string> = await response.json();
 
-    if (!response.ok) {
-      throw new Error(body.error?.message);
+    if (!body.success) {
+      throw new ApiError(response.status, body.error.message, body.error.issues);
     }
 
-    return body;
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return body.data;
   }
 
   async function onSubmit(data: promptSchemaType) {
@@ -84,7 +88,9 @@ export function PromptForm() {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        prompt: data.prompt,
+      }),
     };
 
     mutate({ requestBody, externalAiQuestionsStatus });
@@ -135,7 +141,10 @@ export function PromptForm() {
           </form>
         </CardContent>
         {form.formState.errors.root?.serverError && (
-          <p>{form.formState.errors.root.serverError.message}</p>
+          <RedAlert
+            title={'Something went wrong'}
+            message={form.formState.errors.root?.serverError.message as string}
+          />
         )}
         <CardFooter>
           <Button type="submit" form="prompt-form">

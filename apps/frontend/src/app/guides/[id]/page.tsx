@@ -16,7 +16,7 @@ export default async function GuideServerPage({ params }: PageProps) {
   const resolvedParams = await params;
 
   const guide = await getGuide(userId, resolvedParams.id);
-  console.log(guide);
+
   if (!guide) {
     notFound();
   }

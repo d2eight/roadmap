@@ -5,6 +5,7 @@ import { BetterFetchError } from '@better-fetch/fetch';
 import { Socket } from 'socket.io-client';
 import { Prisma } from 'database';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
+// import { ApiError } from '@/apps/frontend/src/customClasses/apiError';
 
 export type BetterAuthSession = {
   session: Session;

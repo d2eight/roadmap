@@ -18,8 +18,15 @@ export async function promptValidationMiddleware(
         success: false,
         error: {
           message: 'Invalid prompt data',
+          issues: error.issues
         },
       });
     }
+    return res.status(500).json({
+      success: false,
+      error: {
+        message: 'Something went wrong',
+      },
+    });
   }
 }

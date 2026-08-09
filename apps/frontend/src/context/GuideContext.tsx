@@ -28,7 +28,7 @@ export default function GuideContextProvider({
   const [guide, setGuide] = useState<GuideModelWithRelations>(guideProps);
   const { socketGuideData } = useContext(SocketContext);
   const completedSteps = guide.steps.reduce((acc, curr) => {
-    return curr.status ? (acc += 1) : acc;
+    return curr.status === "DONE" ? (acc += 1) : acc;
   }, 0);
 
   useEffect(() => {
