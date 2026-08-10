@@ -43,7 +43,7 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
     prompt: aiPrompt,
   });
 
-  console.log(output);
+  // console.log(output);
 
   const secondGuideUpdate = await prisma.guide.update({
     where: {
@@ -57,7 +57,7 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
     },
   });
 
-  const guideSteps: GuideStepCreateManyInput[] = output.steps.map((step) => {
+  const guideStepsBlank: GuideStepCreateManyInput[] = output.steps.map((step) => {
     return {
       title: step.title,
       description: step.description,
@@ -65,8 +65,15 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
     };
   });
 
-  await prisma.guideStep.createMany({
-    data: guideSteps,
+  const guideSteps = await prisma.guideStep.createManyAndReturn({
+    data: guideStepsBlank,
+    select: {
+      id: true,
+      guideId: true,
+      title: true,
+      description: true,
+      status: true,
+    },
   });
 
   io.to(userId).emit('guide_update', {

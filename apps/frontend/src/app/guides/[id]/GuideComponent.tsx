@@ -11,6 +11,7 @@ import { GuideDate } from '@/components/custom-ui/GuideDate';
 
 export default function GuideComponent() {
   const { guide, completedSteps } = useContext(GuideContext);
+  console.log(guide);
   return (
     <section>
       <Card className="pl-[50px] pr-[20px] mb-[20px] sticky top-[50px] z-50">

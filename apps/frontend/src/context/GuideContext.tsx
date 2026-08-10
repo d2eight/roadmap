@@ -36,6 +36,8 @@ export default function GuideContextProvider({
       setGuide({
         ...guide,
         ...socketGuideData,
+        createdAt: guide.createdAt,
+        updatedAt: new Date(guide.updatedAt),
       });
     }
   }, [socketGuideData]);

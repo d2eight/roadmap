@@ -36,12 +36,17 @@ import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
 import { useSearchParams } from 'next/navigation';
 import { AuthContext } from '@/context/AuthContext';
 import { ApiError } from 'shared-types';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { DeleteGuideButton } from '@/components/custom-ui/DeleteGuideButton';
 
 export function GuideCard() {
   const { guide, completedSteps } = useContext(GuideContext);
   const { guides, setGuides, setGuidesCount } = useContext(GuidesContext);
   const {data} = useContext(AuthContext)
-  // const { updatePagination, currentPage } = useContext(PaginationContext);
   const searchParams = useSearchParams();
   const currentPage = searchParams.get('page') ?? '1';
 
@@ -120,13 +125,12 @@ export function GuideCard() {
 
   const { mutate } = useMutation({
     mutationFn: removeGuide,
-    onSuccess: async (response) => {
+    onSuccess: async () => {
       const [guides, guidesCount] = await getGuidesInPagination({
         currentPage: parseInt(currentPage),
         pageSize: 9,
         userId: data!.user.id,
       });
-
       setGuides(guides);
       setGuidesCount(guidesCount);
     },
@@ -161,38 +165,10 @@ export function GuideCard() {
           {cardDescription}
         </CardDescription>
         <CardAction>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                className="cursor-pointer"
-                variant="destructive"
-                size="icon-sm"
-              >
-                <Trash2 />
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Are you sure that you want to delete this guide?
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => mutate()}>
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <DeleteGuideButton mutate={mutate} />
         </CardAction>
       </CardHeader>
-      <CardContent>
-        {cardContent}
-      </CardContent>
+      <CardContent>{cardContent}</CardContent>
       <CardFooter>{cardFooter}</CardFooter>
     </Card>
   );
