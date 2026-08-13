@@ -5,7 +5,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
 import { LucideNotebookPen } from 'lucide-react';
 
 export function CompletedSteps({guideLength, completedSteps}: {guideLength: number, completedSteps: number}) {

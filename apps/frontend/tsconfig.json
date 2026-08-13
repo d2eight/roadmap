@@ -9,6 +9,7 @@
       "database": ["../../libs/db/src/index.ts"],
       "database/schemas": ["../../libs/db/src/schemas.ts"],
       "database/models": ["../../libs/db/src/models.ts"],
+      "database/enums": ["../../libs/db/src/enums.ts"],
       "utils": ["../../libs/utils/src/index.ts"],
       "validation": ["../../libs/validation/src/index.ts"]
     },

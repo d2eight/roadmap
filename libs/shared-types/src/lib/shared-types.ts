@@ -6,6 +6,9 @@ import { Socket } from 'socket.io-client';
 import { Prisma } from 'database';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 import { ApiError } from './shared-classes';
+
+import { GuideStatus } from 'database/enums';
+
 // import { ApiError } from '@/apps/frontend/src/customClasses/apiError';
 
 export type BetterAuthSession = {
@@ -23,11 +26,6 @@ export type ApiResponse<T = null> =
       error: ApiError;
     };
 
-// export type ApiError = {
-//   message: string;
-//   code: number;
-// };
-
 export type GuideJob = {
   userId: string;
   guideId: string;
@@ -42,10 +40,32 @@ export type AuthContextType = {
   error: BetterFetchError | null;
 };
 
-export type GuideContextType = {
-  guide: GuideModelWithRelations;
-  setGuide: Dispatch<SetStateAction<GuideModelWithRelations>>;
-};
+export type GuideContextType =
+  | {
+      guide: GuideModelWithRelations;
+      status: (typeof GuideStatus)['QUESTIONS_GENERATED'];
+      setGuide: Dispatch<SetStateAction<GuideModelWithRelations>>;
+      completedSteps?: number;
+      questionsCount: number;
+    }
+  | {
+      guide: GuideModelWithRelations;
+      status: (typeof GuideStatus)['GUIDE_GENERATED'];
+      setGuide: Dispatch<SetStateAction<GuideModelWithRelations>>;
+      completedSteps: number;
+      questionsCount?: never;
+    }
+  | {
+      guide: GuideModelWithRelations;
+      status: Exclude<
+        GuideStatus,
+        | (typeof GuideStatus)['QUESTIONS_GENERATED']
+        | (typeof GuideStatus)['GUIDE_GENERATED']
+      >;
+      setGuide: Dispatch<SetStateAction<GuideModelWithRelations>>;
+      completedSteps?: number;
+      questionsCount?: never;
+    };
 
 export type SocketContextType = {
   socket: Socket;

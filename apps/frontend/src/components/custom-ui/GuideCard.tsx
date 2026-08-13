@@ -42,6 +42,12 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { DeleteGuideButton } from '@/components/custom-ui/DeleteGuideButton';
+import { GuideCardTitle } from '@/components/custom-ui/GuideCardTitle';
+import { GuideCardDescription } from '@/components/custom-ui/GuideCardDescription';
+import { GuideCardAction } from '@/components/custom-ui/GuideCardAction';
+import { GuideCardHeader } from '@/components/custom-ui/GuideCardHeader';
+import { GuideCardContent } from '@/components/custom-ui/GuideCardContent';
+import { GuideCardFooter } from '@/components/custom-ui/GuideCardFooter';
 
 export function GuideCard() {
   const { guide, completedSteps } = useContext(GuideContext);
@@ -50,78 +56,78 @@ export function GuideCard() {
   const searchParams = useSearchParams();
   const currentPage = searchParams.get('page') ?? '1';
 
-  let cardTitle = guide.prompt;
-  let cardDescription = 'Here will be guide description';
+  const cardTitle = guide.prompt;
+  const cardDescription = 'Here will be guide description';
   let cardContent;
-  let cardFooter: JSX.Element = <></>;
+  const cardFooter: JSX.Element = <></>;
 
-  switch (guide.status) {
-    case 'INIT':
-    case 'GUIDE_GENERATION':
-      cardFooter = (
-        <Button className="w-full" variant="secondary" asChild>
-          <Link href={`/guides/${guide.id}`}>
-            Generating a guide
-            <Spinner />
-          </Link>
-        </Button>
-      );
-      cardContent = (
-        <div className="flex items-center gap-2">
-          <p className="shimmer text-sm text-muted-foreground">
-            Please wait&hellip;
-          </p>
-        </div>
-      );
-      break;
-    case 'QUESTIONS_GENERATION':
-      cardFooter = (
-        <Button className="w-full" variant="secondary" asChild>
-          <Link href={`/guides/${guide.id}`}>
-            Generating questions
-            <Spinner />
-          </Link>
-        </Button>
-      );
-      cardContent = (
-        <div className="flex items-center gap-2">
-          <p className="shimmer text-sm text-muted-foreground">
-            Please wait&hellip;
-          </p>
-        </div>
-      );
-      break;
-    case 'QUESTIONS_GENERATED':
-      cardDescription = 'Answer generated questions';
-      cardFooter = (
-        <div className="flex items-center gap-2">
-          <p>Waiting for you answers</p>
-          <MessageCircleQuestionMark />
-        </div>
-      );
-      break;
-    case 'GUIDE_GENERATED':
-      cardTitle = guide.title;
-      cardDescription = guide.description;
-      cardContent = (
-        <div className="flex items-center justify-between gap-2">
-          <CompletedSteps
-            guideLength={guide.steps.length}
-            completedSteps={completedSteps}
-          />
-          <GuideDate guideDate={guide.createdAt} />
-        </div>
-      );
-      cardFooter = (
-        <Button className="w-full" asChild>
-          <Link href={`/guides/${guide.id}`}>
-            Open guide
-            <ArrowRight />
-          </Link>
-        </Button>
-      );
-      break;
-  }
+  // switch (guide.status) {
+  //   case 'INIT':
+  //   case 'GUIDE_GENERATION':
+  //     cardFooter = (
+  //       <Button className="w-full" variant="secondary" asChild>
+  //         <Link href={`/guides/${guide.id}`}>
+  //           Generating a guide
+  //           <Spinner />
+  //         </Link>
+  //       </Button>
+  //     );
+  //     cardContent = (
+  //       <div className="flex items-center gap-2">
+  //         <p className="shimmer text-sm text-muted-foreground">
+  //           Please wait&hellip;
+  //         </p>
+  //       </div>
+  //     );
+  //     break;
+  //   case 'QUESTIONS_GENERATION':
+  //     cardFooter = (
+  //       <Button className="w-full" variant="secondary" asChild>
+  //         <Link href={`/guides/${guide.id}`}>
+  //           Generating questions
+  //           <Spinner />
+  //         </Link>
+  //       </Button>
+  //     );
+  //     cardContent = (
+  //       <div className="flex items-center gap-2">
+  //         <p className="shimmer text-sm text-muted-foreground">
+  //           Please wait&hellip;
+  //         </p>
+  //       </div>
+  //     );
+  //     break;
+  //   case 'QUESTIONS_GENERATED':
+  //     cardDescription = 'Answer generated questions';
+  //     cardFooter = (
+  //       <div className="flex items-center gap-2">
+  //         <p>Waiting for you answers</p>
+  //         <MessageCircleQuestionMark />
+  //       </div>
+  //     );
+  //     break;
+  //   case 'GUIDE_GENERATED':
+  //     cardTitle = guide.title;
+  //     cardDescription = guide.description;
+  //     cardContent = (
+  //       <div className="flex items-center justify-between gap-2">
+  //         <CompletedSteps
+  //           guideLength={guide.steps.length}
+  //           completedSteps={completedSteps}
+  //         />
+  //         <GuideDate guideDate={guide.createdAt} />
+  //       </div>
+  //     );
+  //     cardFooter = (
+  //       <Button className="w-full" asChild>
+  //         <Link href={`/guides/${guide.id}`}>
+  //           Open guide
+  //           <ArrowRight />
+  //         </Link>
+  //       </Button>
+  //     );
+  //     break;
+  // }
 
   const { mutate } = useMutation({
     mutationFn: removeGuide,
@@ -159,17 +165,9 @@ export function GuideCard() {
 
   return (
     <Card className="flex flex-col justify-between">
-      <CardHeader>
-        <CardTitle className="truncate">{cardTitle}</CardTitle>
-        <CardDescription className="truncate">
-          {cardDescription}
-        </CardDescription>
-        <CardAction>
-          <DeleteGuideButton mutate={mutate} />
-        </CardAction>
-      </CardHeader>
-      <CardContent>{cardContent}</CardContent>
-      <CardFooter>{cardFooter}</CardFooter>
+      <GuideCardHeader mutate={mutate} />
+      <GuideCardContent />
+      <GuideCardFooter />
     </Card>
   );
 }

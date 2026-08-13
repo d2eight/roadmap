@@ -16,11 +16,23 @@ import {
 } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
+import { useContext } from 'react';
+import { GuideContext } from '@/context/GuideContext';
 
 export function DeleteGuideButton({ mutate }: { mutate: () => void }) {
+  const { guide } = useContext(GuideContext)
+  const isDisabled =
+    guide.status !== 'GUIDE_GENERATED' && guide.status !== 'QUESTIONS_GENERATED'
+
+
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
+      <AlertDialogTrigger asChild onClick={(e) => {
+        if (isDisabled) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      }}>
         <div>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -28,6 +40,7 @@ export function DeleteGuideButton({ mutate }: { mutate: () => void }) {
                 className="cursor-pointer"
                 variant="destructive"
                 size="icon-sm"
+                disabled={isDisabled}
               >
                 <Trash2 />
               </Button>
