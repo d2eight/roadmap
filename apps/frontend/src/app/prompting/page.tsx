@@ -3,10 +3,8 @@ import { FormProcessor } from '../../components/wrappers/FormProcessor';
 
 export default async function PromptingPage() {
   return (
-    <>
-      <FormProcessor>
-        <PromptForm />
-      </FormProcessor>
-    </>
+    <FormProcessor>
+      <PromptForm />
+    </FormProcessor>
   );
 }

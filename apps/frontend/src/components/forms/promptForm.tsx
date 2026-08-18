@@ -8,7 +8,13 @@ import {
   promptSchemaType,
 } from 'shared-types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Card, CardContent, CardFooter } from '../ui/card';
+import {
+  Card,
+  CardContent, CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../ui/card';
 import { Field, FieldError, FieldLabel } from '../ui/field';
 import { Input } from '../ui/input';
 import { Checkbox } from '../ui/checkbox';
@@ -22,12 +28,11 @@ import { useContext } from 'react';
 import { FormProcessingContext } from '../wrappers/FormProcessor';
 import { toast } from 'sonner';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
+import { Textarea } from '@/components/ui/textarea';
 
 export function PromptForm() {
   const router = useRouter();
-  const { setProcessingStatus,  } = useContext(
-    FormProcessingContext,
-  );
+  const { setProcessingStatus } = useContext(FormProcessingContext);
 
   const form = useForm<promptSchemaType>({
     resolver: zodResolver(promptSchema),
@@ -68,7 +73,11 @@ export function PromptForm() {
     const body: ApiResponse<string> = await response.json();
 
     if (!body.success) {
-      throw new ApiError(response.status, body.error.message, body.error.issues);
+      throw new ApiError(
+        response.status,
+        body.error.message,
+        body.error.issues,
+      );
     }
 
     if (!response.ok) {
@@ -95,61 +104,76 @@ export function PromptForm() {
   }
 
   return (
-    <>
-      <Card>
-        <CardContent>
-          <form id="prompt-form" onSubmit={form.handleSubmit(onSubmit)}>
-            <Controller
-              control={form.control}
-              name="prompt"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.error}>
-                  <FieldLabel htmlFor={field.name}>Prompt</FieldLabel>
-                  <Input
-                    {...field}
-                    id={field.name}
-                    type="text"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Learn C++ from the very beginning"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              control={form.control}
-              name="externalAiQuestionsStatus"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.error}>
-                  <FieldLabel htmlFor={field.name}>
-                    External ai questions, for improving your prompt
-                  </FieldLabel>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </form>
-        </CardContent>
+    <Card className="min-h-[calc(100vh-200px)]">
+      <CardHeader>
+        <CardTitle>Guide creation</CardTitle>
+        <CardDescription>Fill the inputs below:</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form
+          className="flex flex-col gap-[40px]"
+          id="prompt-form"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <Controller
+            control={form.control}
+            name="prompt"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.error}>
+                <FieldLabel htmlFor={field.name}>Prompt</FieldLabel>
+                <Textarea
+                  {...field}
+                  id={field.name}
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Learn C++ from the very beginning"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="externalAiQuestionsStatus"
+            render={({ field, fieldState }) => (
+              <Field orientation="horizontal" data-invalid={fieldState.error}>
+                <FieldLabel className="cursor-pointer" htmlFor={field.name}>
+                  External ai questions, for improving your prompt*
+                </FieldLabel>
+                <Checkbox
+                  id={field.name}
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </form>
+      </CardContent>
+      <CardContent>
         {form.formState.errors.root?.serverError && (
           <RedAlert
             title={'Something went wrong'}
             message={form.formState.errors.root?.serverError.message as string}
           />
         )}
-        <CardFooter>
+      </CardContent>
+      <CardFooter className="mt-auto">
+        <div className="flex flex-col gap-[20px] w-full">
+          <p>
+            * - If you check this, at first, AI will generate a couple of
+            questions, for deeper understanding of your goal. After you answer
+            them - guide will be created.
+          </p>
           <Button type="submit" form="prompt-form">
             Create guide
           </Button>
-        </CardFooter>
-      </Card>
-    </>
+        </div>
+      </CardFooter>
+    </Card>
   );
 }
