@@ -32,8 +32,8 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
   });
 
   const aiPrompt: string = answeredQuestions
-    ? `Generate a new guide, for this user prompt: ${prompt}. Generate it, like you are a expert in requested topic. We've asked our user questions, and he answered them. Create a highly personalized guide based on these answers: ${JSON.stringify(answeredQuestions)}. Follow the output schema`
-    : `Generate a new guide, for this user prompt: ${prompt}. Generate it, like you are a expert in requested topic. Follow the output schema`;
+    ? `Generate a new guide, for this user prompt: ${prompt}. Generate it, like you are a expert in requested topic. We've asked our user questions, and he answered them. Create a highly personalized guide based on these answers: ${JSON.stringify(answeredQuestions)}. Inside the description field(for guide in general), provide general information about the guide: what it is about, its goal, and what knowledge and skills the user will gain. Follow the output schema`
+    : `Generate a new guide, for this user prompt: ${prompt}. Generate it, like you are a expert in requested topic. Inside the description field(for guide in general), provide general information about the guide: what it is about, its goal, and what knowledge and skills the user will gain. Follow the output schema`;
 
   const { output } = await generateText({
     model: openai('gpt-5.4-mini'),
@@ -43,7 +43,7 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
     prompt: aiPrompt,
   });
 
-  // console.log(output);
+  console.log(output);
 
   const secondGuideUpdate = await prisma.guide.update({
     where: {
@@ -52,7 +52,7 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
     },
     data: {
       title: output.title,
-      description: output.title,
+      description: output.description,
       status: 'GUIDE_GENERATED',
     },
   });

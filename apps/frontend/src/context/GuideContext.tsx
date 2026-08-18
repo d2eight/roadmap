@@ -23,7 +23,7 @@ export default function GuideContextProvider({
 }) {
   const [guide, setGuide] = useState<GuideModelWithRelations>(guideProps);
   const { socketGuideData } = useContext(SocketContext);
-
+  console.log(guide);
   const getCompletedSteps = () => guide.steps.reduce((acc, curr) => {
     return curr.status === "DONE" ? (acc += 1) : acc;
   }, 0);

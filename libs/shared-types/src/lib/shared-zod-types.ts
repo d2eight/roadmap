@@ -47,13 +47,32 @@ export const promptSchema = z.object({
 export type promptSchemaType = z.infer<typeof promptSchema>;
 
 export const aiGuideGenerationSchema = z.object({
-  title: z.string().min(5),
-  description: z.string().min(15),
+  title: z
+    .string()
+    .min(5)
+    .describe(
+      'A short, concise title for the guide. It should name the topic of the guide in a few words. Do not use a full sentence and do not repeat the description.',
+    ),
+  description: z
+    .string()
+    .min(100)
+    .max(1500)
+    .describe(
+      'A detailed overview of the entire guide. Explain what the guide is about, its main goal, and what knowledge and skills the user will gain. It must provide substantially more information than the title and must not simply repeat or paraphrase the title.',
+    ),
   steps: z
     .array(
       z.object({
-        title: z.string().min(5),
-        description: z.string().min(15),
+        title: z
+          .string()
+          .min(5)
+          .describe('A short, concise name for this step.'),
+        description: z
+          .string()
+          .min(50)
+          .describe(
+            'A detailed explanation of what the user will learn or accomplish in this step. Do not simply repeat the step title.',
+          ),
       }),
     )
     .max(30),
