@@ -63,7 +63,7 @@ export type aiGuideGenerationSchemaType = z.infer<
   typeof aiGuideGenerationSchema
 >;
 
-export const aiQuestionABCDSchema = z.object({
+export const aiQuestionABCD = z.object({
   question: z.string().min(20),
   options: z.array(z.string().min(10)).length(4),
 });
@@ -84,7 +84,7 @@ export const aiQuestionText = z.object({
 });
 
 export const aiQuestionsSchema = z.object({
-  aiQuestionABCDSchema: aiQuestionABCDSchema,
+  aiQuestionABCD: aiQuestionABCD,
   aiQuestionRange: aiQuestionRange,
   aiQuestionCheckbox: aiQuestionCheckbox,
   aiQuestionText: aiQuestionText,
@@ -92,7 +92,7 @@ export const aiQuestionsSchema = z.object({
 
 export type aiQuestionsSchemaType = z.infer<typeof aiQuestionsSchema>;
 
-export const questionABCDSchema = aiQuestionABCDSchema.extend({
+export const questionABCDSchema = aiQuestionABCD.extend({
   answer: z.string().min(10),
 });
 
@@ -108,14 +108,28 @@ export const questionText = aiQuestionText.extend({
   answer: z.string().min(10),
 });
 
-export const questionsSchema = z.object({
+export const answeredQuestionsSchema = z.object({
   questionABCD: questionABCDSchema,
   questionRange: questionRange,
   questionCheckbox: questionCheckbox,
-  questionText: questionText,
+  questionText: questionText
 });
 
-export type questionsSchemaType = z.infer<typeof questionsSchema>;
+export type answeredQuestionsSchemaType = z.infer<typeof answeredQuestionsSchema>;
+
+export const guideQuestionsSchema = z.object({
+  questionABCD: z
+    .string()
+    .min(1, 'Expected one option to be chosen, but got none'),
+  questionRange: z.number().min(1).max(100),
+  questionCheckbox: z
+    .array(z.string())
+    .min(1, 'Expected to get at least one option')
+    .max(8),
+  questionText: z.string().min(10).max(1500),
+});
+
+export type guideQuestionsSchemaType = z.infer<typeof guideQuestionsSchema>;
 
 export const guideStepsSchema = z.object({
   steps: z.array(GuideStepModelSchema.omit({guide: true, createdAt: true, updatedAt: true})),

@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import { GuidStepStatusSchema } from '../../enums/GuidStepStatus.schema';
+import { GuideStepStatusSchema } from '../../enums/GuideStepStatus.schema';
 // prettier-ignore
 export const GuideStepInputSchema = z.object({
     id: z.string(),
@@ -7,7 +7,7 @@ export const GuideStepInputSchema = z.object({
     guideId: z.string(),
     title: z.string(),
     description: z.string(),
-    status: GuidStepStatusSchema,
+    status: GuideStepStatusSchema,
     createdAt: z.date(),
     updatedAt: z.date()
 }).strict();

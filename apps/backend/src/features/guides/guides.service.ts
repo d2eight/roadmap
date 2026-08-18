@@ -1,5 +1,8 @@
 import express from 'express';
-import { promptSchemaType, questionsSchemaType } from 'shared-types';
+import {
+  answeredQuestionsSchemaType,
+  promptSchemaType,
+} from 'shared-types';
 import { prisma } from 'database';
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import {
@@ -47,7 +50,7 @@ export async function createQuestions(
 
 export async function createWithAnsweredQuestions(
   prompt: string,
-  answeredQuestions: questionsSchemaType,
+  answeredQuestions: answeredQuestionsSchemaType,
   guideId: string,
   userId: string,
 ) {

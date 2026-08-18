@@ -3,15 +3,15 @@ import { generateText, Output } from 'ai';
 import { prisma } from 'database';
 import {
   aiGuideGenerationSchema,
+  answeredQuestionsSchemaType,
   GuideJob,
-  questionsSchemaType,
 } from 'shared-types';
 import { openai } from '@ai-sdk/openai';
 import { GuideStepCreateManyInput } from '@/libs/db/generated/prisma/models/GuideStep';
 import { io } from '../../main';
 
 export async function aiCreateGuide(job: Job<GuideJob>) {
-  const answeredQuestions: questionsSchemaType = job.data.answeredQuestions;
+  const answeredQuestions: answeredQuestionsSchemaType = job.data.answeredQuestions;
   const guideId: string = job.data.guideId;
   const userId: string = job.data.userId;
   const prompt: string = job.data.prompt;

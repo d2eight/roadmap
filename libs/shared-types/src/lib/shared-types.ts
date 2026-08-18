@@ -1,5 +1,7 @@
 import { Session, User } from 'better-auth';
-import { questionsSchemaType } from './shared-zod-types';
+import {
+  answeredQuestionsSchemaType,
+} from './shared-zod-types';
 import { Dispatch, SetStateAction } from 'react';
 import { BetterFetchError } from '@better-fetch/fetch';
 import { Socket } from 'socket.io-client';
@@ -30,7 +32,7 @@ export type GuideJob = {
   userId: string;
   guideId: string;
   prompt: string;
-  answeredQuestions?: questionsSchemaType;
+  answeredQuestions?: answeredQuestionsSchemaType;
 };
 
 export type AuthContextType = {

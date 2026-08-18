@@ -1,8 +1,8 @@
 import * as z from 'zod';
 import type { Prisma } from '../../../../generated/prisma/client';
 import { StringFilterObjectSchema as StringFilterObjectSchema } from './StringFilter.schema';
-import { EnumGuidStepStatusFilterObjectSchema as EnumGuidStepStatusFilterObjectSchema } from './EnumGuidStepStatusFilter.schema';
-import { GuidStepStatusSchema } from '../enums/GuidStepStatus.schema';
+import { EnumGuideStepStatusFilterObjectSchema as EnumGuideStepStatusFilterObjectSchema } from './EnumGuideStepStatusFilter.schema';
+import { GuideStepStatusSchema } from '../enums/GuideStepStatus.schema';
 import { DateTimeFilterObjectSchema as DateTimeFilterObjectSchema } from './DateTimeFilter.schema'
 
 const guidestepscalarwhereinputSchema = z.object({
@@ -13,7 +13,7 @@ const guidestepscalarwhereinputSchema = z.object({
   guideId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   title: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   description: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
-  status: z.union([z.lazy(() => EnumGuidStepStatusFilterObjectSchema), GuidStepStatusSchema]).optional(),
+  status: z.union([z.lazy(() => EnumGuideStepStatusFilterObjectSchema), GuideStepStatusSchema]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional()
 }).strict();

@@ -1,3 +1,3 @@
 
-export type * from '../generated/prisma/enums';
+export * from '../generated/prisma/enums';
 

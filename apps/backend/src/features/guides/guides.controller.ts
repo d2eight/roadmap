@@ -1,10 +1,10 @@
 import express from 'express';
 import * as guidesService from './guides.service';
 import {
+  answeredQuestionsSchemaType,
   ApiResponse,
   GuideModelWithRelations,
   promptSchemaType,
-  questionsSchemaType,
 } from 'shared-types';
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import { io } from '../../main';
@@ -93,7 +93,7 @@ export async function createGuideAnsweredQuestions(
   res: express.Response,
   next: express.NextFunction,
 ) {
-  const answeredQuestions: questionsSchemaType = res.locals.answeredQuestions;
+  const answeredQuestions: answeredQuestionsSchemaType = res.locals.answeredQuestions;
   const userId: string = res.locals.userId;
   const guideId: string = req.params.guideId as string;
   const prompt: string = res.locals.prompt;

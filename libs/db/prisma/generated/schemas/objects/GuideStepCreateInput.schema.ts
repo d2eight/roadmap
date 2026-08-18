@@ -1,13 +1,13 @@
 import * as z from 'zod';
 import type { Prisma } from '../../../../generated/prisma/client';
-import { GuidStepStatusSchema } from '../enums/GuidStepStatus.schema';
+import { GuideStepStatusSchema } from '../enums/GuideStepStatus.schema';
 import { GuideCreateNestedOneWithoutStepsInputObjectSchema as GuideCreateNestedOneWithoutStepsInputObjectSchema } from './GuideCreateNestedOneWithoutStepsInput.schema'
 
 const makeSchema = () => z.object({
   id: z.string().optional(),
   title: z.string(),
   description: z.string(),
-  status: GuidStepStatusSchema.optional(),
+  status: GuideStepStatusSchema.optional(),
   createdAt: z.coerce.date().optional(),
   guide: z.lazy(() => GuideCreateNestedOneWithoutStepsInputObjectSchema)
 }).strict();

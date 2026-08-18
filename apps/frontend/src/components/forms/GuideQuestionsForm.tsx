@@ -5,17 +5,26 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { notFound, useRouter } from 'next/navigation';
-import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field';
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '../ui/field';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Slider } from '../ui/slider';
 import { Checkbox } from '../ui/checkbox';
 import {
   aiQuestionsSchemaType,
+  answeredQuestionsSchemaType,
   ApiError,
   ApiResponse,
-  questionsSchema,
-  questionsSchemaType,
+  guideQuestionsSchema,
+  guideQuestionsSchemaType,
 } from 'shared-types';
 import { useMutation } from '@tanstack/react-query';
 import { handleApiFormError } from '../../utils/apiErrorsHandler';
@@ -23,6 +32,8 @@ import { GuideContext } from '../../context/GuideContext';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 import { toast } from 'sonner';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
+import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function GuideQuestionsForm() {
   const { guide } = useContext(GuideContext);
@@ -38,30 +49,27 @@ export default function GuideQuestionsForm() {
     guide.questions.toString(),
   );
 
-  const form = useForm<questionsSchemaType>({
-    resolver: zodResolver(questionsSchema),
+  const questionABCD = guideQuestions.aiQuestionABCD.question;
+  const questionABCDOptions = guideQuestions.aiQuestionABCD.options;
+
+  const questionRange = guideQuestions.aiQuestionRange.question;
+  const questionRangeMin = guideQuestions.aiQuestionRange.start;
+  const questionRangeMax = guideQuestions.aiQuestionRange.end;
+
+  const questionCheckbox = guideQuestions.aiQuestionCheckbox.question;
+  const questionCheckboxOptions = guideQuestions.aiQuestionCheckbox.options;
+
+  const questionText = guideQuestions.aiQuestionText.question;
+
+  const form = useForm<guideQuestionsSchemaType>({
+    resolver: zodResolver(guideQuestionsSchema),
     defaultValues: {
-      questionABCD: {
-        question: guideQuestions.aiQuestionABCDSchema.question,
-        options: guideQuestions.aiQuestionABCDSchema.options,
-        answer: '',
-      },
-      questionRange: {
-        question: guideQuestions.aiQuestionRange.question,
-        start: 1,
-        end: 100,
-        answer: 1,
-      },
-      questionText: {
-        question: guideQuestions.aiQuestionText.question,
-        answer: '',
-      },
-      questionCheckbox: {
-        question: guideQuestions.aiQuestionCheckbox.question,
-        options: guideQuestions.aiQuestionCheckbox.options,
-        answer: [],
-      },
+      questionABCD: '',
+      questionRange: 0,
+      questionCheckbox: [],
+      questionText: '',
     },
+    mode: 'onChange',
   });
 
   const { mutate } = useMutation({
@@ -99,8 +107,27 @@ export default function GuideQuestionsForm() {
     return body;
   }
 
-  async function onSubmit(data: questionsSchemaType) {
+  async function onSubmit(data: guideQuestionsSchemaType) {
     setProcessingStatus(true);
+
+    const answeredQuestions: answeredQuestionsSchemaType = {
+      questionABCD: {
+        ...guideQuestions.aiQuestionABCD,
+        answer: data.questionABCD,
+      },
+      questionRange: {
+        ...guideQuestions.aiQuestionRange,
+        answer: data.questionRange,
+      },
+      questionCheckbox: {
+        ...guideQuestions.aiQuestionCheckbox,
+        answer: data.questionCheckbox,
+      },
+      questionText: {
+        ...guideQuestions.aiQuestionText,
+        answer: data.questionText,
+      },
+    };
 
     const requestBody: RequestInit = {
       method: 'POST',
@@ -108,7 +135,7 @@ export default function GuideQuestionsForm() {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify(data),
+      body: JSON.stringify(answeredQuestions),
     };
 
     mutate(requestBody);
@@ -117,151 +144,180 @@ export default function GuideQuestionsForm() {
   return (
     <>
       <form id="guide-questions" onSubmit={form.handleSubmit(onSubmit)}>
-        <Controller
-          control={form.control}
-          name="questionABCD"
-          render={({ field, fieldState }) => (
-            <RadioGroup
-              name={field.name}
-              value={field.value.answer}
-              onValueChange={(value) => {
-                const newValue = {
-                  ...field.value,
-                  answer: value,
-                };
-                field.onChange(newValue);
-              }}
-            >
-              {field.value.options.map((abcdOption, index) => {
-                return (
-                  <Field
-                    key={`abcd-${index}`}
-                    data-invalid={fieldState.invalid}
-                  >
-                    <FieldLabel htmlFor={`abcdOption-${abcdOption}`}>
-                      {abcdOption}
-                    </FieldLabel>
-                    <RadioGroupItem
-                      id={`abcd-${abcdOption}`}
-                      value={abcdOption}
-                      aria-invalid={fieldState.invalid}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                );
-              })}
-            </RadioGroup>
-          )}
-        />
-        <Controller
-          control={form.control}
-          name="questionRange"
-          render={({ field, fieldState }) => {
-            return (
-              <>
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.value.question}>
-                    {field.value.question}
-                  </FieldLabel>
-                  <Slider
-                    defaultValue={[field.value.start]}
-                    onValueChange={(v) => {
-                      const newValue = {
-                        ...field.value,
-                        answer: v[0],
-                      };
-                      field.onChange(newValue);
-                    }}
-                    min={0}
-                    max={100}
-                    step={1}
-                    className="mx-auto w-full max-w-xs"
-                  />
+        <div className="mt-[50px] flex flex-col gap-[30px]">
+          <Separator />
+          <FieldSet className="gap-6!">
+            <FieldLegend>{questionABCD}</FieldLegend>
+            <FieldDescription>Choose one answer from below:</FieldDescription>
+            <Controller
+              control={form.control}
+              name="questionABCD"
+              render={({ field, fieldState }) => (
+                <RadioGroup
+                  name={field.name}
+                  value={field.value}
+                  className="gap-7"
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                  }}
+                >
+                  {questionABCDOptions.map((abcdOption, index) => {
+                    return (
+                      <Field
+                        key={`abcd-${index}`}
+                        data-invalid={fieldState.invalid}
+                        orientation="horizontal"
+                        className="hover:bg-accent rounded-[10px]"
+                      >
+                        <FieldLabel
+                          className="rounded-[10px] p-[10px] flex justify-between cursor-pointer"
+                          htmlFor={`abcdOption-${abcdOption}`}
+                        >
+                          {abcdOption}
+                          <RadioGroupItem
+                            id={`abcdOption-${abcdOption}`}
+                            value={abcdOption}
+                            aria-invalid={fieldState.invalid}
+                          />
+                        </FieldLabel>
+                      </Field>
+                    );
+                  })}
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
-                </Field>
-              </>
-            );
-          }}
-        />
-        <Controller
-          control={form.control}
-          name="questionCheckbox"
-          render={({ field, fieldState }) => (
-            <FieldGroup>
-              {field.value.options.map((checkboxOption, index) => {
+                </RadioGroup>
+              )}
+            />
+          </FieldSet>
+          <Separator />
+          <FieldSet>
+            <FieldLegend>{questionRange}</FieldLegend>
+            <FieldDescription>
+              Choose value on slider from 1 to 100 range:
+            </FieldDescription>
+            <Controller
+              control={form.control}
+              name="questionRange"
+              render={({ field, fieldState }) => {
                 return (
-                  <Field
-                    key={`checkbox-${index}`}
-                    data-invalid={fieldState.invalid}
-                  >
-                    <FieldLabel htmlFor={`checkbox-${checkboxOption}`}>
-                      {checkboxOption}
-                    </FieldLabel>
-                    <Checkbox
-                      id={`checkbox-${checkboxOption}`}
-                      name={field.name}
-                      checked={field.value.answer.includes(checkboxOption)}
-                      onCheckedChange={(checked) => {
-                        const newAnswers = checked
-                          ? [...field.value.answer, checkboxOption]
-                          : field.value.answer.filter(
-                              (value) => value !== checkboxOption,
-                            );
-                        field.onChange({
-                          ...field.value,
-                          answer: newAnswers,
-                        });
-                      }}
-                      aria-invalid={fieldState.invalid}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
+                  <>
+                    <Field data-invalid={fieldState.invalid}>
+                      <div className="flex flex-col gap-[20px]">
+                        <div className="block text-center">
+                          <span className="text-muted-foreground">
+                            Your answer from 1-100:{' '}
+                          </span>
+                          <span className="font-bold">{field.value}</span>
+                        </div>
+                        <div>
+                          <Slider
+                            defaultValue={[0]}
+                            onValueChange={(v) => {
+                              field.onChange(v[0]);
+                            }}
+                            min={questionRangeMin}
+                            max={questionRangeMax}
+                            step={1}
+                            className="mx-auto w-full max-w-xs"
+                          />
+                        </div>
+                      </div>
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  </>
                 );
-              })}
-            </FieldGroup>
-          )}
-        />
-        <Controller
-          control={form.control}
-          name="questionText"
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>
-                {field.value.question}
-              </FieldLabel>
-              <Input
-                id={field.name}
-                type="text"
-                aria-invalid={fieldState.invalid}
-                placeholder="Learn C++ from the very beginning"
-                onChange={(event) => {
-                  const newValue = {
-                    ...field.value,
-                    answer: event.target.value,
-                  };
-                  field.onChange(newValue);
-                }}
-                value={field.value.answer}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-        {form.formState.errors.root?.serverError && (
-          <RedAlert
-            title={'Something went wrong'}
-            message={form.formState.errors.root?.serverError.message as string}
+              }}
+            />
+          </FieldSet>
+          <Separator />
+          <FieldSet>
+            <FieldLegend>{questionCheckbox}</FieldLegend>
+            <FieldDescription>
+              Choose at least 1 (or more), options from below:
+            </FieldDescription>
+            <Controller
+              control={form.control}
+              name="questionCheckbox"
+              render={({ field, fieldState }) => (
+                <FieldGroup>
+                  {questionCheckboxOptions.map((checkboxOption, index) => {
+                    return (
+                      <Field
+                        key={`checkbox-${index}`}
+                        data-invalid={fieldState.invalid}
+                        orientation="horizontal"
+                        className="hover:bg-accent rounded-[10px]"
+                      >
+                        <FieldLabel
+                          className="rounded-[10px] p-[10px] flex justify-between cursor-pointer"
+                          htmlFor={`checkbox-${checkboxOption}`}
+                        >
+                          {checkboxOption}
+                          <Checkbox
+                            id={`checkbox-${checkboxOption}`}
+                            name={field.name}
+                            checked={field.value.includes(checkboxOption)}
+                            onCheckedChange={(checked) => {
+                              const newValue = checked
+                                ? [...field.value, checkboxOption]
+                                : field.value.filter(
+                                    (value) => value !== checkboxOption,
+                                  );
+                              field.onChange(newValue);
+                            }}
+                            aria-invalid={fieldState.invalid}
+                          />
+                        </FieldLabel>
+                      </Field>
+                    );
+                  })}
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </FieldGroup>
+              )}
+            />
+          </FieldSet>
+          <Separator />
+          <FieldSet>
+            <FieldLegend>{questionText}</FieldLegend>
+            <FieldDescription>
+              Write your answer in the section below:
+            </FieldDescription>
+          </FieldSet>
+          <Controller
+            control={form.control}
+            name="questionText"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <Textarea
+                  {...field}
+                  id={field.name}
+                  aria-invalid={fieldState.invalid}
+                  placeholder="I wanna..."
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
           />
-        )}
-        <Button type="submit" form="guide-questions">
-          Apply
-        </Button>
+          {form.formState.errors.root?.serverError && (
+            <div>
+              <Separator />
+              <RedAlert
+                title={'Something went wrong'}
+                message={
+                  form.formState.errors.root?.serverError.message as string
+                }
+              />
+            </div>
+          )}
+          <Separator />
+        </div>
       </form>
     </>
   );
