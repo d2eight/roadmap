@@ -156,3 +156,10 @@ export const guideStepsSchema = z.object({
 
 export type guideStepsSchemaType = z.infer<typeof guideStepsSchema>;
 
+export const filterSchema = z.object({
+  sortBy: z.enum(['createdAt', 'updatedAt']),
+  orderBy: z.enum(['desc', 'asc']),
+});
+
+export type filterSchemaType = z.infer<typeof filterSchema>;
+

@@ -7,10 +7,16 @@ import {
   LucideX,
   LucideXCircle,
 } from 'lucide-react';
-import { GuidStepStatus } from '../../../../../libs/db/generated/prisma/enums';
+import { GuideStepStatus } from 'database/enums';
 import { ToggleGroupItem } from '@/components/ui/toggle-group';
 
-export function StepStatusButton({ status, className }: { status: GuidStepStatus, className?: string }) {
+export function StepStatusButton({
+  status,
+  className,
+}: {
+  status: GuideStepStatus;
+  className?: string;
+}) {
   switch (status) {
     case 'PENDING': {
       return (

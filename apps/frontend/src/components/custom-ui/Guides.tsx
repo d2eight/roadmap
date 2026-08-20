@@ -10,7 +10,7 @@ import { Prisma } from 'database';
 export function Guides() {
   const { guides } = useContext(GuidesContext);
   return (
-    <div className="grid grid-cols-3 gap-10 auto-rows-[200px] h-[750px]">
+    <div className="grid grid-cols-3 gap-10 auto-rows-[200px]">
       {guides.map((guide: GuideModelWithRelations) => (
         <GuideContextProvider key={guide.id} guideProps={guide}>
           <GuideCard />

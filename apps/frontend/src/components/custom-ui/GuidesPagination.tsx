@@ -114,7 +114,7 @@ export function GuidesPagination({pageSize}: {pageSize: number}) {
   }
 
   return (
-    <Pagination>
+    <Pagination className="mt-auto">
       <PreviousPagePaginationItem
         navigateToPage={navigateToPage}
         currentPage={currentPage}

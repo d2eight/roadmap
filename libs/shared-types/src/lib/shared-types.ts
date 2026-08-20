@@ -1,8 +1,8 @@
 import { Session, User } from 'better-auth';
 import {
-  answeredQuestionsSchemaType,
+  answeredQuestionsSchemaType, filterSchemaType,
 } from './shared-zod-types';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, JSX, SetStateAction } from 'react';
 import { BetterFetchError } from '@better-fetch/fetch';
 import { Socket } from 'socket.io-client';
 import { Prisma } from 'database';
@@ -96,4 +96,28 @@ export type GuideStepModelFetched = Prisma.GuideStepGetPayload<{
     status: true;
   };
 }>;
+
+export type SortByOptions = [
+  {
+    value: Extract<filterSchemaType['sortBy'], 'createdAt'>;
+    label: string | JSX.Element;
+  },
+  {
+    value: Extract<filterSchemaType['sortBy'], 'updatedAt'>;
+    label: string | JSX.Element;
+  },
+];
+
+export type OrderByOptions = [
+  {
+    value: Extract<filterSchemaType['orderBy'], 'desc'>;
+    label: string | JSX.Element;
+  },
+  {
+    value: Extract<filterSchemaType['orderBy'], 'asc'>;
+    label: string | JSX.Element;
+  },
+];
+
+
 

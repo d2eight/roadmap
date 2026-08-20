@@ -54,6 +54,9 @@ export async function getGuidesInPagination({
       },
       skip: (currentPage - 1) * pageSize,
       take: pageSize,
+      orderBy: {
+        createdAt: "desc"
+      }
     }),
     prisma.guide.count({
       where: {
