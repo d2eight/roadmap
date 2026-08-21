@@ -9,12 +9,7 @@ import { Queue } from 'bullmq';
 import initWorkers from './workers/workers';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
-import { Socket } from 'node:net';
-import { prisma } from 'database';
-import { generateText, Output } from 'ai';
-import { openai } from '@ai-sdk/openai';
-import { aiGuideGenerationSchema } from 'shared-types';
-import { GuideStepCreateManyInput } from '@/libs/db/generated/prisma/models/GuideStep';
+
 export const app = express();
 const server = createServer(app);
 export const io = new Server(server, {
@@ -66,10 +61,6 @@ io.use(async (socket, next) => {
 
 io.on('connection', (socket) => {
   socket.join(socket.data.id);
-
-  // socket.on('guide_room', (data) => {
-  //   socket.join(data.guideId);
-  // });
 });
 
 server.on('error', console.error);
