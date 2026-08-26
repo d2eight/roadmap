@@ -1,5 +1,8 @@
 import { z } from 'zod';
-import { GuideStepModelSchema } from 'database/schemas';
+import {
+  GuideProgressStatusSchema,
+  GuideStepModelSchema,
+} from 'database/schemas';
 
 const passwordSchema = z
   .string()
@@ -131,10 +134,12 @@ export const answeredQuestionsSchema = z.object({
   questionABCD: questionABCDSchema,
   questionRange: questionRange,
   questionCheckbox: questionCheckbox,
-  questionText: questionText
+  questionText: questionText,
 });
 
-export type answeredQuestionsSchemaType = z.infer<typeof answeredQuestionsSchema>;
+export type answeredQuestionsSchemaType = z.infer<
+  typeof answeredQuestionsSchema
+>;
 
 export const guideQuestionsSchema = z.object({
   questionABCD: z
@@ -151,15 +156,21 @@ export const guideQuestionsSchema = z.object({
 export type guideQuestionsSchemaType = z.infer<typeof guideQuestionsSchema>;
 
 export const guideStepsSchema = z.object({
-  steps: z.array(GuideStepModelSchema.omit({guide: true, createdAt: true, updatedAt: true})),
-})
+  steps: z.array(
+    GuideStepModelSchema.omit({
+      guide: true,
+      createdAt: true,
+      updatedAt: true,
+    }),
+  ),
+});
 
 export type guideStepsSchemaType = z.infer<typeof guideStepsSchema>;
 
 export const filterSchema = z.object({
   sortBy: z.enum(['createdAt', 'updatedAt']),
   orderBy: z.enum(['desc', 'asc']),
+  progressStatus: z.array(GuideProgressStatusSchema),
 });
 
 export type filterSchemaType = z.infer<typeof filterSchema>;
-

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useContext, useEffect } from 'react';
 import { GuideContext } from '@/context/GuideContext';
@@ -27,14 +27,14 @@ export function GuideForm() {
   const form = useForm<guideStepsSchemaType>({
     resolver: zodResolver(guideStepsSchema),
     defaultValues: {
-      steps: guide.steps
+      steps: guide.steps,
     },
   });
 
   const { fields } = useFieldArray({
     control: form.control,
-    name: 'steps'
-  })
+    name: 'steps',
+  });
 
   const { mutate, isSuccess } = useMutation({
     mutationFn: updateGuide,
@@ -44,12 +44,12 @@ export function GuideForm() {
         steps,
       });
       setProcessingStatus(false);
-      toast.success("Successfully updated your progress");
+      toast.success('Successfully updated your progress');
     },
     onError: (error: ApiError) => {
       setProcessingStatus(false);
       handleApiFormError(error, router, form);
-    }
+    },
   });
 
   function onSubmit(data: guideStepsSchemaType) {
@@ -78,7 +78,11 @@ export function GuideForm() {
     const body: ApiResponse<GuideStepModelFetched[]> = await response.json();
 
     if (!body.success) {
-      throw new ApiError(response.status, body.error.message, body.error.issues);
+      throw new ApiError(
+        response.status,
+        body.error.message,
+        body.error.issues,
+      );
     }
 
     if (!response.ok) {

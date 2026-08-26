@@ -12,6 +12,7 @@ export const GuideFindManyResultSchema = z.object({
   answeredQuestions: z.unknown().optional(),
   externalAiQuestionsStatus: z.boolean(),
   status: z.unknown(),
+  progressStatus: z.unknown(),
   createdAt: z.date(),
   updatedAt: z.date()
 })),

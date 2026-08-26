@@ -9,7 +9,7 @@ import { GuideContext } from '@/context/GuideContext';
 import { CardFooter } from '@/components/ui/card';
 
 export function GuideCardFooter() {
-  const {guide, status} = useContext(GuideContext);
+  const { guide, status } = useContext(GuideContext);
 
   switch (status) {
     case 'INIT':
@@ -58,7 +58,4 @@ export function GuideCardFooter() {
         </CardFooter>
       );
   }
-
-
-
 }

@@ -1,5 +1,6 @@
 import * as z from 'zod';
 import { GuideStatusSchema } from '../../enums/GuideStatus.schema';
+import { GuideProgressStatusSchema } from '../../enums/GuideProgressStatus.schema';
 // prettier-ignore
 export const GuideInputSchema = z.object({
     id: z.string(),
@@ -13,6 +14,7 @@ export const GuideInputSchema = z.object({
     answeredQuestions: z.unknown().optional().nullable(),
     externalAiQuestionsStatus: z.boolean(),
     status: GuideStatusSchema,
+    progressStatus: GuideProgressStatusSchema,
     createdAt: z.date(),
     updatedAt: z.date()
 }).strict();

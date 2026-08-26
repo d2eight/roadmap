@@ -5,6 +5,8 @@ import { NullableJsonNullValueInputSchema } from '../enums/NullableJsonNullValue
 import { BoolFieldUpdateOperationsInputObjectSchema as BoolFieldUpdateOperationsInputObjectSchema } from './BoolFieldUpdateOperationsInput.schema';
 import { GuideStatusSchema } from '../enums/GuideStatus.schema';
 import { EnumGuideStatusFieldUpdateOperationsInputObjectSchema as EnumGuideStatusFieldUpdateOperationsInputObjectSchema } from './EnumGuideStatusFieldUpdateOperationsInput.schema';
+import { GuideProgressStatusSchema } from '../enums/GuideProgressStatus.schema';
+import { EnumGuideProgressStatusFieldUpdateOperationsInputObjectSchema as EnumGuideProgressStatusFieldUpdateOperationsInputObjectSchema } from './EnumGuideProgressStatusFieldUpdateOperationsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema as DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
 import { GuideStepUpdateManyWithoutGuideNestedInputObjectSchema as GuideStepUpdateManyWithoutGuideNestedInputObjectSchema } from './GuideStepUpdateManyWithoutGuideNestedInput.schema'
 
@@ -19,6 +21,7 @@ const makeSchema = () => z.object({
   answeredQuestions: z.union([NullableJsonNullValueInputSchema, jsonSchema]).optional(),
   externalAiQuestionsStatus: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputObjectSchema)]).optional(),
   status: z.union([GuideStatusSchema, z.lazy(() => EnumGuideStatusFieldUpdateOperationsInputObjectSchema)]).optional(),
+  progressStatus: z.union([GuideProgressStatusSchema, z.lazy(() => EnumGuideProgressStatusFieldUpdateOperationsInputObjectSchema)]).optional(),
   createdAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   updatedAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
   steps: z.lazy(() => GuideStepUpdateManyWithoutGuideNestedInputObjectSchema).optional()

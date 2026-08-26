@@ -16,6 +16,7 @@ const makeSchema = () => z.object({
   answeredQuestions: z.boolean().optional(),
   externalAiQuestionsStatus: z.boolean().optional(),
   status: z.boolean().optional(),
+  progressStatus: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   _count: z.union([z.boolean(), z.lazy(() => GuideCountOutputTypeArgsObjectSchema)]).optional()

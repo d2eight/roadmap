@@ -21,6 +21,7 @@ export const GuideFindManySelectSchema: z.ZodType<Prisma.GuideSelect> = z.object
     answeredQuestions: z.boolean().optional(),
     externalAiQuestionsStatus: z.boolean().optional(),
     status: z.boolean().optional(),
+    progressStatus: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional(),
     _count: z.boolean().optional()
@@ -38,6 +39,7 @@ export const GuideFindManySelectZodSchema = z.object({
     answeredQuestions: z.boolean().optional(),
     externalAiQuestionsStatus: z.boolean().optional(),
     status: z.boolean().optional(),
+    progressStatus: z.boolean().optional(),
     createdAt: z.boolean().optional(),
     updatedAt: z.boolean().optional(),
     _count: z.boolean().optional()

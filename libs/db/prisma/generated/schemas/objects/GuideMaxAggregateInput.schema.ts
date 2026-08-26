@@ -10,6 +10,7 @@ const makeSchema = () => z.object({
   description: z.literal(true).optional(),
   externalAiQuestionsStatus: z.literal(true).optional(),
   status: z.literal(true).optional(),
+  progressStatus: z.literal(true).optional(),
   createdAt: z.literal(true).optional(),
   updatedAt: z.literal(true).optional()
 }).strict();

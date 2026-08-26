@@ -10,9 +10,11 @@ import { CompletedSteps } from '@/components/custom-ui/CompletedSteps';
 import { GuideDate } from '@/components/custom-ui/GuideDate';
 import { CardContent, CardTitle } from '@/components/ui/card';
 import { QuestionsCount } from '@/components/custom-ui/QuestionsCount';
+import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
 
 export function GuideCardContent() {
-  const { guide, status, questionsCount, completedSteps } = useContext(GuideContext);
+  const { guide, status, questionsCount, completedSteps } =
+    useContext(GuideContext);
 
   switch (status) {
     case 'INIT':
@@ -37,6 +39,7 @@ export function GuideCardContent() {
       return (
         <CardContent>
           <div className="flex items-center justify-between gap-2">
+            <GuideProgressBadge progressStatus={guide.progressStatus} />
             <CompletedSteps
               guideLength={guide.steps.length}
               completedSteps={completedSteps}

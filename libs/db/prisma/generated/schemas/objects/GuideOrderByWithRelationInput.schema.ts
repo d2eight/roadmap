@@ -15,6 +15,7 @@ const makeSchema = () => z.object({
   answeredQuestions: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   externalAiQuestionsStatus: SortOrderSchema.optional(),
   status: SortOrderSchema.optional(),
+  progressStatus: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional(),
   user: z.lazy(() => UserOrderByWithRelationInputObjectSchema).optional(),

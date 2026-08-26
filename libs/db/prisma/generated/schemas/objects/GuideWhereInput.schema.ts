@@ -5,6 +5,8 @@ import { JsonNullableFilterObjectSchema as JsonNullableFilterObjectSchema } from
 import { BoolFilterObjectSchema as BoolFilterObjectSchema } from './BoolFilter.schema';
 import { EnumGuideStatusFilterObjectSchema as EnumGuideStatusFilterObjectSchema } from './EnumGuideStatusFilter.schema';
 import { GuideStatusSchema } from '../enums/GuideStatus.schema';
+import { EnumGuideProgressStatusFilterObjectSchema as EnumGuideProgressStatusFilterObjectSchema } from './EnumGuideProgressStatusFilter.schema';
+import { GuideProgressStatusSchema } from '../enums/GuideProgressStatus.schema';
 import { DateTimeFilterObjectSchema as DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
 import { UserScalarRelationFilterObjectSchema as UserScalarRelationFilterObjectSchema } from './UserScalarRelationFilter.schema';
 import { UserWhereInputObjectSchema as UserWhereInputObjectSchema } from './UserWhereInput.schema';
@@ -23,6 +25,7 @@ const guidewhereinputSchema = z.object({
   answeredQuestions: z.lazy(() => JsonNullableFilterObjectSchema).optional(),
   externalAiQuestionsStatus: z.union([z.lazy(() => BoolFilterObjectSchema), z.boolean()]).optional(),
   status: z.union([z.lazy(() => EnumGuideStatusFilterObjectSchema), GuideStatusSchema]).optional(),
+  progressStatus: z.union([z.lazy(() => EnumGuideProgressStatusFilterObjectSchema), GuideProgressStatusSchema]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   updatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
   user: z.union([z.lazy(() => UserScalarRelationFilterObjectSchema), z.lazy(() => UserWhereInputObjectSchema)]).optional(),

@@ -88,20 +88,27 @@ enum GuideStatus {
   GUIDE_GENERATED
 }
 
+enum GuideProgressStatus {
+  PENDING
+  INWORK
+  DONE
+}
+
 model Guide {
-  id                        String      @id @default(cuid())
+  id                        String              @id @default(cuid())
   prompt                    String
-  user                      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                    String
-  title                     String      @default("")
-  description               String      @default("")
+  title                     String              @default("")
+  description               String              @default("")
   steps                     GuideStep[]
   questions                 Json?
   answeredQuestions         Json?
-  externalAiQuestionsStatus Boolean     @default(false)
-  status                    GuideStatus @default(INIT)
-  createdAt                 DateTime    @default(now())
-  updatedAt                 DateTime    @updatedAt
+  externalAiQuestionsStatus Boolean             @default(false)
+  status                    GuideStatus         @default(INIT)
+  progressStatus            GuideProgressStatus @default(PENDING)
+  createdAt                 DateTime            @default(now())
+  updatedAt                 DateTime            @updatedAt
 }
 
 enum GuideStepStatus {

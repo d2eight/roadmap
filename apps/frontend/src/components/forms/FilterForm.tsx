@@ -3,7 +3,9 @@
 import { Controller, useForm } from 'react-hook-form';
 import {
   filterSchema,
-  filterSchemaType, OrderByOptions, SortByOptions,
+  filterSchemaType,
+  OrderByOptions,
+  SortByOptions,
 } from 'shared-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -14,10 +16,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Field, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field';
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field';
 import { Toggle } from '@/components/ui/toggle';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { DateSort } from '@/components/custom-ui/DateSort';
+import { Checkbox } from '@/components/ui/checkbox';
+import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
+import { FilterProgressGroup } from '@/components/custom-ui/FilterProgressGroup';
 
 export function FilterForm() {
   const form = useForm<filterSchemaType>({
@@ -25,6 +36,7 @@ export function FilterForm() {
     defaultValues: {
       sortBy: 'createdAt',
       orderBy: 'desc',
+      progressStatus: ['PENDING', 'INWORK', 'DONE'],
     },
   });
 
@@ -69,10 +81,11 @@ export function FilterForm() {
                 </SelectTrigger>
                 <SelectContent position="popper">
                   <SelectGroup>
-                    {sortByOptions.map((option) => (
+                    {sortByOptions.map((option, index) => (
                       <SelectItem
                         className="cursor-pointer"
                         value={option.value}
+                        key={index}
                       >
                         {option.label}
                       </SelectItem>
@@ -83,6 +96,7 @@ export function FilterForm() {
             </Field>
           )}
         />
+        <FilterProgressGroup form={form} />
         {/*<Controller*/}
         {/*  control={form.control}*/}
         {/*  name="orderBy"*/}

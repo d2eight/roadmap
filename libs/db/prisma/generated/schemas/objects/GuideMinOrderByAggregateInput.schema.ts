@@ -10,6 +10,7 @@ const makeSchema = () => z.object({
   description: SortOrderSchema.optional(),
   externalAiQuestionsStatus: SortOrderSchema.optional(),
   status: SortOrderSchema.optional(),
+  progressStatus: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),
   updatedAt: SortOrderSchema.optional()
 }).strict();
