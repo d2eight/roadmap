@@ -1,6 +1,7 @@
 import { Session, User } from 'better-auth';
 import {
-  answeredQuestionsSchemaType, filterSchemaType,
+  answeredQuestionsSchemaType,
+  filterSchemaType,
 } from './shared-zod-types';
 import { Dispatch, JSX, SetStateAction } from 'react';
 import { BetterFetchError } from '@better-fetch/fetch';
@@ -107,17 +108,3 @@ export type SortByOptions = [
     label: string | JSX.Element;
   },
 ];
-
-export type OrderByOptions = [
-  {
-    value: Extract<filterSchemaType['orderBy'], 'desc'>;
-    label: string | JSX.Element;
-  },
-  {
-    value: Extract<filterSchemaType['orderBy'], 'asc'>;
-    label: string | JSX.Element;
-  },
-];
-
-
-

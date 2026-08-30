@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   Card,
@@ -8,7 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { LucideCalendarDays, LucidePlus, Trash2 } from 'lucide-react';
+import {
+  LucideCalendarDays,
+  LucideCheck,
+  LucidePlus,
+  Trash2,
+} from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -28,11 +33,10 @@ import { useContext } from 'react';
 import { GuidesContext } from '@/context/GuidesContext';
 import { useForm } from 'react-hook-form';
 import { FilterForm } from '@/components/forms/FilterForm';
-
+import { ApplyFiltersButton } from '@/components/custom-ui/ApplyFiltersButton';
+import { useSearchParams } from 'next/navigation';
 
 export function GuidesFilter() {
-  const { guides } = useContext(GuidesContext);
-
   return (
     <div className="sticky top-[50px] z-50">
       <Card>
@@ -41,15 +45,11 @@ export function GuidesFilter() {
             <FilterForm />
           </CardTitle>
           <CardAction className="flex flex-row gap-[10px]">
-            <CreateGuideButton />
+            <ApplyFiltersButton />
             <CreateGuideButton />
           </CardAction>
         </CardHeader>
-        {/*<CardContent>*/}
-        {/*  <p>Sort by</p>*/}
-        {/*</CardContent>*/}
       </Card>
     </div>
   );
 }
-

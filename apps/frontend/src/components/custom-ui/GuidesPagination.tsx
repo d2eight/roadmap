@@ -17,7 +17,7 @@ import { DefaultPaginationItem } from '@/components/custom-ui/DefaultPaginationI
 import { PreviousPagePaginationItem } from '@/components/custom-ui/PreviousPagePaginationItem';
 import { NextPagePaginationItem } from '@/components/custom-ui/NextPagePaginationItem';
 
-export function GuidesPagination({pageSize}: {pageSize: number}) {
+export function GuidesPagination({ pageSize }: { pageSize: number }) {
   const { guidesCount } = useContext(GuidesContext);
 
   const searchParams = useSearchParams();
@@ -34,8 +34,8 @@ export function GuidesPagination({pageSize}: {pageSize: number}) {
   }
 
   function generatePaginationArray(): ('...' | number)[] {
-    if(pagesCount <= 5) {
-      return Array.from({length: pagesCount}, (_, index) => index + 1);
+    if (pagesCount <= 5) {
+      return Array.from({ length: pagesCount }, (_, index) => index + 1);
     }
 
     const paginationArray: number[] = Array(5);
@@ -57,11 +57,11 @@ export function GuidesPagination({pageSize}: {pageSize: number}) {
     const prevPage = currentPage - 1;
     const nextPage = currentPage + 1;
 
-    if(prevPage !== firstPage && nextPage !== lastPage) {
+    if (prevPage !== firstPage && nextPage !== lastPage) {
       paginationArray[1] = prevPage;
       paginationArray[2] = currentPage;
       paginationArray[3] = nextPage;
-    } else if (prevPage === firstPage ) {
+    } else if (prevPage === firstPage) {
       paginationArray[1] = currentPage;
       paginationArray[2] = currentPage + 1;
       paginationArray[3] = currentPage + 2;
@@ -72,7 +72,6 @@ export function GuidesPagination({pageSize}: {pageSize: number}) {
     }
 
     return generatePaginationDots(paginationArray);
-
   }
 
   function generatePaginationDots(paginationArray: ('...' | number)[]) {

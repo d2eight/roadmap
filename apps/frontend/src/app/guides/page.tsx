@@ -5,21 +5,25 @@ import { SearchParams } from 'next/dist/server/request/search-params';
 import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
 import { getGuidesInPagination } from 'utils';
 import { GuidesFilter } from '@/components/custom-ui/GuidesFilter';
+import { paramsSchema, paramsSchemaType } from 'shared-types';
+import { parseSearchParams } from '@/utils/parseSearchParams';
 
 export default async function DashboardServerPage({
   searchParams,
 }: {
-  searchParams: Promise<SearchParams>;
+  searchParams: Promise<paramsSchemaType>;
 }) {
   const userId = await getUserIdFromHeaders();
-  const resolvedParams = await searchParams;
-  const currentPage = resolvedParams.page
-    ? parseInt(resolvedParams.page as string)
-    : 1;
+  const params = await searchParams;
+
+  const resolvedParams = parseSearchParams({
+    params,
+  });
+
   const pageSize = 9;
 
   const [guides, guidesCount] = await getGuidesInPagination({
-    currentPage,
+    currentPage: resolvedParams.page,
     pageSize,
     userId,
   });

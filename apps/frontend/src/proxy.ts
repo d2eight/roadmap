@@ -1,18 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { headers } from 'next/headers';
-import { BetterAuthSession } from 'shared-types';
-import { auth } from 'auth';
+import verifySession from '@/middlewares/auth';
+import verifySearchParams from '@/middlewares/searchParams';
 
 export default async function proxy(request: NextRequest) {
-  const session: BetterAuthSession = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const sessionResponse = await verifySession({ request });
 
-  if (!session) {
-    return NextResponse.redirect(new URL('/auth/sign-in', request.url));
+  if (sessionResponse) {
+    return sessionResponse;
   }
 
-  request.headers.set('x-user-id', session.user.id);
+  if (request.nextUrl.pathname.startsWith('/guides')) {
+    const paramsResponse = await verifySearchParams({ request });
+
+    if (paramsResponse) {
+      return paramsResponse;
+    }
+  }
 
   return NextResponse.next({
     request: {

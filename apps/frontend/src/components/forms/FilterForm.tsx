@@ -4,7 +4,8 @@ import { Controller, useForm } from 'react-hook-form';
 import {
   filterSchema,
   filterSchemaType,
-  OrderByOptions,
+  paramsSchema,
+  paramsSchemaType,
   SortByOptions,
 } from 'shared-types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,26 +19,38 @@ import {
 } from '@/components/ui/select';
 import {
   Field,
-  FieldGroup,
   FieldLabel,
   FieldLegend,
   FieldSet,
 } from '@/components/ui/field';
-import { Toggle } from '@/components/ui/toggle';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { DateSort } from '@/components/custom-ui/DateSort';
-import { Checkbox } from '@/components/ui/checkbox';
-import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
 import { FilterProgressGroup } from '@/components/custom-ui/FilterProgressGroup';
+import { searchParamsDefaultValues } from '@/app/constants/searchParamsDefaults';
+import { useSearchParams } from 'next/navigation';
 
 export function FilterForm() {
+  const params = useSearchParams();
+  const progressStatusParsed = paramsSchema.shape.progressStatus.safeParse(
+    params.get('progressStatus'),
+  );
+  const sortByParsed = paramsSchema.shape.sortBy.safeParse(
+    params.get('sortBy'),
+  );
+
+  const sortBy = sortByParsed.success
+    ? sortByParsed.data
+    : searchParamsDefaultValues.sortBy;
+  const progressStatus = progressStatusParsed.success
+    ? progressStatusParsed.data
+    : searchParamsDefaultValues.progressStatus;
+
+  const defaultValues: filterSchemaType = {
+    sortBy,
+    progressStatus,
+  };
+
   const form = useForm<filterSchemaType>({
     resolver: zodResolver(filterSchema),
-    defaultValues: {
-      sortBy: 'createdAt',
-      orderBy: 'desc',
-      progressStatus: ['PENDING', 'INWORK', 'DONE'],
-    },
+    defaultValues: defaultValues,
   });
 
   const sortByOptions: SortByOptions = [
@@ -51,19 +64,16 @@ export function FilterForm() {
     },
   ];
 
-  const orderOptions: OrderByOptions = [
-    {
-      value: 'desc',
-      label: 'Decrease',
-    },
-    {
-      value: 'asc',
-      label: 'Increase',
-    },
-  ];
+  function onSubmit(data: filterSchemaType) {
+    console.log(data);
+  }
 
   return (
-    <form id="filter-form" className="w-fit flex flex-col gap-[20px]">
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      id="filter-form"
+      className="w-fit flex flex-col gap-[20px]"
+    >
       <FieldSet>
         <FieldLegend>Filter options:</FieldLegend>
         <Controller
@@ -97,30 +107,6 @@ export function FilterForm() {
           )}
         />
         <FilterProgressGroup form={form} />
-        {/*<Controller*/}
-        {/*  control={form.control}*/}
-        {/*  name="orderBy"*/}
-        {/*  render={({ field, fieldState }) => (*/}
-        {/*    <Field>*/}
-        {/*      <FieldLabel*/}
-        {/*        htmlFor={field.name}*/}
-        {/*        className="cursor-pointer flex-[unset]! bg-transparent! gap-[3px]"*/}
-        {/*      >*/}
-        {/*        <span>Date</span>*/}
-        {/*        <DateSort*/}
-        {/*          id={field.name}*/}
-        {/*          checked={field.value === 'desc'}*/}
-        {/*          onCheckedChange={(checked) => {*/}
-        {/*            const newValue: filterSchemaType['orderBy'] = checked*/}
-        {/*              ? 'desc'*/}
-        {/*              : 'asc';*/}
-        {/*            field.onChange(newValue);*/}
-        {/*          }}*/}
-        {/*        />*/}
-        {/*      </FieldLabel>*/}
-        {/*    </Field>*/}
-        {/*  )}*/}
-        {/*/>*/}
       </FieldSet>
     </form>
   );
