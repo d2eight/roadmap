@@ -5,6 +5,7 @@ import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
 import { GuideProgressStatus } from 'database/enums';
 import { FilterProgressButton } from '@/components/custom-ui/FilterProgressButton';
 import { Field, FieldLabel } from '@/components/ui/field';
+import { searchParamsDefaultValues } from '@/app/constants/searchParamsDefaults';
 
 export function FilterProgressGroup({
   form,
@@ -23,7 +24,11 @@ export function FilterProgressGroup({
             type="multiple"
             value={field.value}
             onValueChange={(value) => {
-              field.onChange(value);
+              if (!value.length) {
+                field.onChange(searchParamsDefaultValues.progressStatus);
+              } else {
+                field.onChange(value);
+              }
             }}
           >
             {toggleOptions.map((status, index) => {

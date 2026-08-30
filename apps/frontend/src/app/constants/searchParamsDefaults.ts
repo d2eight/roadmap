@@ -1,7 +1,7 @@
 import { paramsSchemaType } from 'shared-types';
 
-export const searchParamsDefaultValues: Required<paramsSchemaType> = {
-  sortBy: 'createdAt',
+export const searchParamsDefaultValues: paramsSchemaType = {
+  orderBy: 'createdAt',
   progressStatus: ['PENDING', 'INWORK', 'DONE'],
-  page: 1
+  page: 1,
 };

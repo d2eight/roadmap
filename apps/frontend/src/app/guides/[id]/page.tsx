@@ -3,6 +3,7 @@ import { getGuide } from 'utils';
 import { getUserIdFromHeaders } from '../../../utils/getUserId';
 import GuideContextProvider from '../../../context/GuideContext';
 import GuidePage from './GuidePage';
+import { headers } from 'next/headers';
 
 type PageProps = {
   params: Promise<{
@@ -11,7 +12,8 @@ type PageProps = {
 };
 
 export default async function GuideServerPage({ params }: PageProps) {
-  const userId = await getUserIdFromHeaders();
+  const headersList = await headers();
+  const userId = await getUserIdFromHeaders({ headersList });
 
   const resolvedParams = await params;
 

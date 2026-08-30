@@ -1,7 +1,12 @@
 'use server';
 
 import { prisma } from 'database';
-import { promptSchemaType } from 'shared-types';
+import {
+  filterSchemaType,
+  paramsSchemaType,
+  promptSchemaType,
+} from 'shared-types';
+import { GuideProgressStatus } from '@/libs/db/generated/prisma/enums';
 
 export async function getGuide(userId: string, guideId: string) {
   return prisma.guide.findUnique({
@@ -16,7 +21,7 @@ export async function getGuide(userId: string, guideId: string) {
           guideId: true,
           title: true,
           description: true,
-          status: true
+          status: true,
         },
         orderBy: {
           createdAt: 'desc',
@@ -55,12 +60,53 @@ export async function getGuidesInPagination({
       skip: (currentPage - 1) * pageSize,
       take: pageSize,
       orderBy: {
-        createdAt: "desc"
-      }
+        createdAt: 'desc',
+      },
     }),
     prisma.guide.count({
       where: {
         userId: userId,
+      },
+    }),
+  ]);
+}
+
+export async function getGuides({
+  pageSize,
+  userId,
+  params,
+}: {
+  pageSize: number;
+  userId: string;
+  params: paramsSchemaType;
+}) {
+  const currentPage = params.page;
+  const orderBy = {
+    [`${params.orderBy}`]: 'desc',
+  };
+  const progressStatus = params.progressStatus;
+
+  return prisma.$transaction([
+    prisma.guide.findMany({
+      where: {
+        userId: userId,
+        progressStatus: {
+          in: progressStatus,
+        },
+      },
+      include: {
+        steps: true,
+      },
+      skip: (currentPage - 1) * pageSize,
+      take: pageSize,
+      orderBy,
+    }),
+    prisma.guide.count({
+      where: {
+        userId: userId,
+        progressStatus: {
+          in: progressStatus,
+        },
       },
     }),
   ]);

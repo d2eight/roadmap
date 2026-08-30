@@ -1,9 +1,14 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 
-export async function getUserIdFromHeaders() {
-  const headersList = await headers();
+export function getUserIdFromHeaders({
+  headersList,
+}: {
+  headersList: ReadonlyHeaders;
+}) {
   const userId = headersList.get('x-user-id');
+
   if (!userId) {
     redirect('/auth/sign-in');
   }

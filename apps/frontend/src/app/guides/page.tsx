@@ -1,31 +1,24 @@
 import { getUserIdFromHeaders } from '../../utils/getUserId';
-import { Guides } from '../../components/custom-ui/Guides';
-import { GuidesContext, GuidesContextProvider } from '@/context/GuidesContext';
-import { SearchParams } from 'next/dist/server/request/search-params';
-import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
-import { getGuidesInPagination } from 'utils';
+import { paramsSchemaType } from 'shared-types';
+import { headers } from 'next/headers';
+import { getParamsFromHeaders } from '@/utils/getParamsFromHeaders';
+import { getGuides } from 'utils';
+import { GuidesContextProvider } from '@/context/GuidesContext';
 import { GuidesFilter } from '@/components/custom-ui/GuidesFilter';
-import { paramsSchema, paramsSchemaType } from 'shared-types';
-import { parseSearchParams } from '@/utils/parseSearchParams';
+import { Guides } from '@/components/custom-ui/Guides';
+import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
 
-export default async function DashboardServerPage({
-  searchParams,
-}: {
-  searchParams: Promise<paramsSchemaType>;
-}) {
-  const userId = await getUserIdFromHeaders();
-  const params = await searchParams;
+export default async function DashboardServerPage() {
+  const headersList = await headers();
 
-  const resolvedParams = parseSearchParams({
-    params,
-  });
-
+  const userId = getUserIdFromHeaders({ headersList });
+  const params = getParamsFromHeaders({ headersList });
   const pageSize = 9;
 
-  const [guides, guidesCount] = await getGuidesInPagination({
-    currentPage: resolvedParams.page,
+  const [guides, guidesCount] = await getGuides({
     pageSize,
     userId,
+    params,
   });
 
   return (

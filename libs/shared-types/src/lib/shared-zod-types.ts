@@ -170,8 +170,8 @@ export type guideStepsSchemaType = z.infer<typeof guideStepsSchema>;
 const progressStatusSchema = z.array(GuideProgressStatusSchema);
 
 export const filterSchema = z.object({
-  sortBy: z.enum(['createdAt', 'updatedAt']).optional(),
-  progressStatus: progressStatusSchema.optional(),
+  orderBy: z.enum(['createdAt', 'updatedAt']),
+  progressStatus: progressStatusSchema,
 });
 
 export type filterSchemaType = z.infer<typeof filterSchema>;
@@ -181,8 +181,7 @@ export const paramsSchema = filterSchema.extend({
   progressStatus: z
     .string()
     .transform((value) => value.split(','))
-    .pipe(progressStatusSchema)
-    .optional(),
+    .pipe(progressStatusSchema),
 });
 
 export type paramsSchemaType = z.infer<typeof paramsSchema>;

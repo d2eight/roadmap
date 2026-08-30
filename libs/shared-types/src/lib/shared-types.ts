@@ -98,13 +98,13 @@ export type GuideStepModelFetched = Prisma.GuideStepGetPayload<{
   };
 }>;
 
-export type SortByOptions = [
+export type OrderByOptions = [
   {
-    value: Extract<filterSchemaType['sortBy'], 'createdAt'>;
+    value: Extract<filterSchemaType['orderBy'], 'createdAt'>;
     label: string | JSX.Element;
   },
   {
-    value: Extract<filterSchemaType['sortBy'], 'updatedAt'>;
+    value: Extract<filterSchemaType['orderBy'], 'updatedAt'>;
     label: string | JSX.Element;
   },
 ];

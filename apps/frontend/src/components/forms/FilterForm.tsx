@@ -4,9 +4,9 @@ import { Controller, useForm } from 'react-hook-form';
 import {
   filterSchema,
   filterSchemaType,
+  OrderByOptions,
   paramsSchema,
   paramsSchemaType,
-  SortByOptions,
 } from 'shared-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -25,26 +25,32 @@ import {
 } from '@/components/ui/field';
 import { FilterProgressGroup } from '@/components/custom-ui/FilterProgressGroup';
 import { searchParamsDefaultValues } from '@/app/constants/searchParamsDefaults';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export function FilterForm() {
-  const params = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const progressStatusParsed = paramsSchema.shape.progressStatus.safeParse(
-    params.get('progressStatus'),
-  );
-  const sortByParsed = paramsSchema.shape.sortBy.safeParse(
-    params.get('sortBy'),
+    searchParams.get('progressStatus'),
   );
 
-  const sortBy = sortByParsed.success
-    ? sortByParsed.data
-    : searchParamsDefaultValues.sortBy;
+  console.log(progressStatusParsed);
+
+  const orderByParsed = paramsSchema.shape.orderBy.safeParse(
+    searchParams.get('orderBy'),
+  );
+
+  const orderBy = orderByParsed.success
+    ? orderByParsed.data
+    : searchParamsDefaultValues.orderBy;
   const progressStatus = progressStatusParsed.success
     ? progressStatusParsed.data
     : searchParamsDefaultValues.progressStatus;
 
   const defaultValues: filterSchemaType = {
-    sortBy,
+    orderBy,
     progressStatus,
   };
 
@@ -53,7 +59,7 @@ export function FilterForm() {
     defaultValues: defaultValues,
   });
 
-  const sortByOptions: SortByOptions = [
+  const orderByOptions: OrderByOptions = [
     {
       value: 'createdAt',
       label: 'Created',
@@ -65,7 +71,14 @@ export function FilterForm() {
   ];
 
   function onSubmit(data: filterSchemaType) {
-    console.log(data);
+    const orderByParams = data.orderBy;
+    const progressStatusParams = data.progressStatus.join(',');
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('orderBy', orderByParams);
+    params.set('progressStatus', progressStatusParams);
+
+    return router.replace(`${pathname}?${params}`, { scroll: false });
   }
 
   return (
@@ -78,7 +91,7 @@ export function FilterForm() {
         <FieldLegend>Filter options:</FieldLegend>
         <Controller
           control={form.control}
-          name="sortBy"
+          name="orderBy"
           render={({ field, fieldState }) => (
             <Field aria-invalid={fieldState.invalid}>
               <FieldLabel>Filter by create\update date:</FieldLabel>
@@ -91,7 +104,7 @@ export function FilterForm() {
                 </SelectTrigger>
                 <SelectContent position="popper">
                   <SelectGroup>
-                    {sortByOptions.map((option, index) => (
+                    {orderByOptions.map((option, index) => (
                       <SelectItem
                         className="cursor-pointer"
                         value={option.value}
