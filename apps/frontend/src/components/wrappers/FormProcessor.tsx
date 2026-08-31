@@ -5,6 +5,7 @@ import {
   Dispatch,
   JSX,
   ReactElement,
+  ReactNode,
   SetStateAction,
   useState,
 } from 'react';
@@ -14,7 +15,7 @@ export const FormProcessingContext = createContext<{
   setProcessingStatus: Dispatch<SetStateAction<boolean>>;
 }>(null!);
 
-export function FormProcessor({ children }: { children: ReactElement }) {
+export function FormProcessor({ children }: { children: ReactNode }) {
   const [processingStatus, setProcessingStatus] = useState<boolean>(false);
 
   return (

@@ -26,8 +26,11 @@ import {
 import { FilterProgressGroup } from '@/components/custom-ui/FilterProgressGroup';
 import { searchParamsDefaultValues } from '@/app/constants/searchParamsDefaults';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useContext } from 'react';
+import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 
 export function FilterForm() {
+  const { setProcessingStatus } = useContext(FormProcessingContext);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -35,8 +38,6 @@ export function FilterForm() {
   const progressStatusParsed = paramsSchema.shape.progressStatus.safeParse(
     searchParams.get('progressStatus'),
   );
-
-  console.log(progressStatusParsed);
 
   const orderByParsed = paramsSchema.shape.orderBy.safeParse(
     searchParams.get('orderBy'),
@@ -71,12 +72,14 @@ export function FilterForm() {
   ];
 
   function onSubmit(data: filterSchemaType) {
+    setProcessingStatus(true);
     const orderByParams = data.orderBy;
     const progressStatusParams = data.progressStatus.join(',');
 
     const params = new URLSearchParams(searchParams.toString());
     params.set('orderBy', orderByParams);
     params.set('progressStatus', progressStatusParams);
+    params.set('page', searchParamsDefaultValues.page.toString());
 
     return router.replace(`${pathname}?${params}`, { scroll: false });
   }

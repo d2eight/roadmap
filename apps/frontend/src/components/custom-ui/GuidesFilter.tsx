@@ -26,10 +26,13 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { PromptForm } from '@/components/forms/promptForm';
-import { FormProcessor } from '@/components/wrappers/FormProcessor';
+import {
+  FormProcessingContext,
+  FormProcessor,
+} from '@/components/wrappers/FormProcessor';
 import { Button } from '@/components/ui/button';
 import { CreateGuideButton } from '@/components/custom-ui/CreateGuideButton';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { GuidesContext } from '@/context/GuidesContext';
 import { useForm } from 'react-hook-form';
 import { FilterForm } from '@/components/forms/FilterForm';
@@ -37,6 +40,12 @@ import { ApplyFiltersButton } from '@/components/custom-ui/ApplyFiltersButton';
 import { useSearchParams } from 'next/navigation';
 
 export function GuidesFilter() {
+  const { setProcessingStatus } = useContext(FormProcessingContext);
+
+  useEffect(() => {
+    setProcessingStatus(false);
+  });
+
   return (
     <div className="sticky top-[50px] z-50">
       <Card>
