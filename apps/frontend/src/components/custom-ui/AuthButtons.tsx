@@ -4,13 +4,22 @@ import { Button } from '../ui/button';
 import Link from 'next/link';
 import { authClient } from '../../lib/auth-client';
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'sonner';
 
-export function AuthButtons() {
+export function AuthButtons({
+  initialAuthStatus,
+}: {
+  initialAuthStatus: boolean;
+}) {
   const router = useRouter();
-  const { data, refetch, error, isPending } = useContext(AuthContext);
+  const [authStatus, setAuthStatus] = useState<boolean>(initialAuthStatus);
+  const { data, error } = useContext(AuthContext);
+
+  useEffect(() => {
+    data ? setAuthStatus(true) : setAuthStatus(false);
+  }, [data]);
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -22,13 +31,9 @@ export function AuthButtons() {
     }
   };
 
-  if (isPending) {
-    return null;
-  }
-
   return (
     <>
-      {data ? (
+      {authStatus ? (
         <Button onClick={handleSignOut} variant="destructive">
           Sign Out
         </Button>

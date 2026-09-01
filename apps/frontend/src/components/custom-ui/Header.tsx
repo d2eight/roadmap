@@ -5,15 +5,17 @@ import { Button } from '../ui/button';
 import { authClient } from '../../lib/auth-client';
 import { headers } from 'next/headers';
 import { AuthButtons } from './AuthButtons';
-import verifySession from '@/middlewares/auth';
-import { BetterAuthSession } from 'shared-types';
-import { auth } from 'auth';
+import { getUserIdFromHeaders } from '@/utils/getUserId';
 
 export async function Header() {
+  const headersList = await headers();
+  const userId = getUserIdFromHeaders({ headersList });
+  const initialAuthStatus = userId ? true : false;
+
   return (
     <header className="fixed top-0 left-0 right-0 w-full h-[70px] bg-white shadow-md z-50">
       <div className="px-[20px] flex items-center justify-between h-full">
-        <img src="../../../public/logo.png" alt="logo" />
+        <img alt="logo" />
         <div>
           <Button asChild variant="link">
             <Link href="/">Home</Link>
@@ -26,7 +28,7 @@ export async function Header() {
           </Button>
         </div>
         <div className="flex items-center gap-2">
-          <AuthButtons />
+          <AuthButtons initialAuthStatus={initialAuthStatus} />
         </div>
       </div>
     </header>

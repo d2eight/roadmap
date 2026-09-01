@@ -5,7 +5,7 @@ import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/he
 export function getUserIdFromHeaders({
   headersList,
 }: {
-  headersList: ReadonlyHeaders;
+  headersList: Headers;
 }) {
   const userId = headersList.get('x-user-id');
 
