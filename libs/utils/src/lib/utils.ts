@@ -6,7 +6,6 @@ import {
   paramsSchemaType,
   promptSchemaType,
 } from 'shared-types';
-import { GuideProgressStatus } from '@/libs/db/generated/prisma/enums';
 
 export async function getGuide(userId: string, guideId: string) {
   return prisma.guide.findUnique({

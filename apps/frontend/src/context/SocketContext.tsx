@@ -6,6 +6,7 @@ import {
   ReactNode,
   SetStateAction,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -14,7 +15,6 @@ import { GuideModelWithRelations } from 'shared-types';
 import { GuidesContext } from './GuidesContext';
 
 export const SocketContext = createContext<{
-  socket: Socket;
   socketGuideData: GuideModelWithRelations;
 }>(null!);
 
@@ -26,22 +26,26 @@ export const SocketContextProvider = ({
   const [socketGuideData, setSocketGuideData] =
     useState<GuideModelWithRelations>(null!);
 
-  const socket = useMemo(
-    () =>
-      io('http://localhost:3333', {
-        withCredentials: true,
-      }),
-    [],
-  );
+  useEffect(() => {
+    const socket = io('http://localhost:3333', {
+      withCredentials: true,
+    });
 
-  socket.on('guide_update', (data: GuideModelWithRelations) => {
-    setSocketGuideData(data);
-  });
+    const handleGuideUpdate = (data: GuideModelWithRelations) => {
+      setSocketGuideData(data);
+    };
+
+    socket.on('guide_update', handleGuideUpdate);
+
+    return () => {
+      socket.off('guide_update', handleGuideUpdate);
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <SocketContext
       value={{
-        socket,
         socketGuideData,
       }}
     >

@@ -4,8 +4,7 @@ import cors from 'cors';
 import { fromNodeHeaders, toNodeHandler } from 'better-auth/node';
 import { auth } from 'auth';
 import { guidesRouter } from './features/guides/guides.routes';
-import Redis from 'ioredis';
-import { Queue } from 'bullmq';
+import { Queue, Worker } from 'bullmq';
 import initWorkers from './workers/workers';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
@@ -19,7 +18,6 @@ export const io = new Server(server, {
   },
 });
 
-export const redis = new Redis();
 export const guideGenerationQueue = new Queue('guideGenerationQueue');
 export const guideQuestionsGenerationQueue = new Queue(
   'guideQuestionsGenerationQueue',

@@ -7,7 +7,6 @@ import { Dispatch, JSX, SetStateAction } from 'react';
 import { BetterFetchError } from '@better-fetch/fetch';
 import { Socket } from 'socket.io-client';
 import { Prisma } from 'database';
-import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 import { ApiError } from './shared-classes';
 
 import { GuideStatus } from 'database/enums';

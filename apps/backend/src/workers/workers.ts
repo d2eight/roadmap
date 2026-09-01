@@ -4,16 +4,20 @@ import { aiCreateGuideQuestions } from './workersFunctions/aiCreateGuideQuestion
 import { aiCreateGuide } from './workersFunctions/aiCreateGuide';
 
 export default function initWorkers() {
+  const connection = {
+    host: 'localhost',
+    port: 6379,
+    maxRetriesPerRequest: null,
+    enableReadyCheck: false,
+  };
+
   const guideGenerationWorker = new Worker(
     'guideGenerationQueue',
     async (job: Job<GuideJob>) => {
       await aiCreateGuide(job);
     },
     {
-      connection: {
-        host: 'localhost',
-        port: 6379,
-      },
+      connection,
     },
   );
 
@@ -23,10 +27,7 @@ export default function initWorkers() {
       await aiCreateGuideQuestions(job);
     },
     {
-      connection: {
-        host: 'localhost',
-        port: 6379,
-      },
+      connection,
     },
   );
 }

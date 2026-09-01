@@ -4,12 +4,16 @@ import {
   answeredQuestionsSchemaType,
   ApiResponse,
   GuideModelWithRelations,
+  paramsSchemaType,
   promptSchemaType,
 } from 'shared-types';
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import { io } from '../../main';
 import { authMiddleware } from '../../middlewares/auth';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
+import { getGuides } from 'utils';
+import { searchParamsDefaultValues } from '@/apps/frontend/src/app/constants/searchParamsDefaults';
+import js from '@eslint/js';
 
 export async function createGuideBasic(
   req: express.Request,
@@ -93,7 +97,8 @@ export async function createGuideAnsweredQuestions(
   res: express.Response,
   next: express.NextFunction,
 ) {
-  const answeredQuestions: answeredQuestionsSchemaType = res.locals.answeredQuestions;
+  const answeredQuestions: answeredQuestionsSchemaType =
+    res.locals.answeredQuestions;
   const userId: string = res.locals.userId;
   const guideId: string = req.params.guideId as string;
   const prompt: string = res.locals.prompt;
@@ -122,13 +127,30 @@ export async function createGuideAnsweredQuestions(
 export async function removeGuide(req: express.Request, res: express.Response) {
   const userId: string = res.locals.userId;
   const guideId = req.params.guideId as string;
+  const params: paramsSchemaType = res.locals.params;
 
   try {
     await guidesService.remove(guideId, userId);
-    return res.status(200).json({
+
+    const response = res.status(200);
+
+    const jsonResponse = {
       success: true,
       data: guideId,
-    });
+    };
+
+    if (params) {
+      const guides = await getGuides({
+        pageSize: 9,
+        userId: userId,
+        params: params,
+      });
+      jsonResponse['guides'] = guides;
+    }
+
+    response.json(jsonResponse);
+
+    return response;
   } catch (error) {
     console.error('Failed to delete guide:', error);
 
@@ -147,7 +169,7 @@ export async function updateGuide(req: express.Request, res: express.Response) {
     return res.status(200).json({
       success: true,
       data: steps,
-    })
+    });
   } catch (error) {
     console.error('Failed to update guide:', error);
 

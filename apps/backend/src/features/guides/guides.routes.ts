@@ -11,6 +11,7 @@ import { promptValidationMiddleware } from '../../middlewares/prompt';
 import { guideMiddleware } from '../../middlewares/guide';
 import { questionsValidationMiddleware } from '../../middlewares/promptWithQuestions';
 import { stepsValidationMiddleware } from '../../middlewares/steps';
+import { searchParamsMiddleware } from '@/apps/backend/src/middlewares/searchParams';
 
 export const guidesRouter = express.Router();
 
@@ -36,7 +37,12 @@ guidesRouter.post(
   createGuideAnsweredQuestions,
 );
 
-guidesRouter.delete('/api/remove-guide/:guideId', authMiddleware, removeGuide);
+guidesRouter.delete(
+  '/api/remove-guide/:guideId',
+  authMiddleware,
+  searchParamsMiddleware,
+  removeGuide,
+);
 
 guidesRouter.put(
   '/api/update-guide-progress/:guideId',
@@ -44,4 +50,3 @@ guidesRouter.put(
   stepsValidationMiddleware,
   updateGuide,
 );
-

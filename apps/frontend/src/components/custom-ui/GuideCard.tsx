@@ -40,7 +40,7 @@ import { Guides } from '@/components/custom-ui/Guides';
 import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
 import { useSearchParams } from 'next/navigation';
 import { AuthContext } from '@/context/AuthContext';
-import { ApiError } from 'shared-types';
+import { ApiError, paramsSchema } from 'shared-types';
 import {
   Tooltip,
   TooltipContent,
@@ -53,30 +53,34 @@ import { GuideCardAction } from '@/components/custom-ui/GuideCardAction';
 import { GuideCardHeader } from '@/components/custom-ui/GuideCardHeader';
 import { GuideCardContent } from '@/components/custom-ui/GuideCardContent';
 import { GuideCardFooter } from '@/components/custom-ui/GuideCardFooter';
+import { getDefaultSearchParams } from '@/utils/getDefaultSearchParams';
 
 export function GuideCard() {
   const { guide } = useContext(GuideContext);
-  const { setGuides, setGuidesCount } = useContext(GuidesContext);
-  const { data } = useContext(AuthContext);
+  const { guides, setGuides, setGuidesCount } = useContext(GuidesContext);
   const searchParams = useSearchParams();
-  const currentPage = searchParams.get('page') ?? '1';
 
   const { mutate } = useMutation({
     mutationFn: removeGuide,
-    onSuccess: async () => {
-      const [guides, guidesCount] = await getGuidesInPagination({
-        currentPage: parseInt(currentPage),
-        pageSize: 9,
-        userId: data!.user.id,
-      });
-      setGuides(guides);
-      setGuidesCount(guidesCount);
+    onSuccess: (response) => {
+      const { data, newGuides } = response;
+
+      if (newGuides) {
+        setGuides(newGuides[0]);
+        setGuidesCount(newGuides[1]);
+      }
     },
   });
 
   async function removeGuide() {
+    const parsedParams = paramsSchema.safeParse(searchParams);
+
+    const params = parsedParams.success
+      ? searchParams
+      : getDefaultSearchParams({ searchParams });
+
     const response = await fetch(
-      `http://localhost:3333/api/remove-guide/${guide.id}`,
+      `http://localhost:3333/api/remove-guide/${guide.id}?${params}`,
       {
         method: 'DELETE',
         credentials: 'include',
@@ -84,6 +88,8 @@ export function GuideCard() {
     );
 
     const body = await response.json();
+
+    console.log(body);
 
     if (!response.ok && !body.success) {
       throw new ApiError(
