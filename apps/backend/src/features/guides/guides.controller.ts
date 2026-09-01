@@ -2,18 +2,11 @@ import express from 'express';
 import * as guidesService from './guides.service';
 import {
   answeredQuestionsSchemaType,
-  ApiResponse,
-  GuideModelWithRelations,
   paramsSchemaType,
   promptSchemaType,
 } from 'shared-types';
-import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
-import { io } from '../../main';
-import { authMiddleware } from '../../middlewares/auth';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 import { getGuides } from 'utils';
-import { searchParamsDefaultValues } from '@/apps/frontend/src/app/constants/searchParamsDefaults';
-import js from '@eslint/js';
 
 export async function createGuideBasic(
   req: express.Request,

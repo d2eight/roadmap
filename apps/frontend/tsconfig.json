@@ -5,6 +5,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "shared-types": ["../../libs/shared-types/src/index.ts"],
+      "shared-constants": ["../../libs/shared-constants/src/index.ts"],
       "auth": ["../../libs/auth/src/index.ts"],
       "database": ["../../libs/db/src/index.ts"],
       "database/schemas": ["../../libs/db/src/schemas.ts"],

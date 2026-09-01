@@ -5,7 +5,7 @@ import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
 import { GuideProgressStatus } from 'database/enums';
 import { FilterProgressButton } from '@/components/custom-ui/FilterProgressButton';
 import { Field, FieldLabel } from '@/components/ui/field';
-import { searchParamsDefaultValues } from '@/app/constants/searchParamsDefaults';
+import { searchParamsDefaultValues } from 'shared-constants';
 
 export function FilterProgressGroup({
   form,

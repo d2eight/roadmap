@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 
 export function AuthButtons() {
   const router = useRouter();
-  const { data, refetch, error } = useContext(AuthContext);
+  const { data, refetch, error, isPending } = useContext(AuthContext);
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -21,6 +21,10 @@ export function AuthButtons() {
       router.push('auth/sign-in');
     }
   };
+
+  if (isPending) {
+    return null;
+  }
 
   return (
     <>

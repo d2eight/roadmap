@@ -5,6 +5,9 @@ import { Button } from '../ui/button';
 import { authClient } from '../../lib/auth-client';
 import { headers } from 'next/headers';
 import { AuthButtons } from './AuthButtons';
+import verifySession from '@/middlewares/auth';
+import { BetterAuthSession } from 'shared-types';
+import { auth } from 'auth';
 
 export async function Header() {
   return (

@@ -1,6 +1,6 @@
 import express, { NextFunction } from 'express';
 import { paramsSchema } from 'shared-types';
-import { searchParamsDefaultValues } from '@/apps/frontend/src/app/constants/searchParamsDefaults';
+import { searchParamsDefaultValues } from 'shared-constants';
 
 export function searchParamsMiddleware(
   req: express.Request,

@@ -24,7 +24,7 @@ import {
   FieldSet,
 } from '@/components/ui/field';
 import { FilterProgressGroup } from '@/components/custom-ui/FilterProgressGroup';
-import { searchParamsDefaultValues } from '@/app/constants/searchParamsDefaults';
+import { searchParamsDefaultValues } from 'shared-constants';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useContext } from 'react';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';

@@ -1,4 +1,4 @@
-import { searchParamsDefaultValues } from '@/app/constants/searchParamsDefaults';
+import { searchParamsDefaultValues } from 'shared-constants';
 
 export function getDefaultSearchParams({
   searchParams,
