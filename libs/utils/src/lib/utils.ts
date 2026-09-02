@@ -1,11 +1,5 @@
-'use server';
-
 import { prisma } from 'database';
-import {
-  filterSchemaType,
-  paramsSchemaType,
-  promptSchemaType,
-} from 'shared-types';
+import { paramsSchemaType } from 'shared-types';
 
 export async function getGuide(userId: string, guideId: string) {
   return prisma.guide.findUnique({
@@ -37,37 +31,6 @@ export async function createEmptyGuide(userPrompt: string, userId: string) {
       userId: userId,
     },
   });
-}
-
-export async function getGuidesInPagination({
-  currentPage,
-  pageSize,
-  userId,
-}: {
-  currentPage: number;
-  pageSize: number;
-  userId: string;
-}) {
-  return prisma.$transaction([
-    prisma.guide.findMany({
-      where: {
-        userId: userId,
-      },
-      include: {
-        steps: true,
-      },
-      skip: (currentPage - 1) * pageSize,
-      take: pageSize,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    }),
-    prisma.guide.count({
-      where: {
-        userId: userId,
-      },
-    }),
-  ]);
 }
 
 export async function getGuides({

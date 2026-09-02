@@ -20,6 +20,10 @@ import { NextPagePaginationItem } from '@/components/custom-ui/NextPagePaginatio
 export function GuidesPagination({ pageSize }: { pageSize: number }) {
   const { guidesCount } = useContext(GuidesContext);
 
+  if (!guidesCount) {
+    return '';
+  }
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const currentPage = Number(searchParams.get('page') ?? 1);

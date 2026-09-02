@@ -25,7 +25,7 @@ export default async function DashboardServerPage({
   const params = await searchParams;
 
   const userId = getUserIdFromHeaders({ headersList });
-  const pageSize = 9;
+  const pageSize = 1;
   const orderBy = params.orderBy;
   const page = params.page;
   const progressStatus = params.progressStatus.split(

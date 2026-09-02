@@ -10,10 +10,6 @@ import {
   useState,
 } from 'react';
 import { GuideModelWithRelations } from 'shared-types';
-import { useQuery } from '@tanstack/react-query';
-import { getGuidesInPagination } from 'utils';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { AuthContext } from '@/context/AuthContext';
 
 export const GuidesContext = createContext<{
   guides: GuideModelWithRelations[];

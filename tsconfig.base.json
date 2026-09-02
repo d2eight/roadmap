@@ -24,6 +24,7 @@
       "validation": ["./libs/validation/src/index.ts"],
       "@/*": ["./*"],
       "utils": ["./libs/utils/src/index.ts"],
+      "utils/client": ["./libs/utils/src/index-client.ts"],
       "shared-constants": ["./libs/shared-constants/src/index.ts"]
     }
   },

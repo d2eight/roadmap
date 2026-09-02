@@ -12,6 +12,7 @@
       "database/models": ["../../libs/db/src/models.ts"],
       "database/enums": ["../../libs/db/src/enums.ts"],
       "utils": ["../../libs/utils/src/index.ts"],
+      "utils/client": ["../../libs/utils/src/index-client.ts"],
       "validation": ["../../libs/validation/src/index.ts"]
     },
     "jsx": "preserve",

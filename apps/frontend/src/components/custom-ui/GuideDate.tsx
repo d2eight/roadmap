@@ -8,12 +8,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { LucideCalendarDays, LucideNotebookPen } from 'lucide-react';
 
-export function GuideDate({
-  guideDate
-}: {
-  guideDate: Date
-}) {
-
+export function GuideDate({ guideDate }: { guideDate: Date }) {
+  console.log(guideDate);
   return (
     <Tooltip>
       <TooltipTrigger>

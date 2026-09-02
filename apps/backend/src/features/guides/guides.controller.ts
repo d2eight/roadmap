@@ -121,7 +121,6 @@ export async function removeGuide(req: express.Request, res: express.Response) {
   const userId: string = res.locals.userId;
   const guideId = req.params.guideId as string;
   const params: paramsSchemaType = res.locals.params;
-
   try {
     await guidesService.remove(guideId, userId);
 
@@ -134,7 +133,7 @@ export async function removeGuide(req: express.Request, res: express.Response) {
 
     if (params) {
       const guides = await getGuides({
-        pageSize: 9,
+        pageSize: 1,
         userId: userId,
         params: params,
       });
