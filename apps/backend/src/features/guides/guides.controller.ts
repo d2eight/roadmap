@@ -133,7 +133,7 @@ export async function removeGuide(req: express.Request, res: express.Response) {
 
     if (params) {
       const guides = await getGuides({
-        pageSize: 1,
+        pageSize: 9,
         userId: userId,
         params: params,
       });
