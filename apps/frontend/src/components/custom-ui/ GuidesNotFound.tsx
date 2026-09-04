@@ -13,6 +13,7 @@ import { Button } from '../ui/button';
 import { CreateGuideButton } from '@/components/custom-ui/CreateGuideButton';
 import { useContext } from 'react';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
+import { DialogContextProvider } from '@/context/DialogContext';
 
 export function GuidesNotFound() {
   const createGuideCustomButton = (
@@ -33,7 +34,9 @@ export function GuidesNotFound() {
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <CreateGuideButton button={createGuideCustomButton} />
+        <DialogContextProvider>
+          <CreateGuideButton button={createGuideCustomButton} />
+        </DialogContextProvider>
       </EmptyContent>
     </Empty>
   );

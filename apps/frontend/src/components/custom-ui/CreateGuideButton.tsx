@@ -10,19 +10,26 @@ import { Button } from '@/components/ui/button';
 import { LucidePlus } from 'lucide-react';
 import { FormProcessor } from '@/components/wrappers/FormProcessor';
 import { PromptForm } from '@/components/forms/promptForm';
-import { JSX } from 'react';
+import { Dispatch, JSX, SetStateAction, useContext } from 'react';
+import { DialogContext } from '@/context/DialogContext';
 
 export function CreateGuideButton({ button }: { button?: JSX.Element }) {
+  const { dialogStatus, setDialogStatus } = useContext(DialogContext);
+
   if (!button) {
     button = (
-      <Button className="cursor-pointer" size="icon-lg">
+      <Button
+        className="cursor-pointer"
+        size="icon-lg"
+        onClick={() => setDialogStatus(true)}
+      >
         <LucidePlus />
       </Button>
     );
   }
 
   return (
-    <Dialog>
+    <Dialog open={dialogStatus} onOpenChange={setDialogStatus}>
       <DialogTrigger asChild>
         <div>
           <Tooltip>

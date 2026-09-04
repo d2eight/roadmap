@@ -42,6 +42,11 @@ export type AuthContextType = {
   error: BetterFetchError | null;
 };
 
+export type DialogContextType = {
+  dialogStatus: boolean;
+  setDialogStatus: Dispatch<SetStateAction<boolean>>;
+};
+
 export type GuideContextType =
   | {
       guide: GuideModelWithRelations;

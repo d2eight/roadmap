@@ -27,10 +27,13 @@ import { FormProcessingContext } from '../wrappers/FormProcessor';
 import { toast } from 'sonner';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
 import { Textarea } from '@/components/ui/textarea';
+import { DialogContext } from '@/context/DialogContext';
+import { guidesPageDefaultUrlString } from 'shared-constants';
 
 export function PromptForm() {
   const router = useRouter();
   const { setProcessingStatus } = useContext(FormProcessingContext);
+  const dialog = useContext(DialogContext);
 
   const form = useForm<promptSchemaType>({
     resolver: zodResolver(promptSchema),
@@ -45,11 +48,17 @@ export function PromptForm() {
     mutationFn: createGuide,
     onSuccess: async (newGuideId) => {
       setProcessingStatus(false);
-      router.push(`/guides/${newGuideId}`);
+      if (dialog) {
+        dialog.setDialogStatus(false);
+        router.push(guidesPageDefaultUrlString);
+      } else {
+        router.push(`/guides/${newGuideId}`);
+      }
       toast.success('Successfully initiated to create guide');
     },
     onError: async (error: ApiError) => {
       setProcessingStatus(false);
+      toast.error('Failed to create a guide, try again');
       handleApiFormError(error, router, form);
     },
   });

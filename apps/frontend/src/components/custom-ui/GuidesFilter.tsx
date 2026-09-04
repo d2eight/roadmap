@@ -32,12 +32,13 @@ import {
 } from '@/components/wrappers/FormProcessor';
 import { Button } from '@/components/ui/button';
 import { CreateGuideButton } from '@/components/custom-ui/CreateGuideButton';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { GuidesContext } from '@/context/GuidesContext';
 import { useForm } from 'react-hook-form';
 import { FilterForm } from '@/components/forms/FilterForm';
 import { ApplyFiltersButton } from '@/components/custom-ui/ApplyFiltersButton';
 import { useSearchParams } from 'next/navigation';
+import { DialogContextProvider } from '@/context/DialogContext';
 
 export function GuidesFilter() {
   const { setProcessingStatus } = useContext(FormProcessingContext);
@@ -55,7 +56,9 @@ export function GuidesFilter() {
           </CardTitle>
           <CardAction className="flex flex-row gap-[10px]">
             <ApplyFiltersButton />
-            <CreateGuideButton />
+            <DialogContextProvider>
+              <CreateGuideButton />
+            </DialogContextProvider>
           </CardAction>
         </CardHeader>
       </Card>
