@@ -29,6 +29,7 @@ import { RedAlert } from '@/components/custom-ui/RedAlert';
 import { Textarea } from '@/components/ui/textarea';
 import { DialogContext } from '@/context/DialogContext';
 import { guidesPageDefaultUrlString } from 'shared-constants';
+import { Switch } from '@/components/ui/switch';
 
 export function PromptForm() {
   const router = useRouter();
@@ -151,7 +152,7 @@ export function PromptForm() {
                   <FieldLabel className="cursor-pointer" htmlFor={field.name}>
                     External ai questions, for improving your prompt*
                   </FieldLabel>
-                  <Checkbox
+                  <Switch
                     id={field.name}
                     checked={field.value}
                     onCheckedChange={field.onChange}
