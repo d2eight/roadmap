@@ -3,7 +3,13 @@
 import { useFormState } from 'react-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { ApiError, userSignUpSchema, userSignUpSchemaType } from 'shared-types';
-import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field';
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '../ui/field';
 import { Input } from '../ui/input';
 import {
   Card,
@@ -28,10 +34,9 @@ import { handleApiFormError } from '@/utils/apiErrorsHandler';
 
 export function SignUpForm() {
   const router = useRouter();
-  const { setProcessingStatus } = useContext(
+  const { processingStatus, setProcessingStatus } = useContext(
     FormProcessingContext,
   );
-  const { refetch, error } = useContext(AuthContext);
 
   const form = useForm<userSignUpSchemaType>({
     resolver: zodResolver(userSignUpSchema),
@@ -59,6 +64,12 @@ export function SignUpForm() {
   });
 
   async function signUp(formData: userSignUpSchemaType) {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve('Cookie is ready! 🍪');
+      }, 2000);
+    });
+
     const response = await authClient.signUp.email({
       name: formData.name,
       email: formData.email,
@@ -66,7 +77,9 @@ export function SignUpForm() {
     });
 
     if (response.error) {
-      const message = response.error.message || "Something went wrong, user was not registered!";
+      const message =
+        response.error.message ||
+        'Something went wrong, user was not registered!';
       throw new ApiError(response.error.status, message);
     }
 
@@ -86,7 +99,7 @@ export function SignUpForm() {
       </CardHeader>
       <CardContent>
         <form id="sign-up-form" onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
+          <FieldSet disabled={processingStatus}>
             <Controller
               control={form.control}
               name="name"
@@ -163,7 +176,7 @@ export function SignUpForm() {
                 </Field>
               )}
             />
-          </FieldGroup>
+          </FieldSet>
         </form>
       </CardContent>
       <CardContent>
@@ -176,11 +189,7 @@ export function SignUpForm() {
       </CardContent>
       <CardFooter>
         <Field>
-          <Button
-            disabled={form.formState.isSubmitting}
-            type="submit"
-            form="sign-up-form"
-          >
+          <Button disabled={processingStatus} type="submit" form="sign-up-form">
             Submit
           </Button>
         </Field>

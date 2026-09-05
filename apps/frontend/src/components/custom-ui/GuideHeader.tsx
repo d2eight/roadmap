@@ -17,9 +17,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 
 export function GuideHeader() {
   const { guide, completedSteps } = useContext(GuideContext);
+  const { processingStatus } = useContext(FormProcessingContext);
 
   return (
     <>
@@ -28,7 +30,12 @@ export function GuideHeader() {
           <h1>{guide.title}</h1>
         </CardTitle>
         <CardAction>
-          <Button form="guide-form" type="submit" className="w-[200px]">
+          <Button
+            form="guide-form"
+            type="submit"
+            disabled={processingStatus}
+            className="w-[200px]"
+          >
             Update Progress
           </Button>
         </CardAction>

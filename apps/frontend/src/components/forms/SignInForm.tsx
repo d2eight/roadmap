@@ -3,7 +3,13 @@
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ApiError, userSignInSchema, userSignInSchemaType } from 'shared-types';
-import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field';
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from '../ui/field';
 import { Input } from '../ui/input';
 import {
   Card,
@@ -28,7 +34,7 @@ import { handleApiFormError } from '@/utils/apiErrorsHandler';
 
 export function SignInForm() {
   const router = useRouter();
-  const { setProcessingStatus } = useContext(
+  const { processingStatus, setProcessingStatus } = useContext(
     FormProcessingContext,
   );
 
@@ -55,6 +61,11 @@ export function SignInForm() {
   });
 
   async function signIn(formData: userSignInSchemaType) {
+    // await new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve('Cookie is ready! 🍪');
+    //   }, 2000);
+    // });
     const response = await authClient.signIn.email({
       email: formData.email,
       password: formData.password,
@@ -83,7 +94,7 @@ export function SignInForm() {
       </CardHeader>
       <CardContent>
         <form id="sign-in-form" onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
+          <FieldSet disabled={processingStatus}>
             <Controller
               control={form.control}
               name="email"
@@ -130,7 +141,7 @@ export function SignInForm() {
                 );
               }}
             />
-          </FieldGroup>
+          </FieldSet>
         </form>
       </CardContent>
       <CardContent>
@@ -143,9 +154,10 @@ export function SignInForm() {
       </CardContent>
       <CardFooter>
         <Button
-          disabled={form.formState.isSubmitting}
+          disabled={processingStatus}
           form="sign-in-form"
           type="submit"
+          className="w-full"
         >
           Sign In
         </Button>

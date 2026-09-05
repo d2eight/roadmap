@@ -14,6 +14,7 @@ export default async function verifySession({
   });
 
   if (!session) {
+    console.log(session);
     return NextResponse.redirect(new URL('/auth/sign-in', request.url));
   }
 

@@ -37,7 +37,9 @@ import { Textarea } from '@/components/ui/textarea';
 
 export default function GuideQuestionsForm() {
   const { guide } = useContext(GuideContext);
-  const { setProcessingStatus } = useContext(FormProcessingContext);
+  const { processingStatus, setProcessingStatus } = useContext(
+    FormProcessingContext,
+  );
 
   const router = useRouter();
 
@@ -146,56 +148,52 @@ export default function GuideQuestionsForm() {
       <form id="guide-questions" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="mt-[50px] flex flex-col gap-[30px]">
           <Separator />
-          <FieldSet className="gap-6!">
-            <FieldLegend>{questionABCD}</FieldLegend>
-            <FieldDescription>Choose one answer from below:</FieldDescription>
-            <Controller
-              control={form.control}
-              name="questionABCD"
-              render={({ field, fieldState }) => (
-                <RadioGroup
-                  name={field.name}
-                  value={field.value}
-                  className="gap-7"
-                  onValueChange={(value) => {
-                    field.onChange(value);
-                  }}
-                >
-                  {questionABCDOptions.map((abcdOption, index) => {
-                    return (
-                      <Field
-                        key={`abcd-${index}`}
-                        data-invalid={fieldState.invalid}
-                        orientation="horizontal"
-                        className="hover:bg-accent rounded-[10px]"
-                      >
-                        <FieldLabel
-                          className="rounded-[10px] p-[10px] flex justify-between cursor-pointer"
-                          htmlFor={`abcdOption-${abcdOption}`}
+          <FieldSet disabled={processingStatus}>
+            <FieldSet className="gap-6!">
+              <FieldLegend>{questionABCD}</FieldLegend>
+              <FieldDescription>Choose one answer from below:</FieldDescription>
+              <Controller
+                control={form.control}
+                name="questionABCD"
+                render={({ field, fieldState }) => (
+                  <RadioGroup
+                    name={field.name}
+                    value={field.value}
+                    className="gap-7"
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                    }}
+                  >
+                    {questionABCDOptions.map((abcdOption, index) => {
+                      return (
+                        <Field
+                          key={`abcd-${index}`}
+                          data-invalid={fieldState.invalid}
+                          orientation="horizontal"
+                          className="hover:bg-accent rounded-[10px]"
                         >
-                          {abcdOption}
-                          <RadioGroupItem
-                            id={`abcdOption-${abcdOption}`}
-                            value={abcdOption}
-                            aria-invalid={fieldState.invalid}
-                          />
-                        </FieldLabel>
-                      </Field>
-                    );
-                  })}
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </RadioGroup>
-              )}
-            />
-          </FieldSet>
-          <Separator />
-          <FieldSet>
-            <FieldLegend>{questionRange}</FieldLegend>
-            <FieldDescription>
-              Choose value on slider from 1 to 100 range:
-            </FieldDescription>
+                          <FieldLabel
+                            className="rounded-[10px] p-[10px] flex justify-between cursor-pointer"
+                            htmlFor={`abcdOption-${abcdOption}`}
+                          >
+                            {abcdOption}
+                            <RadioGroupItem
+                              id={`abcdOption-${abcdOption}`}
+                              value={abcdOption}
+                              aria-invalid={fieldState.invalid}
+                            />
+                          </FieldLabel>
+                        </Field>
+                      );
+                    })}
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </RadioGroup>
+                )}
+              />
+            </FieldSet>
+            <Separator />
             <Controller
               control={form.control}
               name="questionRange"
@@ -203,6 +201,10 @@ export default function GuideQuestionsForm() {
                 return (
                   <>
                     <Field data-invalid={fieldState.invalid}>
+                      <FieldLegend>{questionRange}</FieldLegend>
+                      <FieldDescription>
+                        Choose value on slider from 1 to 100 range:
+                      </FieldDescription>
                       <div className="flex flex-col gap-[20px]">
                         <div className="block text-center">
                           <span className="text-muted-foreground">
@@ -212,6 +214,7 @@ export default function GuideQuestionsForm() {
                         </div>
                         <div>
                           <Slider
+                            disabled={processingStatus}
                             defaultValue={[0]}
                             onValueChange={(v) => {
                               field.onChange(v[0]);
@@ -231,80 +234,78 @@ export default function GuideQuestionsForm() {
                 );
               }}
             />
-          </FieldSet>
-          <Separator />
-          <FieldSet>
-            <FieldLegend>{questionCheckbox}</FieldLegend>
-            <FieldDescription>
-              Choose at least 1 (or more), options from below:
-            </FieldDescription>
+            <Separator />
+            <FieldSet>
+              <FieldLegend>{questionCheckbox}</FieldLegend>
+              <FieldDescription>
+                Choose at least 1 (or more), options from below:
+              </FieldDescription>
+              <Controller
+                control={form.control}
+                name="questionCheckbox"
+                render={({ field, fieldState }) => (
+                  <FieldGroup>
+                    {questionCheckboxOptions.map((checkboxOption, index) => {
+                      return (
+                        <Field
+                          key={`checkbox-${index}`}
+                          data-invalid={fieldState.invalid}
+                          orientation="horizontal"
+                          className="hover:bg-accent rounded-[10px]"
+                        >
+                          <FieldLabel
+                            className="rounded-[10px] p-[10px] flex justify-between cursor-pointer"
+                            htmlFor={`checkbox-${checkboxOption}`}
+                          >
+                            {checkboxOption}
+                            <Checkbox
+                              id={`checkbox-${checkboxOption}`}
+                              name={field.name}
+                              checked={field.value.includes(checkboxOption)}
+                              onCheckedChange={(checked) => {
+                                const newValue = checked
+                                  ? [...field.value, checkboxOption]
+                                  : field.value.filter(
+                                      (value) => value !== checkboxOption,
+                                    );
+                                field.onChange(newValue);
+                              }}
+                              aria-invalid={fieldState.invalid}
+                            />
+                          </FieldLabel>
+                        </Field>
+                      );
+                    })}
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </FieldGroup>
+                )}
+              />
+            </FieldSet>
+            <Separator />
             <Controller
               control={form.control}
-              name="questionCheckbox"
+              name="questionText"
               render={({ field, fieldState }) => (
-                <FieldGroup>
-                  {questionCheckboxOptions.map((checkboxOption, index) => {
-                    return (
-                      <Field
-                        key={`checkbox-${index}`}
-                        data-invalid={fieldState.invalid}
-                        orientation="horizontal"
-                        className="hover:bg-accent rounded-[10px]"
-                      >
-                        <FieldLabel
-                          className="rounded-[10px] p-[10px] flex justify-between cursor-pointer"
-                          htmlFor={`checkbox-${checkboxOption}`}
-                        >
-                          {checkboxOption}
-                          <Checkbox
-                            id={`checkbox-${checkboxOption}`}
-                            name={field.name}
-                            checked={field.value.includes(checkboxOption)}
-                            onCheckedChange={(checked) => {
-                              const newValue = checked
-                                ? [...field.value, checkboxOption]
-                                : field.value.filter(
-                                    (value) => value !== checkboxOption,
-                                  );
-                              field.onChange(newValue);
-                            }}
-                            aria-invalid={fieldState.invalid}
-                          />
-                        </FieldLabel>
-                      </Field>
-                    );
-                  })}
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLegend>{questionText}</FieldLegend>
+                  <FieldDescription>
+                    Write your answer in the section below:
+                  </FieldDescription>
+                  <Textarea
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="I wanna..."
+                  />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
-                </FieldGroup>
+                </Field>
               )}
             />
           </FieldSet>
-          <Separator />
-          <FieldSet>
-            <FieldLegend>{questionText}</FieldLegend>
-            <FieldDescription>
-              Write your answer in the section below:
-            </FieldDescription>
-          </FieldSet>
-          <Controller
-            control={form.control}
-            name="questionText"
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <Textarea
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="I wanna..."
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
           {form.formState.errors.root?.serverError && (
             <div>
               <Separator />

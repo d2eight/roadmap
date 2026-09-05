@@ -5,9 +5,11 @@ import { Button } from '@/components/ui/button';
 import { CompletedSteps } from '@/components/custom-ui/CompletedSteps';
 import { GuideDate } from '@/components/custom-ui/GuideDate';
 import { QuestionsCount } from '@/components/custom-ui/QuestionsCount';
+import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 
 export function GuideQuestionsHeader() {
   const { guide, questionsCount } = useContext(GuideContext);
+  const { processingStatus } = useContext(FormProcessingContext);
 
   return (
     <>
@@ -16,6 +18,7 @@ export function GuideQuestionsHeader() {
         <Button
           form="guide-questions"
           type="submit"
+          disabled={processingStatus}
           className="w-[200px]"
         >
           Apply

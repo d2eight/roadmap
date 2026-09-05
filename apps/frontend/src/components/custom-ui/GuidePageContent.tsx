@@ -1,11 +1,9 @@
 import { useContext } from 'react';
 import { GuideContext } from '@/context/GuideContext';
 import { GuideSkeleton } from '@/components/custom-ui/GuideSkeleton';
-import { FormProcessor } from '@/components/wrappers/FormProcessor';
-import GuideQuestionsForm from '@/components/forms/GuideQuestionsForm';
-import Guide from '@/components/custom-ui/Guide';
 import { notFound } from 'next/navigation';
 import { GuideQuestions } from '@/components/custom-ui/GuideQuestions';
+import { GuideForm } from '@/components/forms/GuideForm';
 
 export function GuidePageContent() {
   const { guide, status } = useContext(GuideContext);
@@ -18,7 +16,7 @@ export function GuidePageContent() {
     case 'QUESTIONS_GENERATED':
       return <GuideQuestions />;
     case 'GUIDE_GENERATED':
-      return <Guide />;
+      return <GuideForm />;
     default:
       return notFound();
   }

@@ -10,7 +10,7 @@ export function getUserIdFromHeaders({
   const userId = headersList.get('x-user-id');
 
   if (!userId) {
-    redirect('/auth/sign-in');
+    return;
   }
 
   return userId;

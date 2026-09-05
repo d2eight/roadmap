@@ -18,10 +18,13 @@ import { toast } from 'sonner';
 import { handleApiFormError } from '@/utils/apiErrorsHandler';
 import { useRouter } from 'next/navigation';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
+import { FieldSet } from '@/components/ui/field';
 
 export function GuideForm() {
   const { guide, setGuide } = useContext(GuideContext);
-  const { setProcessingStatus } = useContext(FormProcessingContext);
+  const { processingStatus, setProcessingStatus } = useContext(
+    FormProcessingContext,
+  );
   const router = useRouter();
 
   const form = useForm<guideStepsSchemaType>({
@@ -99,11 +102,13 @@ export function GuideForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-[50px]"
       >
-        {fields.map((step: GuideStepModelFetched, index) => {
-          return (
-            <StepCard key={index} stepIndex={index} step={step} form={form} />
-          );
-        })}
+        <FieldSet disabled={processingStatus}>
+          {fields.map((step: GuideStepModelFetched, index) => {
+            return (
+              <StepCard key={index} stepIndex={index} step={step} form={form} />
+            );
+          })}
+        </FieldSet>
       </form>
       <div className="mt-[50px] sticky left-[0] bottom-[50px] z-[9999]">
         {form.formState.errors.root?.serverError && (

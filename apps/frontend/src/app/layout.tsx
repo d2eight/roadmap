@@ -47,7 +47,7 @@ export default async function RootLayout({
           <AuthContextProvider>
             <div className="flex flex-col min-h-screen">
               <Header />
-              <main className="flex-1 mt-[70px] max-w-[1400px] py-[50px] w-full mx-auto">
+              <main className="flex-1 flex mt-[70px] max-w-[1400px] py-[50px] w-full mx-auto">
                 {children}
                 <Toaster richColors />
               </main>

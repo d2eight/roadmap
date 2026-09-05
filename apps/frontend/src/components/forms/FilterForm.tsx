@@ -6,7 +6,6 @@ import {
   filterSchemaType,
   OrderByOptions,
   paramsSchema,
-  paramsSchemaType,
 } from 'shared-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {

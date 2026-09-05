@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
-import { Field, FieldError, FieldLabel } from '../ui/field';
+import { Field, FieldError, FieldLabel, FieldSet } from '../ui/field';
 import { Checkbox } from '../ui/checkbox';
 import { Button } from '../ui/button';
 import { useMutation } from '@tanstack/react-query';
@@ -32,7 +32,9 @@ import { guidesPageDefaultUrlString } from 'shared-constants';
 
 export function PromptForm() {
   const router = useRouter();
-  const { setProcessingStatus } = useContext(FormProcessingContext);
+  const { processingStatus, setProcessingStatus } = useContext(
+    FormProcessingContext,
+  );
   const dialog = useContext(DialogContext);
 
   const form = useForm<promptSchemaType>({
@@ -122,43 +124,45 @@ export function PromptForm() {
           id="prompt-form"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <Controller
-            control={form.control}
-            name="prompt"
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.error}>
-                <FieldLabel htmlFor={field.name}>Prompt</FieldLabel>
-                <Textarea
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                  placeholder="Learn C++ from the very beginning"
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-          <Controller
-            control={form.control}
-            name="externalAiQuestionsStatus"
-            render={({ field, fieldState }) => (
-              <Field orientation="horizontal" data-invalid={fieldState.error}>
-                <FieldLabel className="cursor-pointer" htmlFor={field.name}>
-                  External ai questions, for improving your prompt*
-                </FieldLabel>
-                <Checkbox
-                  id={field.name}
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+          <FieldSet disabled={processingStatus}>
+            <Controller
+              control={form.control}
+              name="prompt"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.error}>
+                  <FieldLabel htmlFor={field.name}>Prompt</FieldLabel>
+                  <Textarea
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Learn C++ from the very beginning"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              control={form.control}
+              name="externalAiQuestionsStatus"
+              render={({ field, fieldState }) => (
+                <Field orientation="horizontal" data-invalid={fieldState.error}>
+                  <FieldLabel className="cursor-pointer" htmlFor={field.name}>
+                    External ai questions, for improving your prompt*
+                  </FieldLabel>
+                  <Checkbox
+                    id={field.name}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldSet>
         </form>
       </CardContent>
       <CardContent>
@@ -176,7 +180,7 @@ export function PromptForm() {
             questions, for deeper understanding of your goal. After you answer
             them - guide will be created.
           </p>
-          <Button type="submit" form="prompt-form">
+          <Button type="submit" form="prompt-form" disabled={processingStatus}>
             Create guide
           </Button>
         </div>
