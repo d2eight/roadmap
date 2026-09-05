@@ -17,7 +17,7 @@ export async function getGuide(userId: string, guideId: string) {
           status: true,
         },
         orderBy: {
-          createdAt: 'desc',
+          id: 'asc',
         },
       },
     },

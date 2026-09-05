@@ -1,6 +1,6 @@
 import * as z from 'zod';
 export const GuideStepUpsertResultSchema = z.object({
-  id: z.string(),
+  id: z.number().int(),
   guide: z.unknown(),
   guideId: z.string(),
   title: z.string(),

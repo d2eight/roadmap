@@ -1,12 +1,13 @@
 import * as z from 'zod';
 import type { Prisma } from '../../../../generated/prisma/client';
+import { IntFieldUpdateOperationsInputObjectSchema as IntFieldUpdateOperationsInputObjectSchema } from './IntFieldUpdateOperationsInput.schema';
 import { StringFieldUpdateOperationsInputObjectSchema as StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { GuideStepStatusSchema } from '../enums/GuideStepStatus.schema';
 import { EnumGuideStepStatusFieldUpdateOperationsInputObjectSchema as EnumGuideStepStatusFieldUpdateOperationsInputObjectSchema } from './EnumGuideStepStatusFieldUpdateOperationsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema as DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema'
 
 const makeSchema = () => z.object({
-  id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
+  id: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputObjectSchema)]).optional(),
   guideId: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   description: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),

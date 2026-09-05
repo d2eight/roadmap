@@ -3,7 +3,7 @@ import type { Prisma } from '../../../../generated/prisma/client';
 import { GuideStepStatusSchema } from '../enums/GuideStepStatus.schema'
 
 const makeSchema = () => z.object({
-  id: z.string().optional(),
+  id: z.number().int().optional(),
   guideId: z.string(),
   title: z.string(),
   description: z.string(),

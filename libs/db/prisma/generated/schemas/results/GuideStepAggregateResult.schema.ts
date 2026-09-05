@@ -9,8 +9,14 @@ export const GuideStepAggregateResultSchema = z.object({  _count: z.object({
     createdAt: z.number(),
     updatedAt: z.number()
   }).optional(),
+  _sum: z.object({
+    id: z.number().nullable()
+  }).nullable().optional(),
+  _avg: z.object({
+    id: z.number().nullable()
+  }).nullable().optional(),
   _min: z.object({
-    id: z.string().nullable(),
+    id: z.number().int().nullable(),
     guideId: z.string().nullable(),
     title: z.string().nullable(),
     description: z.string().nullable(),
@@ -18,7 +24,7 @@ export const GuideStepAggregateResultSchema = z.object({  _count: z.object({
     updatedAt: z.date().nullable()
   }).nullable().optional(),
   _max: z.object({
-    id: z.string().nullable(),
+    id: z.number().int().nullable(),
     guideId: z.string().nullable(),
     title: z.string().nullable(),
     description: z.string().nullable(),

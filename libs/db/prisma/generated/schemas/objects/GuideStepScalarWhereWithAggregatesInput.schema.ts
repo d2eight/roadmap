@@ -1,5 +1,6 @@
 import * as z from 'zod';
 import type { Prisma } from '../../../../generated/prisma/client';
+import { IntWithAggregatesFilterObjectSchema as IntWithAggregatesFilterObjectSchema } from './IntWithAggregatesFilter.schema';
 import { StringWithAggregatesFilterObjectSchema as StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
 import { EnumGuideStepStatusWithAggregatesFilterObjectSchema as EnumGuideStepStatusWithAggregatesFilterObjectSchema } from './EnumGuideStepStatusWithAggregatesFilter.schema';
 import { GuideStepStatusSchema } from '../enums/GuideStepStatus.schema';
@@ -9,7 +10,7 @@ const guidestepscalarwherewithaggregatesinputSchema = z.object({
   AND: z.union([z.lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
   OR: z.lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema).array().optional(),
   NOT: z.union([z.lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
-  id: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  id: z.union([z.lazy(() => IntWithAggregatesFilterObjectSchema), z.number().int()]).optional(),
   guideId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   title: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   description: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),

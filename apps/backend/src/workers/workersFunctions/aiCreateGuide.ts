@@ -11,7 +11,8 @@ import { GuideStepCreateManyInput } from '@/libs/db/generated/prisma/models/Guid
 import { io } from '../../main';
 
 export async function aiCreateGuide(job: Job<GuideJob>) {
-  const answeredQuestions: answeredQuestionsSchemaType = job.data.answeredQuestions;
+  const answeredQuestions: answeredQuestionsSchemaType =
+    job.data.answeredQuestions;
   const guideId: string = job.data.guideId;
   const userId: string = job.data.userId;
   const prompt: string = job.data.prompt;
@@ -43,8 +44,6 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
     prompt: aiPrompt,
   });
 
-  console.log(output);
-
   const secondGuideUpdate = await prisma.guide.update({
     where: {
       id: guideId,
@@ -57,13 +56,15 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
     },
   });
 
-  const guideStepsBlank: GuideStepCreateManyInput[] = output.steps.map((step) => {
-    return {
-      title: step.title,
-      description: step.description,
-      guideId: guideId,
-    };
-  });
+  const guideStepsBlank: GuideStepCreateManyInput[] = output.steps.map(
+    (step) => {
+      return {
+        title: step.title,
+        description: step.description,
+        guideId: guideId,
+      };
+    },
+  );
 
   const guideSteps = await prisma.guideStep.createManyAndReturn({
     data: guideStepsBlank,

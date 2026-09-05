@@ -4,7 +4,6 @@ import { GuideStepStatusSchema } from '../enums/GuideStepStatus.schema';
 import { GuideCreateNestedOneWithoutStepsInputObjectSchema as GuideCreateNestedOneWithoutStepsInputObjectSchema } from './GuideCreateNestedOneWithoutStepsInput.schema'
 
 const makeSchema = () => z.object({
-  id: z.string().optional(),
   title: z.string(),
   description: z.string(),
   status: GuideStepStatusSchema.optional(),

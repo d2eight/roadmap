@@ -1,7 +1,7 @@
 import * as z from 'zod';
 export const GuideStepFindManyResultSchema = z.object({
   data: z.array(z.object({
-  id: z.string(),
+  id: z.number().int(),
   guide: z.unknown(),
   guideId: z.string(),
   title: z.string(),

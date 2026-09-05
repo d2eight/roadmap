@@ -2,7 +2,7 @@ import * as z from 'zod';
 import { GuideStepStatusSchema } from '../../enums/GuideStepStatus.schema';
 // prettier-ignore
 export const GuideStepResultSchema = z.object({
-    id: z.string(),
+    id: z.number().int(),
     guide: z.unknown(),
     guideId: z.string(),
     title: z.string(),

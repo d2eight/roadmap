@@ -7,7 +7,6 @@ import { DateTimeFieldUpdateOperationsInputObjectSchema as DateTimeFieldUpdateOp
 import { GuideUpdateOneRequiredWithoutStepsNestedInputObjectSchema as GuideUpdateOneRequiredWithoutStepsNestedInputObjectSchema } from './GuideUpdateOneRequiredWithoutStepsNestedInput.schema'
 
 const makeSchema = () => z.object({
-  id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   description: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   status: z.union([GuideStepStatusSchema, z.lazy(() => EnumGuideStepStatusFieldUpdateOperationsInputObjectSchema)]).optional(),
