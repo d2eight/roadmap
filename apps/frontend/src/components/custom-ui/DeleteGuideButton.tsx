@@ -20,19 +20,22 @@ import { useContext } from 'react';
 import { GuideContext } from '@/context/GuideContext';
 
 export function DeleteGuideButton({ mutate }: { mutate: () => void }) {
-  const { guide } = useContext(GuideContext)
+  const { guide } = useContext(GuideContext);
   const isDisabled =
-    guide.status !== 'GUIDE_GENERATED' && guide.status !== 'QUESTIONS_GENERATED'
-
+    guide.status !== 'GUIDE_GENERATED' &&
+    guide.status !== 'QUESTIONS_GENERATED';
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild onClick={(e) => {
-        if (isDisabled) {
-          e.stopPropagation();
-          e.preventDefault();
-        }
-      }}>
+      <AlertDialogTrigger
+        asChild
+        onClick={(e) => {
+          if (isDisabled) {
+            e.stopPropagation();
+            e.preventDefault();
+          }
+        }}
+      >
         <div>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -68,4 +71,3 @@ export function DeleteGuideButton({ mutate }: { mutate: () => void }) {
     </AlertDialog>
   );
 }
-

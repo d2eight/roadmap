@@ -44,15 +44,13 @@ export default async function RootLayout({
     >
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>
-          <AuthContextProvider>
-            <div className="flex flex-col min-h-screen">
-              <Header />
-              <main className="flex-1 flex mt-[70px] max-w-[1400px] py-[50px] w-full mx-auto">
-                {children}
-                <Toaster richColors />
-              </main>
-            </div>
-          </AuthContextProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-1 flex mt-[70px] max-w-[1400px] py-[50px] w-full mx-auto">
+              {children}
+              <Toaster richColors />
+            </main>
+          </div>
         </Providers>
       </body>
     </html>

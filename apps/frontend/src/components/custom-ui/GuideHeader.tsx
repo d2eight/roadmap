@@ -18,6 +18,12 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { LucideCheck } from 'lucide-react';
 
 export function GuideHeader() {
   const { guide, completedSteps } = useContext(GuideContext);
@@ -30,14 +36,19 @@ export function GuideHeader() {
           <h1>{guide.title}</h1>
         </CardTitle>
         <CardAction>
-          <Button
-            form="guide-form"
-            type="submit"
-            disabled={processingStatus}
-            className="w-[200px]"
-          >
-            Update Progress
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                form="guide-form"
+                type="submit"
+                size="icon-lg"
+                disabled={processingStatus}
+              >
+                <LucideCheck />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Update Progress</TooltipContent>
+          </Tooltip>
         </CardAction>
       </CardHeader>
       <CardContent className="px-0 flex flex-row items-center gap-[10px]">
