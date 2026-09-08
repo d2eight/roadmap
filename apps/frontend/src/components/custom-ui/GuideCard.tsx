@@ -11,25 +11,27 @@ import {
 } from '../ui/card';
 import { JSX, useContext } from 'react';
 import { GuideContext } from '../../context/GuideContext';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GuidesContext, GuidesContextProvider } from '@/context/GuidesContext';
 import { useSearchParams } from 'next/navigation';
 import { GuideCardHeader } from '@/components/custom-ui/GuideCardHeader';
 import { GuideCardContent } from '@/components/custom-ui/GuideCardContent';
 import { GuideCardFooter } from '@/components/custom-ui/GuideCardFooter';
 import { searchParamsToObj } from 'utils/client';
-import { ApiError, paramsSchema } from 'shared-types';
+import { ApiError, paramsSchema, QueryKeyType } from 'shared-types';
 import { getDefaultSearchParams } from '@/utils/getDefaultSearchParams';
+import { ParamsContext } from '@/context/ParamsContext';
+import { getQueryClient } from '@/query/getQueryClient';
 
 export function GuideCard() {
+  const queryClient = useQueryClient();
   const { guide } = useContext(GuideContext);
-  const { setGuides, setGuidesCount } = useContext(GuidesContext);
-  const searchParams = useSearchParams();
+  const { searchParams, queryKey } = useContext(ParamsContext);
 
   const { mutate } = useMutation({
     mutationFn: removeGuide,
-    onSuccess: (response) => {
-      const { guides } = response;
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey });
     },
   });
 

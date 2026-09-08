@@ -2,12 +2,13 @@
 
 import { createContext, ReactNode } from 'react';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
-import { paramsSchema, paramsSchemaType } from 'shared-types';
+import { paramsSchema, paramsSchemaType, QueryKeyType } from 'shared-types';
 import { searchParamsDefaultValues } from 'shared-constants';
 
 export const ParamsContext = createContext<{
   searchParams: ReadonlyURLSearchParams;
   parsedParams: paramsSchemaType;
+  queryKey: QueryKeyType;
 }>(null!);
 
 export function ParamsContextProvider({ children }: { children: ReactNode }) {
@@ -43,11 +44,19 @@ export function ParamsContextProvider({ children }: { children: ReactNode }) {
     progressStatus: progressStatus,
   };
 
+  const queryKey: QueryKeyType = [
+    'guides',
+    parsedParams.page,
+    parsedParams.orderBy,
+    parsedParams.progressStatus,
+  ];
+
   return (
     <ParamsContext
       value={{
         searchParams,
         parsedParams,
+        queryKey,
       }}
     >
       {children}
