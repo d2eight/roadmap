@@ -2,6 +2,7 @@ import { Session, User } from 'better-auth';
 import {
   answeredQuestionsSchemaType,
   filterSchemaType,
+  paramsSchemaType,
 } from './shared-zod-types';
 import { Dispatch, JSX, SetStateAction } from 'react';
 import { BetterFetchError } from '@better-fetch/fetch';
@@ -111,4 +112,11 @@ export type OrderByOptions = [
     value: Extract<filterSchemaType['orderBy'], 'updatedAt'>;
     label: string | JSX.Element;
   },
+];
+
+export type QueryKeyType = [
+  'guides',
+  paramsSchemaType['page'],
+  paramsSchemaType['orderBy'],
+  paramsSchemaType['progressStatus'],
 ];

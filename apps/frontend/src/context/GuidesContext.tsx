@@ -9,68 +9,51 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { GuideModelWithRelations } from 'shared-types';
+import { GuideModelWithRelations, QueryKeyType } from 'shared-types';
+import { useQuery } from '@tanstack/react-query';
+import { getGuides } from 'utils';
+import { AuthContext } from '@/context/AuthContext';
+import { ParamsContext } from '@/context/ParamsContext';
+import { pageSize } from '@/constants/constants';
 
 export const GuidesContext = createContext<{
   guides: GuideModelWithRelations[];
-  setGuides: Dispatch<SetStateAction<GuideModelWithRelations[]>>;
+  setGuides?: Dispatch<SetStateAction<GuideModelWithRelations[]>>;
   guidesCount: number;
-  setGuidesCount: Dispatch<SetStateAction<number>>;
+  setGuidesCount?: Dispatch<SetStateAction<number>>;
 }>(null!);
 
-export function GuidesContextProvider({
-  children,
-  guidesProps,
-  guidesCountProps,
-}: {
-  children: ReactNode;
-  guidesProps: GuideModelWithRelations[];
-  guidesCountProps: number;
-}) {
-  const [guides, setGuides] = useState<GuideModelWithRelations[]>(guidesProps);
-  const [guidesCount, setGuidesCount] = useState<number>(guidesCountProps);
+export function GuidesContextProvider({ children }: { children: ReactNode }) {
+  const auth = useContext(AuthContext);
+  const { parsedParams } = useContext(ParamsContext);
+
+  const queryKey: QueryKeyType = [
+    'guides',
+    parsedParams.page,
+    parsedParams.orderBy,
+    parsedParams.progressStatus,
+  ];
+  const userId = auth.data && auth.data.user.id ? auth.data.user.id : '';
+
+  const { data } = useQuery({
+    queryKey,
+    queryFn: () =>
+      getGuides({
+        pageSize: pageSize,
+        userId: userId,
+        params: parsedParams,
+      }),
+  });
+
+  const [guides, setGuides] = useState<GuideModelWithRelations[]>([]);
+  const [guidesCount, setGuidesCount] = useState<number>(0);
 
   useEffect(() => {
-    setGuides(guidesProps);
-  }, [guidesProps]);
-
-  useEffect(() => {
-    setGuidesCount(guidesCountProps);
-  }, [guidesCountProps]);
-
-  // const { data, refetch, error } = useContext(AuthContext);
-  //
-  // const pageSize = 8;
-  // const pagesCount = Math.ceil(guidesCount / pageSize);
-  //
-  //
-
-  // useEffect(() => {
-  //   navigateToPage(currentPage);
-  // }, []);
-  //
-  // const query = useQuery({
-  //   queryKey: ['guides', currentPage],
-  //   queryFn: () =>
-  //     getGuidesInPagination({
-  //       currentPage: parseInt(currentPage),
-  //       pageSize: pageSize,
-  //       userId: data!.user.id,
-  //     }),
-  // });
-  //
-  // useEffect(() => {
-  //   if (query.isSuccess) {
-  //     const [newGuides, newGuidesCount] = query.data;
-  //     setGuides(newGuides);
-  //     setGuidesCount(newGuidesCount);
-  //   }
-  // }, [query.data]);
-  //
-  // function navigateToPage(page: string) {
-  //   params.set('page', page);
-  //   router.push(`/guides/?${params}`);
-  // }
+    if (data) {
+      setGuides(data[0]);
+      setGuidesCount(data[1]);
+    }
+  }, [data]);
 
   return (
     <GuidesContext

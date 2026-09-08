@@ -1,3 +1,5 @@
+'use server';
+
 import { prisma } from 'database';
 import { paramsSchemaType } from 'shared-types';
 

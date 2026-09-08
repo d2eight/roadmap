@@ -2,13 +2,12 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
-import { io } from 'socket.io-client';
 import { SocketContextProvider } from './context/SocketContext';
-import { GuidesContextProvider } from './context/GuidesContext';
 import { TooltipProvider } from './components/ui/tooltip';
 import AuthContextProvider from '@/context/AuthContext';
+import { getQueryClient } from '@/query/getQueryClient';
 
-const queryClient = new QueryClient();
+const queryClient = getQueryClient();
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
