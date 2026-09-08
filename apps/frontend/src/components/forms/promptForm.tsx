@@ -52,8 +52,8 @@ export function PromptForm() {
     onSuccess: async (newGuideId) => {
       setProcessingStatus(false);
       if (dialog) {
-        dialog.setDialogStatus(false);
         router.push(guidesPageDefaultUrlString);
+        return dialog.setDialogStatus(false);
       } else {
         router.push(`/guides/${newGuideId}`);
       }
