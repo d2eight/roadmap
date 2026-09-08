@@ -67,8 +67,7 @@ export default async function DashboardServerPage({
                   <GuidesPagination pageSize={pageSize} />
                 </GuidesContextProvider>
               ) : (
-                <div>123</div>
-                // <GuidesNotFound />
+                <GuidesNotFound />
               )}
             </ParamsContextProvider>
           </div>

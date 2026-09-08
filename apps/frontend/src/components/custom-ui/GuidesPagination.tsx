@@ -16,15 +16,12 @@ import { EllipsisPaginationItem } from '@/components/custom-ui/EllipsisPaginatio
 import { DefaultPaginationItem } from '@/components/custom-ui/DefaultPaginationItem';
 import { PreviousPagePaginationItem } from '@/components/custom-ui/PreviousPagePaginationItem';
 import { NextPagePaginationItem } from '@/components/custom-ui/NextPagePaginationItem';
+import { ParamsContext } from '@/context/ParamsContext';
 
 export function GuidesPagination({ pageSize }: { pageSize: number }) {
   const { guidesCount } = useContext(GuidesContext);
+  const { searchParams } = useContext(ParamsContext);
 
-  if (!guidesCount) {
-    return '';
-  }
-
-  const searchParams = useSearchParams();
   const router = useRouter();
   const currentPage = Number(searchParams.get('page') ?? 1);
   const pagesCount = Math.ceil(guidesCount / pageSize);

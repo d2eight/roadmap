@@ -27,31 +27,17 @@ import { searchParamsDefaultValues } from 'shared-constants';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useContext } from 'react';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
+import { ParamsContext } from '@/context/ParamsContext';
 
 export function FilterForm() {
   const { setProcessingStatus } = useContext(FormProcessingContext);
+  const { searchParams, parsedParams } = useContext(ParamsContext);
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const progressStatusParsed = paramsSchema.shape.progressStatus.safeParse(
-    searchParams.get('progressStatus'),
-  );
-
-  const orderByParsed = paramsSchema.shape.orderBy.safeParse(
-    searchParams.get('orderBy'),
-  );
-
-  const orderBy = orderByParsed.success
-    ? orderByParsed.data
-    : searchParamsDefaultValues.orderBy;
-  const progressStatus = progressStatusParsed.success
-    ? progressStatusParsed.data
-    : searchParamsDefaultValues.progressStatus;
 
   const defaultValues: filterSchemaType = {
-    orderBy,
-    progressStatus,
+    orderBy: parsedParams.orderBy,
+    progressStatus: parsedParams.progressStatus,
   };
 
   const form = useForm<filterSchemaType>({

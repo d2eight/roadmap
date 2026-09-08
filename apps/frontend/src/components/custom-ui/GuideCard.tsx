@@ -30,10 +30,6 @@ export function GuideCard() {
     mutationFn: removeGuide,
     onSuccess: (response) => {
       const { guides } = response;
-      if (guides) {
-        setGuides(guides[0]);
-        setGuidesCount(guides[1]);
-      }
     },
   });
 
