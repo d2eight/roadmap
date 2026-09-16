@@ -37,12 +37,7 @@ guidesRouter.post(
   createGuideAnsweredQuestions,
 );
 
-guidesRouter.delete(
-  '/api/remove-guide/:guideId',
-  authMiddleware,
-  searchParamsMiddleware,
-  removeGuide,
-);
+guidesRouter.delete('/api/remove-guide/:guideId', authMiddleware, removeGuide);
 
 guidesRouter.put(
   '/api/update-guide-progress/:guideId',

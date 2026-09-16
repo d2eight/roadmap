@@ -19,7 +19,7 @@ import {
 import { Field, FieldError, FieldLabel, FieldSet } from '../ui/field';
 import { Checkbox } from '../ui/checkbox';
 import { Button } from '../ui/button';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { handleApiFormError } from '../../utils/apiErrorsHandler';
 import { useContext } from 'react';
@@ -30,13 +30,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { DialogContext } from '@/context/DialogContext';
 import { guidesPageDefaultUrlString } from 'shared-constants';
 import { Switch } from '@/components/ui/switch';
+import { ParamsContext } from '@/context/ParamsContext';
 
 export function PromptForm() {
   const router = useRouter();
   const { processingStatus, setProcessingStatus } = useContext(
     FormProcessingContext,
   );
+  const queryClient = useQueryClient();
   const dialog = useContext(DialogContext);
+  const params = useContext(ParamsContext);
 
   const form = useForm<promptSchemaType>({
     resolver: zodResolver(promptSchema),
@@ -52,8 +55,11 @@ export function PromptForm() {
     onSuccess: async (newGuideId) => {
       setProcessingStatus(false);
       if (dialog) {
-        router.push(guidesPageDefaultUrlString);
-        return dialog.setDialogStatus(false);
+        // router.push(guidesPageDefaultUrlString);
+        // dialog.setDialogStatus(false);
+        return await queryClient.invalidateQueries({
+          queryKey: params.queryKey,
+        });
       } else {
         router.push(`/guides/${newGuideId}`);
       }

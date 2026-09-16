@@ -18,24 +18,16 @@ import { pageSize } from '@/constants/constants';
 
 export const GuidesContext = createContext<{
   guides: GuideModelWithRelations[];
-  setGuides?: Dispatch<SetStateAction<GuideModelWithRelations[]>>;
   guidesCount: number;
-  setGuidesCount?: Dispatch<SetStateAction<number>>;
+  isLoading: boolean;
 }>(null!);
 
 export function GuidesContextProvider({ children }: { children: ReactNode }) {
   const auth = useContext(AuthContext);
-  const { parsedParams } = useContext(ParamsContext);
-
-  const queryKey: QueryKeyType = [
-    'guides',
-    parsedParams.page,
-    parsedParams.orderBy,
-    parsedParams.progressStatus,
-  ];
+  const { parsedParams, queryKey } = useContext(ParamsContext);
   const userId = auth.data && auth.data.user.id ? auth.data.user.id : '';
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey,
     queryFn: () =>
       getGuides({
@@ -45,23 +37,15 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
       }),
   });
 
-  const [guides, setGuides] = useState<GuideModelWithRelations[]>([]);
-  const [guidesCount, setGuidesCount] = useState<number>(0);
-
-  useEffect(() => {
-    if (data) {
-      setGuides(data[0]);
-      setGuidesCount(data[1]);
-    }
-  }, [data]);
+  const guides = data?.[0] || [];
+  const guidesCount = data?.[1] || 0;
 
   return (
     <GuidesContext
       value={{
         guides,
-        setGuides,
         guidesCount,
-        setGuidesCount,
+        isLoading,
       }}
     >
       {children}

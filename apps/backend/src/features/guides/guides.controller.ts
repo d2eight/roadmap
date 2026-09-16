@@ -120,33 +120,16 @@ export async function createGuideAnsweredQuestions(
 export async function removeGuide(req: express.Request, res: express.Response) {
   const userId: string = res.locals.userId;
   const guideId = req.params.guideId as string;
-  const params: paramsSchemaType = res.locals.params;
   try {
     await guidesService.remove(guideId, userId);
 
-    const response = res.status(200);
-
-    const jsonResponse = {
-      success: true,
-      data: guideId,
-    };
-
-    if (params) {
-      const guides = await getGuides({
-        pageSize: 9,
-        userId: userId,
-        params: params,
-      });
-      jsonResponse['guides'] = guides;
-    }
-
-    response.json(jsonResponse);
-
-    return response;
+    return res.status(204).end();
   } catch (error) {
     console.error('Failed to delete guide:', error);
 
-    return res.status(500);
+    return res.status(500).json({
+      success: false,
+    });
   }
 }
 

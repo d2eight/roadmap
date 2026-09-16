@@ -18,12 +18,43 @@ import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { useContext } from 'react';
 import { GuideContext } from '@/context/GuideContext';
+import { ApiError, paramsSchema } from 'shared-types';
+import { searchParamsToObj } from 'utils/client';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { getDefaultSearchParams } from '@/utils/getDefaultSearchParams';
+import { ParamsContext } from '@/context/ParamsContext';
 
-export function DeleteGuideButton({ mutate }: { mutate: () => void }) {
+export function DeleteGuideButton() {
   const { guide } = useContext(GuideContext);
+  const queryClient = useQueryClient();
+  const { queryKey } = useContext(ParamsContext);
+
   const isDisabled =
     guide.status !== 'GUIDE_GENERATED' &&
     guide.status !== 'QUESTIONS_GENERATED';
+
+  const { mutate } = useMutation({
+    mutationFn: removeGuide,
+    onSuccess: async (resp) => {
+      await queryClient.invalidateQueries({ queryKey });
+    },
+  });
+
+  async function removeGuide() {
+    const response = await fetch(
+      `http://localhost:3333/api/remove-guide/${guide.id}`,
+      {
+        method: 'DELETE',
+        credentials: 'include',
+      },
+    );
+
+    if (!response.ok) {
+      throw new ApiError(response.status, response.statusText);
+    }
+
+    return response;
+  }
 
   return (
     <AlertDialog>
