@@ -19,10 +19,9 @@ import { Trash2 } from 'lucide-react';
 import { useContext } from 'react';
 import { GuideContext } from '@/context/GuideContext';
 import { ApiError, paramsSchema } from 'shared-types';
-import { searchParamsToObj } from 'utils/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { getDefaultSearchParams } from '@/utils/getDefaultSearchParams';
 import { ParamsContext } from '@/context/ParamsContext';
+import { serverRevalidatePath } from '@/utils/revalidatePath';
 
 export function DeleteGuideButton() {
   const { guide } = useContext(GuideContext);
@@ -35,8 +34,9 @@ export function DeleteGuideButton() {
 
   const { mutate } = useMutation({
     mutationFn: removeGuide,
-    onSuccess: async (resp) => {
+    onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey });
+      await serverRevalidatePath('/guides');
     },
   });
 

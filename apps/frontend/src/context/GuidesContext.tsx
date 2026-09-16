@@ -22,7 +22,13 @@ export const GuidesContext = createContext<{
   isLoading: boolean;
 }>(null!);
 
-export function GuidesContextProvider({ children }: { children: ReactNode }) {
+export function GuidesContextProvider({
+  children,
+  test,
+}: {
+  children: ReactNode;
+  test: any;
+}) {
   const auth = useContext(AuthContext);
   const { parsedParams, queryKey } = useContext(ParamsContext);
   const userId = auth.data && auth.data.user.id ? auth.data.user.id : '';
@@ -35,7 +41,10 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
         userId: userId,
         params: parsedParams,
       }),
+    staleTime: 60 * 1000,
   });
+
+  // console.log(JSON.stringify(test) === JSON.stringify(queryKey));
 
   const guides = data?.[0] || [];
   const guidesCount = data?.[1] || 0;

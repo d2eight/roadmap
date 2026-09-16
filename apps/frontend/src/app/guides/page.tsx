@@ -53,7 +53,7 @@ export default async function DashboardServerPage({
   });
 
   const guidesExist = Boolean(queryData[0]?.[1]?.[0]?.length);
-
+  console.log(queryData[0]?.[1]?.[0][0].title);
   return (
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
@@ -62,7 +62,7 @@ export default async function DashboardServerPage({
             <ParamsContextProvider>
               <GuidesFilter />
               {guidesExist ? (
-                <GuidesContextProvider>
+                <GuidesContextProvider test={queryKey}>
                   <Guides />
                   <GuidesPagination pageSize={pageSize} />
                 </GuidesContextProvider>
