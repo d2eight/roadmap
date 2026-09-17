@@ -21,11 +21,12 @@ import { GuideContext } from '@/context/GuideContext';
 import { ApiError, paramsSchema } from 'shared-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ParamsContext } from '@/context/ParamsContext';
-import { serverRevalidatePath } from '@/utils/revalidatePath';
+import { useRouter } from 'next/navigation';
 
 export function DeleteGuideButton() {
   const { guide } = useContext(GuideContext);
   const queryClient = useQueryClient();
+  const router = useRouter();
   const { queryKey } = useContext(ParamsContext);
 
   const isDisabled =
@@ -36,7 +37,6 @@ export function DeleteGuideButton() {
     mutationFn: removeGuide,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey });
-      await serverRevalidatePath('/guides');
     },
   });
 

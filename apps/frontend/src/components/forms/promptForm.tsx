@@ -31,6 +31,7 @@ import { DialogContext } from '@/context/DialogContext';
 import { guidesPageDefaultUrlString } from 'shared-constants';
 import { Switch } from '@/components/ui/switch';
 import { ParamsContext } from '@/context/ParamsContext';
+import { serverRevalidatePath } from '@/utils/revalidatePath';
 
 export function PromptForm() {
   const router = useRouter();
@@ -56,10 +57,10 @@ export function PromptForm() {
       setProcessingStatus(false);
       if (dialog) {
         // router.push(guidesPageDefaultUrlString);
-        // dialog.setDialogStatus(false);
-        return await queryClient.invalidateQueries({
+        await queryClient.invalidateQueries({
           queryKey: params.queryKey,
         });
+        dialog.setDialogStatus(false);
       } else {
         router.push(`/guides/${newGuideId}`);
       }

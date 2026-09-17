@@ -18,6 +18,8 @@ import { pageSize } from '@/constants/constants';
 import { Guide } from '../../../../../libs/db/generated/prisma/client';
 import { GuideModel } from '../../../../../libs/db/generated/prisma/models/Guide';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardServerPage({
   searchParams,
 }: {
@@ -31,7 +33,6 @@ export default async function DashboardServerPage({
   const orderBy = params.orderBy;
   const page = parseInt(params.page);
   const progressStatus = params.progressStatus.split(',');
-
   const queryKey: QueryKeyType = ['guides', page, orderBy, progressStatus];
 
   await queryClient.prefetchQuery({
@@ -53,7 +54,7 @@ export default async function DashboardServerPage({
   });
 
   const guidesExist = Boolean(queryData[0]?.[1]?.[0]?.length);
-  console.log(queryData[0]?.[1]?.[0][0].title);
+
   return (
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
@@ -62,7 +63,7 @@ export default async function DashboardServerPage({
             <ParamsContextProvider>
               <GuidesFilter />
               {guidesExist ? (
-                <GuidesContextProvider test={queryKey}>
+                <GuidesContextProvider>
                   <Guides />
                   <GuidesPagination pageSize={pageSize} />
                 </GuidesContextProvider>
