@@ -1,9 +1,12 @@
 import { notFound } from 'next/navigation';
-import { getGuide } from 'utils';
+import { getGuide, getGuides } from 'utils';
 import { getUserIdFromHeaders } from '../../../utils/getUserId';
 import GuideContextProvider from '../../../context/GuideContext';
 import GuidePage from './GuidePage';
 import { headers } from 'next/headers';
+import { pageSize } from '@/constants/constants';
+import { getQueryClient } from '@/query/getQueryClient';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 type PageProps = {
   params: Promise<{
@@ -13,21 +16,21 @@ type PageProps = {
 
 export default async function GuideServerPage({ params }: PageProps) {
   const headersList = await headers();
-  const userId = await getUserIdFromHeaders({ headersList });
+  const userId = getUserIdFromHeaders({ headersList });
+  const queryClient = getQueryClient();
 
   const resolvedParams = await params;
 
-  const guide = await getGuide(userId, resolvedParams.id);
-
-  if (!guide) {
-    notFound();
-  }
+  await queryClient.prefetchQuery({
+    queryKey: ['guide', resolvedParams.id],
+    queryFn: () => getGuide(userId!, resolvedParams.id),
+  });
 
   return (
-    <>
-      <GuideContextProvider guideProps={guide}>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <GuideContextProvider autoQueryStatus={true} guideId={resolvedParams.id}>
         <GuidePage />
       </GuideContextProvider>
-    </>
+    </HydrationBoundary>
   );
 }

@@ -62,14 +62,10 @@ export default async function DashboardServerPage({
           <div className="min-h-[calc(100vh-200px)] flex flex-col gap-[60px]">
             <ParamsContextProvider>
               <GuidesFilter />
-              {guidesExist ? (
-                <GuidesContextProvider>
-                  <Guides />
-                  <GuidesPagination pageSize={pageSize} />
-                </GuidesContextProvider>
-              ) : (
-                <GuidesNotFound />
-              )}
+              <GuidesContextProvider>
+                <Guides />
+                <GuidesPagination pageSize={pageSize} />
+              </GuidesContextProvider>
             </ParamsContextProvider>
           </div>
         </FormProcessor>

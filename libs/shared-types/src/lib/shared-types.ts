@@ -52,14 +52,12 @@ export type GuideContextType =
   | {
       guide: GuideModelWithRelations;
       status: (typeof GuideStatus)['QUESTIONS_GENERATED'];
-      setGuide: Dispatch<SetStateAction<GuideModelWithRelations>>;
       completedSteps?: number;
       questionsCount: number;
     }
   | {
       guide: GuideModelWithRelations;
       status: (typeof GuideStatus)['GUIDE_GENERATED'];
-      setGuide: Dispatch<SetStateAction<GuideModelWithRelations>>;
       completedSteps: number;
       questionsCount?: never;
     }
@@ -70,7 +68,6 @@ export type GuideContextType =
         | (typeof GuideStatus)['QUESTIONS_GENERATED']
         | (typeof GuideStatus)['GUIDE_GENERATED']
       >;
-      setGuide: Dispatch<SetStateAction<GuideModelWithRelations>>;
       completedSteps?: number;
       questionsCount?: never;
     };

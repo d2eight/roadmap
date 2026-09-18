@@ -12,7 +12,7 @@ import {
   guideStepsSchemaType,
 } from 'shared-types';
 import { StepCard } from '@/components/custom-ui/StepCard';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 import { toast } from 'sonner';
 import { handleApiFormError } from '@/utils/apiErrorsHandler';
@@ -21,11 +21,12 @@ import { RedAlert } from '@/components/custom-ui/RedAlert';
 import { FieldSet } from '@/components/ui/field';
 
 export function GuideForm() {
-  const { guide, setGuide } = useContext(GuideContext);
+  const { guide } = useContext(GuideContext);
   const { processingStatus, setProcessingStatus } = useContext(
     FormProcessingContext,
   );
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const form = useForm<guideStepsSchemaType>({
     resolver: zodResolver(guideStepsSchema),
@@ -41,13 +42,12 @@ export function GuideForm() {
 
   const { mutate, isSuccess } = useMutation({
     mutationFn: updateGuide,
-    onSuccess: (steps: GuideStepModelFetched[]) => {
-      setGuide({
-        ...guide,
-        steps,
-      });
+    onSuccess: async (steps: GuideStepModelFetched[]) => {
       setProcessingStatus(false);
       toast.success('Successfully updated your progress');
+      await queryClient.invalidateQueries({
+        queryKey: ['guide', guide.id],
+      });
     },
     onError: (error: ApiError) => {
       setProcessingStatus(false);

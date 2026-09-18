@@ -24,10 +24,12 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { LucideCheck } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function GuideHeader() {
   const { guide, completedSteps } = useContext(GuideContext);
   const { processingStatus } = useContext(FormProcessingContext);
+  const queryClient = useQueryClient();
 
   return (
     <>

@@ -3,6 +3,15 @@
 import { prisma } from 'database';
 import { paramsSchemaType } from 'shared-types';
 
+export async function createEmptyGuide(userPrompt: string, userId: string) {
+  return prisma.guide.create({
+    data: {
+      prompt: userPrompt,
+      userId: userId,
+    },
+  });
+}
+
 export async function getGuide(userId: string, guideId: string) {
   return prisma.guide.findUnique({
     where: {
@@ -22,15 +31,6 @@ export async function getGuide(userId: string, guideId: string) {
           id: 'asc',
         },
       },
-    },
-  });
-}
-
-export async function createEmptyGuide(userPrompt: string, userId: string) {
-  return prisma.guide.create({
-    data: {
-      prompt: userPrompt,
-      userId: userId,
     },
   });
 }

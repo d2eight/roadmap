@@ -30,7 +30,11 @@ export function Guides() {
   return (
     <div className="grid grid-cols-3 gap-10 auto-rows-[200px]">
       {guides.map((guide: GuideModelWithRelations) => (
-        <GuideContextProvider key={guide.id} guideProps={guide}>
+        <GuideContextProvider
+          autoQueryStatus={false}
+          key={guide.id}
+          guideId={guide.id}
+        >
           <GuideCard />
         </GuideContextProvider>
       ))}

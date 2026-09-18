@@ -26,7 +26,7 @@ import {
   guideQuestionsSchema,
   guideQuestionsSchemaType,
 } from 'shared-types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { handleApiFormError } from '../../utils/apiErrorsHandler';
 import { GuideContext } from '../../context/GuideContext';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
@@ -40,6 +40,7 @@ export default function GuideQuestionsForm() {
   const { processingStatus, setProcessingStatus } = useContext(
     FormProcessingContext,
   );
+  const queryClient = useQueryClient();
 
   const router = useRouter();
 
@@ -76,9 +77,12 @@ export default function GuideQuestionsForm() {
 
   const { mutate } = useMutation({
     mutationFn: createGuideWithAnsweredQuestions,
-    onSuccess: () => {
+    onSuccess: async () => {
       setProcessingStatus(false);
       toast.success('Successfully consumed your answers to create guide');
+      await queryClient.invalidateQueries({
+        queryKey: ['guide', guide.id],
+      });
     },
     onError: async (error: ApiError) => {
       setProcessingStatus(false);

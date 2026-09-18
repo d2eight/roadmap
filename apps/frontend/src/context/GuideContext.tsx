@@ -11,66 +11,85 @@ import {
 } from 'react';
 import { GuideContextType, GuideModelWithRelations } from 'shared-types';
 import { SocketContext } from './SocketContext';
+import { GuidesContext } from '@/context/GuidesContext';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getGuide } from 'utils';
+import { AuthContext } from '@/context/AuthContext';
+import { ParamsContext } from '@/context/ParamsContext';
 
 export const GuideContext = createContext<GuideContextType>(null!);
 
 export default function GuideContextProvider({
-  guideProps,
+  guideId,
   children,
+  autoQueryStatus,
 }: {
-  guideProps: GuideModelWithRelations;
+  guideId: string;
   children: ReactNode;
+  autoQueryStatus: boolean;
 }) {
-  const [guide, setGuide] = useState<GuideModelWithRelations>(guideProps);
+  const guidesContext = useContext(GuidesContext);
+  const queryClient = useQueryClient();
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ['guide', guideId],
+    queryFn: () => getGuide(userId, guideId),
+    enabled: autoQueryStatus,
+  });
   const { socketGuideData } = useContext(SocketContext);
+  const auth = useContext(AuthContext);
+  const userId = auth.data && auth.data.user.id ? auth.data.user.id : '';
 
-  const getCompletedSteps = () => guide.steps.reduce((acc, curr) => {
-    return curr.status === "DONE" ? (acc += 1) : acc;
-  }, 0);
+  useEffect(() => {
+    if (socketGuideData && data && data.id === socketGuideData.id) {
+      (async () => {
+        await queryClient.invalidateQueries({
+          queryKey: ['guide', guideId],
+        });
+        await refetch();
+      })();
+    }
+  }, [socketGuideData]);
+
+  if (!data) {
+    return;
+  }
+
+  const getCompletedSteps = () =>
+    data.steps.reduce((acc, curr) => {
+      return curr.status === 'DONE' ? (acc += 1) : acc;
+    }, 0);
 
   const getQuestionsCount = () =>
-    guide.questions ? Object.keys(JSON.parse(guide.questions.toString())).length : 0;
+    data.questions
+      ? Object.keys(JSON.parse(data.questions.toString())).length
+      : 0;
 
   let context: GuideContextType;
 
-  switch (guide.status) {
+  switch (data.status) {
     case 'INIT':
     case 'QUESTIONS_GENERATION':
     case 'GUIDE_GENERATION':
       context = {
-        guide: guide,
-        setGuide: setGuide,
-        status: guide.status
+        guide: data,
+        status: data.status,
       };
       break;
     case 'QUESTIONS_GENERATED':
       context = {
-        guide: guide,
-        status: guide.status,
-        setGuide: setGuide,
+        guide: data,
+        status: data.status,
         questionsCount: getQuestionsCount(),
       };
       break;
     case 'GUIDE_GENERATED':
       context = {
-        guide: guide,
-        status: guide.status,
-        setGuide: setGuide,
+        guide: data,
+        status: data.status,
         completedSteps: getCompletedSteps(),
       };
       break;
   }
-
-  useEffect(() => {
-    if (socketGuideData && guide.id === socketGuideData.id) {
-      setGuide({
-        ...guide,
-        ...socketGuideData,
-        createdAt: guide.createdAt,
-        updatedAt: new Date(guide.updatedAt),
-      });
-    }
-  }, [socketGuideData]);
 
   return <GuideContext value={context}>{children}</GuideContext>;
 }

@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 import { GuideModelWithRelations, QueryKeyType } from 'shared-types';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getGuides } from 'utils';
 import { AuthContext } from '@/context/AuthContext';
 import { ParamsContext } from '@/context/ParamsContext';
@@ -26,6 +26,7 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
   const auth = useContext(AuthContext);
   const { parsedParams, queryKey } = useContext(ParamsContext);
   const userId = auth.data && auth.data.user.id ? auth.data.user.id : '';
+  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey,
@@ -40,6 +41,27 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
 
   const guides = data?.[0] || [];
   const guidesCount = data?.[1] || 0;
+
+  useEffect(() => {
+    if (guides.length) {
+      guides.forEach((guide) => {
+        queryClient.setQueryData<GuideModelWithRelations>(
+          ['guide', guide.id],
+          (cachedGuide) => {
+            if (!cachedGuide) {
+              return guide;
+            }
+
+            if (guide.updatedAt === cachedGuide.updatedAt) {
+              return cachedGuide;
+            }
+
+            return guide;
+          },
+        );
+      });
+    }
+  }, [data]);
 
   return (
     <GuidesContext
