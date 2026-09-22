@@ -21,6 +21,7 @@ import { GuideContext } from '@/context/GuideContext';
 import { ApiError, paramsSchema } from 'shared-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ParamsContext } from '@/context/ParamsContext';
+import { toast } from 'sonner';
 
 export function DeleteGuideButton() {
   const { guide } = useContext(GuideContext);
@@ -34,10 +35,11 @@ export function DeleteGuideButton() {
   const { mutate } = useMutation({
     mutationFn: removeGuide,
     onSuccess: async () => {
-      await queryClient.prefetchQuery({
+      await queryClient.invalidateQueries({
         queryKey: ['guide', guide.id],
       });
       await queryClient.invalidateQueries({ queryKey });
+      toast.success('You have successfully deleted guide!');
     },
   });
 

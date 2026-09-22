@@ -4,6 +4,7 @@ import { GuideSkeleton } from '@/components/custom-ui/GuideSkeleton';
 import { notFound } from 'next/navigation';
 import { GuideQuestions } from '@/components/custom-ui/GuideQuestions';
 import { GuideForm } from '@/components/forms/GuideForm';
+import { GuideNotFound } from '@/components/custom-ui/GuideNotFound';
 
 export function GuidePageContent() {
   const { guide, status } = useContext(GuideContext);
@@ -18,6 +19,6 @@ export function GuidePageContent() {
     case 'GUIDE_GENERATED':
       return <GuideForm />;
     default:
-      return notFound();
+      return <GuideNotFound />;
   }
 }

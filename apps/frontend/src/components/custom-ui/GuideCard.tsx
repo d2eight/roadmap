@@ -24,6 +24,12 @@ import { ParamsContext } from '@/context/ParamsContext';
 import { getQueryClient } from '@/query/getQueryClient';
 
 export function GuideCard() {
+  const guideContext = useContext(GuideContext);
+
+  if (!guideContext) {
+    return;
+  }
+
   return (
     <Card className="flex flex-col justify-between">
       <GuideCardHeader />

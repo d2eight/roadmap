@@ -47,8 +47,10 @@ export default function GuideContextProvider({
     }
   }, [socketGuideData]);
 
+  let context: GuideContextType | null = null;
+
   if (!data) {
-    return;
+    return children;
   }
 
   const getCompletedSteps = () =>
@@ -60,8 +62,6 @@ export default function GuideContextProvider({
     data.questions
       ? Object.keys(JSON.parse(data.questions.toString())).length
       : 0;
-
-  let context: GuideContextType;
 
   switch (data.status) {
     case 'INIT':

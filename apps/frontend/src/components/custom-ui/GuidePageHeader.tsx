@@ -6,7 +6,7 @@ import { GuideHeaderWrapper } from '@/components/custom-ui/GuideHeaderWrapper';
 import { GuideLoadingHeader } from '@/components/custom-ui/GuideLoadingHeader';
 
 export function GuidePageHeader() {
-  const { status } = useContext(GuideContext);
+  const { guide, status } = useContext(GuideContext);
 
   let header: JSX.Element = <></>;
 
@@ -22,8 +22,5 @@ export function GuidePageHeader() {
       break;
   }
 
-  return <GuideHeaderWrapper>
-    {header}
-  </GuideHeaderWrapper>
+  return <GuideHeaderWrapper>{header}</GuideHeaderWrapper>;
 }
-
