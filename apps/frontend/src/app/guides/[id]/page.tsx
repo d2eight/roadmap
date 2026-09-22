@@ -7,6 +7,7 @@ import { headers } from 'next/headers';
 import { pageSize } from '@/constants/constants';
 import { getQueryClient } from '@/query/getQueryClient';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { ParamsContextProvider } from '@/context/ParamsContext';
 
 type PageProps = {
   params: Promise<{
@@ -28,9 +29,14 @@ export default async function GuideServerPage({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <GuideContextProvider autoQueryStatus={true} guideId={resolvedParams.id}>
-        <GuidePage />
-      </GuideContextProvider>
+      <ParamsContextProvider>
+        <GuideContextProvider
+          autoQueryStatus={true}
+          guideId={resolvedParams.id}
+        >
+          <GuidePage />
+        </GuideContextProvider>
+      </ParamsContextProvider>
     </HydrationBoundary>
   );
 }

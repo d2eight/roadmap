@@ -34,6 +34,9 @@ export function DeleteGuideButton() {
   const { mutate } = useMutation({
     mutationFn: removeGuide,
     onSuccess: async () => {
+      await queryClient.prefetchQuery({
+        queryKey: ['guide', guide.id],
+      });
       await queryClient.invalidateQueries({ queryKey });
     },
   });
@@ -77,7 +80,7 @@ export function DeleteGuideButton() {
                 <Trash2 />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Delete</TooltipContent>
+            <TooltipContent>Delete Guide</TooltipContent>
           </Tooltip>
         </div>
       </AlertDialogTrigger>

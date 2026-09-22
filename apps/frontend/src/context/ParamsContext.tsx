@@ -9,10 +9,12 @@ export const ParamsContext = createContext<{
   searchParams: ReadonlyURLSearchParams;
   parsedParams: paramsSchemaType;
   queryKey: QueryKeyType;
+  newSearchParams: URLSearchParams;
 }>(null!);
 
 export function ParamsContextProvider({ children }: { children: ReactNode }) {
   const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
 
   const pageParsed = paramsSchema.shape.page.safeParse(
     searchParams.get('page'),
@@ -57,6 +59,7 @@ export function ParamsContextProvider({ children }: { children: ReactNode }) {
         searchParams,
         parsedParams,
         queryKey,
+        newSearchParams,
       }}
     >
       {children}

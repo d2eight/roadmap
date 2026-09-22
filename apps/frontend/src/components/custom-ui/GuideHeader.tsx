@@ -24,12 +24,11 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { LucideCheck } from 'lucide-react';
-import { useQueryClient } from '@tanstack/react-query';
+import { DeleteGuideButton } from '@/components/custom-ui/DeleteGuideButton';
 
 export function GuideHeader() {
   const { guide, completedSteps } = useContext(GuideContext);
   const { processingStatus } = useContext(FormProcessingContext);
-  const queryClient = useQueryClient();
 
   return (
     <>
@@ -37,13 +36,14 @@ export function GuideHeader() {
         <CardTitle className="flex flex-row justify-between items-center ">
           <h1>{guide.title}</h1>
         </CardTitle>
-        <CardAction>
+        <CardAction className="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 form="guide-form"
                 type="submit"
-                size="icon-lg"
+                size="icon-sm"
+                variant="secondary"
                 disabled={processingStatus}
               >
                 <LucideCheck />
@@ -51,6 +51,7 @@ export function GuideHeader() {
             </TooltipTrigger>
             <TooltipContent>Update Progress</TooltipContent>
           </Tooltip>
+          <DeleteGuideButton />
         </CardAction>
       </CardHeader>
       <CardContent className="px-0 flex flex-row items-center gap-[10px]">
