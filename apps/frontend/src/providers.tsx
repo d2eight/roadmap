@@ -7,9 +7,9 @@ import { TooltipProvider } from './components/ui/tooltip';
 import AuthContextProvider from '@/context/AuthContext';
 import { getQueryClient } from '@/query/getQueryClient';
 
-const queryClient = getQueryClient();
-
 export default function Providers({ children }: { children: ReactNode }) {
+  const queryClient = getQueryClient();
+
   return (
     <SocketContextProvider>
       <QueryClientProvider client={queryClient}>

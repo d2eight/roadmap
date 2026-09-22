@@ -18,8 +18,6 @@ import { pageSize } from '@/constants/constants';
 import { Guide } from '../../../../../libs/db/generated/prisma/client';
 import { GuideModel } from '../../../../../libs/db/generated/prisma/models/Guide';
 
-export const dynamic = 'force-dynamic';
-
 export default async function DashboardServerPage({
   searchParams,
 }: {
@@ -48,12 +46,6 @@ export default async function DashboardServerPage({
         },
       }),
   });
-
-  const queryData = queryClient.getQueriesData<[GuideModel[], number]>({
-    queryKey,
-  });
-
-  const guidesExist = Boolean(queryData[0]?.[1]?.[0]?.length);
 
   return (
     <>

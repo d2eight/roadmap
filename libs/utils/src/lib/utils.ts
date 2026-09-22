@@ -59,7 +59,18 @@ export async function getGuides({
         },
       },
       include: {
-        steps: true,
+        steps: {
+          select: {
+            id: true,
+            guideId: true,
+            title: true,
+            description: true,
+            status: true,
+          },
+          orderBy: {
+            id: 'asc',
+          },
+        },
       },
       skip: (currentPage - 1) * pageSize,
       take: pageSize,

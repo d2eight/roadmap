@@ -11,11 +11,9 @@ import {
 } from 'react';
 import { GuideContextType, GuideModelWithRelations } from 'shared-types';
 import { SocketContext } from './SocketContext';
-import { GuidesContext } from '@/context/GuidesContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getGuide } from 'utils';
 import { AuthContext } from '@/context/AuthContext';
-import { ParamsContext } from '@/context/ParamsContext';
 
 export const GuideContext = createContext<GuideContextType>(null!);
 
@@ -28,9 +26,8 @@ export default function GuideContextProvider({
   children: ReactNode;
   autoQueryStatus: boolean;
 }) {
-  const guidesContext = useContext(GuidesContext);
   const queryClient = useQueryClient();
-  const { data, isLoading, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ['guide', guideId],
     queryFn: () => getGuide(userId, guideId),
     enabled: autoQueryStatus,
