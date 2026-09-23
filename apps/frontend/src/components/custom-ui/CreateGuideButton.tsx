@@ -13,7 +13,13 @@ import { PromptForm } from '@/components/forms/promptForm';
 import { Dispatch, JSX, SetStateAction, useContext } from 'react';
 import { DialogContext } from '@/context/DialogContext';
 
-export function CreateGuideButton({ button }: { button?: JSX.Element }) {
+export function CreateGuideButton({
+  button,
+  pushToGuideStatus,
+}: {
+  button?: JSX.Element;
+  pushToGuideStatus: boolean;
+}) {
   const { dialogStatus, setDialogStatus } = useContext(DialogContext);
 
   if (!button) {
@@ -42,7 +48,7 @@ export function CreateGuideButton({ button }: { button?: JSX.Element }) {
       </DialogTrigger>
       <DialogContent className="max-w-[1400px]! w-full p-[0]">
         <FormProcessor>
-          <PromptForm />
+          <PromptForm pushToGuideStatus={pushToGuideStatus} />
         </FormProcessor>
       </DialogContent>
     </Dialog>

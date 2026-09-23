@@ -42,7 +42,10 @@ export function GuideNotFound() {
           <Link href={`/guides?${newSearchParams}`}>Dashboard</Link>
         </Button>
         <DialogContextProvider>
-          <CreateGuideButton button={createGuideCustomButton} />
+          <CreateGuideButton
+            button={createGuideCustomButton}
+            pushToGuideStatus={true}
+          />
         </DialogContextProvider>
       </EmptyContent>
     </Empty>

@@ -4,7 +4,7 @@ import { FormProcessor } from '../../components/wrappers/FormProcessor';
 export default async function PromptingPage() {
   return (
     <FormProcessor>
-      <PromptForm />
+      <PromptForm pushToGuideStatus={true} />
     </FormProcessor>
   );
 }

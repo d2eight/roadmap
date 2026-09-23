@@ -33,7 +33,11 @@ import { Switch } from '@/components/ui/switch';
 import { ParamsContext } from '@/context/ParamsContext';
 import { serverRevalidatePath } from '@/utils/revalidatePath';
 
-export function PromptForm() {
+export function PromptForm({
+  pushToGuideStatus,
+}: {
+  pushToGuideStatus: boolean;
+}) {
   const router = useRouter();
   const { processingStatus, setProcessingStatus } = useContext(
     FormProcessingContext,
@@ -55,14 +59,21 @@ export function PromptForm() {
     mutationFn: createGuide,
     onSuccess: async (newGuideId) => {
       setProcessingStatus(false);
-      if (dialog) {
-        // router.push(guidesPageDefaultUrlString);
+
+      if (pushToGuideStatus) {
+        router.push(`/guides/${newGuideId}`);
+      }
+
+      if (params.parsedParams.page === 1) {
         await queryClient.invalidateQueries({
           queryKey: params.queryKey,
         });
-        dialog.setDialogStatus(false);
       } else {
-        router.push(`/guides/${newGuideId}`);
+        router.push(guidesPageDefaultUrlString);
+      }
+
+      if (dialog) {
+        return dialog.setDialogStatus(false);
       }
       toast.success('Successfully initiated to create guide');
     },

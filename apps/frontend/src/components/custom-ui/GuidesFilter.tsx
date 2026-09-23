@@ -57,7 +57,7 @@ export function GuidesFilter() {
           <CardAction className="flex flex-row gap-[10px]">
             <ApplyFiltersButton />
             <DialogContextProvider>
-              <CreateGuideButton />
+              <CreateGuideButton pushToGuideStatus={false} />
             </DialogContextProvider>
           </CardAction>
         </CardHeader>

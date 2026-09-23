@@ -35,7 +35,10 @@ export function GuidesNotFound() {
       </EmptyHeader>
       <EmptyContent>
         <DialogContextProvider>
-          <CreateGuideButton button={createGuideCustomButton} />
+          <CreateGuideButton
+            button={createGuideCustomButton}
+            pushToGuideStatus={false}
+          />
         </DialogContextProvider>
       </EmptyContent>
     </Empty>
