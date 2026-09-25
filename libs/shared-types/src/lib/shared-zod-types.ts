@@ -185,3 +185,5 @@ export const paramsSchema = filterSchema.extend({
 });
 
 export type paramsSchemaType = z.infer<typeof paramsSchema>;
+
+export type PromptFormErrors = z.ZodFlattenedError<promptSchemaType>;

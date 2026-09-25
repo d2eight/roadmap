@@ -31,6 +31,8 @@ import { useMutation } from '@tanstack/react-query';
 import { RedAlert } from '../custom-ui/RedAlert';
 import { isAPIError } from 'better-auth/api';
 import { handleApiFormError } from '@/utils/apiErrorsHandler';
+import { Result } from 'better-result';
+import { signInWithEmailAndPassword } from '@/utils/auth';
 
 export function SignInForm() {
   const router = useRouter();
@@ -48,37 +50,25 @@ export function SignInForm() {
 
   const { mutate } = useMutation({
     mutationFn: signIn,
-    onSuccess: async () => {
+    onSuccess: () => {
       setProcessingStatus(false);
       toast.success('You have successfully signed in!');
       router.push('/prompting');
     },
-    onError: async (error: ApiError) => {
+    onError: (error) => {
       setProcessingStatus(false);
-      handleApiFormError(error, router, form, true);
       toast.error(error.message);
     },
   });
 
-  async function signIn(formData: userSignInSchemaType) {
-    // await new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve('Cookie is ready! 🍪');
-    //   }, 2000);
-    // });
-    const response = await authClient.signIn.email({
-      email: formData.email,
-      password: formData.password,
-    });
+  async function signIn(data: userSignInSchemaType) {
+    const result = await signInWithEmailAndPassword(data);
 
-    if (response.error) {
-      const message =
-        response.error.message ||
-        'Something went wrong, user was not signed in!';
-      throw new ApiError(response.error.status, message);
+    if (result.isErr()) {
+      throw result.error;
     }
 
-    return response;
+    return result.value;
   }
 
   function onSubmit(data: userSignInSchemaType) {

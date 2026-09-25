@@ -11,21 +11,26 @@ import { promptValidationMiddleware } from '../../middlewares/prompt';
 import { guideMiddleware } from '../../middlewares/guide';
 import { questionsValidationMiddleware } from '../../middlewares/promptWithQuestions';
 import { stepsValidationMiddleware } from '../../middlewares/steps';
-import { searchParamsMiddleware } from '@/apps/backend/src/middlewares/searchParams';
 
 export const guidesRouter = express.Router();
 
 guidesRouter.post(
   '/api/create-guide',
-  authMiddleware,
-  promptValidationMiddleware,
+  authMiddleware({
+    errorMessage: 'Guide was not created, please sign in',
+  }),
+  promptValidationMiddleware({}),
   createGuideBasic,
 );
 
 guidesRouter.post(
   '/api/create-guide-questions',
-  authMiddleware,
-  promptValidationMiddleware,
+  authMiddleware({
+    errorMessage: 'Guide questions were not created, please sign in',
+  }),
+  promptValidationMiddleware({
+    errorMessage: 'Guide questions were not created, invalid data',
+  }),
   createGuideQuestions,
 );
 

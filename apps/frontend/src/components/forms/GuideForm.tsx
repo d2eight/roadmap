@@ -15,7 +15,6 @@ import { StepCard } from '@/components/custom-ui/StepCard';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 import { toast } from 'sonner';
-import { handleApiFormError } from '@/utils/apiErrorsHandler';
 import { useRouter } from 'next/navigation';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
 import { FieldSet } from '@/components/ui/field';
@@ -51,7 +50,7 @@ export function GuideForm() {
     },
     onError: (error: ApiError) => {
       setProcessingStatus(false);
-      handleApiFormError(error, router, form);
+      // handleApiFormError(error, router, form);
     },
   });
 

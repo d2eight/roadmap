@@ -25,7 +25,8 @@
       "@/*": ["./*"],
       "utils": ["./libs/utils/src/index.ts"],
       "utils/client": ["./libs/utils/src/index-client.ts"],
-      "shared-constants": ["./libs/shared-constants/src/index.ts"]
+      "shared-constants": ["./libs/shared-constants/src/index.ts"],
+      "errors": ["./libs/errors/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

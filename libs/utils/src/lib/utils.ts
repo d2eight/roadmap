@@ -2,6 +2,14 @@
 
 import { prisma } from 'database';
 import { paramsSchemaType } from 'shared-types';
+import { auth } from 'auth';
+import { NextRequest } from 'next/server';
+
+export async function getSession({ headers }: { headers: Headers }) {
+  return auth.api.getSession({
+    headers,
+  });
+}
 
 export async function createEmptyGuide(userPrompt: string, userId: string) {
   return prisma.guide.create({
@@ -12,7 +20,13 @@ export async function createEmptyGuide(userPrompt: string, userId: string) {
   });
 }
 
-export async function getGuide(userId: string, guideId: string) {
+export async function getGuide({
+  userId,
+  guideId,
+}: {
+  userId: string;
+  guideId: string;
+}) {
   return prisma.guide.findUnique({
     where: {
       id: guideId,

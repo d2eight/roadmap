@@ -3,6 +3,7 @@ import {
   answeredQuestionsSchemaType,
   filterSchemaType,
   paramsSchemaType,
+  promptSchemaType,
 } from './shared-zod-types';
 import { Dispatch, JSX, SetStateAction } from 'react';
 import { BetterFetchError } from '@better-fetch/fetch';
@@ -11,6 +12,7 @@ import { Prisma } from 'database';
 import { ApiError } from './shared-classes';
 
 import { GuideStatus } from 'database/enums';
+import { z } from 'zod';
 
 // import { ApiError } from '@/apps/frontend/src/customClasses/apiError';
 
@@ -19,15 +21,26 @@ export type BetterAuthSession = {
   user: User;
 } | null;
 
-export type ApiResponse<T = null> =
+export type ApiResponse<T = null, Z = null> =
   | {
       success: true;
       data: T;
     }
   | {
       success: false;
-      error: ApiError;
+      message: string;
+      zodError: Z;
     };
+
+export type ApiResponseError<Z> = Extract<
+  ApiResponse<null, Z>,
+  { success: false }
+>;
+
+export type ApiResponseSuccess<T> = Extract<
+  ApiResponse<T, null>,
+  { success: true }
+>;
 
 export type GuideJob = {
   userId: string;

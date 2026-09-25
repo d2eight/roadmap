@@ -16,8 +16,4 @@ export default async function verifySession({
   if (!session) {
     return NextResponse.redirect(new URL('/auth/sign-in', request.url));
   }
-
-  request.headers.set('x-user-id', session.user.id);
-
-  return;
 }

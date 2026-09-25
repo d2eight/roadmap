@@ -8,6 +8,7 @@ import { pageSize } from '@/constants/constants';
 import { getQueryClient } from '@/query/getQueryClient';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { ParamsContextProvider } from '@/context/ParamsContext';
+import { getGuideNEXT } from '@/utils/guide';
 
 type PageProps = {
   params: Promise<{
@@ -24,7 +25,10 @@ export default async function GuideServerPage({ params }: PageProps) {
 
   await queryClient.prefetchQuery({
     queryKey: ['guide', resolvedParams.id],
-    queryFn: () => getGuide(userId!, resolvedParams.id),
+    queryFn: () =>
+      getGuideNEXT({
+        guideId: resolvedParams.id,
+      }),
   });
 
   return (

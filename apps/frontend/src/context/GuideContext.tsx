@@ -14,6 +14,7 @@ import { SocketContext } from './SocketContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getGuide } from 'utils';
 import { AuthContext } from '@/context/AuthContext';
+import { getGuideNEXT } from '@/utils/guide';
 
 export const GuideContext = createContext<GuideContextType>(null!);
 
@@ -29,7 +30,10 @@ export default function GuideContextProvider({
   const queryClient = useQueryClient();
   const { data, refetch } = useQuery({
     queryKey: ['guide', guideId],
-    queryFn: () => getGuide(userId, guideId),
+    queryFn: () =>
+      getGuideNEXT({
+        guideId: guideId,
+      }),
     enabled: autoQueryStatus,
   });
   const { socketGuideData } = useContext(SocketContext);

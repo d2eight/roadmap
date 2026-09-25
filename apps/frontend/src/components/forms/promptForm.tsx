@@ -1,9 +1,10 @@
 'use client';
 
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, FieldPath, useForm } from 'react-hook-form';
 import {
   ApiError,
   ApiResponse,
+  PromptFormErrors,
   promptSchema,
   promptSchemaType,
 } from 'shared-types';
@@ -20,8 +21,7 @@ import { Field, FieldError, FieldLabel, FieldSet } from '../ui/field';
 import { Checkbox } from '../ui/checkbox';
 import { Button } from '../ui/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { handleApiFormError } from '../../utils/apiErrorsHandler';
+import { redirect, useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { FormProcessingContext } from '../wrappers/FormProcessor';
 import { toast } from 'sonner';
@@ -32,6 +32,15 @@ import { guidesPageDefaultUrlString } from 'shared-constants';
 import { Switch } from '@/components/ui/switch';
 import { ParamsContext } from '@/context/ParamsContext';
 import { serverRevalidatePath } from '@/utils/revalidatePath';
+import { createGuideBasic, createGuideQuestions } from '@/utils/prompting';
+import {
+  UnauthorizedError,
+  UnexpectedError,
+  UnprocessableEntity,
+} from 'errors';
+import { clientHandleApiError, handleApiError } from '@/utils/apiErrorsHandler';
+
+type test = FieldPath<promptSchemaType>;
 
 export function PromptForm({
   pushToGuideStatus,
@@ -55,21 +64,28 @@ export function PromptForm({
     mode: 'onChange',
   });
 
-  const { mutate } = useMutation({
+  const { mutate } = useMutation<
+    string,
+    UnexpectedError | UnauthorizedError | UnprocessableEntity<PromptFormErrors>,
+    {
+      requestBody: RequestInit;
+      externalAiQuestionsStatus: boolean;
+    }
+  >({
     mutationFn: createGuide,
     onSuccess: async (newGuideId) => {
       setProcessingStatus(false);
 
       if (pushToGuideStatus) {
-        router.push(`/guides/${newGuideId}`);
+        return router.push(`/guides/${newGuideId}`);
       }
 
       if (params.parsedParams.page === 1) {
-        await queryClient.invalidateQueries({
+        return await queryClient.invalidateQueries({
           queryKey: params.queryKey,
         });
       } else {
-        router.push(guidesPageDefaultUrlString);
+        return router.push(guidesPageDefaultUrlString);
       }
 
       if (dialog) {
@@ -77,10 +93,9 @@ export function PromptForm({
       }
       toast.success('Successfully initiated to create guide');
     },
-    onError: async (error: ApiError) => {
+    onError: (error) => {
       setProcessingStatus(false);
-      toast.error('Failed to create a guide, try again');
-      handleApiFormError(error, router, form);
+      clientHandleApiError<promptSchemaType>(error, form);
     },
   });
 
@@ -90,29 +105,16 @@ export function PromptForm({
   }: {
     requestBody: RequestInit;
     externalAiQuestionsStatus: boolean;
-  }): Promise<string> {
-    const response = !externalAiQuestionsStatus
-      ? await fetch('http://localhost:3333/api/create-guide', requestBody)
-      : await fetch(
-          'http://localhost:3333/api/create-guide-questions',
-          requestBody,
-        );
+  }) {
+    const result = externalAiQuestionsStatus
+      ? await createGuideQuestions(requestBody)
+      : await createGuideBasic(requestBody);
 
-    const body: ApiResponse<string> = await response.json();
-
-    if (!body.success) {
-      throw new ApiError(
-        response.status,
-        body.error.message,
-        body.error.issues,
-      );
+    if (result.isErr()) {
+      throw result.error;
     }
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return body.data;
+    return result.value.data;
   }
 
   async function onSubmit(data: promptSchemaType) {
@@ -156,9 +158,7 @@ export function PromptForm({
                     aria-invalid={fieldState.invalid}
                     placeholder="Learn C++ from the very beginning"
                   />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
+                  <FieldError errors={[fieldState.error]} />
                 </Field>
               )}
             />
@@ -175,22 +175,12 @@ export function PromptForm({
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
+                  <FieldError errors={[fieldState.error]} />
                 </Field>
               )}
             />
           </FieldSet>
         </form>
-      </CardContent>
-      <CardContent>
-        {form.formState.errors.root?.serverError && (
-          <RedAlert
-            title={'Something went wrong'}
-            message={form.formState.errors.root?.serverError.message as string}
-          />
-        )}
       </CardContent>
       <CardFooter className="mt-auto">
         <div className="flex flex-col gap-[20px] w-full">
@@ -203,6 +193,14 @@ export function PromptForm({
             Create guide
           </Button>
         </div>
+      </CardFooter>
+      <CardFooter>
+        {form.formState.errors.root && (
+          <RedAlert
+            title={'Something went wrong'}
+            message={form.formState.errors.root.message as string}
+          />
+        )}
       </CardFooter>
     </Card>
   );

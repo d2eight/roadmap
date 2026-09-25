@@ -18,9 +18,7 @@ export async function createGuideBasic(
   if (promptData.externalAiQuestionsStatus) {
     return res.status(422).json({
       success: false,
-      error: {
-        message: 'Invalid data',
-      },
+      message: 'Unexpected external ai questions behavior',
     });
   }
 
@@ -34,13 +32,9 @@ export async function createGuideBasic(
       data: guideId,
     });
   } catch (error) {
-    console.error('Failed to create guide:', error);
-
     return res.status(500).json({
       success: false,
-      error: {
-        message: 'Something went wrong',
-      },
+      message: 'Guide was no created, unexpected error',
     });
   }
 }

@@ -27,7 +27,6 @@ import {
   guideQuestionsSchemaType,
 } from 'shared-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { handleApiFormError } from '../../utils/apiErrorsHandler';
 import { GuideContext } from '../../context/GuideContext';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 import { toast } from 'sonner';
@@ -86,7 +85,7 @@ export default function GuideQuestionsForm() {
     },
     onError: async (error: ApiError) => {
       setProcessingStatus(false);
-      handleApiFormError(error, router, form);
+      // handleApiFormError(error, router, form);
     },
   });
 

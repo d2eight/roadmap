@@ -13,7 +13,8 @@
       "database/enums": ["../../libs/db/src/enums.ts"],
       "utils": ["../../libs/utils/src/index.ts"],
       "utils/client": ["../../libs/utils/src/index-client.ts"],
-      "validation": ["../../libs/validation/src/index.ts"]
+      "validation": ["../../libs/validation/src/index.ts"],
+      "errors": ["../../libs/errors/src/index.ts"]
     },
     "jsx": "preserve",
     "strict": true,
