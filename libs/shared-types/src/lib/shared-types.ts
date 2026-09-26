@@ -13,6 +13,12 @@ import { ApiError } from './shared-classes';
 
 import { GuideStatus } from 'database/enums';
 import { z } from 'zod';
+import {
+  NotFoundError,
+  UnauthorizedError,
+  UnexpectedError,
+  UnprocessableEntity,
+} from 'errors';
 
 // import { ApiError } from '@/apps/frontend/src/customClasses/apiError';
 
@@ -32,15 +38,21 @@ export type ApiResponse<T = null, Z = null> =
       zodError: Z;
     };
 
-export type ApiResponseError<Z> = Extract<
+export type ApiResponseError<Z = null> = Extract<
   ApiResponse<null, Z>,
   { success: false }
 >;
 
-export type ApiResponseSuccess<T> = Extract<
+export type ApiResponseSuccess<T = null> = Extract<
   ApiResponse<T, null>,
   { success: true }
 >;
+
+export type ApiErrors<TForm = null> =
+  | UnauthorizedError
+  | NotFoundError
+  | UnprocessableEntity<z.ZodFlattenedError<TForm>>
+  | UnexpectedError;
 
 export type GuideJob = {
   userId: string;

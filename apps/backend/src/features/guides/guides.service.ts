@@ -1,5 +1,9 @@
 import express from 'express';
-import { answeredQuestionsSchemaType, promptSchemaType } from 'shared-types';
+import {
+  answeredQuestionsSchemaType,
+  GuideStepModelFetched,
+  promptSchemaType,
+} from 'shared-types';
 import { prisma } from 'database';
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import {
@@ -10,6 +14,7 @@ import {
 import { createEmptyGuide } from 'utils';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 import { GuideProgressStatus } from '@/libs/db/prisma/generated/schemas';
+import { getGuideStepProperties } from 'shared-constants';
 
 export async function create(prompt: string, userId: string): Promise<string> {
   const newGuide = await createEmptyGuide(prompt, userId);
@@ -102,31 +107,53 @@ export async function update(
   userId: string,
   steps: GuideStepModel[],
 ) {
-  const progressStatus: GuideProgressStatus = defineGuideProgressStatus(steps);
-
-  const stepsUpdateOperations = steps.map((step: GuideStepModel) => {
-    return prisma.guideStep.update({
-      where: {
-        id: step.id,
-        guideId: guideId,
-      },
-      data: {
-        status: step.status,
-      },
-    });
-  });
-
-  const guideUpdateOperation = prisma.guide.update({
+  const guideFirstUpdate = await prisma.guide.update({
     where: {
       id: guideId,
       userId: userId,
     },
     data: {
-      progressStatus: progressStatus,
+      steps: {
+        update: steps.map((step: GuideStepModelFetched) => ({
+          where: {
+            id: step.id,
+            guideId: guideId,
+          },
+          data: {
+            status: step.status,
+          },
+        })),
+      },
+    },
+    include: {
+      steps: {
+        ...getGuideStepProperties,
+      },
     },
   });
 
-  const operations = [...stepsUpdateOperations, guideUpdateOperation];
+  const progressStatus: GuideProgressStatus = defineGuideProgressStatus(
+    guideFirstUpdate.steps,
+  );
 
-  await prisma.$transaction(operations);
+  if (guideFirstUpdate.progressStatus !== progressStatus) {
+    const guideSecondUpdate = await prisma.guide.update({
+      where: {
+        id: guideId,
+        userId: userId,
+      },
+      data: {
+        progressStatus: progressStatus,
+      },
+      include: {
+        steps: {
+          ...getGuideStepProperties,
+        },
+      },
+    });
+
+    return guideSecondUpdate;
+  }
+
+  return guideFirstUpdate;
 }

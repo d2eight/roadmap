@@ -1,10 +1,8 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { StepStatusButton } from '@/components/custom-ui/CardStepStatusButton';
-import { Field, FieldContent, FieldLabel, FieldTitle } from '@/components/ui/field';
 import { GuideStepStatus } from 'database/enums';
 import { ToggleGroup } from '@/components/ui/toggle-group';
-import { GuideStepModelFetched, guideStepsSchemaType } from 'shared-types';
+import { guideStepsSchemaType } from 'shared-types';
 
 export function StepRadioGroup({
   form,

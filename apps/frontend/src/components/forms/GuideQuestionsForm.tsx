@@ -22,7 +22,10 @@ import {
   aiQuestionsSchemaType,
   answeredQuestionsSchemaType,
   ApiError,
+  ApiErrors,
   ApiResponse,
+  ApiResponseSuccess,
+  GuideQuestionFormErrors,
   guideQuestionsSchema,
   guideQuestionsSchemaType,
 } from 'shared-types';
@@ -33,6 +36,8 @@ import { toast } from 'sonner';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { createGuideWithAnsweredQuestions } from '@/utils/guideApiActions';
+import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
 
 export default function GuideQuestionsForm() {
   const { guide } = useContext(GuideContext);
@@ -40,8 +45,7 @@ export default function GuideQuestionsForm() {
     FormProcessingContext,
   );
   const queryClient = useQueryClient();
-
-  const router = useRouter();
+  const { clientHandleApiError } = useClientHandleApiError();
 
   if (!guide.questions) {
     return notFound();
@@ -74,8 +78,12 @@ export default function GuideQuestionsForm() {
     mode: 'onChange',
   });
 
-  const { mutate } = useMutation({
-    mutationFn: createGuideWithAnsweredQuestions,
+  const { mutate } = useMutation<
+    string,
+    ApiErrors<guideQuestionsSchemaType>,
+    RequestInit
+  >({
+    mutationFn: createGuide,
     onSuccess: async () => {
       setProcessingStatus(false);
       toast.success('Successfully consumed your answers to create guide');
@@ -83,33 +91,23 @@ export default function GuideQuestionsForm() {
         queryKey: ['guide', guide.id],
       });
     },
-    onError: async (error: ApiError) => {
+    onError: (error) => {
       setProcessingStatus(false);
-      // handleApiFormError(error, router, form);
+      clientHandleApiError<guideQuestionsSchemaType>(error, form);
     },
   });
 
-  async function createGuideWithAnsweredQuestions(requestBody: RequestInit) {
-    const response = await fetch(
-      `http://localhost:3333/api/create-guide-answered-questions/${guide.id}`,
+  async function createGuide(requestBody: RequestInit) {
+    const result = await createGuideWithAnsweredQuestions(
+      guide.id,
       requestBody,
     );
 
-    const body: ApiResponse = await response.json();
-
-    if (!body.success) {
-      throw new ApiError(
-        response.status,
-        body.error.message,
-        body.error.issues,
-      );
+    if (result.isErr()) {
+      throw result.error;
     }
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return body;
+    return 'result.value';
   }
 
   async function onSubmit(data: guideQuestionsSchemaType) {
@@ -309,14 +307,11 @@ export default function GuideQuestionsForm() {
               )}
             />
           </FieldSet>
-          {form.formState.errors.root?.serverError && (
+          {form.formState.errors.root && (
             <div>
-              <Separator />
               <RedAlert
                 title={'Something went wrong'}
-                message={
-                  form.formState.errors.root?.serverError.message as string
-                }
+                message={form.formState.errors.root.message as string}
               />
             </div>
           )}

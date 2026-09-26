@@ -48,9 +48,9 @@ export default async function RootLayout({
             <Header />
             <main className="flex-1 flex mt-[70px] max-w-[1400px] py-[50px] w-full mx-auto">
               {children}
-              <Toaster richColors />
             </main>
           </div>
+          <Toaster richColors />
         </Providers>
       </body>
     </html>

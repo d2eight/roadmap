@@ -1,9 +1,10 @@
 'use server';
 
-import { prisma } from 'database';
+import { Prisma, prisma } from 'database';
 import { paramsSchemaType } from 'shared-types';
 import { auth } from 'auth';
 import { NextRequest } from 'next/server';
+import { getGuideStepProperties } from 'shared-constants';
 
 export async function getSession({ headers }: { headers: Headers }) {
   return auth.api.getSession({
@@ -34,16 +35,7 @@ export async function getGuide({
     },
     include: {
       steps: {
-        select: {
-          id: true,
-          guideId: true,
-          title: true,
-          description: true,
-          status: true,
-        },
-        orderBy: {
-          id: 'asc',
-        },
+        ...getGuideStepProperties,
       },
     },
   });

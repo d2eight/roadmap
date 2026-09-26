@@ -15,3 +15,7 @@ export class UnprocessableEntity<Z = null> extends TaggedError(
   message: string;
   zodError?: Z;
 }> {}
+
+export class NotFoundError extends TaggedError('NotFoundError')<{
+  message: string;
+}> {}

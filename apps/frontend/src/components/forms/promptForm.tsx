@@ -32,15 +32,19 @@ import { guidesPageDefaultUrlString } from 'shared-constants';
 import { Switch } from '@/components/ui/switch';
 import { ParamsContext } from '@/context/ParamsContext';
 import { serverRevalidatePath } from '@/utils/revalidatePath';
-import { createGuideBasic, createGuideQuestions } from '@/utils/prompting';
+import {
+  createGuideBasic,
+  createGuideQuestions,
+} from '@/utils/guideApiActions';
 import {
   UnauthorizedError,
   UnexpectedError,
   UnprocessableEntity,
 } from 'errors';
-import { clientHandleApiError, handleApiError } from '@/utils/apiErrorsHandler';
-
-type test = FieldPath<promptSchemaType>;
+import {
+  handleApiError,
+  useClientHandleApiError,
+} from '@/utils/apiErrorsHandler';
 
 export function PromptForm({
   pushToGuideStatus,
@@ -54,6 +58,7 @@ export function PromptForm({
   const queryClient = useQueryClient();
   const dialog = useContext(DialogContext);
   const params = useContext(ParamsContext);
+  const { clientHandleApiError } = useClientHandleApiError();
 
   const form = useForm<promptSchemaType>({
     resolver: zodResolver(promptSchema),
@@ -75,9 +80,14 @@ export function PromptForm({
     mutationFn: createGuide,
     onSuccess: async (newGuideId) => {
       setProcessingStatus(false);
+      toast.success('Successfully initiated to create guide');
 
       if (pushToGuideStatus) {
         return router.push(`/guides/${newGuideId}`);
+      }
+
+      if (dialog) {
+        dialog.setDialogStatus(false);
       }
 
       if (params.parsedParams.page === 1) {
@@ -87,11 +97,6 @@ export function PromptForm({
       } else {
         return router.push(guidesPageDefaultUrlString);
       }
-
-      if (dialog) {
-        return dialog.setDialogStatus(false);
-      }
-      toast.success('Successfully initiated to create guide');
     },
     onError: (error) => {
       setProcessingStatus(false);

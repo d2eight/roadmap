@@ -6,7 +6,11 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   ApiError,
+  ApiErrors,
   ApiResponse,
+  ApiResponseSuccess,
+  GuideModelWithRelations,
+  guideQuestionsSchemaType,
   GuideStepModelFetched,
   guideStepsSchema,
   guideStepsSchemaType,
@@ -18,19 +22,23 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
 import { FieldSet } from '@/components/ui/field';
+import { updateGuideProgress } from '@/utils/guideApiActions';
+import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
 
 export function GuideForm() {
   const { guide } = useContext(GuideContext);
   const { processingStatus, setProcessingStatus } = useContext(
     FormProcessingContext,
   );
-  const router = useRouter();
   const queryClient = useQueryClient();
+  const { clientHandleApiError } = useClientHandleApiError();
+
+  const initialSteps = guide.steps;
 
   const form = useForm<guideStepsSchemaType>({
     resolver: zodResolver(guideStepsSchema),
     defaultValues: {
-      steps: guide.steps,
+      steps: initialSteps,
     },
   });
 
@@ -39,59 +47,59 @@ export function GuideForm() {
     name: 'steps',
   });
 
-  const { mutate, isSuccess } = useMutation({
+  const { mutate } = useMutation<
+    ApiResponseSuccess<GuideModelWithRelations>,
+    ApiErrors<guideStepsSchemaType>,
+    RequestInit
+  >({
     mutationFn: updateGuide,
-    onSuccess: async (steps: GuideStepModelFetched[]) => {
+    onSuccess: (result) => {
       setProcessingStatus(false);
       toast.success('Successfully updated your progress');
-      await queryClient.invalidateQueries({
-        queryKey: ['guide', guide.id],
-      });
+      queryClient.setQueryData(['guide', guide.id], result.data);
     },
-    onError: (error: ApiError) => {
+    onError: (error) => {
       setProcessingStatus(false);
-      // handleApiFormError(error, router, form);
+      clientHandleApiError<guideStepsSchemaType>(error, form);
     },
   });
 
   function onSubmit(data: guideStepsSchemaType) {
-    setProcessingStatus(true);
+    const stepsToUpdate: GuideStepModelFetched[] = data.steps.filter((step) => {
+      const initialStep = initialSteps.find((item) => item.id === step.id);
+      if (initialStep && initialStep.status !== step.status) {
+        return step;
+      }
+    });
 
-    const requestBody: RequestInit = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(data),
-    };
+    if (stepsToUpdate.length > 0) {
+      setProcessingStatus(true);
 
-    mutate(requestBody);
+      const requestBody: RequestInit = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          steps: stepsToUpdate,
+        }),
+      };
+
+      return mutate(requestBody);
+    }
+
+    toast.info('You have already updated your progress!');
   }
 
-  async function updateGuide(
-    requestBody: RequestInit,
-  ): Promise<GuideStepModelFetched[]> {
-    const response = await fetch(
-      `http://localhost:3333/api/update-guide-progress/${guide.id}`,
-      requestBody,
-    );
+  async function updateGuide(requestBody: RequestInit) {
+    const result = await updateGuideProgress(guide.id, requestBody);
 
-    const body: ApiResponse<GuideStepModelFetched[]> = await response.json();
-
-    if (!body.success) {
-      throw new ApiError(
-        response.status,
-        body.error.message,
-        body.error.issues,
-      );
+    if (result.isErr()) {
+      throw result.error;
     }
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return body.data;
+    return result.value;
   }
 
   return (
@@ -110,10 +118,10 @@ export function GuideForm() {
         </FieldSet>
       </form>
       <div className="mt-[50px] sticky left-[0] bottom-[50px] z-[9999]">
-        {form.formState.errors.root?.serverError && (
+        {form.formState.errors.root && (
           <RedAlert
             title={'Something went wrong'}
-            message={form.formState.errors.root?.serverError.message as string}
+            message={form.formState.errors.root.message as string}
           />
         )}
       </div>

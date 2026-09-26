@@ -35,10 +35,12 @@ guidesRouter.post(
 );
 
 guidesRouter.post(
-  '/api/create-guide-answered-questions/:guideId',
-  authMiddleware,
-  questionsValidationMiddleware,
-  guideMiddleware,
+  '/api/create-guide-with-answered-questions/:guideId',
+  authMiddleware({
+    errorMessage: 'Guide was not created, please sign in',
+  }),
+  questionsValidationMiddleware({}),
+  guideMiddleware({}),
   createGuideAnsweredQuestions,
 );
 
@@ -46,7 +48,10 @@ guidesRouter.delete('/api/remove-guide/:guideId', authMiddleware, removeGuide);
 
 guidesRouter.put(
   '/api/update-guide-progress/:guideId',
-  authMiddleware,
-  stepsValidationMiddleware,
+  authMiddleware({
+    errorMessage: 'Guide progress was not updated, please sign in',
+  }),
+  guideMiddleware({}),
+  stepsValidationMiddleware({}),
   updateGuide,
 );

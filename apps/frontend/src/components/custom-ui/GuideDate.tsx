@@ -15,7 +15,7 @@ export function GuideDate({ guideDate }: { guideDate: Date }) {
         <div className="flex w-full justify-between">
           <div className="flex items-center gap-1">
             <LucideCalendarDays size="18" />
-            {guideDate.toLocaleDateString()}
+            {new Date(guideDate).toLocaleDateString()}
           </div>
         </div>
       </TooltipTrigger>

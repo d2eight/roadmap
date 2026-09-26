@@ -1,52 +1,64 @@
 import { FieldPath, FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import {
+  ApiErrors,
   ApiResponse,
   ApiResponseError,
   PromptFormErrors,
   promptSchemaType,
 } from 'shared-types';
 import {
+  NotFoundError,
   UnauthorizedError,
   UnexpectedError,
   UnprocessableEntity,
 } from 'errors';
 import { toast } from 'sonner';
-import { redirect, useRouter } from 'next/navigation';
+import { notFound, redirect, useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { Result } from 'better-result';
+import { useCallback } from 'react';
 
-export function clientHandleApiError<TForm extends FieldValues>(
-  error:
-    | UnexpectedError
-    | UnauthorizedError
-    | UnprocessableEntity<z.ZodFlattenedError<TForm>>,
-  form?: UseFormReturn<TForm>,
-) {
-  const errorMessage = error.message ? error.message : 'Something went wrong';
+export function useClientHandleApiError() {
+  const router = useRouter();
 
-  if (error instanceof UnauthorizedError) {
-    toast.error(errorMessage);
-    redirect('/auth/sign-in');
-  } else if (error instanceof UnprocessableEntity) {
-    const fieldsErrors = error.zodError?.fieldErrors;
+  const clientHandleApiError = useCallback(
+    <TForm extends FieldValues>(
+      error: ApiErrors<TForm>,
+      form?: UseFormReturn<TForm>,
+    ) => {
+      const errorMessage = error.message
+        ? error.message
+        : 'Something went wrong';
 
-    if (fieldsErrors && form) {
-      const fields = Object.keys(fieldsErrors) as FieldPath<TForm>[];
+      if (error instanceof UnauthorizedError) {
+        router.replace('/auth/sign-in');
+      } else if (error instanceof UnprocessableEntity) {
+        const fieldsErrors = error.zodError?.fieldErrors;
 
-      for (const property of fields) {
-        form.setError(property, {
-          type: 'manual',
-          message: fieldsErrors[property]?.[0],
-        });
+        if (fieldsErrors && form) {
+          const fields = Object.keys(fieldsErrors) as FieldPath<TForm>[];
+
+          for (const property of fields) {
+            form.setError(property, {
+              type: 'manual',
+              message: fieldsErrors[property]?.[0],
+            });
+          }
+
+          form.setError('root', {
+            message: errorMessage,
+          });
+        }
+      } else if (error instanceof NotFoundError) {
+        router.replace('/404');
       }
 
-      form.setError('root', {
-        message: errorMessage,
-      });
-    }
-  }
+      toast.error(errorMessage);
+    },
+    [router],
+  );
 
-  toast.error(errorMessage);
+  return { clientHandleApiError };
 }
 
 export function handleApiError<Z>({
@@ -60,6 +72,12 @@ export function handleApiError<Z>({
     case 401:
       return Result.err(
         new UnauthorizedError({
+          message: responseJson.message,
+        }),
+      );
+    case 404:
+      return Result.err(
+        new NotFoundError({
           message: responseJson.message,
         }),
       );

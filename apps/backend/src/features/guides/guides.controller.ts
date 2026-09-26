@@ -27,7 +27,7 @@ export async function createGuideBasic(
   try {
     const guideId = await guidesService.create(promptData.prompt, userId);
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       data: guideId,
     });
@@ -63,7 +63,7 @@ export async function createGuideQuestions(
       userId,
     );
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       data: guideId,
     });
@@ -98,15 +98,15 @@ export async function createGuideAnsweredQuestions(
       userId,
     );
 
-    return res.status(200);
+    return res.status(201).json({
+      success: true,
+    });
   } catch (error) {
     console.error('Failed to create guide:', error);
 
     return res.status(500).json({
       success: false,
-      error: {
-        message: 'Something went wrong',
-      },
+      message: 'Something went wrong',
     });
   }
 }
@@ -133,15 +133,18 @@ export async function updateGuide(req: express.Request, res: express.Response) {
   const steps: GuideStepModel[] = res.locals.steps;
 
   try {
-    await guidesService.update(guideId, userId, steps);
+    const guide = await guidesService.update(guideId, userId, steps);
 
     return res.status(200).json({
       success: true,
-      data: steps,
+      data: guide,
     });
   } catch (error) {
     console.error('Failed to update guide:', error);
 
-    return res.status(500);
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+    });
   }
 }
