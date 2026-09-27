@@ -44,7 +44,13 @@ guidesRouter.post(
   createGuideAnsweredQuestions,
 );
 
-guidesRouter.delete('/api/remove-guide/:guideId', authMiddleware, removeGuide);
+guidesRouter.delete(
+  '/api/remove-guide/:guideId',
+  authMiddleware({
+    errorMessage: 'Guide was not deleted, please sign in',
+  }),
+  removeGuide,
+);
 
 guidesRouter.put(
   '/api/update-guide-progress/:guideId',

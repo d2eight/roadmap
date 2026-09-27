@@ -66,15 +66,13 @@ export async function createGuideQuestions(
 export async function createGuideWithAnsweredQuestions(
   guideId: string,
   requestBody: RequestInit,
-): Promise<
-  Result<ApiResponseSuccess<string>, ApiErrors<guideQuestionsSchemaType>>
-> {
+): Promise<Result<ApiResponseSuccess, ApiErrors<guideQuestionsSchemaType>>> {
   const response = await fetch(
     `http://localhost:3333/api/create-guide-with-answered-questions/${guideId}`,
     requestBody,
   );
 
-  const responseJson: ApiResponse<string, GuideQuestionFormErrors> =
+  const responseJson: ApiResponse<null, GuideQuestionFormErrors> =
     await response.json();
   const responseStatusCode = response.status;
 
@@ -106,6 +104,28 @@ export async function updateGuideProgress(
     GuideModelWithRelations,
     GuideStepsFormErrors
   > = await response.json();
+  const responseStatusCode = response.status;
+
+  if (responseJson.success) {
+    return Result.ok(responseJson);
+  }
+
+  return handleApiError({
+    responseJson,
+    responseStatusCode,
+  });
+}
+
+export async function deleteGuide(
+  guideId: string,
+  requestBody: RequestInit,
+): Promise<Result<ApiResponse, ApiErrors>> {
+  const response = await fetch(
+    `http://localhost:3333/api/remove-guide/${guideId}`,
+    requestBody,
+  );
+
+  const responseJson: ApiResponse = await response.json();
   const responseStatusCode = response.status;
 
   if (responseJson.success) {

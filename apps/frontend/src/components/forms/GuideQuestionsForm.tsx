@@ -79,7 +79,7 @@ export default function GuideQuestionsForm() {
   });
 
   const { mutate } = useMutation<
-    string,
+    ApiResponseSuccess,
     ApiErrors<guideQuestionsSchemaType>,
     RequestInit
   >({
@@ -107,7 +107,7 @@ export default function GuideQuestionsForm() {
       throw result.error;
     }
 
-    return 'result.value';
+    return result.value;
   }
 
   async function onSubmit(data: guideQuestionsSchemaType) {

@@ -61,7 +61,7 @@ export function useClientHandleApiError() {
   return { clientHandleApiError };
 }
 
-export function handleApiError<Z>({
+export function handleApiError<Z = null>({
   responseJson,
   responseStatusCode,
 }: {
