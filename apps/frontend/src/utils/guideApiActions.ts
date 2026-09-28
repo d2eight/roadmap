@@ -2,6 +2,7 @@ import { Result } from 'better-result';
 import {
   ApiErrors,
   ApiResponse,
+  ApiResponseError,
   ApiResponseSuccess,
   GuideModelWithRelations,
   GuideQuestionFormErrors,
@@ -21,7 +22,7 @@ import {
 
 export async function createGuideBasic(
   requestBody: RequestInit,
-): Promise<Result<ApiResponseSuccess<string>, ApiErrors<promptSchemaType>>> {
+): Promise<Result<ApiResponseSuccess<string>, ApiErrors<PromptFormErrors>>> {
   const response = await fetch(
     'http://localhost:3333/api/create-guide',
     requestBody,
@@ -43,7 +44,7 @@ export async function createGuideBasic(
 
 export async function createGuideQuestions(
   requestBody: RequestInit,
-): Promise<Result<ApiResponseSuccess<string>, ApiErrors<promptSchemaType>>> {
+): Promise<Result<ApiResponseSuccess<string>, ApiErrors<PromptFormErrors>>> {
   const response = await fetch(
     'http://localhost:3333/api/create-guide-questions',
     requestBody,
@@ -66,7 +67,7 @@ export async function createGuideQuestions(
 export async function createGuideWithAnsweredQuestions(
   guideId: string,
   requestBody: RequestInit,
-): Promise<Result<ApiResponseSuccess, ApiErrors<guideQuestionsSchemaType>>> {
+): Promise<Result<ApiResponseSuccess, ApiErrors<GuideQuestionFormErrors>>> {
   const response = await fetch(
     `http://localhost:3333/api/create-guide-with-answered-questions/${guideId}`,
     requestBody,
@@ -92,7 +93,7 @@ export async function updateGuideProgress(
 ): Promise<
   Result<
     ApiResponseSuccess<GuideModelWithRelations>,
-    ApiErrors<guideStepsSchemaType>
+    ApiErrors<GuideStepsFormErrors>
   >
 > {
   const response = await fetch(
@@ -119,18 +120,19 @@ export async function updateGuideProgress(
 export async function deleteGuide(
   guideId: string,
   requestBody: RequestInit,
-): Promise<Result<ApiResponse, ApiErrors>> {
+): Promise<Result<null, ApiErrors>> {
   const response = await fetch(
     `http://localhost:3333/api/remove-guide/${guideId}`,
     requestBody,
   );
 
-  const responseJson: ApiResponse = await response.json();
   const responseStatusCode = response.status;
 
-  if (responseJson.success) {
-    return Result.ok(responseJson);
+  if (responseStatusCode === 204) {
+    return Result.ok(null);
   }
+
+  const responseJson: ApiResponseError = await response.json();
 
   return handleApiError({
     responseJson,

@@ -18,21 +18,24 @@ import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { useContext } from 'react';
 import { GuideContext } from '@/context/GuideContext';
-import { ApiError, paramsSchema } from 'shared-types';
+import { ApiError, ApiErrors, paramsSchema } from 'shared-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ParamsContext } from '@/context/ParamsContext';
 import { toast } from 'sonner';
+import { deleteGuide } from '@/utils/guideApiActions';
+import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
 
 export function DeleteGuideButton() {
   const { guide } = useContext(GuideContext);
   const queryClient = useQueryClient();
   const { queryKey } = useContext(ParamsContext);
+  const { clientHandleApiError } = useClientHandleApiError();
 
   const isDisabled =
     guide.status !== 'GUIDE_GENERATED' &&
     guide.status !== 'QUESTIONS_GENERATED';
 
-  const { mutate } = useMutation({
+  const { mutate } = useMutation<null, ApiErrors>({
     mutationFn: removeGuide,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -41,22 +44,24 @@ export function DeleteGuideButton() {
       await queryClient.invalidateQueries({ queryKey });
       toast.success('You have successfully deleted guide!');
     },
+    onError: (error) => {
+      clientHandleApiError(error);
+    },
   });
 
   async function removeGuide() {
-    const response = await fetch(
-      `http://localhost:3333/api/remove-guide/${guide.id}`,
-      {
-        method: 'DELETE',
-        credentials: 'include',
-      },
-    );
+    const requestBody: RequestInit = {
+      method: 'DELETE',
+      credentials: 'include',
+    };
 
-    if (!response.ok) {
-      throw new ApiError(response.status, response.statusText);
+    const result = await deleteGuide(guide.id, requestBody);
+
+    if (result.isErr()) {
+      throw result.error;
     }
 
-    return response;
+    return result.value;
   }
 
   return (

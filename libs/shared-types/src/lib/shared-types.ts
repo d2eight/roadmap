@@ -48,10 +48,10 @@ export type ApiResponseSuccess<T = null> = Extract<
   { success: true }
 >;
 
-export type ApiErrors<TForm = null> =
+export type ApiErrors<ZodError = null> =
   | UnauthorizedError
   | NotFoundError
-  | UnprocessableEntity<z.ZodFlattenedError<TForm>>
+  | UnprocessableEntity<ZodError>
   | UnexpectedError;
 
 export type GuideJob = {

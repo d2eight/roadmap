@@ -80,7 +80,7 @@ export default function GuideQuestionsForm() {
 
   const { mutate } = useMutation<
     ApiResponseSuccess,
-    ApiErrors<guideQuestionsSchemaType>,
+    ApiErrors<GuideQuestionFormErrors>,
     RequestInit
   >({
     mutationFn: createGuide,

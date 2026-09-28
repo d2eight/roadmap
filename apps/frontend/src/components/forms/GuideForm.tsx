@@ -12,6 +12,7 @@ import {
   GuideModelWithRelations,
   guideQuestionsSchemaType,
   GuideStepModelFetched,
+  GuideStepsFormErrors,
   guideStepsSchema,
   guideStepsSchemaType,
 } from 'shared-types';
@@ -49,7 +50,7 @@ export function GuideForm() {
 
   const { mutate } = useMutation<
     ApiResponseSuccess<GuideModelWithRelations>,
-    ApiErrors<guideStepsSchemaType>,
+    ApiErrors<GuideStepsFormErrors>,
     RequestInit
   >({
     mutationFn: updateGuide,

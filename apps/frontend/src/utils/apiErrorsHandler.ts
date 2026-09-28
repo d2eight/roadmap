@@ -1,9 +1,9 @@
 import { FieldPath, FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import {
+  ApiError,
   ApiErrors,
   ApiResponse,
   ApiResponseError,
-  PromptFormErrors,
   promptSchemaType,
 } from 'shared-types';
 import {
@@ -14,17 +14,38 @@ import {
 } from 'errors';
 import { toast } from 'sonner';
 import { notFound, redirect, useRouter } from 'next/navigation';
-import { z } from 'zod';
+import { z, ZodFlattenedError } from 'zod';
 import { Result } from 'better-result';
 import { useCallback } from 'react';
+// , ZodError extends ZodFlattenedError<Form> | null
+
+function clientHandleApiError(error: ApiErrors): void;
+
+function clientHandleApiError<Form extends FieldValues>(
+  error: ApiErrors<z.ZodFlattenedError<Form>>,
+  form: UseFormReturn<Form>,
+): void;
+
+function clientHandleApiError<Form extends FieldValues>(
+  error: ApiErrors<ZodFlattenedError<Form> | null>,
+  form?: UseFormReturn<Form>,
+) {}
+
+type ClientHandleApiError = {
+  (error: ApiErrors): void;
+  <Form extends FieldValues>(
+    error: ApiErrors<ZodFlattenedError<Form> | null>,
+    form?: UseFormReturn<Form>,
+  ): void;
+};
 
 export function useClientHandleApiError() {
   const router = useRouter();
 
-  const clientHandleApiError = useCallback(
-    <TForm extends FieldValues>(
-      error: ApiErrors<TForm>,
-      form?: UseFormReturn<TForm>,
+  const clientHandleApiError = useCallback<ClientHandleApiError>(
+    <Form extends FieldValues>(
+      error: ApiErrors<ZodFlattenedError<Form> | null>,
+      form?: UseFormReturn<Form>,
     ) => {
       const errorMessage = error.message
         ? error.message
@@ -35,8 +56,8 @@ export function useClientHandleApiError() {
       } else if (error instanceof UnprocessableEntity) {
         const fieldsErrors = error.zodError?.fieldErrors;
 
-        if (fieldsErrors && form) {
-          const fields = Object.keys(fieldsErrors) as FieldPath<TForm>[];
+        if (form && fieldsErrors) {
+          const fields = Object.keys(fieldsErrors) as FieldPath<Form>[];
 
           for (const property of fields) {
             form.setError(property, {
