@@ -15,6 +15,7 @@ import { getGuides } from 'utils';
 import { AuthContext } from '@/context/AuthContext';
 import { ParamsContext } from '@/context/ParamsContext';
 import { pageSize } from '@/constants/constants';
+import { getGuidesNEXT } from '@/utils/guide';
 
 export const GuidesContext = createContext<{
   guides: GuideModelWithRelations[];
@@ -23,20 +24,16 @@ export const GuidesContext = createContext<{
 }>(null!);
 
 export function GuidesContextProvider({ children }: { children: ReactNode }) {
-  const auth = useContext(AuthContext);
   const { parsedParams, queryKey } = useContext(ParamsContext);
-  const userId = auth.data && auth.data.user.id ? auth.data.user.id : '';
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey,
     queryFn: () =>
-      getGuides({
+      getGuidesNEXT({
         pageSize: pageSize,
-        userId: userId,
         params: parsedParams,
       }),
-    staleTime: 60 * 1000,
   });
 
   const guides = data?.[0] || [];

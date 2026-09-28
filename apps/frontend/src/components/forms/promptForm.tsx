@@ -3,7 +3,9 @@
 import { Controller, FieldPath, useForm } from 'react-hook-form';
 import {
   ApiError,
+  ApiErrors,
   ApiResponse,
+  ApiResponseSuccess,
   PromptFormErrors,
   promptSchema,
   promptSchemaType,
@@ -70,8 +72,8 @@ export function PromptForm({
   });
 
   const { mutate } = useMutation<
-    string,
-    UnexpectedError | UnauthorizedError | UnprocessableEntity<PromptFormErrors>,
+    ApiResponseSuccess<string>,
+    ApiErrors<PromptFormErrors>,
     {
       requestBody: RequestInit;
       externalAiQuestionsStatus: boolean;
@@ -119,7 +121,7 @@ export function PromptForm({
       throw result.error;
     }
 
-    return result.value.data;
+    return result.value;
   }
 
   async function onSubmit(data: promptSchemaType) {
