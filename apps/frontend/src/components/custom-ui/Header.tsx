@@ -6,12 +6,9 @@ import { authClient } from '../../lib/auth-client';
 import { headers } from 'next/headers';
 import { AuthButtons } from './AuthButtons';
 import { getUserIdFromHeaders } from '@/utils/getUserId';
+import { getSession } from 'utils';
 
 export async function Header() {
-  const headersList = await headers();
-  const userId = getUserIdFromHeaders({ headersList });
-  const initialAuthStatus = userId ? true : false;
-
   return (
     <header className="fixed top-0 left-0 right-0 w-full h-[70px] bg-white shadow-md z-0">
       <div className="px-[20px] flex items-center justify-between h-full">
@@ -28,7 +25,7 @@ export async function Header() {
           </Button>
         </div>
         <div className="flex items-center gap-2">
-          <AuthButtons initialAuthStatus={initialAuthStatus} />
+          <AuthButtons />
         </div>
       </div>
     </header>

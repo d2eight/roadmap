@@ -8,18 +8,9 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'sonner';
 
-export function AuthButtons({
-  initialAuthStatus,
-}: {
-  initialAuthStatus: boolean;
-}) {
+export function AuthButtons() {
   const router = useRouter();
-  const [authStatus, setAuthStatus] = useState<boolean>(initialAuthStatus);
   const { data, error } = useContext(AuthContext);
-
-  useEffect(() => {
-    data ? setAuthStatus(true) : setAuthStatus(false);
-  }, [data]);
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -33,7 +24,7 @@ export function AuthButtons({
 
   return (
     <>
-      {authStatus ? (
+      {data ? (
         <Button onClick={handleSignOut} variant="destructive">
           Sign Out
         </Button>
