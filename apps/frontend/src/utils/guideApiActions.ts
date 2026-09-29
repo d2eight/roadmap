@@ -139,3 +139,23 @@ export async function deleteGuide(
     responseStatusCode,
   });
 }
+
+export async function recreateGuide(guideId: string, requestBody: RequestInit) {
+  const response = await fetch(
+    `http://localhost:3333/api/recreate-guide/${guideId}`,
+    requestBody,
+  );
+
+  const responseStatusCode = response.status;
+
+  if (responseStatusCode === 204) {
+    return Result.ok(null);
+  }
+
+  const responseJson: ApiResponseError = await response.json();
+
+  return handleApiError({
+    responseJson,
+    responseStatusCode,
+  });
+}

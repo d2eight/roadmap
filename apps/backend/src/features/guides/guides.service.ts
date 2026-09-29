@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   answeredQuestionsSchemaType,
+  GuideJob,
   GuideStepModelFetched,
   promptSchemaType,
 } from 'shared-types';
@@ -15,6 +16,7 @@ import { createEmptyGuide } from 'utils';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 import { GuideProgressStatus } from '@/libs/db/prisma/generated/schemas';
 import { getGuideStepProperties } from 'shared-constants';
+import { Job } from 'bullmq';
 
 export async function create(prompt: string, userId: string): Promise<string> {
   const newGuide = await createEmptyGuide(prompt, userId);
@@ -26,7 +28,7 @@ export async function create(prompt: string, userId: string): Promise<string> {
       userId: userId,
       prompt: prompt,
     },
-    { jobId: newGuide.id },
+    { jobId: newGuide.id, removeOnComplete: true, removeOnFail: true },
   );
 
   return newGuide.id;
@@ -45,7 +47,7 @@ export async function createQuestions(
       userId: userId,
       prompt: prompt,
     },
-    { jobId: newGuide.id },
+    { jobId: newGuide.id, removeOnComplete: true, removeOnFail: true },
   );
 
   return newGuide.id;
@@ -65,7 +67,7 @@ export async function createWithAnsweredQuestions(
       userId: userId,
       guideId: guideId,
     },
-    { jobId: guideId },
+    { jobId: guideId, removeOnComplete: true, removeOnFail: true },
   );
 }
 
@@ -156,4 +158,49 @@ export async function update(
   }
 
   return guideFirstUpdate;
+}
+
+export async function recreate(guideId: string, userId: string) {
+  const guide = await prisma.guide.findUnique({
+    where: {
+      id: guideId,
+      userId: userId,
+    },
+  });
+
+  if (!guide) {
+    throw new Error();
+  }
+
+  const guideStatusReset = prisma.guide.update({
+    where: {
+      id: guideId,
+      userId: userId,
+    },
+    data: {
+      progressStatus: 'PENDING',
+      status: 'INIT',
+    },
+  });
+
+  const deleteSteps = prisma.guideStep.deleteMany({
+    where: {
+      guideId: guideId,
+    },
+  });
+
+  await prisma.$transaction([guideStatusReset, deleteSteps]);
+
+  const job: GuideJob = {
+    prompt: guide.prompt,
+    userId: userId,
+    guideId: guideId,
+    answeredQuestions: guide.answeredQuestions as answeredQuestionsSchemaType,
+  };
+
+  await guideGenerationQueue.add('guide_recreate', job, {
+    jobId: guideId,
+    removeOnComplete: true,
+    removeOnFail: true,
+  });
 }

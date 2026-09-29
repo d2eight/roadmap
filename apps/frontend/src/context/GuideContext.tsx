@@ -38,7 +38,6 @@ export default function GuideContextProvider({
   });
   const { socketGuideData } = useContext(SocketContext);
   const auth = useContext(AuthContext);
-  const userId = auth.data && auth.data.user.id ? auth.data.user.id : '';
 
   useEffect(() => {
     if (socketGuideData && data && data.id === socketGuideData.id) {

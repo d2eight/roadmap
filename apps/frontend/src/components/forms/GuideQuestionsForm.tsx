@@ -133,7 +133,7 @@ export default function GuideQuestionsForm() {
     };
 
     const requestBody: RequestInit = {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },

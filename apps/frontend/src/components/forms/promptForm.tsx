@@ -80,7 +80,9 @@ export function PromptForm({
     }
   >({
     mutationFn: createGuide,
-    onSuccess: async (newGuideId) => {
+    onSuccess: async (response) => {
+      const newGuideId = response.data;
+
       setProcessingStatus(false);
       toast.success('Successfully initiated to create guide');
 

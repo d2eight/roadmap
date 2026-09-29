@@ -23,8 +23,15 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { LucideCheck } from 'lucide-react';
+import { LucideCheck, LucideEllipsisVertical } from 'lucide-react';
 import { DeleteGuideButton } from '@/components/custom-ui/DeleteGuideButton';
+import { RecreateGuideButton } from '@/components/custom-ui/RecreateGuideButton';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export function GuideHeader() {
   const { guide, completedSteps } = useContext(GuideContext);
@@ -43,7 +50,7 @@ export function GuideHeader() {
                 form="guide-form"
                 type="submit"
                 size="icon-sm"
-                variant="secondary"
+                variant="outline"
                 disabled={processingStatus}
               >
                 <LucideCheck />
@@ -51,7 +58,26 @@ export function GuideHeader() {
             </TooltipTrigger>
             <TooltipContent>Update Progress</TooltipContent>
           </Tooltip>
-          <DeleteGuideButton />
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button size="icon-sm" variant="outline">
+                    <LucideEllipsisVertical />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Options</TooltipContent>
+              </Tooltip>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                <RecreateGuideButton />
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                <DeleteGuideButton />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </CardAction>
       </CardHeader>
       <CardContent className="px-0 flex flex-row items-center gap-[10px]">

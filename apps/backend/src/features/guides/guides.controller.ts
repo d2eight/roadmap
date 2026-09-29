@@ -148,3 +148,24 @@ export async function updateGuide(req: express.Request, res: express.Response) {
     });
   }
 }
+
+export async function recreateGuide(
+  req: express.Request,
+  res: express.Response,
+) {
+  const userId: string = res.locals.userId;
+  const guideId = req.params.guideId as string;
+
+  try {
+    await guidesService.recreate(guideId, userId);
+
+    return res.status(204).end();
+  } catch (error) {
+    console.error('Failed to recreate guide:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+    });
+  }
+}

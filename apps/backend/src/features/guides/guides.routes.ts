@@ -4,6 +4,7 @@ import {
   createGuideAnsweredQuestions,
   createGuideBasic,
   createGuideQuestions,
+  recreateGuide,
   removeGuide,
   updateGuide,
 } from './guides.controller';
@@ -34,7 +35,7 @@ guidesRouter.post(
   createGuideQuestions,
 );
 
-guidesRouter.post(
+guidesRouter.patch(
   '/api/create-guide-with-answered-questions/:guideId',
   authMiddleware({
     errorMessage: 'Guide was not created, please sign in',
@@ -52,7 +53,7 @@ guidesRouter.delete(
   removeGuide,
 );
 
-guidesRouter.put(
+guidesRouter.patch(
   '/api/update-guide-progress/:guideId',
   authMiddleware({
     errorMessage: 'Guide progress was not updated, please sign in',
@@ -60,4 +61,13 @@ guidesRouter.put(
   guideMiddleware({}),
   stepsValidationMiddleware({}),
   updateGuide,
+);
+
+guidesRouter.put(
+  '/api/recreate-guide/:guideId',
+  authMiddleware({
+    errorMessage: 'Guide was not recreated, please sign in',
+  }),
+  guideMiddleware({}),
+  recreateGuide,
 );

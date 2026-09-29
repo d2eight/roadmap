@@ -77,7 +77,7 @@ export function GuideForm() {
       setProcessingStatus(true);
 
       const requestBody: RequestInit = {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
