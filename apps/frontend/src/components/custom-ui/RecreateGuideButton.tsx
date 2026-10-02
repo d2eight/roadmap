@@ -63,7 +63,11 @@ export function RecreateGuideButton() {
         <div>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button className="cursor-pointer" variant="outline">
+              <Button
+                className="cursor-pointer"
+                size="icon-sm"
+                variant="outline"
+              >
                 <LucideRefreshCcw />
               </Button>
             </TooltipTrigger>

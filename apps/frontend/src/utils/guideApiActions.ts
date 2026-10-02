@@ -87,6 +87,29 @@ export async function createGuideWithAnsweredQuestions(
   });
 }
 
+export async function recreateGuideWithAnsweredQuestions(
+  guideId: string,
+  requestBody: RequestInit,
+): Promise<Result<ApiResponseSuccess, ApiErrors<GuideQuestionFormErrors>>> {
+  const response = await fetch(
+    `http://localhost:3333/api/recreate-guide-with-answered-questions/${guideId}`,
+    requestBody,
+  );
+
+  const responseJson: ApiResponse<null, GuideQuestionFormErrors> =
+    await response.json();
+  const responseStatusCode = response.status;
+
+  if (responseJson.success) {
+    return Result.ok(responseJson);
+  }
+
+  return handleApiError({
+    responseJson,
+    responseStatusCode,
+  });
+}
+
 export async function updateGuideProgress(
   guideId: string,
   requestBody: RequestInit,

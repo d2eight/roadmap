@@ -32,6 +32,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ShowAnsweredQuestionButton } from '@/components/custom-ui/ShowAnsweredQuestionButton';
 
 export function GuideHeader() {
   const { guide, completedSteps } = useContext(GuideContext);
@@ -58,26 +59,32 @@ export function GuideHeader() {
             </TooltipTrigger>
             <TooltipContent>Update Progress</TooltipContent>
           </Tooltip>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Button size="icon-sm" variant="outline">
-                    <LucideEllipsisVertical />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Options</TooltipContent>
-              </Tooltip>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                <RecreateGuideButton />
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                <DeleteGuideButton />
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <RecreateGuideButton />
+          <ShowAnsweredQuestionButton />
+          <DeleteGuideButton />
+          {/*<DropdownMenu>*/}
+          {/*  <DropdownMenuTrigger>*/}
+          {/*    <Tooltip>*/}
+          {/*      <TooltipTrigger>*/}
+          {/*        <Button size="icon-sm" variant="outline">*/}
+          {/*          <LucideEllipsisVertical />*/}
+          {/*        </Button>*/}
+          {/*      </TooltipTrigger>*/}
+          {/*      <TooltipContent>Options</TooltipContent>*/}
+          {/*    </Tooltip>*/}
+          {/*  </DropdownMenuTrigger>*/}
+          {/*  <DropdownMenuContent>*/}
+          {/*    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>*/}
+          {/*      <RecreateGuideButton />*/}
+          {/*    </DropdownMenuItem>*/}
+          {/*    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>*/}
+          {/*      <DeleteGuideButton />*/}
+          {/*    </DropdownMenuItem>*/}
+          {/*    <DropdownMenuItem*/}
+          {/*      onSelect={(e) => e.preventDefault()}*/}
+          {/*    ></DropdownMenuItem>*/}
+          {/*  </DropdownMenuContent>*/}
+          {/*</DropdownMenu>*/}
         </CardAction>
       </CardHeader>
       <CardContent className="px-0 flex flex-row items-center gap-[10px]">

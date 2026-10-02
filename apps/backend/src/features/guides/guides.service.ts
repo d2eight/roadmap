@@ -53,12 +53,17 @@ export async function createQuestions(
   return newGuide.id;
 }
 
-export async function createWithAnsweredQuestions(
-  prompt: string,
-  answeredQuestions: answeredQuestionsSchemaType,
-  guideId: string,
-  userId: string,
-) {
+export async function createWithAnsweredQuestions({
+  prompt,
+  answeredQuestions,
+  guideId,
+  userId,
+}: {
+  prompt: string;
+  answeredQuestions: answeredQuestionsSchemaType;
+  guideId: string;
+  userId: string;
+}) {
   await guideGenerationQueue.add(
     'newGuide_withAnsweredQuestions',
     {
@@ -160,6 +165,36 @@ export async function update(
   return guideFirstUpdate;
 }
 
+async function resetGuideStatus({
+  guideId,
+  userId,
+  deleteAnsweredQuestions = false,
+}: {
+  guideId: string;
+  userId: string;
+  deleteAnsweredQuestions?: boolean;
+}) {
+  const guideStatusReset = prisma.guide.update({
+    where: {
+      id: guideId,
+      userId: userId,
+    },
+    data: {
+      progressStatus: 'PENDING',
+      status: 'INIT',
+      ...(deleteAnsweredQuestions && { answeredQuestions: {} }),
+    },
+  });
+
+  const deleteSteps = prisma.guideStep.deleteMany({
+    where: {
+      guideId: guideId,
+    },
+  });
+
+  await prisma.$transaction([guideStatusReset, deleteSteps]);
+}
+
 export async function recreate(guideId: string, userId: string) {
   const guide = await prisma.guide.findUnique({
     where: {
@@ -172,24 +207,7 @@ export async function recreate(guideId: string, userId: string) {
     throw new Error();
   }
 
-  const guideStatusReset = prisma.guide.update({
-    where: {
-      id: guideId,
-      userId: userId,
-    },
-    data: {
-      progressStatus: 'PENDING',
-      status: 'INIT',
-    },
-  });
-
-  const deleteSteps = prisma.guideStep.deleteMany({
-    where: {
-      guideId: guideId,
-    },
-  });
-
-  await prisma.$transaction([guideStatusReset, deleteSteps]);
+  await resetGuideStatus({ guideId, userId });
 
   const job: GuideJob = {
     prompt: guide.prompt,
@@ -202,5 +220,37 @@ export async function recreate(guideId: string, userId: string) {
     jobId: guideId,
     removeOnComplete: true,
     removeOnFail: true,
+  });
+}
+
+export async function recreateGuideWithQuestions({
+  prompt,
+  answeredQuestions,
+  guideId,
+  userId,
+}: {
+  prompt: string;
+  answeredQuestions: answeredQuestionsSchemaType;
+  guideId: string;
+  userId: string;
+}) {
+  const guide = await prisma.guide.findUnique({
+    where: {
+      id: guideId,
+      userId: userId,
+    },
+  });
+
+  if (!guide) {
+    throw new Error();
+  }
+
+  await resetGuideStatus({ guideId, userId, deleteAnsweredQuestions: true });
+
+  await createWithAnsweredQuestions({
+    prompt,
+    answeredQuestions,
+    guideId,
+    userId,
   });
 }

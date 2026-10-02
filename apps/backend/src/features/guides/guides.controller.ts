@@ -91,12 +91,12 @@ export async function createGuideAnsweredQuestions(
   const prompt: string = res.locals.prompt;
 
   try {
-    await guidesService.createWithAnsweredQuestions(
+    await guidesService.createWithAnsweredQuestions({
       prompt,
       answeredQuestions,
       guideId,
       userId,
-    );
+    });
 
     return res.status(201).json({
       success: true,
@@ -153,8 +153,11 @@ export async function recreateGuide(
   req: express.Request,
   res: express.Response,
 ) {
+  const answeredQuestions: answeredQuestionsSchemaType =
+    res.locals.answeredQuestions;
   const userId: string = res.locals.userId;
-  const guideId = req.params.guideId as string;
+  const guideId: string = req.params.guideId as string;
+  const prompt: string = res.locals.prompt;
 
   try {
     await guidesService.recreate(guideId, userId);
@@ -162,6 +165,36 @@ export async function recreateGuide(
     return res.status(204).end();
   } catch (error) {
     console.error('Failed to recreate guide:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+    });
+  }
+}
+
+export async function recreateGuideAnsweredQuestions(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) {
+  const answeredQuestions: answeredQuestionsSchemaType =
+    res.locals.answeredQuestions;
+  const userId: string = res.locals.userId;
+  const guideId: string = req.params.guideId as string;
+  const prompt: string = res.locals.prompt;
+
+  try {
+    await guidesService.recreateGuideWithQuestions({
+      prompt,
+      answeredQuestions,
+      guideId,
+      userId,
+    });
+
+    return res.status(204).end();
+  } catch (error) {
+    console.error('Failed to create guide:', error);
 
     return res.status(500).json({
       success: false,

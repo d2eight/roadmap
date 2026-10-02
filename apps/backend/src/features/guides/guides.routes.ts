@@ -5,6 +5,7 @@ import {
   createGuideBasic,
   createGuideQuestions,
   recreateGuide,
+  recreateGuideAnsweredQuestions,
   removeGuide,
   updateGuide,
 } from './guides.controller';
@@ -70,4 +71,23 @@ guidesRouter.put(
   }),
   guideMiddleware({}),
   recreateGuide,
+);
+
+guidesRouter.put(
+  '/api/recreate-guide-new-prompt/:guideId',
+  authMiddleware({
+    errorMessage: 'Guide was not recreated, please sign in',
+  }),
+  guideMiddleware({}),
+  recreateGuide,
+);
+
+guidesRouter.put(
+  '/api/recreate-guide-with-answered-questions/:guideId',
+  authMiddleware({
+    errorMessage: 'Guide questions were not created, please sign in',
+  }),
+  questionsValidationMiddleware({}),
+  guideMiddleware({}),
+  recreateGuideAnsweredQuestions,
 );

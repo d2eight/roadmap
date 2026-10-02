@@ -36,7 +36,10 @@ import { toast } from 'sonner';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
-import { createGuideWithAnsweredQuestions } from '@/utils/guideApiActions';
+import {
+  createGuideWithAnsweredQuestions,
+  recreateGuideWithAnsweredQuestions,
+} from '@/utils/guideApiActions';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
 
 export default function GuideQuestionsForm() {
@@ -67,18 +70,32 @@ export default function GuideQuestionsForm() {
 
   const questionText = guideQuestions.aiQuestionText.question;
 
+  const alreadyAnsweredQuestions = guide.answeredQuestions
+    ? (guide.answeredQuestions as answeredQuestionsSchemaType)
+    : null;
+
+  const guideQuestionsDefaultValues: guideQuestionsSchemaType = {
+    questionABCD: alreadyAnsweredQuestions
+      ? alreadyAnsweredQuestions.questionABCD.answer
+      : '',
+    questionRange: alreadyAnsweredQuestions
+      ? alreadyAnsweredQuestions.questionRange.answer
+      : 0,
+    questionCheckbox: alreadyAnsweredQuestions
+      ? alreadyAnsweredQuestions.questionCheckbox.answer
+      : [],
+    questionText: alreadyAnsweredQuestions
+      ? alreadyAnsweredQuestions.questionText.answer
+      : '',
+  };
+
   const form = useForm<guideQuestionsSchemaType>({
     resolver: zodResolver(guideQuestionsSchema),
-    defaultValues: {
-      questionABCD: '',
-      questionRange: 0,
-      questionCheckbox: [],
-      questionText: '',
-    },
+    defaultValues: guideQuestionsDefaultValues,
     mode: 'onChange',
   });
 
-  const { mutate } = useMutation<
+  const createMutation = useMutation<
     ApiResponseSuccess,
     ApiErrors<GuideQuestionFormErrors>,
     RequestInit
@@ -97,8 +114,40 @@ export default function GuideQuestionsForm() {
     },
   });
 
+  const recreateMutation = useMutation<
+    ApiResponseSuccess,
+    ApiErrors<GuideQuestionFormErrors>,
+    RequestInit
+  >({
+    mutationFn: recreateGuide,
+    onSuccess: async () => {
+      setProcessingStatus(false);
+      toast.success('Successfully consumed your answers to create guide');
+      await queryClient.invalidateQueries({
+        queryKey: ['guide', guide.id],
+      });
+    },
+    onError: (error) => {
+      setProcessingStatus(false);
+      clientHandleApiError<guideQuestionsSchemaType>(error, form);
+    },
+  });
+
   async function createGuide(requestBody: RequestInit) {
     const result = await createGuideWithAnsweredQuestions(
+      guide.id,
+      requestBody,
+    );
+
+    if (result.isErr()) {
+      throw result.error;
+    }
+
+    return result.value;
+  }
+
+  async function recreateGuide(requestBody: RequestInit) {
+    const result = await recreateGuideWithAnsweredQuestions(
       guide.id,
       requestBody,
     );
@@ -133,7 +182,6 @@ export default function GuideQuestionsForm() {
     };
 
     const requestBody: RequestInit = {
-      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -141,7 +189,13 @@ export default function GuideQuestionsForm() {
       body: JSON.stringify(answeredQuestions),
     };
 
-    mutate(requestBody);
+    if (!alreadyAnsweredQuestions) {
+      requestBody.method = 'PATCH';
+      createMutation.mutate(requestBody);
+    } else {
+      requestBody.method = 'PUT';
+      recreateMutation.mutate(requestBody);
+    }
   }
 
   return (
@@ -216,7 +270,7 @@ export default function GuideQuestionsForm() {
                         <div>
                           <Slider
                             disabled={processingStatus}
-                            defaultValue={[0]}
+                            defaultValue={[field.value]}
                             onValueChange={(v) => {
                               field.onChange(v[0]);
                             }}
