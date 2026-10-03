@@ -6,6 +6,8 @@ import {
   createGuideQuestions,
   recreateGuide,
   recreateGuideAnsweredQuestions,
+  recreateGuideWithPrompt,
+  recreateGuideWithQuestions,
   removeGuide,
   updateGuide,
 } from './guides.controller';
@@ -13,6 +15,10 @@ import { promptValidationMiddleware } from '../../middlewares/prompt';
 import { guideMiddleware } from '../../middlewares/guide';
 import { questionsValidationMiddleware } from '../../middlewares/promptWithQuestions';
 import { stepsValidationMiddleware } from '../../middlewares/steps';
+import {
+  recreateGuideNewPrompt,
+  recreateGuideNewQuestions,
+} from '@/apps/backend/src/features/guides/guides.service';
 
 export const guidesRouter = express.Router();
 
@@ -79,7 +85,18 @@ guidesRouter.put(
     errorMessage: 'Guide was not recreated, please sign in',
   }),
   guideMiddleware({}),
-  recreateGuide,
+  promptValidationMiddleware({}),
+  recreateGuideWithPrompt,
+);
+
+guidesRouter.put(
+  '/api/recreate-guide-new-questions/:guideId',
+  authMiddleware({
+    errorMessage: 'Guide was not recreated, please sign in',
+  }),
+  guideMiddleware({}),
+  promptValidationMiddleware({}),
+  recreateGuideWithQuestions,
 );
 
 guidesRouter.put(

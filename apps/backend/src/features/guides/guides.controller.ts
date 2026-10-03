@@ -7,6 +7,10 @@ import {
 } from 'shared-types';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 import { getGuides } from 'utils';
+import {
+  recreateGuideNewPrompt,
+  recreateGuideNewQuestions,
+} from './guides.service';
 
 export async function createGuideBasic(
   req: express.Request,
@@ -161,6 +165,72 @@ export async function recreateGuide(
 
   try {
     await guidesService.recreate(guideId, userId);
+
+    return res.status(204).end();
+  } catch (error) {
+    console.error('Failed to recreate guide:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+    });
+  }
+}
+
+export async function recreateGuideWithPrompt(
+  req: express.Request,
+  res: express.Response,
+) {
+  const userId: string = res.locals.userId;
+  const guideId: string = req.params.guideId as string;
+  const promptData: promptSchemaType = res.locals.promptData;
+
+  if (promptData.externalAiQuestionsStatus) {
+    return res.status(422).json({
+      success: false,
+      message: 'Unexpected external ai questions behavior',
+    });
+  }
+
+  try {
+    await guidesService.recreateGuideNewPrompt({
+      userId: userId,
+      guideId: guideId,
+      newPrompt: promptData.prompt,
+    });
+
+    return res.status(204).end();
+  } catch (error) {
+    console.error('Failed to recreate guide:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+    });
+  }
+}
+
+export async function recreateGuideWithQuestions(
+  req: express.Request,
+  res: express.Response,
+) {
+  const userId: string = res.locals.userId;
+  const guideId: string = req.params.guideId as string;
+  const promptData: promptSchemaType = res.locals.promptData;
+
+  if (!promptData.externalAiQuestionsStatus) {
+    return res.status(422).json({
+      success: false,
+      message: 'Unexpected external ai questions behavior',
+    });
+  }
+
+  try {
+    await guidesService.recreateGuideNewQuestions({
+      userId: userId,
+      guideId: guideId,
+      newPrompt: promptData.prompt,
+    });
 
     return res.status(204).end();
   } catch (error) {

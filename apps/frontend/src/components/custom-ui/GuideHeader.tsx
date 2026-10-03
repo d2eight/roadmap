@@ -33,6 +33,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ShowAnsweredQuestionButton } from '@/components/custom-ui/ShowAnsweredQuestionButton';
+import { RecreateGuidePromptButton } from '@/components/custom-ui/RecreateGuidePromptButton';
 
 export function GuideHeader() {
   const { guide, completedSteps } = useContext(GuideContext);
@@ -59,32 +60,36 @@ export function GuideHeader() {
             </TooltipTrigger>
             <TooltipContent>Update Progress</TooltipContent>
           </Tooltip>
-          <RecreateGuideButton />
-          <ShowAnsweredQuestionButton />
           <DeleteGuideButton />
-          {/*<DropdownMenu>*/}
-          {/*  <DropdownMenuTrigger>*/}
-          {/*    <Tooltip>*/}
-          {/*      <TooltipTrigger>*/}
-          {/*        <Button size="icon-sm" variant="outline">*/}
-          {/*          <LucideEllipsisVertical />*/}
-          {/*        </Button>*/}
-          {/*      </TooltipTrigger>*/}
-          {/*      <TooltipContent>Options</TooltipContent>*/}
-          {/*    </Tooltip>*/}
-          {/*  </DropdownMenuTrigger>*/}
-          {/*  <DropdownMenuContent>*/}
-          {/*    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>*/}
-          {/*      <RecreateGuideButton />*/}
-          {/*    </DropdownMenuItem>*/}
-          {/*    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>*/}
-          {/*      <DeleteGuideButton />*/}
-          {/*    </DropdownMenuItem>*/}
-          {/*    <DropdownMenuItem*/}
-          {/*      onSelect={(e) => e.preventDefault()}*/}
-          {/*    ></DropdownMenuItem>*/}
-          {/*  </DropdownMenuContent>*/}
-          {/*</DropdownMenu>*/}
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button size="icon-sm" variant="outline">
+                    <LucideEllipsisVertical />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Recreate Options</TooltipContent>
+              </Tooltip>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
+                <RecreateGuideButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
+                  Simple recreate
+                </RecreateGuideButton>
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
+                <ShowAnsweredQuestionButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
+                  Change answers
+                </ShowAnsweredQuestionButton>
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
+                <RecreateGuidePromptButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
+                  Change prompt
+                </RecreateGuidePromptButton>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </CardAction>
       </CardHeader>
       <CardContent className="px-0 flex flex-row items-center gap-[10px]">

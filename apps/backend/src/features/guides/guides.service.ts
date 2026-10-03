@@ -40,6 +40,16 @@ export async function createQuestions(
 ): Promise<string> {
   const newGuide = await createEmptyGuide(prompt, userId);
 
+  await prisma.guide.update({
+    where: {
+      userId: userId,
+      id: newGuide.id,
+    },
+    data: {
+      externalAiQuestionsStatus: true,
+    },
+  });
+
   await guideQuestionsGenerationQueue.add(
     'newGuide_Questions',
     {
@@ -182,7 +192,7 @@ async function resetGuideStatus({
     data: {
       progressStatus: 'PENDING',
       status: 'INIT',
-      ...(deleteAnsweredQuestions && { answeredQuestions: {} }),
+      ...(deleteAnsweredQuestions && { answeredQuestions: null }),
     },
   });
 
@@ -253,4 +263,82 @@ export async function recreateGuideWithQuestions({
     guideId,
     userId,
   });
+}
+
+export async function recreateGuideNewPrompt({
+  newPrompt,
+  guideId,
+  userId,
+}: {
+  newPrompt: string;
+  guideId: string;
+  userId: string;
+}) {
+  const guide = await prisma.guide.findUnique({
+    where: {
+      id: guideId,
+      userId: userId,
+    },
+  });
+
+  if (!guide) {
+    throw new Error();
+  }
+
+  await resetGuideStatus({ guideId, userId, deleteAnsweredQuestions: true });
+
+  await prisma.guide.update({
+    where: {
+      id: guideId,
+      userId: userId,
+    },
+    data: {
+      prompt: newPrompt,
+      externalAiQuestionsStatus: false,
+      questions: null,
+    },
+  });
+
+  await guideGenerationQueue.add(
+    'newGuide',
+    {
+      guideId: guideId,
+      userId: userId,
+      prompt: newPrompt,
+    },
+    { jobId: guideId, removeOnComplete: true, removeOnFail: true },
+  );
+}
+
+export async function recreateGuideNewQuestions({
+  newPrompt,
+  guideId,
+  userId,
+}: {
+  newPrompt: string;
+  guideId: string;
+  userId: string;
+}) {
+  await resetGuideStatus({ guideId, userId, deleteAnsweredQuestions: true });
+
+  await prisma.guide.update({
+    where: {
+      id: guideId,
+      userId: userId,
+    },
+    data: {
+      prompt: newPrompt,
+      externalAiQuestionsStatus: true,
+    },
+  });
+
+  await guideQuestionsGenerationQueue.add(
+    'newGuide_Questions',
+    {
+      guideId: guideId,
+      userId: userId,
+      prompt: newPrompt,
+    },
+    { jobId: guideId, removeOnComplete: true, removeOnFail: true },
+  );
 }

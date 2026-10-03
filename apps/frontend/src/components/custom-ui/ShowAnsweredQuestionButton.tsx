@@ -28,26 +28,23 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { QuestionMarkIcon } from '@radix-ui/react-icons';
+import { ReactNode } from 'react';
 
-export function ShowAnsweredQuestionButton() {
+export function ShowAnsweredQuestionButton({
+  children,
+  className,
+}: {
+  children?: ReactNode;
+  className?: string;
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                className="cursor-pointer"
-                size="icon-sm"
-                variant="outline"
-              >
-                <QuestionMarkIcon />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Show answered questions</p>
-            </TooltipContent>
-          </Tooltip>
+        <div className={className}>
+          <Button className="cursor-pointer" size="icon-sm" variant="outline">
+            <QuestionMarkIcon />
+          </Button>
+          {children && <span>{children}</span>}
         </div>
       </DialogTrigger>
       <DialogContent className="max-h-[800px] max-w-[1500px]! no-scrollbar overflow-y-auto w-full p-[70px]">

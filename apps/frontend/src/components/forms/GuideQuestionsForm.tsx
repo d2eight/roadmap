@@ -70,11 +70,13 @@ export default function GuideQuestionsForm() {
 
   const questionText = guideQuestions.aiQuestionText.question;
 
-  const alreadyAnsweredQuestions = guide.answeredQuestions
-    ? (guide.answeredQuestions as answeredQuestionsSchemaType)
-    : null;
+  const alreadyAnsweredQuestions =
+    guide.answeredQuestions &&
+    Object.keys(guide.answeredQuestions as object).length > 0
+      ? (guide.answeredQuestions as answeredQuestionsSchemaType)
+      : null;
 
-  const guideQuestionsDefaultValues: guideQuestionsSchemaType = {
+  const defaultValues: guideQuestionsSchemaType = {
     questionABCD: alreadyAnsweredQuestions
       ? alreadyAnsweredQuestions.questionABCD.answer
       : '',
@@ -91,7 +93,7 @@ export default function GuideQuestionsForm() {
 
   const form = useForm<guideQuestionsSchemaType>({
     resolver: zodResolver(guideQuestionsSchema),
-    defaultValues: guideQuestionsDefaultValues,
+    defaultValues,
     mode: 'onChange',
   });
 

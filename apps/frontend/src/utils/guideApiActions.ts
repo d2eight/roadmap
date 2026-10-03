@@ -182,3 +182,49 @@ export async function recreateGuide(guideId: string, requestBody: RequestInit) {
     responseStatusCode,
   });
 }
+
+export async function recreateGuidePrompt(
+  guideId: string,
+  requestBody: RequestInit,
+) {
+  const response = await fetch(
+    `http://localhost:3333/api/recreate-guide-new-prompt/${guideId}`,
+    requestBody,
+  );
+
+  const responseStatusCode = response.status;
+
+  if (responseStatusCode === 204) {
+    return Result.ok(null);
+  }
+
+  const responseJson: ApiResponseError = await response.json();
+
+  return handleApiError({
+    responseJson,
+    responseStatusCode,
+  });
+}
+
+export async function recreateGuideQuestions(
+  guideId: string,
+  requestBody: RequestInit,
+) {
+  const response = await fetch(
+    `http://localhost:3333/api/recreate-guide-new-questions/${guideId}`,
+    requestBody,
+  );
+
+  const responseStatusCode = response.status;
+
+  if (responseStatusCode === 204) {
+    return Result.ok(null);
+  }
+
+  const responseJson: ApiResponseError = await response.json();
+
+  return handleApiError({
+    responseJson,
+    responseStatusCode,
+  });
+}

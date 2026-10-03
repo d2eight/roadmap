@@ -37,6 +37,8 @@ import { serverRevalidatePath } from '@/utils/revalidatePath';
 import {
   createGuideBasic,
   createGuideQuestions,
+  recreateGuidePrompt,
+  recreateGuideQuestions,
 } from '@/utils/guideApiActions';
 import {
   UnauthorizedError,
@@ -47,6 +49,7 @@ import {
   handleApiError,
   useClientHandleApiError,
 } from '@/utils/apiErrorsHandler';
+import { GuideContext } from '@/context/GuideContext';
 
 export function PromptForm({
   pushToGuideStatus,
@@ -60,18 +63,24 @@ export function PromptForm({
   const queryClient = useQueryClient();
   const dialog = useContext(DialogContext);
   const params = useContext(ParamsContext);
+  const guideContext = useContext(GuideContext);
+  const isRecreateForm = guideContext && true;
   const { clientHandleApiError } = useClientHandleApiError();
+
+  const defaultValues: promptSchemaType = {
+    prompt: isRecreateForm ? guideContext.guide.prompt : '',
+    externalAiQuestionsStatus: isRecreateForm
+      ? guideContext.guide.externalAiQuestionsStatus
+      : false,
+  };
 
   const form = useForm<promptSchemaType>({
     resolver: zodResolver(promptSchema),
-    defaultValues: {
-      prompt: '',
-      externalAiQuestionsStatus: false,
-    },
+    defaultValues,
     mode: 'onChange',
   });
 
-  const { mutate } = useMutation<
+  const createGuideMutation = useMutation<
     ApiResponseSuccess<string>,
     ApiErrors<PromptFormErrors>,
     {
@@ -108,6 +117,29 @@ export function PromptForm({
     },
   });
 
+  const recreateMutation = useMutation<
+    null,
+    ApiErrors<PromptFormErrors>,
+    {
+      requestBody: RequestInit;
+      externalAiQuestionsStatus: boolean;
+    }
+  >({
+    mutationFn: recreateGuide,
+    onSuccess: async () => {
+      setProcessingStatus(false);
+      toast.success('Successfully initiated to recreate guide');
+
+      await queryClient.invalidateQueries({
+        queryKey: params.queryKey,
+      });
+    },
+    onError: (error) => {
+      setProcessingStatus(false);
+      clientHandleApiError<promptSchemaType>(error, form);
+    },
+  });
+
   async function createGuide({
     requestBody,
     externalAiQuestionsStatus,
@@ -126,12 +158,29 @@ export function PromptForm({
     return result.value;
   }
 
+  async function recreateGuide({
+    requestBody,
+    externalAiQuestionsStatus,
+  }: {
+    requestBody: RequestInit;
+    externalAiQuestionsStatus: boolean;
+  }) {
+    const result = externalAiQuestionsStatus
+      ? await recreateGuideQuestions(guideContext.guide.id, requestBody)
+      : await recreateGuidePrompt(guideContext.guide.id, requestBody);
+
+    if (result.isErr()) {
+      throw result.error;
+    }
+
+    return result.value;
+  }
+
   async function onSubmit(data: promptSchemaType) {
     setProcessingStatus(true);
     const externalAiQuestionsStatus = data.externalAiQuestionsStatus;
 
     const requestBody: RequestInit = {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -139,11 +188,17 @@ export function PromptForm({
       body: JSON.stringify(data),
     };
 
-    mutate({ requestBody, externalAiQuestionsStatus });
+    if (isRecreateForm) {
+      requestBody.method = 'PUT';
+      recreateMutation.mutate({ requestBody, externalAiQuestionsStatus });
+    } else {
+      requestBody.method = 'POST';
+      createGuideMutation.mutate({ requestBody, externalAiQuestionsStatus });
+    }
   }
 
   return (
-    <Card className="min-h-[calc(100vh-200px)]">
+    <Card className="">
       <CardHeader>
         <CardTitle>Guide creation</CardTitle>
         <CardDescription>Fill the inputs below:</CardDescription>
@@ -198,9 +253,15 @@ export function PromptForm({
             questions, for deeper understanding of your goal. After you answer
             them - guide will be created.
           </p>
-          <Button type="submit" form="prompt-form" disabled={processingStatus}>
-            Create guide
-          </Button>
+          {!isRecreateForm && (
+            <Button
+              type="submit"
+              form="prompt-form"
+              disabled={processingStatus}
+            >
+              Create guide
+            </Button>
+          )}
         </div>
       </CardFooter>
       <CardFooter>

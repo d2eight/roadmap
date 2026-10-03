@@ -18,14 +18,20 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { recreateGuide } from '@/utils/guideApiActions';
-import { useContext } from 'react';
+import { ReactNode, useContext } from 'react';
 import { GuideContext } from '@/context/GuideContext';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
 import { ApiErrors } from 'shared-types';
 import { toast } from 'sonner';
 import { ParamsContext } from '@/context/ParamsContext';
 
-export function RecreateGuideButton() {
+export function RecreateGuideButton({
+  children,
+  className,
+}: {
+  children?: ReactNode;
+  className?: string;
+}) {
   const { guide } = useContext(GuideContext);
   const { queryKey } = useContext(ParamsContext);
   const queryClient = useQueryClient();
@@ -60,19 +66,11 @@ export function RecreateGuideButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <div>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                className="cursor-pointer"
-                size="icon-sm"
-                variant="outline"
-              >
-                <LucideRefreshCcw />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Recreate Guide</TooltipContent>
-          </Tooltip>
+        <div className={className}>
+          <Button className="cursor-pointer" size="icon-sm" variant="outline">
+            <LucideRefreshCcw />
+          </Button>
+          {children && <span>{children}</span>}
         </div>
       </AlertDialogTrigger>
       <AlertDialogContent>
