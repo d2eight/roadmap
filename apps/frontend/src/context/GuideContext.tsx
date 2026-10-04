@@ -58,12 +58,15 @@ export default function GuideContextProvider({
 
   const getCompletedSteps = () =>
     data.steps.reduce((acc, curr) => {
-      return curr.status === 'DONE' ? (acc += 1) : acc;
+      if (curr.status === 'DONE') {
+        acc += 1;
+      }
+      return acc;
     }, 0);
 
   const getQuestionsCount = () =>
     data.questions
-      ? Object.keys(JSON.parse(data.questions.toString())).length
+      ? Object.keys(JSON.parse(data.questions as string)).length
       : 0;
 
   switch (data.status) {

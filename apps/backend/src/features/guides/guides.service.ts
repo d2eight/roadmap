@@ -9,7 +9,6 @@ import { prisma } from 'database';
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import {
   guideGenerationQueue,
-  guideGenerationWithAnsweredQuestionsQueue,
   guideQuestionsGenerationQueue,
 } from '../../main';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';

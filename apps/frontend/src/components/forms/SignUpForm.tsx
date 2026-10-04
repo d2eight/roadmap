@@ -30,7 +30,6 @@ import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { isAPIError } from 'better-auth/api';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
-import { handleApiFormError } from '@/utils/apiErrorsHandler';
 import { signUpWithEmailAndPassword } from '@/utils/auth';
 
 export function SignUpForm() {

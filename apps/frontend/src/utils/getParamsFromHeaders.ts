@@ -1,5 +1,5 @@
-import { searchParamsDefaultValues } from '@/app/constants/searchParamsDefaults';
 import { paramsSchemaType } from 'shared-types';
+import { searchParamsDefaultValues } from 'shared-constants';
 
 export function getParamsFromHeaders({
   headersList,

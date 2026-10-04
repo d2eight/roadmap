@@ -22,9 +22,6 @@ export const guideGenerationQueue = new Queue('guideGenerationQueue');
 export const guideQuestionsGenerationQueue = new Queue(
   'guideQuestionsGenerationQueue',
 );
-export const guideGenerationWithAnsweredQuestionsQueue = new Queue(
-  'guideGenerationWithAnsweredQuestionsQueue',
-);
 
 app.use(
   cors({
