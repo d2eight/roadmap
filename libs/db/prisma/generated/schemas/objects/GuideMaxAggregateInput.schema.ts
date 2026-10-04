@@ -8,7 +8,6 @@ const makeSchema = () => z.object({
   userId: z.literal(true).optional(),
   title: z.literal(true).optional(),
   description: z.literal(true).optional(),
-  externalAiQuestionsStatus: z.literal(true).optional(),
   status: z.literal(true).optional(),
   progressStatus: z.literal(true).optional(),
   createdAt: z.literal(true).optional(),

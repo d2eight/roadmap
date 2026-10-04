@@ -14,7 +14,6 @@ const makeSchema = () => z.object({
   steps: z.union([z.boolean(), z.lazy(() => GuideStepFindManySchema)]).optional(),
   questions: z.boolean().optional(),
   answeredQuestions: z.boolean().optional(),
-  externalAiQuestionsStatus: z.boolean().optional(),
   status: z.boolean().optional(),
   progressStatus: z.boolean().optional(),
   createdAt: z.boolean().optional(),

@@ -10,7 +10,6 @@ export const GuideFindManyResultSchema = z.object({
   steps: z.array(z.unknown()),
   questions: z.unknown().optional(),
   answeredQuestions: z.unknown().optional(),
-  externalAiQuestionsStatus: z.boolean(),
   status: z.unknown(),
   progressStatus: z.unknown(),
   createdAt: z.date(),

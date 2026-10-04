@@ -98,7 +98,7 @@ export default function GuideQuestionsForm() {
     mode: 'onChange',
   });
 
-  const create = useMutation<
+  const createMutation = useMutation<
     ApiResponseSuccess,
     ApiErrors<GuideQuestionFormErrors>,
     RequestInit
@@ -117,7 +117,7 @@ export default function GuideQuestionsForm() {
     },
   });
 
-  const recreate = useMutation<
+  const recreateMutation = useMutation<
     ApiResponseSuccess,
     ApiErrors<GuideQuestionFormErrors>,
     RequestInit
@@ -194,10 +194,10 @@ export default function GuideQuestionsForm() {
 
     if (isRecreateForm) {
       requestBody.method = 'PUT';
-      recreate.mutate(requestBody);
+      recreateMutation.mutate(requestBody);
     } else {
       requestBody.method = 'PATCH';
-      create.mutate(requestBody);
+      createMutation.mutate(requestBody);
     }
   }
 

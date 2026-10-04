@@ -2,7 +2,6 @@ import * as z from 'zod';
 import type { Prisma } from '../../../../generated/prisma/client';
 import { StringWithAggregatesFilterObjectSchema as StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
 import { JsonNullableWithAggregatesFilterObjectSchema as JsonNullableWithAggregatesFilterObjectSchema } from './JsonNullableWithAggregatesFilter.schema';
-import { BoolWithAggregatesFilterObjectSchema as BoolWithAggregatesFilterObjectSchema } from './BoolWithAggregatesFilter.schema';
 import { EnumGuideStatusWithAggregatesFilterObjectSchema as EnumGuideStatusWithAggregatesFilterObjectSchema } from './EnumGuideStatusWithAggregatesFilter.schema';
 import { GuideStatusSchema } from '../enums/GuideStatus.schema';
 import { EnumGuideProgressStatusWithAggregatesFilterObjectSchema as EnumGuideProgressStatusWithAggregatesFilterObjectSchema } from './EnumGuideProgressStatusWithAggregatesFilter.schema';
@@ -20,7 +19,6 @@ const guidescalarwherewithaggregatesinputSchema = z.object({
   description: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
   questions: z.lazy(() => JsonNullableWithAggregatesFilterObjectSchema).optional(),
   answeredQuestions: z.lazy(() => JsonNullableWithAggregatesFilterObjectSchema).optional(),
-  externalAiQuestionsStatus: z.union([z.lazy(() => BoolWithAggregatesFilterObjectSchema), z.boolean()]).optional(),
   status: z.union([z.lazy(() => EnumGuideStatusWithAggregatesFilterObjectSchema), GuideStatusSchema]).optional(),
   progressStatus: z.union([z.lazy(() => EnumGuideProgressStatusWithAggregatesFilterObjectSchema), GuideProgressStatusSchema]).optional(),
   createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),

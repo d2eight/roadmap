@@ -8,7 +8,6 @@ const makeSchema = () => z.object({
   userId: SortOrderSchema.optional(),
   title: SortOrderSchema.optional(),
   description: SortOrderSchema.optional(),
-  externalAiQuestionsStatus: SortOrderSchema.optional(),
   status: SortOrderSchema.optional(),
   progressStatus: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),

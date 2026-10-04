@@ -86,7 +86,7 @@ export function PromptForm({
     mode: 'onChange',
   });
 
-  const createGuideMutation = useMutation<
+  const createMutation = useMutation<
     ApiResponseSuccess<string>,
     ApiErrors<PromptFormErrors>,
     {
@@ -199,7 +199,7 @@ export function PromptForm({
       recreateMutation.mutate({ requestBody, externalAiQuestionsStatus });
     } else {
       requestBody.method = 'POST';
-      createGuideMutation.mutate({ requestBody, externalAiQuestionsStatus });
+      createMutation.mutate({ requestBody, externalAiQuestionsStatus });
     }
   }
 

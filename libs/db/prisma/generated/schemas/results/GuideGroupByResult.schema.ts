@@ -7,7 +7,6 @@ export const GuideGroupByResultSchema = z.array(z.object({
   description: z.string(),
   questions: z.unknown(),
   answeredQuestions: z.unknown(),
-  externalAiQuestionsStatus: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
   _count: z.object({
@@ -20,7 +19,6 @@ export const GuideGroupByResultSchema = z.array(z.object({
     steps: z.number(),
     questions: z.number(),
     answeredQuestions: z.number(),
-    externalAiQuestionsStatus: z.number(),
     status: z.number(),
     progressStatus: z.number(),
     createdAt: z.number(),

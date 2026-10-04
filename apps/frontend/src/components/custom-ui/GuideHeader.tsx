@@ -62,15 +62,17 @@ export function GuideHeader() {
           </Tooltip>
           <DeleteGuideButton />
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Button size="icon-sm" variant="outline">
-                    <LucideEllipsisVertical />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Recreate Options</TooltipContent>
-              </Tooltip>
+            <DropdownMenuTrigger asChild>
+              <div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button size="icon-sm" variant="outline">
+                      <LucideEllipsisVertical />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Recreate Options</TooltipContent>
+                </Tooltip>
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>

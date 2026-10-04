@@ -13,7 +13,6 @@ const makeSchema = () => z.object({
   description: z.string().optional(),
   questions: z.union([NullableJsonNullValueInputSchema, jsonSchema]).optional(),
   answeredQuestions: z.union([NullableJsonNullValueInputSchema, jsonSchema]).optional(),
-  externalAiQuestionsStatus: z.boolean().optional(),
   status: GuideStatusSchema.optional(),
   progressStatus: GuideProgressStatusSchema.optional(),
   createdAt: z.coerce.date().optional(),

@@ -13,7 +13,6 @@ const makeSchema = () => z.object({
   description: SortOrderSchema.optional(),
   questions: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   answeredQuestions: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
-  externalAiQuestionsStatus: SortOrderSchema.optional(),
   status: SortOrderSchema.optional(),
   progressStatus: SortOrderSchema.optional(),
   createdAt: SortOrderSchema.optional(),

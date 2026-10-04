@@ -9,7 +9,6 @@ export const GuideAggregateResultSchema = z.object({  _count: z.object({
     steps: z.number(),
     questions: z.number(),
     answeredQuestions: z.number(),
-    externalAiQuestionsStatus: z.number(),
     status: z.number(),
     progressStatus: z.number(),
     createdAt: z.number(),
