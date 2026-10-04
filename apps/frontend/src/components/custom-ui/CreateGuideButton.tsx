@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { LucidePlus } from 'lucide-react';
 import { FormProcessor } from '@/components/wrappers/FormProcessor';
-import { PromptForm } from '@/components/forms/promptForm';
+import { PromptForm } from '@/components/forms/PromptForm';
 import { Dispatch, JSX, SetStateAction, useContext } from 'react';
 import { DialogContext } from '@/context/DialogContext';
 

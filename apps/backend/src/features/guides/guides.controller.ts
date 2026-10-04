@@ -1,18 +1,10 @@
 import express from 'express';
 import * as guidesService from './guides.service';
-import {
-  answeredQuestionsSchemaType,
-  paramsSchemaType,
-  promptSchemaType,
-} from 'shared-types';
+import { answeredQuestionsSchemaType, promptSchemaType } from 'shared-types';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
-import { getGuides } from 'utils';
-import {
-  recreateGuideNewPrompt,
-  recreateGuideNewQuestions,
-} from './guides.service';
+import { deleteCurrentQuestionsData } from './guides.service';
 
-export async function createGuideBasic(
+export async function createGuide(
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
@@ -29,11 +21,18 @@ export async function createGuideBasic(
   const userId: string = res.locals.userId;
 
   try {
-    const guideId = await guidesService.create(promptData.prompt, userId);
+    const guide = await guidesService.createEmptyGuide({
+      prompt: promptData.prompt,
+      userId: userId,
+    });
+    await guidesService.initiateAiStepsGeneration({
+      guideId: guide.id,
+      userId: userId,
+    });
 
     return res.status(201).json({
       success: true,
-      data: guideId,
+      data: guide.id,
     });
   } catch (error) {
     return res.status(500).json({
@@ -62,14 +61,19 @@ export async function createGuideQuestions(
   const userId: string = res.locals.userId;
 
   try {
-    const guideId = await guidesService.createQuestions(
-      promptData.prompt,
-      userId,
-    );
+    const guide = await guidesService.createEmptyGuide({
+      prompt: promptData.prompt,
+      userId: userId,
+    });
+
+    await guidesService.initiateAiQuestionsGeneration({
+      guideId: guide.id,
+      userId: userId,
+    });
 
     return res.status(201).json({
       success: true,
-      data: guideId,
+      data: guide.id,
     });
   } catch (error) {
     console.error('Failed to create guide:', error);
@@ -83,7 +87,7 @@ export async function createGuideQuestions(
   }
 }
 
-export async function createGuideAnsweredQuestions(
+export async function createGuideWithAnsweredQuestions(
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
@@ -92,12 +96,15 @@ export async function createGuideAnsweredQuestions(
     res.locals.answeredQuestions;
   const userId: string = res.locals.userId;
   const guideId: string = req.params.guideId as string;
-  const prompt: string = res.locals.prompt;
 
   try {
-    await guidesService.createWithAnsweredQuestions({
-      prompt,
+    await guidesService.addGuideAnsweredQuestions({
+      guideId,
+      userId,
       answeredQuestions,
+    });
+
+    await guidesService.initiateAiStepsGeneration({
       guideId,
       userId,
     });
@@ -115,11 +122,14 @@ export async function createGuideAnsweredQuestions(
   }
 }
 
-export async function removeGuide(req: express.Request, res: express.Response) {
+export async function deleteGuide(req: express.Request, res: express.Response) {
   const userId: string = res.locals.userId;
   const guideId = req.params.guideId as string;
   try {
-    await guidesService.remove(guideId, userId);
+    await guidesService.deleteGuide({
+      guideId,
+      userId,
+    });
 
     return res.status(204).end();
   } catch (error) {
@@ -127,6 +137,7 @@ export async function removeGuide(req: express.Request, res: express.Response) {
 
     return res.status(500).json({
       success: false,
+      message: 'Something went wrong',
     });
   }
 }
@@ -137,7 +148,7 @@ export async function updateGuide(req: express.Request, res: express.Response) {
   const steps: GuideStepModel[] = res.locals.steps;
 
   try {
-    const guide = await guidesService.update(guideId, userId, steps);
+    const guide = await guidesService.updateGuide({ guideId, userId, steps });
 
     return res.status(200).json({
       success: true,
@@ -153,18 +164,27 @@ export async function updateGuide(req: express.Request, res: express.Response) {
   }
 }
 
-export async function recreateGuide(
+export async function simpleRecreateGuide(
   req: express.Request,
   res: express.Response,
 ) {
-  const answeredQuestions: answeredQuestionsSchemaType =
-    res.locals.answeredQuestions;
   const userId: string = res.locals.userId;
   const guideId: string = req.params.guideId as string;
-  const prompt: string = res.locals.prompt;
 
   try {
-    await guidesService.recreate(guideId, userId);
+    await guidesService.resetGuideStatus({
+      guideId,
+      userId,
+    });
+
+    await guidesService.deleteAllGuideSteps({
+      guideId,
+    });
+
+    await guidesService.initiateAiStepsGeneration({
+      guideId,
+      userId,
+    });
 
     return res.status(204).end();
   } catch (error) {
@@ -177,7 +197,7 @@ export async function recreateGuide(
   }
 }
 
-export async function recreateGuideWithPrompt(
+export async function recreateGuide(
   req: express.Request,
   res: express.Response,
 ) {
@@ -193,10 +213,29 @@ export async function recreateGuideWithPrompt(
   }
 
   try {
-    await guidesService.recreateGuideNewPrompt({
-      userId: userId,
-      guideId: guideId,
+    await guidesService.resetGuideStatus({
+      guideId,
+      userId,
+    });
+
+    await guidesService.deleteAllGuideSteps({
+      guideId,
+    });
+
+    await guidesService.deleteCurrentQuestionsData({
+      guideId,
+      userId,
+    });
+
+    await guidesService.addNewPrompt({
+      guideId,
+      userId,
       newPrompt: promptData.prompt,
+    });
+
+    await guidesService.initiateAiStepsGeneration({
+      guideId,
+      userId,
     });
 
     return res.status(204).end();
@@ -210,7 +249,7 @@ export async function recreateGuideWithPrompt(
   }
 }
 
-export async function recreateGuideWithQuestions(
+export async function recreateGuideQuestions(
   req: express.Request,
   res: express.Response,
 ) {
@@ -226,10 +265,29 @@ export async function recreateGuideWithQuestions(
   }
 
   try {
-    await guidesService.recreateGuideNewQuestions({
+    await guidesService.resetGuideStatus({
+      guideId,
+      userId,
+    });
+
+    await guidesService.deleteAllGuideSteps({
+      guideId,
+    });
+
+    await guidesService.deleteCurrentQuestionsData({
+      guideId,
+      userId,
+    });
+
+    await guidesService.addNewPrompt({
+      guideId,
+      userId,
+      newPrompt: promptData.prompt,
+    });
+
+    await guidesService.initiateAiQuestionsGeneration({
       userId: userId,
       guideId: guideId,
-      newPrompt: promptData.prompt,
     });
 
     return res.status(204).end();
@@ -243,7 +301,7 @@ export async function recreateGuideWithQuestions(
   }
 }
 
-export async function recreateGuideAnsweredQuestions(
+export async function recreateGuideWithAnsweredQuestions(
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
@@ -252,12 +310,24 @@ export async function recreateGuideAnsweredQuestions(
     res.locals.answeredQuestions;
   const userId: string = res.locals.userId;
   const guideId: string = req.params.guideId as string;
-  const prompt: string = res.locals.prompt;
 
   try {
-    await guidesService.recreateGuideWithQuestions({
-      prompt,
+    await guidesService.resetGuideStatus({
+      guideId,
+      userId,
+    });
+
+    await guidesService.deleteAllGuideSteps({
+      guideId,
+    });
+
+    await guidesService.addGuideAnsweredQuestions({
+      guideId,
+      userId,
       answeredQuestions,
+    });
+
+    await guidesService.initiateAiStepsGeneration({
       guideId,
       userId,
     });

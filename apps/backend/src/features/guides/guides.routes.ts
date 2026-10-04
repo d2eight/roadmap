@@ -1,24 +1,20 @@
 import express from 'express';
 import { authMiddleware } from '../../middlewares/auth';
 import {
-  createGuideAnsweredQuestions,
-  createGuideBasic,
+  createGuide,
   createGuideQuestions,
+  createGuideWithAnsweredQuestions,
+  deleteGuide,
   recreateGuide,
-  recreateGuideAnsweredQuestions,
-  recreateGuideWithPrompt,
-  recreateGuideWithQuestions,
-  removeGuide,
+  recreateGuideQuestions,
+  recreateGuideWithAnsweredQuestions,
+  simpleRecreateGuide,
   updateGuide,
 } from './guides.controller';
 import { promptValidationMiddleware } from '../../middlewares/prompt';
 import { guideMiddleware } from '../../middlewares/guide';
 import { questionsValidationMiddleware } from '../../middlewares/promptWithQuestions';
 import { stepsValidationMiddleware } from '../../middlewares/steps';
-import {
-  recreateGuideNewPrompt,
-  recreateGuideNewQuestions,
-} from '@/apps/backend/src/features/guides/guides.service';
 
 export const guidesRouter = express.Router();
 
@@ -28,7 +24,7 @@ guidesRouter.post(
     errorMessage: 'Guide was not created, please sign in',
   }),
   promptValidationMiddleware({}),
-  createGuideBasic,
+  createGuide,
 );
 
 guidesRouter.post(
@@ -49,7 +45,7 @@ guidesRouter.patch(
   }),
   questionsValidationMiddleware({}),
   guideMiddleware({}),
-  createGuideAnsweredQuestions,
+  createGuideWithAnsweredQuestions,
 );
 
 guidesRouter.delete(
@@ -57,7 +53,7 @@ guidesRouter.delete(
   authMiddleware({
     errorMessage: 'Guide was not deleted, please sign in',
   }),
-  removeGuide,
+  deleteGuide,
 );
 
 guidesRouter.patch(
@@ -71,32 +67,32 @@ guidesRouter.patch(
 );
 
 guidesRouter.put(
+  '/api/simple-recreate-guide/:guideId',
+  authMiddleware({
+    errorMessage: 'Guide was not recreated, please sign in',
+  }),
+  guideMiddleware({}),
+  simpleRecreateGuide,
+);
+
+guidesRouter.put(
   '/api/recreate-guide/:guideId',
   authMiddleware({
     errorMessage: 'Guide was not recreated, please sign in',
   }),
   guideMiddleware({}),
+  promptValidationMiddleware({}),
   recreateGuide,
 );
 
 guidesRouter.put(
-  '/api/recreate-guide-new-prompt/:guideId',
+  '/api/recreate-guide-questions/:guideId',
   authMiddleware({
     errorMessage: 'Guide was not recreated, please sign in',
   }),
   guideMiddleware({}),
   promptValidationMiddleware({}),
-  recreateGuideWithPrompt,
-);
-
-guidesRouter.put(
-  '/api/recreate-guide-new-questions/:guideId',
-  authMiddleware({
-    errorMessage: 'Guide was not recreated, please sign in',
-  }),
-  guideMiddleware({}),
-  promptValidationMiddleware({}),
-  recreateGuideWithQuestions,
+  recreateGuideQuestions,
 );
 
 guidesRouter.put(
@@ -106,5 +102,5 @@ guidesRouter.put(
   }),
   questionsValidationMiddleware({}),
   guideMiddleware({}),
-  recreateGuideAnsweredQuestions,
+  recreateGuideWithAnsweredQuestions,
 );

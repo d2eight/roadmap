@@ -57,8 +57,6 @@ export type ApiErrors<ZodError = null> =
 export type GuideJob = {
   userId: string;
   guideId: string;
-  prompt: string;
-  answeredQuestions?: answeredQuestionsSchemaType;
 };
 
 export type AuthContextType = {

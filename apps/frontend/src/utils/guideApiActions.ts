@@ -20,7 +20,7 @@ import {
   UnprocessableEntity,
 } from 'errors';
 
-export async function createGuideBasic(
+export async function createGuide(
   requestBody: RequestInit,
 ): Promise<Result<ApiResponseSuccess<string>, ApiErrors<PromptFormErrors>>> {
   const response = await fetch(
@@ -70,29 +70,6 @@ export async function createGuideWithAnsweredQuestions(
 ): Promise<Result<ApiResponseSuccess, ApiErrors<GuideQuestionFormErrors>>> {
   const response = await fetch(
     `http://localhost:3333/api/create-guide-with-answered-questions/${guideId}`,
-    requestBody,
-  );
-
-  const responseJson: ApiResponse<null, GuideQuestionFormErrors> =
-    await response.json();
-  const responseStatusCode = response.status;
-
-  if (responseJson.success) {
-    return Result.ok(responseJson);
-  }
-
-  return handleApiError({
-    responseJson,
-    responseStatusCode,
-  });
-}
-
-export async function recreateGuideWithAnsweredQuestions(
-  guideId: string,
-  requestBody: RequestInit,
-): Promise<Result<ApiResponseSuccess, ApiErrors<GuideQuestionFormErrors>>> {
-  const response = await fetch(
-    `http://localhost:3333/api/recreate-guide-with-answered-questions/${guideId}`,
     requestBody,
   );
 
@@ -163,9 +140,12 @@ export async function deleteGuide(
   });
 }
 
-export async function recreateGuide(guideId: string, requestBody: RequestInit) {
+export async function simpleRecreateGuide(
+  guideId: string,
+  requestBody: RequestInit,
+) {
   const response = await fetch(
-    `http://localhost:3333/api/recreate-guide/${guideId}`,
+    `http://localhost:3333/api/simple-recreate-guide/${guideId}`,
     requestBody,
   );
 
@@ -183,12 +163,9 @@ export async function recreateGuide(guideId: string, requestBody: RequestInit) {
   });
 }
 
-export async function recreateGuidePrompt(
-  guideId: string,
-  requestBody: RequestInit,
-) {
+export async function recreateGuide(guideId: string, requestBody: RequestInit) {
   const response = await fetch(
-    `http://localhost:3333/api/recreate-guide-new-prompt/${guideId}`,
+    `http://localhost:3333/api/recreate-guide/${guideId}`,
     requestBody,
   );
 
@@ -211,7 +188,7 @@ export async function recreateGuideQuestions(
   requestBody: RequestInit,
 ) {
   const response = await fetch(
-    `http://localhost:3333/api/recreate-guide-new-questions/${guideId}`,
+    `http://localhost:3333/api/recreate-guide-questions/${guideId}`,
     requestBody,
   );
 
@@ -222,6 +199,29 @@ export async function recreateGuideQuestions(
   }
 
   const responseJson: ApiResponseError = await response.json();
+
+  return handleApiError({
+    responseJson,
+    responseStatusCode,
+  });
+}
+
+export async function recreateGuideWithAnsweredQuestions(
+  guideId: string,
+  requestBody: RequestInit,
+): Promise<Result<ApiResponseSuccess, ApiErrors<GuideQuestionFormErrors>>> {
+  const response = await fetch(
+    `http://localhost:3333/api/recreate-guide-with-answered-questions/${guideId}`,
+    requestBody,
+  );
+
+  const responseJson: ApiResponse<null, GuideQuestionFormErrors> =
+    await response.json();
+  const responseStatusCode = response.status;
+
+  if (responseJson.success) {
+    return Result.ok(responseJson);
+  }
 
   return handleApiError({
     responseJson,

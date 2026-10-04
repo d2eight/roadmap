@@ -12,15 +12,6 @@ export async function getSession({ headers }: { headers: Headers }) {
   });
 }
 
-export async function createEmptyGuide(userPrompt: string, userId: string) {
-  return prisma.guide.create({
-    data: {
-      prompt: userPrompt,
-      userId: userId,
-    },
-  });
-}
-
 export async function getGuide({
   userId,
   guideId,

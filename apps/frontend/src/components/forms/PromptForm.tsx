@@ -35,9 +35,9 @@ import { Switch } from '@/components/ui/switch';
 import { ParamsContext } from '@/context/ParamsContext';
 import { serverRevalidatePath } from '@/utils/revalidatePath';
 import {
-  createGuideBasic,
+  createGuide,
   createGuideQuestions,
-  recreateGuidePrompt,
+  recreateGuide,
   recreateGuideQuestions,
 } from '@/utils/guideApiActions';
 import {
@@ -64,14 +64,20 @@ export function PromptForm({
   const dialog = useContext(DialogContext);
   const params = useContext(ParamsContext);
   const guideContext = useContext(GuideContext);
-  const isRecreateForm = guideContext && true;
+  const isRecreateForm = !!guideContext;
   const { clientHandleApiError } = useClientHandleApiError();
 
+  const defaultPromptValue = isRecreateForm ? guideContext.guide.prompt : '';
+  const defaultExternalAiQuestionsStatusValue = (): boolean => {
+    if (isRecreateForm) {
+      return !!guideContext.guide.questions;
+    }
+    return false;
+  };
+
   const defaultValues: promptSchemaType = {
-    prompt: isRecreateForm ? guideContext.guide.prompt : '',
-    externalAiQuestionsStatus: isRecreateForm
-      ? guideContext.guide.externalAiQuestionsStatus
-      : false,
+    prompt: defaultPromptValue,
+    externalAiQuestionsStatus: defaultExternalAiQuestionsStatusValue(),
   };
 
   const form = useForm<promptSchemaType>({
@@ -88,7 +94,7 @@ export function PromptForm({
       externalAiQuestionsStatus: boolean;
     }
   >({
-    mutationFn: createGuide,
+    mutationFn: create,
     onSuccess: async (response) => {
       const newGuideId = response.data;
 
@@ -125,7 +131,7 @@ export function PromptForm({
       externalAiQuestionsStatus: boolean;
     }
   >({
-    mutationFn: recreateGuide,
+    mutationFn: recreate,
     onSuccess: async () => {
       setProcessingStatus(false);
       toast.success('Successfully initiated to recreate guide');
@@ -140,7 +146,7 @@ export function PromptForm({
     },
   });
 
-  async function createGuide({
+  async function create({
     requestBody,
     externalAiQuestionsStatus,
   }: {
@@ -149,7 +155,7 @@ export function PromptForm({
   }) {
     const result = externalAiQuestionsStatus
       ? await createGuideQuestions(requestBody)
-      : await createGuideBasic(requestBody);
+      : await createGuide(requestBody);
 
     if (result.isErr()) {
       throw result.error;
@@ -158,7 +164,7 @@ export function PromptForm({
     return result.value;
   }
 
-  async function recreateGuide({
+  async function recreate({
     requestBody,
     externalAiQuestionsStatus,
   }: {
@@ -167,7 +173,7 @@ export function PromptForm({
   }) {
     const result = externalAiQuestionsStatus
       ? await recreateGuideQuestions(guideContext.guide.id, requestBody)
-      : await recreateGuidePrompt(guideContext.guide.id, requestBody);
+      : await recreateGuide(guideContext.guide.id, requestBody);
 
     if (result.isErr()) {
       throw result.error;

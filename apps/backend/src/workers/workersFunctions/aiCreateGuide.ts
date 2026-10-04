@@ -1,4 +1,4 @@
-import { Job } from 'bullmq';
+import { Job, UnrecoverableError } from 'bullmq';
 import { generateText, Output } from 'ai';
 import { prisma } from 'database';
 import {
@@ -11,13 +11,19 @@ import { GuideStepCreateManyInput } from '@/libs/db/generated/prisma/models/Guid
 import { io } from '../../main';
 
 export async function aiCreateGuide(job: Job<GuideJob>) {
-  const answeredQuestions: answeredQuestionsSchemaType =
-    job.data.answeredQuestions;
   const guideId: string = job.data.guideId;
   const userId: string = job.data.userId;
-  const prompt: string = job.data.prompt;
 
-  console.log('hello');
+  const guide = await prisma.guide.findUnique({
+    where: {
+      id: guideId,
+      userId: userId,
+    },
+  });
+
+  if (!guide) {
+    throw new UnrecoverableError('Unknown error');
+  }
 
   const firstGuideUpdate = await prisma.guide.update({
     where: {
@@ -26,19 +32,18 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
     },
     data: {
       status: 'GUIDE_GENERATION',
-      ...(answeredQuestions && { answeredQuestions: answeredQuestions }),
     },
   });
-
-  console.log(firstGuideUpdate);
 
   io.to(userId).emit('guide_update', {
     ...firstGuideUpdate,
   });
 
-  const aiPrompt: string = answeredQuestions
-    ? `Generate a new guide, for this user prompt: ${prompt}. Generate it, like you are a expert in requested topic. We've asked our user questions, and he answered them. Create a highly personalized guide based on these answers: ${JSON.stringify(answeredQuestions)}. Inside the description field(for guide in general), provide general information about the guide: what it is about, its goal, and what knowledge and skills the user will gain. Follow the output schema`
-    : `Generate a new guide, for this user prompt: ${prompt}. Generate it, like you are a expert in requested topic. Inside the description field(for guide in general), provide general information about the guide: what it is about, its goal, and what knowledge and skills the user will gain. Follow the output schema`;
+  const userPrompt = guide.prompt;
+
+  const aiPrompt: string = guide.answeredQuestions
+    ? `Generate a new guide, for this user prompt: ${userPrompt}. Generate it, like you are a expert in requested topic. We've asked our user questions, and he answered them. Create a highly personalized guide based on these answers: ${JSON.stringify(guide.answeredQuestions)}. Inside the description field(for guide in general), provide general information about the guide: what it is about, its goal, and what knowledge and skills the user will gain. Follow the output schema`
+    : `Generate a new guide, for this user prompt: ${userPrompt}. Generate it, like you are a expert in requested topic. Inside the description field(for guide in general), provide general information about the guide: what it is about, its goal, and what knowledge and skills the user will gain. Follow the output schema`;
 
   const { output } = await generateText({
     model: openai('gpt-5.4-mini'),
@@ -47,7 +52,7 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
     }),
     prompt: aiPrompt,
   });
-  console.log(output);
+
   const secondGuideUpdate = await prisma.guide.update({
     where: {
       id: guideId,

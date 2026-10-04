@@ -25,7 +25,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { PromptForm } from '@/components/forms/promptForm';
+import { PromptForm } from '@/components/forms/PromptForm';
 import {
   FormProcessingContext,
   FormProcessor,

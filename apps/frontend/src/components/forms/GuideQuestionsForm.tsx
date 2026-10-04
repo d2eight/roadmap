@@ -70,9 +70,10 @@ export default function GuideQuestionsForm() {
 
   const questionText = guideQuestions.aiQuestionText.question;
 
+  const isRecreateForm = !!guide.answeredQuestions;
+
   const alreadyAnsweredQuestions =
-    guide.answeredQuestions &&
-    Object.keys(guide.answeredQuestions as object).length > 0
+    isRecreateForm && Object.keys(guide.answeredQuestions as object).length > 0
       ? (guide.answeredQuestions as answeredQuestionsSchemaType)
       : null;
 
@@ -97,7 +98,7 @@ export default function GuideQuestionsForm() {
     mode: 'onChange',
   });
 
-  const createMutation = useMutation<
+  const create = useMutation<
     ApiResponseSuccess,
     ApiErrors<GuideQuestionFormErrors>,
     RequestInit
@@ -116,7 +117,7 @@ export default function GuideQuestionsForm() {
     },
   });
 
-  const recreateMutation = useMutation<
+  const recreate = useMutation<
     ApiResponseSuccess,
     ApiErrors<GuideQuestionFormErrors>,
     RequestInit
@@ -191,12 +192,12 @@ export default function GuideQuestionsForm() {
       body: JSON.stringify(answeredQuestions),
     };
 
-    if (!alreadyAnsweredQuestions) {
-      requestBody.method = 'PATCH';
-      createMutation.mutate(requestBody);
-    } else {
+    if (isRecreateForm) {
       requestBody.method = 'PUT';
-      recreateMutation.mutate(requestBody);
+      recreate.mutate(requestBody);
+    } else {
+      requestBody.method = 'PATCH';
+      create.mutate(requestBody);
     }
   }
 

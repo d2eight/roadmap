@@ -1,14 +1,21 @@
-import { ReactNode } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
-import { QuestionMarkIcon } from '@radix-ui/react-icons';
+import { LucideBadgeQuestionMark, LucidePlus } from 'lucide-react';
+import { FormProcessor } from '@/components/wrappers/FormProcessor';
+import GuideQuestionsForm from '@/components/forms/GuideQuestionsForm';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,12 +27,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { FormProcessor } from '@/components/wrappers/FormProcessor';
-import GuideQuestionsForm from '@/components/forms/GuideQuestionsForm';
-import { ListRestartIcon, NotebookPenIcon } from 'lucide-react';
-import { PromptForm } from '@/components/forms/promptForm';
+import { QuestionMarkIcon } from '@radix-ui/react-icons';
+import { ReactNode } from 'react';
 
-export function RecreateGuidePromptButton({
+export function RecreateGuideWithAnsweredQuestionsButton({
   children,
   className,
 }: {
@@ -37,7 +42,7 @@ export function RecreateGuidePromptButton({
       <DialogTrigger asChild>
         <div className={className}>
           <Button className="cursor-pointer" size="icon-sm" variant="outline">
-            <NotebookPenIcon />
+            <QuestionMarkIcon />
           </Button>
           {children && <span>{children}</span>}
         </div>
@@ -45,9 +50,9 @@ export function RecreateGuidePromptButton({
       <DialogContent className="max-h-[800px] max-w-[1500px]! no-scrollbar overflow-y-auto w-full p-[70px]">
         <DialogHeader className="flex flex-row w-full justify-between items-center">
           <div className="flex flex-col gap-2">
-            <DialogTitle className="text-xl!">Your prompt</DialogTitle>
+            <DialogTitle className="text-xl!">Your answers</DialogTitle>
             <DialogDescription className="text-lg!">
-              You can change your prompt, this will cause to the recreation of
+              You can change your answers, this will cause to the recreation of
               guide
             </DialogDescription>
           </div>
@@ -69,8 +74,8 @@ export function RecreateGuidePromptButton({
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction asChild>
-                  <Button form="prompt-form" type="submit">
-                    Recreate
+                  <Button form="guide-questions" type="submit">
+                    Continue
                   </Button>
                 </AlertDialogAction>
               </AlertDialogFooter>
@@ -78,7 +83,7 @@ export function RecreateGuidePromptButton({
           </AlertDialog>
         </DialogHeader>
         <FormProcessor>
-          <PromptForm pushToGuideStatus={false} />
+          <GuideQuestionsForm />
         </FormProcessor>
       </DialogContent>
     </Dialog>

@@ -25,15 +25,15 @@ import {
 } from '@/components/ui/tooltip';
 import { LucideCheck, LucideEllipsisVertical } from 'lucide-react';
 import { DeleteGuideButton } from '@/components/custom-ui/DeleteGuideButton';
-import { RecreateGuideButton } from '@/components/custom-ui/RecreateGuideButton';
+import { SimpleRecreateGuideButton } from '@/components/custom-ui/SimpleRecreateGuideButton';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ShowAnsweredQuestionButton } from '@/components/custom-ui/ShowAnsweredQuestionButton';
-import { RecreateGuidePromptButton } from '@/components/custom-ui/RecreateGuidePromptButton';
+import { RecreateGuideWithAnsweredQuestionsButton } from '@/components/custom-ui/RecreateGuideWithAnsweredQuestionsButton';
+import { RecreateGuideButton } from '@/components/custom-ui/RecreateGuideButton';
 
 export function GuideHeader() {
   const { guide, completedSteps } = useContext(GuideContext);
@@ -74,19 +74,21 @@ export function GuideHeader() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
-                <RecreateGuideButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
+                <SimpleRecreateGuideButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
                   Simple recreate
-                </RecreateGuideButton>
+                </SimpleRecreateGuideButton>
               </DropdownMenuItem>
+              {guide.questions && (
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
+                  <RecreateGuideWithAnsweredQuestionsButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
+                    Change answers
+                  </RecreateGuideWithAnsweredQuestionsButton>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
-                <ShowAnsweredQuestionButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
-                  Change answers
-                </ShowAnsweredQuestionButton>
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
-                <RecreateGuidePromptButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
+                <RecreateGuideButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
                   Change prompt
-                </RecreateGuidePromptButton>
+                </RecreateGuideButton>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

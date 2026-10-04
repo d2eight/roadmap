@@ -1,4 +1,4 @@
-import { PromptForm } from '../../components/forms/promptForm';
+import { PromptForm } from '../../components/forms/PromptForm';
 import { FormProcessor } from '../../components/wrappers/FormProcessor';
 
 export default async function PromptingPage() {
