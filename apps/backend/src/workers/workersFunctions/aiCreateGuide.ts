@@ -1,15 +1,10 @@
 import { Job, UnrecoverableError } from 'bullmq';
 import { generateText, Output } from 'ai';
 import { prisma } from 'database';
-import {
-  aiGuideGenerationSchema,
-  answeredQuestionsSchemaType,
-  GuideJob,
-} from 'shared-types';
+import { aiGuideGenerationSchema, GuideJob } from 'shared-types';
 import { openai } from '@ai-sdk/openai';
 import { GuideStepCreateManyInput } from '@/libs/db/generated/prisma/models/GuideStep';
 import { io } from '../../main';
-import { google } from '@ai-sdk/google';
 
 export async function aiCreateGuide(job: Job<GuideJob>) {
   const guideId: string = job.data.guideId;
