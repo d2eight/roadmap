@@ -86,6 +86,7 @@ enum GuideStatus {
   QUESTIONS_GENERATED
   GUIDE_GENERATION
   GUIDE_GENERATED
+  FAILED
 }
 
 enum GuideProgressStatus {

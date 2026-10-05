@@ -9,6 +9,7 @@ import {
 import { openai } from '@ai-sdk/openai';
 import { GuideStepCreateManyInput } from '@/libs/db/generated/prisma/models/GuideStep';
 import { io } from '../../main';
+import { google } from '@ai-sdk/google';
 
 export async function aiCreateGuide(job: Job<GuideJob>) {
   const guideId: string = job.data.guideId;
@@ -44,6 +45,8 @@ export async function aiCreateGuide(job: Job<GuideJob>) {
   const aiPrompt: string = guide.answeredQuestions
     ? `Generate a new guide, for this user prompt: ${userPrompt}. Generate it, like you are a expert in requested topic. We've asked our user questions, and he answered them. Create a highly personalized guide based on these answers: ${JSON.stringify(guide.answeredQuestions)}. Inside the description field(for guide in general), provide general information about the guide: what it is about, its goal, and what knowledge and skills the user will gain. Follow the output schema`
     : `Generate a new guide, for this user prompt: ${userPrompt}. Generate it, like you are a expert in requested topic. Inside the description field(for guide in general), provide general information about the guide: what it is about, its goal, and what knowledge and skills the user will gain. Follow the output schema`;
+
+  console.log(aiPrompt);
 
   const { output } = await generateText({
     model: openai('gpt-5.4-mini'),
