@@ -1,7 +1,29 @@
-import { Job, Worker } from 'bullmq';
+import { Job, UnrecoverableError, Worker } from 'bullmq';
 import { GuideJob } from 'shared-types';
 import { aiCreateGuideQuestions } from './workersFunctions/aiCreateGuideQuestions';
 import { aiCreateGuide } from './workersFunctions/aiCreateGuide';
+import { getGuide } from 'utils';
+import { prisma } from 'database';
+import { setGuideFailure } from '@/apps/backend/src/features/guides/guides.service';
+
+async function handleGuideJobFailure(
+  job: Job<GuideJob> | undefined,
+  error: Error,
+) {
+  if (!job || error instanceof UnrecoverableError) {
+    return;
+  }
+
+  const maxAttempts = job.opts.attempts || 1;
+  const isFinalAttempt = job.attemptsMade >= maxAttempts;
+
+  if (isFinalAttempt) {
+    await setGuideFailure({
+      guideId: job.data.guideId,
+      userId: job.data.userId,
+    });
+  }
+}
 
 export default function initWorkers() {
   const connection = {
@@ -14,7 +36,16 @@ export default function initWorkers() {
   const guideGenerationWorker = new Worker(
     'guideGenerationQueue',
     async (job: Job<GuideJob>) => {
-      await aiCreateGuide(job);
+      const guide = await getGuide({
+        userId: job.data.userId,
+        guideId: job.data.guideId,
+      });
+
+      if (!guide) {
+        throw new UnrecoverableError('Unknown error');
+      }
+
+      await aiCreateGuide(guide);
     },
     {
       connection,
@@ -24,10 +55,30 @@ export default function initWorkers() {
   const guideQuestionsGenerationWorker = new Worker(
     'guideQuestionsGenerationQueue',
     async (job: Job<GuideJob>) => {
-      await aiCreateGuideQuestions(job);
+      const guide = await getGuide({
+        userId: job.data.userId,
+        guideId: job.data.guideId,
+      });
+
+      if (!guide) {
+        throw new UnrecoverableError('Unknown error');
+      }
+
+      await aiCreateGuideQuestions(guide);
     },
     {
       connection,
+    },
+  );
+
+  guideGenerationWorker.on('failed', async (job: Job<GuideJob>, error) => {
+    return await handleGuideJobFailure(job, error);
+  });
+
+  guideQuestionsGenerationWorker.on(
+    'failed',
+    async (job: Job<GuideJob>, error) => {
+      return await handleGuideJobFailure(job, error);
     },
   );
 }

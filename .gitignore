@@ -6,7 +6,7 @@ dist/
 .next/
 .nx/cache
 .nx/workspace-data
-
+CODE_REVIEW.md
 # Next.js
 .next
 out

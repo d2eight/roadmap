@@ -14,6 +14,38 @@ import {
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 import { GuideProgressStatus } from '@/libs/db/prisma/generated/schemas';
 import { getGuideStepProperties } from 'shared-constants';
+import { JobsOptions } from 'bullmq';
+
+const getJobOptions = (guideId: string): JobsOptions => {
+  return {
+    jobId: guideId,
+    removeOnComplete: true,
+    removeOnFail: true,
+    attempts: 3,
+    backoff: {
+      type: 'fixed',
+      delay: 1000,
+    },
+  };
+};
+
+export async function setGuideFailure({
+  guideId,
+  userId,
+}: {
+  guideId: string;
+  userId: string;
+}) {
+  await prisma.guide.update({
+    where: {
+      id: guideId,
+      userId: userId,
+    },
+    data: {
+      status: 'FAILED',
+    },
+  });
+}
 
 export async function createEmptyGuide({
   prompt,
@@ -144,7 +176,7 @@ export async function initiateAiStepsGeneration({
       guideId: guideId,
       userId: userId,
     },
-    { jobId: guideId, removeOnComplete: true, removeOnFail: true },
+    getJobOptions(guideId),
   );
 }
 
@@ -161,7 +193,7 @@ export async function initiateAiQuestionsGeneration({
       guideId: guideId,
       userId: userId,
     },
-    { jobId: guideId, removeOnComplete: true, removeOnFail: true },
+    getJobOptions(guideId),
   );
 }
 

@@ -19,6 +19,7 @@ import {
   UnexpectedError,
   UnprocessableEntity,
 } from 'errors';
+import { JsonValue } from '@prisma/client/runtime/client';
 
 // import { ApiError } from '@/apps/frontend/src/customClasses/apiError';
 
@@ -140,3 +141,8 @@ export type QueryKeyType = [
   paramsSchemaType['orderBy'],
   paramsSchemaType['progressStatus'],
 ];
+
+export type PromptType = {
+  userPrompt: string;
+  answers?: JsonValue;
+};
