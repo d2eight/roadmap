@@ -22,8 +22,8 @@ export async function createGuide(
 
   try {
     const guide = await guidesService.createEmptyGuide({
-      prompt: promptData.prompt,
-      userId: userId,
+      promptData,
+      userId,
     });
     await guidesService.initiateAiStepsGeneration({
       guideId: guide.id,
@@ -62,8 +62,8 @@ export async function createGuideQuestions(
 
   try {
     const guide = await guidesService.createEmptyGuide({
-      prompt: promptData.prompt,
-      userId: userId,
+      promptData,
+      userId,
     });
 
     await guidesService.initiateAiQuestionsGeneration({

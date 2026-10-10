@@ -5,6 +5,7 @@ import { aiCreateGuide } from './workersFunctions/aiCreateGuide';
 import { getGuide } from 'utils';
 import { prisma } from 'database';
 import { setGuideFailure } from '@/apps/backend/src/features/guides/guides.service';
+import { io } from '@/apps/backend/src/main';
 
 async function handleGuideJobFailure(
   job: Job<GuideJob> | undefined,
@@ -16,11 +17,14 @@ async function handleGuideJobFailure(
 
   const maxAttempts = job.opts.attempts || 1;
   const isFinalAttempt = job.attemptsMade >= maxAttempts;
-
   if (isFinalAttempt) {
-    await setGuideFailure({
+    const guideFailure = await setGuideFailure({
       guideId: job.data.guideId,
       userId: job.data.userId,
+    });
+
+    io.to(job.data.userId).emit('guide_update', {
+      ...guideFailure,
     });
   }
 }

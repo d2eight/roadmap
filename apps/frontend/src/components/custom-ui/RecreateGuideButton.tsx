@@ -1,14 +1,10 @@
-import { ReactNode } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
-import { QuestionMarkIcon } from '@radix-ui/react-icons';
+import { LucideCheck, LucideRefreshCcw, Trash2 } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,10 +16,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { FormProcessor } from '@/components/wrappers/FormProcessor';
-import GuideQuestionsForm from '@/components/forms/GuideQuestionsForm';
-import { ListRestartIcon, NotebookPenIcon } from 'lucide-react';
-import { PromptForm } from '@/components/forms/PromptForm';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { simpleRecreateGuide } from '@/utils/guideApiActions';
+import { ReactNode, useContext } from 'react';
+import { GuideContext } from '@/context/GuideContext';
+import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import { ApiErrors } from 'shared-types';
+import { toast } from 'sonner';
+import { ParamsContext } from '@/context/ParamsContext';
 
 export function RecreateGuideButton({
   children,
@@ -32,55 +32,63 @@ export function RecreateGuideButton({
   children?: ReactNode;
   className?: string;
 }) {
+  const { guide } = useContext(GuideContext);
+  const { queryKey } = useContext(ParamsContext);
+  const queryClient = useQueryClient();
+  const { clientHandleApiError } = useClientHandleApiError();
+
+  const { mutate } = useMutation<null, ApiErrors>({
+    mutationFn: recreate,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey });
+      toast.success('You have successfully initiated guide recreation!');
+    },
+    onError: (error) => {
+      clientHandleApiError(error);
+    },
+  });
+
+  async function recreate() {
+    const requestBody: RequestInit = {
+      method: 'PUT',
+      credentials: 'include',
+    };
+
+    const result = await simpleRecreateGuide(guide.id, requestBody);
+
+    if (result.isErr()) {
+      throw result.error;
+    }
+
+    return result.value;
+  }
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
         <div className={className}>
           <Button className="cursor-pointer" size="icon-sm" variant="outline">
-            <NotebookPenIcon />
+            <LucideRefreshCcw />
           </Button>
           {children && <span>{children}</span>}
         </div>
-      </DialogTrigger>
-      <DialogContent className="max-h-[800px] max-w-[1500px]! no-scrollbar overflow-y-auto w-full p-[70px]">
-        <DialogHeader className="flex flex-row w-full justify-between items-center">
-          <div className="flex flex-col gap-2">
-            <DialogTitle className="text-xl!">Your prompt</DialogTitle>
-            <DialogDescription className="text-lg!">
-              You can change your prompt, this will cause to the recreation of
-              guide
-            </DialogDescription>
-          </div>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button className="w-[200px]"> Change Prompt</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Are you sure that you want to change your answers and recreate
-                  this guide?
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action will cause guide recreation. All previous
-                  progress, steps will be lost.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction asChild>
-                  <Button form="prompt-form" type="submit">
-                    Continue
-                  </Button>
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </DialogHeader>
-        <FormProcessor>
-          <PromptForm pushToGuideStatus={false} />
-        </FormProcessor>
-      </DialogContent>
-    </Dialog>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            Are you sure that you want to recreate this guide?
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={() => mutate()}>
+            Continue
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

@@ -13,8 +13,9 @@ import { GuideContextType, GuideModelWithRelations } from 'shared-types';
 import { SocketContext } from './SocketContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getGuide } from 'utils';
-import { AuthContext } from '@/context/AuthContext';
 import { getGuideNEXT } from '@/utils/guide';
+import { GuideStatus } from 'database/enums';
+import { toast } from 'sonner';
 
 export const GuideContext = createContext<GuideContextType>(null!);
 
@@ -28,7 +29,7 @@ export default function GuideContextProvider({
   autoQueryStatus: boolean;
 }) {
   const queryClient = useQueryClient();
-  const { data, refetch } = useQuery({
+  const { data } = useQuery({
     queryKey: ['guide', guideId],
     queryFn: () =>
       getGuideNEXT({
@@ -37,20 +38,18 @@ export default function GuideContextProvider({
     enabled: autoQueryStatus,
   });
   const { socketGuideData } = useContext(SocketContext);
-  const auth = useContext(AuthContext);
 
   useEffect(() => {
     if (socketGuideData && data && data.id === socketGuideData.id) {
       (async () => {
-        await queryClient.invalidateQueries({
-          queryKey: ['guide', guideId],
-        });
-        await refetch();
+        queryClient.setQueryData(['guide', guideId], socketGuideData);
+
+        if (socketGuideData.status === 'FAILED') {
+          toast.error('Failed to create guide');
+        }
       })();
     }
   }, [socketGuideData]);
-
-  let context: GuideContextType | null = null;
 
   if (!data) {
     return children;
@@ -69,29 +68,28 @@ export default function GuideContextProvider({
       ? Object.keys(JSON.parse(data.questions as string)).length
       : 0;
 
+  let context: GuideContextType;
+
   switch (data.status) {
-    case 'INIT':
-    case 'QUESTIONS_GENERATION':
-    case 'GUIDE_GENERATION':
-      context = {
-        guide: data,
-        status: data.status,
-      };
-      break;
-    case 'QUESTIONS_GENERATED':
+    case GuideStatus.QUESTIONS_GENERATED:
       context = {
         guide: data,
         status: data.status,
         questionsCount: getQuestionsCount(),
       };
       break;
-    case 'GUIDE_GENERATED':
+    case GuideStatus.GUIDE_GENERATED:
       context = {
         guide: data,
         status: data.status,
         completedSteps: getCompletedSteps(),
       };
       break;
+    default:
+      context = {
+        guide: data,
+        status: data.status,
+      };
   }
 
   return <GuideContext value={context}>{children}</GuideContext>;

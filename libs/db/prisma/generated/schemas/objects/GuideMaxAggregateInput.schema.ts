@@ -5,6 +5,7 @@ import type { Prisma } from '../../../../generated/prisma/client';
 const makeSchema = () => z.object({
   id: z.literal(true).optional(),
   prompt: z.literal(true).optional(),
+  externalAiQuestionsStatus: z.literal(true).optional(),
   userId: z.literal(true).optional(),
   title: z.literal(true).optional(),
   description: z.literal(true).optional(),

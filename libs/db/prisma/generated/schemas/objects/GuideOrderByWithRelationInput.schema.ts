@@ -8,6 +8,7 @@ import { GuideStepOrderByRelationAggregateInputObjectSchema as GuideStepOrderByR
 const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   prompt: SortOrderSchema.optional(),
+  externalAiQuestionsStatus: SortOrderSchema.optional(),
   userId: SortOrderSchema.optional(),
   title: SortOrderSchema.optional(),
   description: SortOrderSchema.optional(),

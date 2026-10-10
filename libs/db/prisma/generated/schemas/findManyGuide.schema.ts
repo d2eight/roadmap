@@ -12,6 +12,7 @@ import { GuideScalarFieldEnumSchema } from './enums/GuideScalarFieldEnum.schema'
 export const GuideFindManySelectSchema: z.ZodType<Prisma.GuideSelect> = z.object({
     id: z.boolean().optional(),
     prompt: z.boolean().optional(),
+    externalAiQuestionsStatus: z.boolean().optional(),
     user: z.boolean().optional(),
     userId: z.boolean().optional(),
     title: z.boolean().optional(),
@@ -29,6 +30,7 @@ export const GuideFindManySelectSchema: z.ZodType<Prisma.GuideSelect> = z.object
 export const GuideFindManySelectZodSchema = z.object({
     id: z.boolean().optional(),
     prompt: z.boolean().optional(),
+    externalAiQuestionsStatus: z.boolean().optional(),
     user: z.boolean().optional(),
     userId: z.boolean().optional(),
     title: z.boolean().optional(),

@@ -17,15 +17,19 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { simpleRecreateGuide } from '@/utils/guideApiActions';
+import {
+  recreateGuideQuestions,
+  simpleRecreateGuide,
+} from '@/utils/guideApiActions';
 import { ReactNode, useContext } from 'react';
 import { GuideContext } from '@/context/GuideContext';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import { ApiErrors } from 'shared-types';
+import { ApiErrors, promptSchemaType } from 'shared-types';
 import { toast } from 'sonner';
 import { ParamsContext } from '@/context/ParamsContext';
+import { QuestionMarkIcon } from '@radix-ui/react-icons';
 
-export function SimpleRecreateGuideButton({
+export function RecreateGuideQuestionsButton({
   children,
   className,
 }: {
@@ -41,7 +45,7 @@ export function SimpleRecreateGuideButton({
     mutationFn: recreate,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey });
-      toast.success('You have successfully recreated guide!');
+      toast.success('You have successfully initiated guide recreation!');
     },
     onError: (error) => {
       clientHandleApiError(error);
@@ -49,12 +53,21 @@ export function SimpleRecreateGuideButton({
   });
 
   async function recreate() {
-    const requestBody: RequestInit = {
-      method: 'PUT',
-      credentials: 'include',
+    const data: promptSchemaType = {
+      prompt: guide.prompt,
+      externalAiQuestionsStatus: guide.externalAiQuestionsStatus,
     };
 
-    const result = await simpleRecreateGuide(guide.id, requestBody);
+    const requestBody: RequestInit = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(data),
+    };
+
+    const result = await recreateGuideQuestions(guide.id, requestBody);
 
     if (result.isErr()) {
       throw result.error;
@@ -68,7 +81,7 @@ export function SimpleRecreateGuideButton({
       <AlertDialogTrigger asChild>
         <div className={className}>
           <Button className="cursor-pointer" size="icon-sm" variant="outline">
-            <LucideRefreshCcw />
+            <QuestionMarkIcon />
           </Button>
           {children && <span>{children}</span>}
         </div>
@@ -76,7 +89,7 @@ export function SimpleRecreateGuideButton({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you sure that you want to recreate this guide?
+            Are you sure that you want to recreate questions for this guide?
           </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone.

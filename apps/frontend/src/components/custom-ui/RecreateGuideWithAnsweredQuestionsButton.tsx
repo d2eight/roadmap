@@ -13,7 +13,13 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
-import { LucideBadgeQuestionMark, LucidePlus } from 'lucide-react';
+import {
+  LucideBadgeQuestionMark,
+  LucideBookOpenCheck,
+  LucideFileQuestionMark,
+  LucidePlus,
+  Pencil,
+} from 'lucide-react';
 import { FormProcessor } from '@/components/wrappers/FormProcessor';
 import GuideQuestionsForm from '@/components/forms/GuideQuestionsForm';
 import {
@@ -42,7 +48,7 @@ export function RecreateGuideWithAnsweredQuestionsButton({
       <DialogTrigger asChild>
         <div className={className}>
           <Button className="cursor-pointer" size="icon-sm" variant="outline">
-            <QuestionMarkIcon />
+            <Pencil />
           </Button>
           {children && <span>{children}</span>}
         </div>

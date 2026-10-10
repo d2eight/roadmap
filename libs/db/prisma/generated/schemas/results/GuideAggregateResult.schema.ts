@@ -2,6 +2,7 @@ import * as z from 'zod';
 export const GuideAggregateResultSchema = z.object({  _count: z.object({
     id: z.number(),
     prompt: z.number(),
+    externalAiQuestionsStatus: z.number(),
     user: z.number(),
     userId: z.number(),
     title: z.number(),

@@ -3,7 +3,11 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Spinner } from '@/components/ui/spinner';
-import { ArrowRight, MessageCircleQuestionMark } from 'lucide-react';
+import {
+  ArrowRight,
+  LucideRefreshCcw,
+  MessageCircleQuestionMark,
+} from 'lucide-react';
 import { CompletedSteps } from '@/components/custom-ui/CompletedSteps';
 import { GuideDate } from '@/components/custom-ui/GuideDate';
 import { useContext } from 'react';
@@ -11,6 +15,10 @@ import { GuideContext } from '@/context/GuideContext';
 import { CardFooter } from '@/components/ui/card';
 import { useParams, useSearchParams } from 'next/navigation';
 import { ParamsContext } from '@/context/ParamsContext';
+import { ChangeGuidePromptButton } from '@/components/custom-ui/ChangeGuidePromptButton';
+import { RecreateGuideButton } from '@/components/custom-ui/RecreateGuideButton';
+import { RecreateGuideQuestionsButton } from '@/components/custom-ui/RecreateGuideQuestionsButton';
+import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
 
 export function GuideCardFooter() {
   const { guide, status } = useContext(GuideContext);
@@ -62,5 +70,22 @@ export function GuideCardFooter() {
           </Button>
         </CardFooter>
       );
+    default: {
+      const icon = <LucideRefreshCcw />;
+      return (
+        <CardFooter className="cursor-pointer">
+          <Button variant="destructive" asChild>
+            <div className="w-full">
+              <RecreateGuideMenu
+                icon={icon}
+                className="flex items-center gap-2 w-full justify-center"
+              >
+                Try again
+              </RecreateGuideMenu>
+            </div>
+          </Button>
+        </CardFooter>
+      );
+    }
   }
 }

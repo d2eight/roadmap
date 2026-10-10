@@ -1,4 +1,3 @@
-import { Job, UnrecoverableError } from 'bullmq';
 import { generateText, Output } from 'ai';
 import { prisma } from 'database';
 import { aiGuideGenerationSchema, GuideJob, PromptType } from 'shared-types';

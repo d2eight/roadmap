@@ -1,4 +1,4 @@
-import { GuideProgressStatus } from 'database/enums';
+import { GuideProgressStatus, GuideStatus } from 'database/enums';
 import { Badge } from '@/components/ui/badge';
 import { JSX, ReactNode } from 'react';
 import {
@@ -12,7 +12,7 @@ export function GuideProgressBadge({
   className,
   children,
 }: {
-  progressStatus: GuideProgressStatus;
+  progressStatus: GuideProgressStatus | GuideStatus;
   className?: string;
   children?: ReactNode;
 }) {
@@ -24,7 +24,7 @@ export function GuideProgressBadge({
         <Badge
           className={`${className} bg-gray-100 text-gray-700 dark:bg-gray-950 dark:text-gray-300`}
         >
-          PENDING
+          {progressStatus}
           {children && <div>{children}</div>}
         </Badge>
       );
@@ -34,7 +34,7 @@ export function GuideProgressBadge({
         <Badge
           className={`${className} bg-yellow-50 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300`}
         >
-          IN WORK
+          {progressStatus}
           {children && <div>{children}</div>}
         </Badge>
       );
@@ -44,21 +44,23 @@ export function GuideProgressBadge({
         <Badge
           className={`${className} bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300`}
         >
-          DONE
+          {progressStatus}
           {children && <div>{children}</div>}
         </Badge>
       );
       break;
     default:
       guideBadge = (
-        <Badge
-          className={`${className} bg-gray-100 text-gray-700 dark:bg-gray-950 dark:text-gray-300`}
-        >
-          PENDING
+        <Badge variant="destructive">
+          {progressStatus}
           {children && <div>{children}</div>}
         </Badge>
       );
       break;
+  }
+
+  if (progressStatus === 'FAILED') {
+    return guideBadge;
   }
 
   return (

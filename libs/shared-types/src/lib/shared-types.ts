@@ -75,13 +75,13 @@ export type DialogContextType = {
 export type GuideContextType =
   | {
       guide: GuideModelWithRelations;
-      status: (typeof GuideStatus)['QUESTIONS_GENERATED'];
+      status: typeof GuideStatus.QUESTIONS_GENERATED;
       completedSteps?: number;
       questionsCount: number;
     }
   | {
       guide: GuideModelWithRelations;
-      status: (typeof GuideStatus)['GUIDE_GENERATED'];
+      status: typeof GuideStatus.GUIDE_GENERATED;
       completedSteps: number;
       questionsCount?: never;
     }
@@ -89,10 +89,10 @@ export type GuideContextType =
       guide: GuideModelWithRelations;
       status: Exclude<
         GuideStatus,
-        | (typeof GuideStatus)['QUESTIONS_GENERATED']
-        | (typeof GuideStatus)['GUIDE_GENERATED']
+        | typeof GuideStatus.QUESTIONS_GENERATED
+        | typeof GuideStatus.GUIDE_GENERATED
       >;
-      completedSteps?: number;
+      completedSteps?: never;
       questionsCount?: never;
     };
 

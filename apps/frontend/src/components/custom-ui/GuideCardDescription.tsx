@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { GuideContext } from '@/context/GuideContext';
 import { CardDescription } from '@/components/ui/card';
 
-export function GuideCardDescription () {
+export function GuideCardDescription() {
   const { guide } = useContext(GuideContext);
 
   switch (guide.status) {
@@ -24,6 +24,12 @@ export function GuideCardDescription () {
       return (
         <CardDescription className="truncate">
           {guide.description}
+        </CardDescription>
+      );
+    default:
+      return (
+        <CardDescription className="truncate">
+          Guide was not created
         </CardDescription>
       );
   }

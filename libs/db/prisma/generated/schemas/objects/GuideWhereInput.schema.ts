@@ -1,6 +1,7 @@
 import * as z from 'zod';
 import type { Prisma } from '../../../../generated/prisma/client';
 import { StringFilterObjectSchema as StringFilterObjectSchema } from './StringFilter.schema';
+import { BoolFilterObjectSchema as BoolFilterObjectSchema } from './BoolFilter.schema';
 import { JsonNullableFilterObjectSchema as JsonNullableFilterObjectSchema } from './JsonNullableFilter.schema';
 import { EnumGuideStatusFilterObjectSchema as EnumGuideStatusFilterObjectSchema } from './EnumGuideStatusFilter.schema';
 import { GuideStatusSchema } from '../enums/GuideStatus.schema';
@@ -17,6 +18,7 @@ const guidewhereinputSchema = z.object({
   NOT: z.union([z.lazy(() => GuideWhereInputObjectSchema), z.lazy(() => GuideWhereInputObjectSchema).array()]).optional(),
   id: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   prompt: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
+  externalAiQuestionsStatus: z.union([z.lazy(() => BoolFilterObjectSchema), z.boolean()]).optional(),
   userId: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   title: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
   description: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),

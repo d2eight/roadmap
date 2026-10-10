@@ -33,7 +33,8 @@ export function DeleteGuideButton() {
 
   const isDisabled =
     guide.status !== 'GUIDE_GENERATED' &&
-    guide.status !== 'QUESTIONS_GENERATED';
+    guide.status !== 'QUESTIONS_GENERATED' &&
+    guide.status !== 'FAILED';
 
   const { mutate } = useMutation<null, ApiErrors>({
     mutationFn: removeGuide,

@@ -48,5 +48,14 @@ export function GuideCardContent() {
           </div>
         </CardContent>
       );
+    default:
+      return (
+        <CardContent>
+          <div className="flex items-center justify-between gap-2">
+            <GuideProgressBadge progressStatus={guide.status} />
+            <GuideDate guideDate={guide.createdAt} />
+          </div>
+        </CardContent>
+      );
   }
 }

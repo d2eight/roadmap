@@ -10,6 +10,7 @@ import { JsonValueSchema as jsonSchema } from '../../helpers/json-helpers';
 const makeSchema = () => z.object({
   id: z.string().optional(),
   prompt: z.string(),
+  externalAiQuestionsStatus: z.boolean().optional(),
   userId: z.string(),
   title: z.string().optional(),
   description: z.string().optional(),

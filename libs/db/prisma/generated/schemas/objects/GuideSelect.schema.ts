@@ -7,6 +7,7 @@ import { GuideCountOutputTypeArgsObjectSchema as GuideCountOutputTypeArgsObjectS
 const makeSchema = () => z.object({
   id: z.boolean().optional(),
   prompt: z.boolean().optional(),
+  externalAiQuestionsStatus: z.boolean().optional(),
   user: z.union([z.boolean(), z.lazy(() => UserArgsObjectSchema)]).optional(),
   userId: z.boolean().optional(),
   title: z.boolean().optional(),

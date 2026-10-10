@@ -36,7 +36,7 @@ export async function setGuideFailure({
   guideId: string;
   userId: string;
 }) {
-  await prisma.guide.update({
+  return await prisma.guide.update({
     where: {
       id: guideId,
       userId: userId,
@@ -48,15 +48,16 @@ export async function setGuideFailure({
 }
 
 export async function createEmptyGuide({
-  prompt,
+  promptData,
   userId,
 }: {
-  prompt: string;
+  promptData: promptSchemaType;
   userId: string;
 }) {
   return prisma.guide.create({
     data: {
-      prompt,
+      prompt: promptData.prompt,
+      externalAiQuestionsStatus: promptData.externalAiQuestionsStatus,
       userId,
     },
   });

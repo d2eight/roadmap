@@ -11,6 +11,7 @@ import { JsonValueSchema as jsonSchema } from '../../helpers/json-helpers';
 const makeSchema = () => z.object({
   id: z.string().optional(),
   prompt: z.string(),
+  externalAiQuestionsStatus: z.boolean().optional(),
   title: z.string().optional(),
   description: z.string().optional(),
   questions: z.union([NullableJsonNullValueInputSchema, jsonSchema]).optional(),

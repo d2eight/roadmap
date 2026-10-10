@@ -14,12 +14,9 @@ export function GuideCardTitle() {
   const { guide } = useContext(GuideContext);
 
   switch (guide.status) {
-    case 'INIT':
-    case 'GUIDE_GENERATION':
-    case 'QUESTIONS_GENERATION':
-    case 'QUESTIONS_GENERATED':
-      return <CardTitle className="truncate">{guide.prompt}</CardTitle>;
     case 'GUIDE_GENERATED':
       return <CardTitle className="truncate">{guide.title}</CardTitle>;
+    default:
+      return <CardTitle className="truncate">{guide.prompt}</CardTitle>;
   }
 }
