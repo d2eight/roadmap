@@ -2,7 +2,7 @@ import express from 'express';
 import * as guidesService from './guides.service';
 import { answeredQuestionsSchemaType, promptSchemaType } from 'shared-types';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
-import { deleteCurrentQuestionsData } from './guides.service';
+import { prisma } from 'database';
 
 export async function createGuide(
   req: express.Request,
@@ -172,16 +172,17 @@ export async function simpleRecreateGuide(
   const guideId: string = req.params.guideId as string;
 
   try {
-    await guidesService.resetGuideStatus({
-      guideId,
-      userId,
-    });
+    await prisma.$transaction([
+      guidesService.resetGuideStatus({
+        guideId,
+        userId,
+      }),
+      guidesService.deleteAllGuideSteps({
+        guideId,
+      }),
+    ]);
 
-    await guidesService.deleteAllGuideSteps({
-      guideId,
-    });
-
-    await guidesService.initiateAiStepsGeneration({
+    guidesService.initiateAiStepsGeneration({
       guideId,
       userId,
     });
@@ -213,25 +214,24 @@ export async function recreateGuide(
   }
 
   try {
-    await guidesService.resetGuideStatus({
-      guideId,
-      userId,
-    });
-
-    await guidesService.deleteAllGuideSteps({
-      guideId,
-    });
-
-    await guidesService.deleteCurrentQuestionsData({
-      guideId,
-      userId,
-    });
-
-    await guidesService.addNewPrompt({
-      guideId,
-      userId,
-      newPrompt: promptData.prompt,
-    });
+    prisma.$transaction([
+      guidesService.resetGuideStatus({
+        guideId,
+        userId,
+      }),
+      guidesService.deleteAllGuideSteps({
+        guideId,
+      }),
+      guidesService.deleteCurrentQuestionsData({
+        guideId,
+        userId,
+      }),
+      guidesService.addNewPrompt({
+        guideId,
+        userId,
+        newPrompt: promptData.prompt,
+      }),
+    ]);
 
     await guidesService.initiateAiStepsGeneration({
       guideId,
@@ -265,25 +265,24 @@ export async function recreateGuideQuestions(
   }
 
   try {
-    await guidesService.resetGuideStatus({
-      guideId,
-      userId,
-    });
-
-    await guidesService.deleteAllGuideSteps({
-      guideId,
-    });
-
-    await guidesService.deleteCurrentQuestionsData({
-      guideId,
-      userId,
-    });
-
-    await guidesService.addNewPrompt({
-      guideId,
-      userId,
-      newPrompt: promptData.prompt,
-    });
+    prisma.$transaction([
+      guidesService.resetGuideStatus({
+        guideId,
+        userId,
+      }),
+      guidesService.deleteAllGuideSteps({
+        guideId,
+      }),
+      guidesService.deleteCurrentQuestionsData({
+        guideId,
+        userId,
+      }),
+      guidesService.addNewPrompt({
+        guideId,
+        userId,
+        newPrompt: promptData.prompt,
+      }),
+    ]);
 
     await guidesService.initiateAiQuestionsGeneration({
       userId: userId,
@@ -312,20 +311,20 @@ export async function recreateGuideWithAnsweredQuestions(
   const guideId: string = req.params.guideId as string;
 
   try {
-    await guidesService.resetGuideStatus({
-      guideId,
-      userId,
-    });
-
-    await guidesService.deleteAllGuideSteps({
-      guideId,
-    });
-
-    await guidesService.addGuideAnsweredQuestions({
-      guideId,
-      userId,
-      answeredQuestions,
-    });
+    prisma.$transaction([
+      guidesService.resetGuideStatus({
+        guideId,
+        userId,
+      }),
+      guidesService.deleteAllGuideSteps({
+        guideId,
+      }),
+      guidesService.addGuideAnsweredQuestions({
+        guideId,
+        userId,
+        answeredQuestions,
+      }),
+    ]);
 
     await guidesService.initiateAiStepsGeneration({
       guideId,

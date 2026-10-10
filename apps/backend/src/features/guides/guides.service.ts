@@ -1,12 +1,9 @@
-import express from 'express';
 import {
   answeredQuestionsSchemaType,
-  GuideJob,
   GuideStepModelFetched,
   promptSchemaType,
 } from 'shared-types';
 import { prisma } from 'database';
-import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import {
   guideGenerationQueue,
   guideQuestionsGenerationQueue,
@@ -78,14 +75,14 @@ export async function deleteGuide({
   });
 }
 
-export async function resetGuideStatus({
+export function resetGuideStatus({
   guideId,
   userId,
 }: {
   guideId: string;
   userId: string;
 }) {
-  return await prisma.guide.update({
+  return prisma.guide.update({
     where: {
       id: guideId,
       userId: userId,
@@ -97,15 +94,15 @@ export async function resetGuideStatus({
   });
 }
 
-export async function deleteAllGuideSteps({ guideId }: { guideId: string }) {
-  return await prisma.guideStep.deleteMany({
+export function deleteAllGuideSteps({ guideId }: { guideId: string }) {
+  return prisma.guideStep.deleteMany({
     where: {
       guideId: guideId,
     },
   });
 }
 
-export async function addNewPrompt({
+export function addNewPrompt({
   guideId,
   userId,
   newPrompt,
@@ -114,7 +111,7 @@ export async function addNewPrompt({
   userId: string;
   newPrompt: string;
 }) {
-  return await prisma.guide.update({
+  return prisma.guide.update({
     where: {
       id: guideId,
       userId: userId,
@@ -125,14 +122,14 @@ export async function addNewPrompt({
   });
 }
 
-export async function deleteCurrentQuestionsData({
+export function deleteCurrentQuestionsData({
   guideId,
   userId,
 }: {
   guideId: string;
   userId: string;
 }) {
-  return await prisma.guide.update({
+  return prisma.guide.update({
     where: {
       id: guideId,
       userId: userId,
@@ -144,7 +141,7 @@ export async function deleteCurrentQuestionsData({
   });
 }
 
-export async function addGuideAnsweredQuestions({
+export function addGuideAnsweredQuestions({
   guideId,
   userId,
   answeredQuestions,
