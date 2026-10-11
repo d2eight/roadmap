@@ -22,6 +22,7 @@ import { GuideStatus } from 'database/enums';
 import { toast } from 'sonner';
 import { ParamsContext } from '@/context/ParamsContext';
 import { GuideModel } from '../../../../libs/db/generated/prisma/models/Guide';
+import { GuidesContext } from '@/context/GuidesContext';
 
 export const GuideContext = createContext<GuideContextType>(null!);
 

@@ -17,8 +17,9 @@ import { DefaultPaginationItem } from '@/components/custom-ui/DefaultPaginationI
 import { PreviousPagePaginationItem } from '@/components/custom-ui/PreviousPagePaginationItem';
 import { NextPagePaginationItem } from '@/components/custom-ui/NextPagePaginationItem';
 import { ParamsContext } from '@/context/ParamsContext';
+import { pageSize } from '@/constants/constants';
 
-export function GuidesPagination({ pageSize }: { pageSize: number }) {
+export function GuidesPagination() {
   const { guidesCount } = useContext(GuidesContext);
   const { searchParams } = useContext(ParamsContext);
 

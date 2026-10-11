@@ -5,13 +5,13 @@ import { GuidesContextProvider } from '@/context/GuidesContext';
 import { GuidesFilter } from '@/components/custom-ui/GuidesFilter';
 import { Guides } from '@/components/custom-ui/Guides';
 import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
-import { QueryKeyType } from 'shared-types';
+import { GuideModelWithRelations, QueryKeyType } from 'shared-types';
 import { FormProcessor } from '@/components/wrappers/FormProcessor';
 import { getQueryClient } from '@/query/getQueryClient';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { ParamsContextProvider } from '@/context/ParamsContext';
-import { pageSize } from '@/constants/constants';
 import { getGuidesNEXT } from '@/utils/guide';
+import { pageSize } from '@/constants/constants';
 
 export default async function DashboardServerPage({
   searchParams,
@@ -22,7 +22,6 @@ export default async function DashboardServerPage({
   const params = await searchParams;
   const queryClient = getQueryClient();
 
-  const userId = getUserIdFromHeaders({ headersList });
   const orderBy = params.orderBy;
   const page = parseInt(params.page);
   const progressStatus = params.progressStatus.split(',');
@@ -41,16 +40,26 @@ export default async function DashboardServerPage({
       }),
   });
 
+  const result =
+    queryClient.getQueryData<[GuideModelWithRelations[], number]>(queryKey);
+
+  result?.[0].forEach((guide: GuideModelWithRelations) => {
+    queryClient.setQueryData<GuideModelWithRelations>(
+      ['guide', guide.id],
+      guide,
+    );
+  });
+
   return (
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <FormProcessor>
-          <div className="min-h-[calc(100vh-200px)] flex flex-col gap-[60px]">
+          <div className="flex flex-col gap-[60px]">
             <ParamsContextProvider>
               <GuidesFilter />
               <GuidesContextProvider>
                 <Guides />
-                <GuidesPagination pageSize={pageSize} />
+                <GuidesPagination />
               </GuidesContextProvider>
             </ParamsContextProvider>
           </div>

@@ -1,21 +1,11 @@
 'use client';
 
-import {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, ReactNode, useContext, useEffect } from 'react';
 import { GuideModelWithRelations, QueryKeyType } from 'shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getGuides } from 'utils';
-import { AuthContext } from '@/context/AuthContext';
 import { ParamsContext } from '@/context/ParamsContext';
-import { pageSize } from '@/constants/constants';
 import { getGuidesNEXT } from '@/utils/guide';
+import { pageSize } from '@/constants/constants';
 
 export const GuidesContext = createContext<{
   guides: GuideModelWithRelations[];
@@ -29,36 +19,29 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
 
   const { data, isLoading } = useQuery({
     queryKey,
-    queryFn: () =>
-      getGuidesNEXT({
+    queryFn: async () => {
+      const result = await getGuidesNEXT({
         pageSize: pageSize,
         params: parsedParams,
-      }),
+      });
+      result?.[0].forEach((guide) => {
+        queryClient.setQueryData<GuideModelWithRelations>(
+          ['guide', guide.id],
+          (cachedGuide) => {
+            if (!cachedGuide) return guide;
+            return new Date(guide.updatedAt).getTime() >
+              new Date(cachedGuide.updatedAt).getTime()
+              ? guide
+              : undefined;
+          },
+        );
+      });
+      return result;
+    },
   });
 
   const guides = data?.[0] || [];
   const guidesCount = data?.[1] || 0;
-
-  useEffect(() => {
-    if (guides.length) {
-      guides.forEach((guide) => {
-        queryClient.setQueryData<GuideModelWithRelations>(
-          ['guide', guide.id],
-          (cachedGuide) => {
-            if (!cachedGuide) {
-              return guide;
-            }
-
-            if (guide.updatedAt === cachedGuide.updatedAt) {
-              return cachedGuide;
-            }
-
-            return guide;
-          },
-        );
-      });
-    }
-  }, [data]);
 
   return (
     <GuidesContext
