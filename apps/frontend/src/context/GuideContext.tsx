@@ -9,13 +9,19 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { GuideContextType, GuideModelWithRelations } from 'shared-types';
+import {
+  GuideContextType,
+  GuideModelWithRelations,
+  GuideStepModelFetched,
+} from 'shared-types';
 import { SocketContext } from './SocketContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getGuide } from 'utils';
 import { getGuideNEXT } from '@/utils/guide';
 import { GuideStatus } from 'database/enums';
 import { toast } from 'sonner';
+import { ParamsContext } from '@/context/ParamsContext';
+import { GuideModel } from '../../../../libs/db/generated/prisma/models/Guide';
 
 export const GuideContext = createContext<GuideContextType>(null!);
 
@@ -29,6 +35,7 @@ export default function GuideContextProvider({
   autoQueryStatus: boolean;
 }) {
   const queryClient = useQueryClient();
+  const { parsedParams, queryKey } = useContext(ParamsContext);
   const { data } = useQuery({
     queryKey: ['guide', guideId],
     queryFn: () =>
@@ -44,6 +51,24 @@ export default function GuideContextProvider({
       (async () => {
         queryClient.setQueryData(['guide', guideId], socketGuideData);
 
+        const currentGuidesCache =
+          queryClient.getQueryData<[GuideModel[], number]>(queryKey);
+
+        if (currentGuidesCache) {
+          const currentGuidesData = currentGuidesCache[0];
+          const currentGuidesCount = currentGuidesCache[1];
+
+          const newGuidesData = currentGuidesData.map((guide) => {
+            if (guide.id === data.id) {
+              return socketGuideData;
+            }
+            return guide;
+          });
+
+          const newGuidesCache = [newGuidesData, currentGuidesCount];
+
+          queryClient.setQueryData(queryKey, newGuidesCache);
+        }
         if (socketGuideData.status === 'FAILED') {
           toast.error('Failed to create guide');
         }
