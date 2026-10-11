@@ -3,12 +3,13 @@ import { prisma } from 'database';
 import { aiGuideGenerationSchema, GuideJob, PromptType } from 'shared-types';
 import { openai } from '@ai-sdk/openai';
 import { GuideStepCreateManyInput } from '@/libs/db/generated/prisma/models/GuideStep';
-import { io } from '../../main';
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
+import { getIO } from '../../socket';
 
 export async function aiCreateGuide(guide: GuideModel) {
   const guideId = guide.id;
   const userId = guide.userId;
+  const io = getIO();
 
   const firstGuideUpdate = await prisma.guide.update({
     where: {

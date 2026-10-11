@@ -3,12 +3,13 @@ import { prisma } from 'database';
 import { generateText, Output } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { aiQuestionsSchema, GuideJob } from 'shared-types';
-import { io } from '../../main';
+import { getIO } from '../../socket';
 
 export async function aiCreateGuideQuestions(guide: GuideModel) {
   const guideId = guide.id;
   const userId = guide.userId;
-
+  const io = getIO();
+  console.log(io);
   const firstGuideUpdate = await prisma.guide.update({
     where: {
       id: guideId,

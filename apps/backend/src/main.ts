@@ -4,19 +4,15 @@ import cors from 'cors';
 import { fromNodeHeaders, toNodeHandler } from 'better-auth/node';
 import { auth } from 'auth';
 import { guidesRouter } from './features/guides/guides.routes';
-import { Queue, Worker } from 'bullmq';
+import { Queue } from 'bullmq';
 import initWorkers from './workers/workers';
 import { createServer } from 'node:http';
-import { Server } from 'socket.io';
+import { getIO, initSocket } from './socket';
 
 export const app = express();
-const server = createServer(app);
-export const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:4444',
-    credentials: true,
-  },
-});
+export const server = createServer(app);
+initSocket(server);
+const io = getIO();
 
 export const guideGenerationQueue = new Queue('guideGenerationQueue');
 export const guideQuestionsGenerationQueue = new Queue(
@@ -39,23 +35,6 @@ const port = process.env.PORT || 3333;
 
 server.listen(port, () => {
   initWorkers();
-});
-
-io.use(async (socket, next) => {
-  const session = await auth.api.getSession({
-    headers: fromNodeHeaders(socket.request.headers),
-  });
-
-  if (!session) {
-    return next(new Error('No such session'));
-  }
-
-  socket.data.id = session.user.id;
-  next();
-});
-
-io.on('connection', (socket) => {
-  socket.join(socket.data.id);
 });
 
 server.on('error', console.error);

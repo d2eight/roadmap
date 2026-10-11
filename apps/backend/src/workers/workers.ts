@@ -3,9 +3,8 @@ import { GuideJob } from 'shared-types';
 import { aiCreateGuideQuestions } from './workersFunctions/aiCreateGuideQuestions';
 import { aiCreateGuide } from './workersFunctions/aiCreateGuide';
 import { getGuide } from 'utils';
-import { prisma } from 'database';
-import { setGuideFailure } from '@/apps/backend/src/features/guides/guides.service';
-import { io } from '@/apps/backend/src/main';
+import { setGuideFailure } from '../features/guides/guides.service';
+import { getIO } from '../socket';
 
 async function handleGuideJobFailure(
   job: Job<GuideJob> | undefined,
@@ -18,6 +17,8 @@ async function handleGuideJobFailure(
   const maxAttempts = job.opts.attempts || 1;
   const isFinalAttempt = job.attemptsMade >= maxAttempts;
   if (isFinalAttempt) {
+    const io = getIO();
+
     const guideFailure = await setGuideFailure({
       guideId: job.data.guideId,
       userId: job.data.userId,
