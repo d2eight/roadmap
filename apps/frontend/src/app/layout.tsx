@@ -5,8 +5,6 @@ import { cn } from '../lib/utils';
 import Providers from '../providers';
 import { Header } from '../components/custom-ui/Header';
 import { Toaster } from '../components/ui/sonner';
-import { io } from 'socket.io-client';
-import AuthContextProvider from '@/context/AuthContext';
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
@@ -46,7 +44,7 @@ export default async function RootLayout({
         <Providers>
           <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex-1 flex mt-[70px] max-w-[1400px] py-[50px] w-full mx-auto">
+            <main className="mt-[70px] max-w-[1400px] w-full mx-auto">
               {children}
             </main>
           </div>

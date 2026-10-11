@@ -1,13 +1,7 @@
-// 'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '../ui/button';
-import { authClient } from '../../lib/auth-client';
-import { headers } from 'next/headers';
 import { AuthButtons } from './AuthButtons';
-import { getUserIdFromHeaders } from '@/utils/getUserId';
-import { getSession } from 'utils';
 
 export async function Header() {
   return (

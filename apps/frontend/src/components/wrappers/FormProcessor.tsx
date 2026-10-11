@@ -20,11 +20,13 @@ export function FormProcessor({ children }: { children: ReactNode }) {
   const [processingStatus, setProcessingStatus] = useState<boolean>(false);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full h-full">
       {processingStatus && (
         <Spinner className="size-20 absolute top-[40%] right-[40%] z-1" />
       )}
-      <div className={`${processingStatus ? 'blur-sm' : ''} relative z-0`}>
+      <div
+        className={`${processingStatus ? 'blur-sm' : ''} h-full relative z-0`}
+      >
         <FormProcessingContext
           value={{
             processingStatus,

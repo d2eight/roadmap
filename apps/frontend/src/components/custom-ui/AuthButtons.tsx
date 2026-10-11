@@ -18,7 +18,7 @@ export function AuthButtons() {
       toast.error('Something went wrong, try again.');
     } else {
       toast.info('You have successfully logged out.');
-      router.push('auth/sign-in');
+      router.push('/auth/sign-in');
     }
   };
 
