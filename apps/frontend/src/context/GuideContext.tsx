@@ -35,7 +35,7 @@ export default function GuideContextProvider({
   autoQueryStatus: boolean;
 }) {
   const queryClient = useQueryClient();
-  const { parsedParams, queryKey } = useContext(ParamsContext);
+  const { queryKey } = useContext(ParamsContext);
   const { data } = useQuery({
     queryKey: ['guide', guideId],
     queryFn: () =>

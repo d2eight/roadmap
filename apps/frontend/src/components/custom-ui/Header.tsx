@@ -1,6 +1,7 @@
 // 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '../ui/button';
 import { authClient } from '../../lib/auth-client';
 import { headers } from 'next/headers';
@@ -12,7 +13,7 @@ export async function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 w-full h-[70px] bg-white shadow-md z-0">
       <div className="px-[20px] flex items-center justify-between h-full">
-        <img alt="logo" />
+        <Image src="/logo.png" width={50} height={50} alt="logo" />
         <div>
           <Button asChild variant="link">
             <Link href="/">Home</Link>
