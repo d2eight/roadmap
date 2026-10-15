@@ -46,7 +46,7 @@ export function CreateGuideButton({
           </Tooltip>
         </div>
       </DialogTrigger>
-      <DialogContent className="max-w-[1400px]! w-full p-[0]">
+      <DialogContent className="xl:max-w-3xl! xl:h-auto max-w-none! w-screen h-screen p-0">
         <FormProcessor>
           <PromptForm pushToGuideStatus={pushToGuideStatus} />
         </FormProcessor>

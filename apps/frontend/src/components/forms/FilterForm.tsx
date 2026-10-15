@@ -24,8 +24,8 @@ import {
 } from '@/components/ui/field';
 import { FilterProgressGroup } from '@/components/custom-ui/FilterProgressGroup';
 import { searchParamsDefaultValues } from 'shared-constants';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useContext } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useContext, useEffect } from 'react';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 import { ParamsContext } from '@/context/ParamsContext';
 
@@ -43,6 +43,7 @@ export function FilterForm() {
   const form = useForm<filterSchemaType>({
     resolver: zodResolver(filterSchema),
     defaultValues: defaultValues,
+    shouldUnregister: false,
   });
 
   const orderByOptions: OrderByOptions = [
@@ -73,7 +74,7 @@ export function FilterForm() {
     <form
       onSubmit={form.handleSubmit(onSubmit)}
       id="filter-form"
-      className="w-fit flex flex-col gap-[20px]"
+      className="xl:max-w-[300px] flex flex-col gap-[20px]"
     >
       <FieldSet>
         <FieldLegend>Filter options:</FieldLegend>

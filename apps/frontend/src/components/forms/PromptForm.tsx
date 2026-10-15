@@ -204,7 +204,7 @@ export function PromptForm({
   }
 
   return (
-    <Card className="h-full rounded-none xl:rounded-4xl">
+    <Card className="max-h-screen overflow-y-auto h-full rounded-none xl:rounded-4xl">
       <CardHeader>
         <CardTitle>Guide creation</CardTitle>
         <CardDescription>Fill the inputs below:</CardDescription>

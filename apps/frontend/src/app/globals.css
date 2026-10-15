@@ -241,12 +241,15 @@ code {
     [role="button"]:not(:disabled) {
         cursor: pointer;
     }
+
     * {
         @apply border-border outline-ring/50;
     }
+
     body {
         @apply bg-background text-foreground;
     }
+
     html {
         @apply font-sans;
     }
@@ -262,6 +265,7 @@ code {
         border: 1px solid var(--border);
         box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.25)
     }
+
     &:hover {
         background-color: var(--hover-bg) !important;
         color: var(--text);
@@ -275,6 +279,26 @@ code {
     &:hover {
         background-color: var(--hover-bg) !important;
         color: var(--text);
+    }
+}
+
+.progress {
+    animation: progress 1s infinite linear;
+}
+
+.left-right {
+    transform-origin: 0% 50%;
+}
+
+@keyframes progress {
+    0% {
+        transform: translateX(0) scaleX(0);
+    }
+    40% {
+        transform: translateX(0) scaleX(0.4);
+    }
+    100% {
+        transform: translateX(100%) scaleX(0.5);
     }
 }
 

@@ -1,67 +1,82 @@
 'use client';
 
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  LucideCalendarDays,
-  LucideCheck,
-  LucidePlus,
-  Trash2,
-} from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { PromptForm } from '@/components/forms/PromptForm';
-import {
-  FormProcessingContext,
-  FormProcessor,
-} from '@/components/wrappers/FormProcessor';
-import { Button } from '@/components/ui/button';
-import { CreateGuideButton } from '@/components/custom-ui/CreateGuideButton';
-import { useContext, useEffect, useState } from 'react';
-import { GuidesContext } from '@/context/GuidesContext';
-import { useForm } from 'react-hook-form';
-import { FilterForm } from '@/components/forms/FilterForm';
-import { ApplyFiltersButton } from '@/components/custom-ui/ApplyFiltersButton';
-import { useSearchParams } from 'next/navigation';
+import { GuidesFilterComponent } from '@/components/custom-ui/GuidesFilterComponent';
+import { ResetFiltersButton } from '@/components/custom-ui/ResetFiltersButton';
+import { OpenFiltersButton } from '@/components/custom-ui/OpenFiltersButton';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 import { DialogContextProvider } from '@/context/DialogContext';
+import { CreateGuideButton } from '@/components/custom-ui/CreateGuideButton';
+import { useWindowWidth } from '@/utils/useWindowWidth';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { useWindowScroll } from '@/utils/useWindowScroll';
 
-export function GuidesFilter() {
-  const { setProcessingStatus } = useContext(FormProcessingContext);
+export default function GuidesFilter() {
+  const { isDesktop } = useWindowWidth();
+  const { scrollY } = useWindowScroll();
+  const [accordionValue, setAccordionValue] = useState<['item-1'] | []>([
+    'item-1',
+  ]);
+  const [isManuallyControlled, setIsManuallyControlled] =
+    useState<boolean>(false);
 
   useEffect(() => {
-    setProcessingStatus(false);
-  });
+    if (isManuallyControlled) return;
+
+    if (scrollY > 300) {
+      setAccordionValue([]);
+    } else if (scrollY < 50) {
+      setAccordionValue(['item-1']);
+    }
+  }, [scrollY, isManuallyControlled]);
+
+  const toggleAccordion = () => {
+    setIsManuallyControlled(true);
+    setAccordionValue((prev) => (prev.length ? [] : ['item-1']));
+  };
+
+  if (isDesktop) {
+    return (
+      <div className="hidden xl:block sticky top-20 shadow-md bg-white rounded-4xl">
+        <Accordion
+          className="border-none rounded-none"
+          type="multiple"
+          value={accordionValue}
+        >
+          <AccordionItem className="data-open:bg-transparent " value="item-1">
+            <AccordionContent className="pb-[0]">
+              <GuidesFilterComponent />
+            </AccordionContent>
+            <AccordionTrigger
+              onClick={toggleAccordion}
+              className="justify-center items-center **:data-[slot=accordion-trigger-icon]:ml-0! gap-2.5"
+            >
+              <p>{accordionValue.length ? 'Close filters' : 'Open filters'}</p>
+            </AccordionTrigger>
+          </AccordionItem>
+        </Accordion>
+      </div>
+    );
+  }
 
   return (
-    <div className="sticky top-[50px] z-50">
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <FilterForm />
-          </CardTitle>
-          <CardAction className="flex flex-row gap-[10px]">
-            <ApplyFiltersButton />
-            <DialogContextProvider>
-              <CreateGuideButton pushToGuideStatus={false} />
-            </DialogContextProvider>
-          </CardAction>
-        </CardHeader>
-      </Card>
+    <div className="xl:hidden flex items-center justify-between gap-3">
+      <div className="w-full flex items-center gap-3">
+        <DialogContextProvider>
+          <OpenFiltersButton />
+        </DialogContextProvider>
+        <ResetFiltersButton />
+      </div>
+      <div>
+        <DialogContextProvider>
+          <CreateGuideButton pushToGuideStatus={false} />
+        </DialogContextProvider>
+      </div>
     </div>
   );
 }

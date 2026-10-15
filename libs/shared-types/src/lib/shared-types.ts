@@ -146,3 +146,20 @@ export type PromptType = {
   userPrompt: string;
   answers?: JsonValue;
 };
+
+export type WidthLabel = '2xl' | 'xl' | 'lg' | 'md' | 'sm';
+
+export type WidthItem = {
+  size: number;
+  label: WidthLabel;
+};
+
+export type WidthInfo = {
+  label: WidthLabel;
+  isDesktop: boolean;
+};
+
+export type ScrollInfo = {
+  onTop: boolean;
+  scrollY: number;
+};

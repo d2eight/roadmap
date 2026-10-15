@@ -2,7 +2,7 @@ import { getUserIdFromHeaders } from '../../utils/getUserId';
 import { headers } from 'next/headers';
 import { getGuides } from 'utils';
 import { GuidesContextProvider } from '@/context/GuidesContext';
-import { GuidesFilter } from '@/components/custom-ui/GuidesFilter';
+// import { GuidesFilter } from '@/components/custom-ui/GuidesFilter';
 import { Guides } from '@/components/custom-ui/Guides';
 import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
 import { GuideModelWithRelations, QueryKeyType } from 'shared-types';
@@ -12,13 +12,13 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { ParamsContextProvider } from '@/context/ParamsContext';
 import { getGuidesNEXT } from '@/utils/guide';
 import { pageSize } from '@/constants/constants';
+import { Filter } from '@/components/custom-ui/Filter';
 
 export default async function DashboardServerPage({
   searchParams,
 }: {
   searchParams: any;
 }) {
-  const headersList = await headers();
   const params = await searchParams;
   const queryClient = getQueryClient();
 
@@ -54,9 +54,10 @@ export default async function DashboardServerPage({
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <FormProcessor>
-          <div className="flex flex-col gap-[60px]">
+          <div className="flex flex-col gap-5 xl:gap-15">
             <ParamsContextProvider>
-              <GuidesFilter />
+              <Filter />
+
               <GuidesContextProvider>
                 <Guides />
                 <GuidesPagination />

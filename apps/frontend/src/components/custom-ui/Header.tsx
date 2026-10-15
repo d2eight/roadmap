@@ -5,7 +5,7 @@ import { AuthButtons } from './AuthButtons';
 
 export async function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 w-full h-[70px] bg-white shadow-md z-0">
+    <header className="fixed top-0 left-0 right-0 w-full h-[70px] bg-white shadow-md z-9">
       <div className="px-[20px] flex items-center justify-between h-full">
         <Image src="/logo.png" width={50} height={50} alt="logo" />
         <div>
@@ -19,9 +19,7 @@ export async function Header() {
             <Link href="/guides">Dashboard</Link>
           </Button>
         </div>
-        <div className="flex items-center gap-2">
-          <AuthButtons />
-        </div>
+        <div className="flex items-center gap-2">{/*<AuthButtons />*/}</div>
       </div>
     </header>
   );

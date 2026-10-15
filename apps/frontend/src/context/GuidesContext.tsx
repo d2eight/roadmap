@@ -17,7 +17,7 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
   const { parsedParams, queryKey } = useContext(ParamsContext);
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey,
     queryFn: async () => {
       const result = await getGuidesNEXT({
