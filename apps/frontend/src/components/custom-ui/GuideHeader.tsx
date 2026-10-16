@@ -42,7 +42,7 @@ export function GuideHeader() {
 
   return (
     <>
-      <CardHeader className="px-0">
+      <CardHeader className="xl:px-0">
         <CardTitle className="flex flex-row justify-between items-center ">
           <h1>{guide.title}</h1>
         </CardTitle>
@@ -52,14 +52,14 @@ export function GuideHeader() {
           <RecreateGuideMenu />
         </CardAction>
       </CardHeader>
-      <CardContent className="px-0 flex flex-row items-center gap-[10px]">
+      <CardContent className="xl:px-0 flex flex-row items-center gap-[10px]">
         <CompletedSteps
           guideLength={guide.steps.length}
           completedSteps={completedSteps!}
         />
         <GuideDate guideDate={guide.createdAt} />
       </CardContent>
-      <CardFooter className="px-0">
+      <CardFooter className="xl:px-0">
         <Accordion
           className="border-none rounded-none"
           type="multiple"
