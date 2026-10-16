@@ -21,8 +21,6 @@ import {
 } from 'errors';
 import { JsonValue } from '@prisma/client/runtime/client';
 
-// import { ApiError } from '@/apps/frontend/src/customClasses/apiError';
-
 export type BetterAuthSession = {
   session: Session;
   user: User;

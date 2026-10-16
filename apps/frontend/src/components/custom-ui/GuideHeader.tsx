@@ -35,10 +35,10 @@ import {
 import { RecreateGuideWithAnsweredQuestionsButton } from '@/components/custom-ui/RecreateGuideWithAnsweredQuestionsButton';
 import { ChangeGuidePromptButton } from '@/components/custom-ui/ChangeGuidePromptButton';
 import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
+import { UpdateProgressButton } from '@/components/custom-ui/UpdateProgressButton';
 
 export function GuideHeader() {
   const { guide, completedSteps } = useContext(GuideContext);
-  const { processingStatus } = useContext(FormProcessingContext);
 
   return (
     <>
@@ -47,20 +47,7 @@ export function GuideHeader() {
           <h1>{guide.title}</h1>
         </CardTitle>
         <CardAction className="flex items-center gap-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                form="guide-form"
-                type="submit"
-                size="icon-sm"
-                variant="outline"
-                disabled={processingStatus}
-              >
-                <LucideCheck />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Update Progress</TooltipContent>
-          </Tooltip>
+          <UpdateProgressButton variant="outline" className="hidden xl:flex" />
           <DeleteGuideButton />
           <RecreateGuideMenu />
         </CardAction>

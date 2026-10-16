@@ -26,7 +26,7 @@ export function StepStatusButton({
           className={className}
         >
           <div className="w-full h-full flex items-center justify-center gap-1">
-            <span>Pending</span>
+            <span className="hidden xl:block">Pending</span>
             <LucideCircleDashed />
           </div>
         </ToggleGroupItem>
@@ -36,7 +36,7 @@ export function StepStatusButton({
       return (
         <ToggleGroupItem className={className} value="INWORK" variant="inwork">
           <div className="w-full h-full flex items-center justify-center gap-1">
-            <span>In work</span>
+            <span className="hidden xl:block">In work</span>
             <LucideCircleFadingArrowUp color="#A85D00" />
           </div>
         </ToggleGroupItem>
@@ -50,7 +50,7 @@ export function StepStatusButton({
           value="REJECTED"
         >
           <div className="w-full h-full flex items-center justify-center gap-1">
-            <span>Reject</span>
+            <span className="hidden xl:block">Reject</span>
             <LucideXCircle />
           </div>
         </ToggleGroupItem>
@@ -60,7 +60,7 @@ export function StepStatusButton({
       return (
         <ToggleGroupItem className={className} variant="success" value="DONE">
           <div className="w-full h-full flex items-center justify-center gap-1">
-            <span>Done</span>
+            <span className="hidden xl:block">Done</span>
             <LucideCircleCheck />
           </div>
         </ToggleGroupItem>

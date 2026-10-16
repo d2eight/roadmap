@@ -1,12 +1,11 @@
 import {
-  Card, CardAction,
-  CardDescription, CardFooter,
+  Card,
+  CardAction,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { GuideStepModel } from '../../../../../libs/db/generated/prisma/models/GuideStep';
-import { JSX } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { StepRadioGroup } from '@/components/custom-ui/StepRadioGroup';
 import { GuideStepModelFetched, guideStepsSchemaType } from 'shared-types';
@@ -21,12 +20,12 @@ export function StepCard({
   stepIndex: number;
 }) {
   return (
-    <Card className="pb-0">
-      <CardHeader>
+    <Card className="p-0 xl:pb-0 flex flex-row xl:flex-col justify-between">
+      <CardHeader className="flex flex-col p-6 xl:pb-0 w-full">
         <CardTitle>{step.title}</CardTitle>
         <CardDescription>{step.description}</CardDescription>
       </CardHeader>
-      <CardFooter className="px-0">
+      <CardFooter className="h-auto min-h-50 xl:min-h-auto xl:max-w-full md:max-w-30 max-w-20 w-full px-0">
         <StepRadioGroup form={form} stepIndex={stepIndex} />
       </CardFooter>
     </Card>

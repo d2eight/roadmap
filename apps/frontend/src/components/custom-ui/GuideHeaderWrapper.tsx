@@ -1,12 +1,10 @@
-'use client'
+'use client';
 
 import { ReactNode } from 'react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
-export function GuideHeaderWrapper({children}: {children: ReactNode}) {
+export function GuideHeaderWrapper({ children }: { children: ReactNode }) {
   return (
-    <Card className="pl-[50px] pr-[20px] mb-[20px] sticky top-[50px] z-50">
-      {children}
-    </Card>
+    <Card className="pl-12.5 pr-5 mb-5 xl:sticky top-20 z-50">{children}</Card>
   );
 }

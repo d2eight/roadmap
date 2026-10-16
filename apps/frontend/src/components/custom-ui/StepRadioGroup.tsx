@@ -20,7 +20,7 @@ export function StepRadioGroup({
         return (
           <ToggleGroup
             value={field.value.status}
-            className="w-full justify-between gap-[0]"
+            className="w-full h-full flex-col xl:flex-row gap-0"
             type="single"
             onValueChange={(value) => {
               const newValue = value ? value : GuideStepStatus.PENDING;
@@ -33,7 +33,7 @@ export function StepRadioGroup({
             {stepStatusEnum.map((status, index) => {
               return (
                 <StepStatusButton
-                  className="rounded-[0] flex-1 p-[5px]"
+                  className="w-full rounded-none flex-1 p-1.25"
                   key={index}
                   status={status}
                 />

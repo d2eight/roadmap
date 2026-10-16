@@ -6,6 +6,7 @@ import { FormProcessor } from '@/components/wrappers/FormProcessor';
 import { GuideNotFound } from '@/components/custom-ui/GuideNotFound';
 import { useContext } from 'react';
 import { GuideContext } from '@/context/GuideContext';
+import { MobileGuidePageFooter } from '@/components/custom-ui/MobileGuidePageFooter';
 
 export default function GuidePage() {
   const guideContext = useContext(GuideContext);
@@ -16,6 +17,7 @@ export default function GuidePage() {
         <FormProcessor>
           <GuidePageHeader />
           <GuidePageContent />
+          <MobileGuidePageFooter />
         </FormProcessor>
       ) : (
         <GuideNotFound />
