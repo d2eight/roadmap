@@ -22,7 +22,7 @@ import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
 
 export function GuideCardFooter() {
   const { guide, status } = useContext(GuideContext);
-  const { newSearchParams } = useContext(ParamsContext);
+  const { searchParams } = useContext(ParamsContext);
 
   switch (status) {
     case 'INIT':
@@ -30,7 +30,7 @@ export function GuideCardFooter() {
       return (
         <CardFooter>
           <Button className="w-full" variant="secondary" asChild>
-            <Link href={`/guides/${guide.id}?${newSearchParams}`}>
+            <Link href={`/guides/${guide.id}?${searchParams}`}>
               Generating a guide
               <Spinner />
             </Link>
@@ -41,7 +41,7 @@ export function GuideCardFooter() {
       return (
         <CardFooter>
           <Button className="w-full" variant="secondary" asChild>
-            <Link href={`/guides/${guide.id}?${newSearchParams}`}>
+            <Link href={`/guides/${guide.id}?${searchParams}`}>
               Generating questions
               <Spinner />
             </Link>
@@ -52,7 +52,7 @@ export function GuideCardFooter() {
       return (
         <CardFooter>
           <Button className="w-full" variant="outline" asChild>
-            <Link href={`/guides/${guide.id}?${newSearchParams}`}>
+            <Link href={`/guides/${guide.id}?${searchParams}`}>
               Open questions
               <ArrowRight />
             </Link>
@@ -63,7 +63,7 @@ export function GuideCardFooter() {
       return (
         <CardFooter>
           <Button className="w-full" asChild>
-            <Link href={`/guides/${guide.id}?${newSearchParams}`}>
+            <Link href={`/guides/${guide.id}?${searchParams}`}>
               Open guide
               <ArrowRight />
             </Link>

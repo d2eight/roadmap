@@ -18,7 +18,7 @@ import { ParamsContext } from '@/context/ParamsContext';
 import Link from 'next/link';
 
 export function GuideNotFound() {
-  const { newSearchParams } = useContext(ParamsContext);
+  const { searchParams } = useContext(ParamsContext);
 
   const createGuideCustomButton = (
     <Button variant="outline">Create guide</Button>
@@ -39,7 +39,7 @@ export function GuideNotFound() {
       </EmptyHeader>
       <EmptyContent className="flex flex-row justify-center">
         <Button asChild>
-          <Link href={`/guides?${newSearchParams}`}>Dashboard</Link>
+          <Link href={`/guides?${searchParams}`}>Dashboard</Link>
         </Button>
         <DialogContextProvider>
           <CreateGuideButton

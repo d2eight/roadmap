@@ -25,7 +25,7 @@ import {
 import { FilterProgressGroup } from '@/components/custom-ui/FilterProgressGroup';
 import { searchParamsDefaultValues } from 'shared-constants';
 import { usePathname, useRouter } from 'next/navigation';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 import { ParamsContext } from '@/context/ParamsContext';
 
@@ -58,16 +58,25 @@ export function FilterForm() {
   ];
 
   function onSubmit(data: filterSchemaType) {
+    const newOrderBy = data.orderBy;
+    const newProgressStatus = data.progressStatus;
+
+    if (
+      parsedParams.orderBy === newOrderBy &&
+      JSON.stringify(parsedParams.progressStatus) ===
+        JSON.stringify(newProgressStatus)
+    ) {
+      return;
+    }
+
     setProcessingStatus(true);
-    const orderByParams = data.orderBy;
-    const progressStatusParams = data.progressStatus.join(',');
 
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('orderBy', orderByParams);
-    params.set('progressStatus', progressStatusParams);
-    params.set('page', searchParamsDefaultValues.page.toString());
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set('orderBy', newOrderBy);
+    newParams.set('progressStatus', newProgressStatus.join(','));
+    newParams.set('page', searchParamsDefaultValues.page.toString());
 
-    return router.replace(`${pathname}?${params}`, { scroll: false });
+    return router.replace(`${pathname}?${newParams}`, { scroll: false });
   }
 
   return (

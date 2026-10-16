@@ -15,13 +15,11 @@ export const ParamsContext = createContext<{
   searchParams: ReadonlyURLSearchParams;
   parsedParams: paramsSchemaType;
   queryKey: QueryKeyType;
-  newSearchParams: URLSearchParams;
   resetParams: () => void;
 }>(null!);
 
 export function ParamsContextProvider({ children }: { children: ReactNode }) {
   const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -81,7 +79,6 @@ export function ParamsContextProvider({ children }: { children: ReactNode }) {
         searchParams,
         parsedParams,
         queryKey,
-        newSearchParams,
         resetParams,
       }}
     >
