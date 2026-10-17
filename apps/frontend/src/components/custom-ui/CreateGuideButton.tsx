@@ -1,6 +1,15 @@
 'use client';
 
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Tooltip,
   TooltipContent,
@@ -12,6 +21,8 @@ import { FormProcessor } from '@/components/wrappers/FormProcessor';
 import { PromptForm } from '@/components/forms/PromptForm';
 import { Dispatch, JSX, SetStateAction, useContext } from 'react';
 import { DialogContext } from '@/context/DialogContext';
+import { CreateGuidePromptFormButton } from '@/components/custom-ui/CreateGuidePromptFormButton';
+import { toggleExplanationString } from '@/constants/constants';
 
 export function CreateGuideButton({
   button,
@@ -46,10 +57,20 @@ export function CreateGuideButton({
           </Tooltip>
         </div>
       </DialogTrigger>
-      <DialogContent className="xl:max-w-3xl! xl:h-auto max-w-none! w-screen h-screen p-0">
-        <FormProcessor>
-          <PromptForm pushToGuideStatus={pushToGuideStatus} />
-        </FormProcessor>
+      <DialogContent className="rounded-none max-h-screen max-w-[100vw]! w-full! h-full! xl:rounded-4xl xl:h-[calc(100vh-70px)]! xl:max-w-375! overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Guide creation</DialogTitle>
+          <DialogDescription>Fill the inputs below:</DialogDescription>
+          <div className="mt-5">
+            <FormProcessor>
+              <PromptForm pushToGuideStatus={pushToGuideStatus} />
+            </FormProcessor>
+          </div>
+        </DialogHeader>
+        <DialogFooter className="flex-col! gap-5">
+          <p>{toggleExplanationString}</p>
+          <CreateGuidePromptFormButton className="w-full" />
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

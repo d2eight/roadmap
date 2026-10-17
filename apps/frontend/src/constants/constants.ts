@@ -24,3 +24,8 @@ export const widthMap: WidthItem[] = [
     size: 640,
   },
 ];
+
+export const toggleExplanationString =
+  '              * - If you check this, at first, AI will generate a couple of\n' +
+  '              questions, for deeper understanding of your goal. After you answer\n' +
+  '              them - guide will be created.';

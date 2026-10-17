@@ -204,80 +204,56 @@ export function PromptForm({
   }
 
   return (
-    <Card className="max-h-screen overflow-y-auto h-full rounded-none xl:rounded-4xl">
-      <CardHeader>
-        <CardTitle>Guide creation</CardTitle>
-        <CardDescription>Fill the inputs below:</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form
-          className="flex flex-col gap-[40px]"
-          id="prompt-form"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FieldSet disabled={processingStatus}>
-            <Controller
-              control={form.control}
-              name="prompt"
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.error}>
-                  <FieldLabel htmlFor={field.name}>Prompt</FieldLabel>
-                  <Textarea
-                    {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Learn C++ from the very beginning"
-                  />
-                  <FieldError errors={[fieldState.error]} />
-                </Field>
-              )}
-            />
-            <Controller
-              control={form.control}
-              name="externalAiQuestionsStatus"
-              render={({ field, fieldState }) => (
-                <Field orientation="horizontal" data-invalid={fieldState.error}>
-                  <FieldLabel className="cursor-pointer" htmlFor={field.name}>
-                    External ai questions, for improving your prompt*
-                  </FieldLabel>
-                  <Switch
-                    id={field.name}
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                  <FieldError errors={[fieldState.error]} />
-                </Field>
-              )}
-            />
-          </FieldSet>
-        </form>
-      </CardContent>
-      <CardFooter className="mt-auto">
-        <div className="flex flex-col gap-[20px] w-full">
-          <p>
-            * - If you check this, at first, AI will generate a couple of
-            questions, for deeper understanding of your goal. After you answer
-            them - guide will be created.
-          </p>
-          {!isRecreateForm && (
-            <Button
-              type="submit"
-              form="prompt-form"
-              disabled={processingStatus}
-            >
-              Create guide
-            </Button>
-          )}
-        </div>
-      </CardFooter>
-      <CardFooter>
+    <div className="h-full flex flex-col">
+      <form
+        className="flex flex-col gap-[40px]"
+        id="prompt-form"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <FieldSet disabled={processingStatus}>
+          <Controller
+            control={form.control}
+            name="prompt"
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.error}>
+                <FieldLabel htmlFor={field.name}>Prompt</FieldLabel>
+                <Textarea
+                  {...field}
+                  id={field.name}
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Learn C++ from the very beginning"
+                />
+                <FieldError errors={[fieldState.error]} />
+              </Field>
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="externalAiQuestionsStatus"
+            render={({ field, fieldState }) => (
+              <Field orientation="horizontal" data-invalid={fieldState.error}>
+                <FieldLabel className="cursor-pointer" htmlFor={field.name}>
+                  External ai questions, for improving your prompt*
+                </FieldLabel>
+                <Switch
+                  id={field.name}
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                <FieldError errors={[fieldState.error]} />
+              </Field>
+            )}
+          />
+        </FieldSet>
+      </form>
+      <div className="mt-auto">
         {form.formState.errors.root && (
           <RedAlert
             title={'Something went wrong'}
             message={form.formState.errors.root.message as string}
           />
         )}
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 }
