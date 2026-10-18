@@ -1,8 +1,4 @@
-import { getUserIdFromHeaders } from '../../utils/getUserId';
-import { headers } from 'next/headers';
-import { getGuides } from 'utils';
 import { GuidesContextProvider } from '@/context/GuidesContext';
-// import { GuidesFilter } from '@/components/custom-ui/GuidesFilter';
 import { Guides } from '@/components/custom-ui/Guides';
 import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
 import { GuideModelWithRelations, QueryKeyType } from 'shared-types';

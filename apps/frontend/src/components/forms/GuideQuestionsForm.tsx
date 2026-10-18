@@ -204,7 +204,7 @@ export default function GuideQuestionsForm() {
   return (
     <>
       <form id="guide-questions" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="mt-[50px] flex flex-col gap-[30px]">
+        <div className="flex flex-col gap-7.5">
           <Separator />
           <FieldSet disabled={processingStatus}>
             <FieldSet className="gap-6!">

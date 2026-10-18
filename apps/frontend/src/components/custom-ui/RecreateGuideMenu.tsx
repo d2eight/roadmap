@@ -30,48 +30,46 @@ export function RecreateGuideMenu({
   const { guide } = useContext(GuideContext);
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div className="w-full">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className={className}>
-                {children && <span>{children}</span>}
-                <Button size="icon-sm" variant="outline">
-                  {icon ?? <LucideEllipsisVertical />}
-                </Button>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>Recreate Options</TooltipContent>
-          </Tooltip>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
-          <RecreateGuideButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
-            Simple recreate
-          </RecreateGuideButton>
-        </DropdownMenuItem>
-        {guide.externalAiQuestionsStatus && (
+    <Tooltip>
+      <DropdownMenu modal={false}>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger asChild>
+            <div className={className}>
+              {children && <span>{children}</span>}
+              <Button size="icon-sm" variant="outline">
+                {icon ?? <LucideEllipsisVertical />}
+              </Button>
+            </div>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <DropdownMenuContent>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
-            <RecreateGuideQuestionsButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
-              Change questions
-            </RecreateGuideQuestionsButton>
+            <RecreateGuideButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
+              Simple recreate
+            </RecreateGuideButton>
           </DropdownMenuItem>
-        )}
-        {guide.questions && (
+          {guide.externalAiQuestionsStatus && (
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
+              <RecreateGuideQuestionsButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
+                Change questions
+              </RecreateGuideQuestionsButton>
+            </DropdownMenuItem>
+          )}
+          {guide.questions && (
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
+              <RecreateGuideWithAnsweredQuestionsButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
+                Change answers
+              </RecreateGuideWithAnsweredQuestionsButton>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
-            <RecreateGuideWithAnsweredQuestionsButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
-              Change answers
-            </RecreateGuideWithAnsweredQuestionsButton>
+            <ChangeGuidePromptButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
+              Change prompt
+            </ChangeGuidePromptButton>
           </DropdownMenuItem>
-        )}
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
-          <ChangeGuidePromptButton className="cursor-pointer w-full flex flex-row items-center gap-2 hover:bg-muted">
-            Change prompt
-          </ChangeGuidePromptButton>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <TooltipContent>Recreate Options</TooltipContent>
+    </Tooltip>
   );
 }

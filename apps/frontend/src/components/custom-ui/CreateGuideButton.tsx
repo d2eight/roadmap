@@ -57,7 +57,7 @@ export function CreateGuideButton({
           </Tooltip>
         </div>
       </DialogTrigger>
-      <DialogContent className="rounded-none max-h-screen max-w-[100vw]! w-full! h-full! xl:rounded-4xl xl:h-[calc(100vh-70px)]! xl:max-w-375! overflow-y-auto">
+      <DialogContent className="modal-container!">
         <DialogHeader>
           <DialogTitle>Guide creation</DialogTitle>
           <DialogDescription>Fill the inputs below:</DialogDescription>

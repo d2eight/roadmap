@@ -17,7 +17,7 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
   const { parsedParams, queryKey } = useContext(ParamsContext);
   const queryClient = useQueryClient();
 
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey,
     queryFn: async () => {
       const result = await getGuidesNEXT({
@@ -32,7 +32,7 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
             return new Date(guide.updatedAt).getTime() >
               new Date(cachedGuide.updatedAt).getTime()
               ? guide
-              : undefined;
+              : cachedGuide;
           },
         );
       });

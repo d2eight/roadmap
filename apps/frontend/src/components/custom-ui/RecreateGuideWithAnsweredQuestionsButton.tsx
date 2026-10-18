@@ -53,18 +53,23 @@ export function RecreateGuideWithAnsweredQuestionsButton({
           {children && <span>{children}</span>}
         </div>
       </DialogTrigger>
-      <DialogContent className="max-h-[800px] max-w-[1500px]! no-scrollbar overflow-y-auto w-full p-[70px]">
-        <DialogHeader className="flex flex-row w-full justify-between items-center">
-          <div className="flex flex-col gap-2">
-            <DialogTitle className="text-xl!">Your answers</DialogTitle>
-            <DialogDescription className="text-lg!">
-              You can change your answers, this will cause to the recreation of
-              guide
-            </DialogDescription>
-          </div>
+      <DialogContent className="modal-container!">
+        <DialogHeader>
+          <DialogTitle>Your answers</DialogTitle>
+          <DialogDescription>
+            You can change your answers, this will cause to the recreation of
+            guide
+          </DialogDescription>
+        </DialogHeader>
+        <div className="-mx-4 no-scrollbar overflow-y-auto px-4">
+          <FormProcessor>
+            <GuideQuestionsForm />
+          </FormProcessor>
+        </div>
+        <DialogFooter className="bg-transparent!">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button className="w-[200px]">Change answers</Button>
+              <Button className="w-full">Change answers</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -87,10 +92,7 @@ export function RecreateGuideWithAnsweredQuestionsButton({
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        </DialogHeader>
-        <FormProcessor>
-          <GuideQuestionsForm />
-        </FormProcessor>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

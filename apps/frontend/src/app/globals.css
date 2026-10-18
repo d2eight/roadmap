@@ -302,3 +302,7 @@ code {
     }
 }
 
+@utility modal-container {
+    @apply rounded-none max-h-screen max-w-[100vw]! w-full! h-full! overflow-y-auto
+    xl:rounded-4xl xl:h-[calc(100vh-70px)]! xl:w-[calc(100vw-300px)]!;
+}

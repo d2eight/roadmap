@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -24,6 +25,7 @@ import { FormProcessor } from '@/components/wrappers/FormProcessor';
 import GuideQuestionsForm from '@/components/forms/GuideQuestionsForm';
 import { ListRestartIcon, NotebookPenIcon } from 'lucide-react';
 import { PromptForm } from '@/components/forms/PromptForm';
+import { toggleExplanationString } from '@/constants/constants';
 
 export function ChangeGuidePromptButton({
   children,
@@ -42,18 +44,22 @@ export function ChangeGuidePromptButton({
           {children && <span>{children}</span>}
         </div>
       </DialogTrigger>
-      <DialogContent className="max-h-[800px] max-w-[1500px]! no-scrollbar overflow-y-auto w-full p-[70px]">
-        <DialogHeader className="flex flex-row w-full justify-between items-center">
-          <div className="flex flex-col gap-2">
-            <DialogTitle className="text-xl!">Your prompt</DialogTitle>
-            <DialogDescription className="text-lg!">
-              You can change your prompt, this will cause to the recreation of
-              guide
-            </DialogDescription>
-          </div>
+      <DialogContent className="modal-container!">
+        <DialogHeader>
+          <DialogTitle>Your prompt</DialogTitle>
+          <DialogDescription>
+            You can change your prompt, this will cause to the recreation of
+            guide
+          </DialogDescription>
+          <FormProcessor className="mt-5">
+            <PromptForm pushToGuideStatus={false} />
+          </FormProcessor>
+        </DialogHeader>
+        <DialogFooter className="mt-auto flex-col! gap-5">
+          <p>{toggleExplanationString}</p>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button className="w-[200px]"> Change Prompt</Button>
+              <Button className="w-full">Change Prompt</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -76,10 +82,7 @@ export function ChangeGuidePromptButton({
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        </DialogHeader>
-        <FormProcessor>
-          <PromptForm pushToGuideStatus={false} />
-        </FormProcessor>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
