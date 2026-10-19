@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   PaginationItem,
@@ -11,13 +11,15 @@ export function NextPagePaginationItem({
   navigateToPage,
   currentPage,
   lastPage,
+  className = '',
 }: {
   navigateToPage: (page: number) => void;
   currentPage: number;
   lastPage: number;
+  className?: string;
 }) {
   return (
-    <PaginationItem>
+    <PaginationItem className={`${className} list-none`}>
       <Button disabled={currentPage === lastPage} variant="ghost">
         <PaginationNext
           onClick={() => {

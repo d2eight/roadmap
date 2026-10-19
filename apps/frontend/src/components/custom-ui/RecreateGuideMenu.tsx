@@ -31,7 +31,7 @@ export function RecreateGuideMenu({
 
   return (
     <Tooltip>
-      <DropdownMenu open={true} modal={false}>
+      <DropdownMenu modal={false}>
         <TooltipTrigger asChild>
           <DropdownMenuTrigger asChild>
             <div className={className}>

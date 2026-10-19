@@ -115,7 +115,7 @@ export function GuidesPagination() {
   }
 
   return (
-    <Pagination className="mt-auto">
+    <Pagination className={`${guidesCount ? 'flex' : 'hidden'} mt-auto`}>
       <PreviousPagePaginationItem
         navigateToPage={navigateToPage}
         currentPage={currentPage}
