@@ -59,18 +59,20 @@ export function CreateGuideButton({
       </DialogTrigger>
       <DialogContent className="modal-container!">
         <DialogHeader>
-          <DialogTitle>Guide creation</DialogTitle>
-          <DialogDescription>Fill the inputs below:</DialogDescription>
-          <div className="mt-5">
-            <FormProcessor>
-              <PromptForm pushToGuideStatus={pushToGuideStatus} />
-            </FormProcessor>
-          </div>
+          <FormProcessor className="h-full">
+            <div className="h-full flex flex-col">
+              <DialogTitle>Guide creation</DialogTitle>
+              <DialogDescription>Fill the inputs below:</DialogDescription>
+              <div className="mt-5">
+                <PromptForm pushToGuideStatus={pushToGuideStatus} />
+              </div>
+              <div className="mt-auto flex flex-col gap-5">
+                <p>{toggleExplanationString}</p>
+                <CreateGuidePromptFormButton className="w-full" />
+              </div>
+            </div>
+          </FormProcessor>
         </DialogHeader>
-        <DialogFooter className="flex-col! gap-5">
-          <p>{toggleExplanationString}</p>
-          <CreateGuidePromptFormButton className="w-full" />
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

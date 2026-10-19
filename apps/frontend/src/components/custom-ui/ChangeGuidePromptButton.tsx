@@ -26,6 +26,7 @@ import GuideQuestionsForm from '@/components/forms/GuideQuestionsForm';
 import { ListRestartIcon, NotebookPenIcon } from 'lucide-react';
 import { PromptForm } from '@/components/forms/PromptForm';
 import { toggleExplanationString } from '@/constants/constants';
+import { CreateGuidePromptFormButton } from '@/components/custom-ui/CreateGuidePromptFormButton';
 
 export function ChangeGuidePromptButton({
   children,
@@ -45,44 +46,46 @@ export function ChangeGuidePromptButton({
         </div>
       </DialogTrigger>
       <DialogContent className="modal-container!">
-        <DialogHeader>
-          <DialogTitle>Your prompt</DialogTitle>
-          <DialogDescription>
-            You can change your prompt, this will cause to the recreation of
-            guide
-          </DialogDescription>
-          <FormProcessor className="mt-5">
-            <PromptForm pushToGuideStatus={false} />
-          </FormProcessor>
-        </DialogHeader>
-        <DialogFooter className="mt-auto flex-col! gap-5">
-          <p>{toggleExplanationString}</p>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button className="w-full">Change Prompt</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Are you sure that you want to change your answers and recreate
-                  this guide?
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action will cause guide recreation. All previous
-                  progress, steps will be lost.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction asChild>
-                  <Button form="prompt-form" type="submit">
-                    Continue
-                  </Button>
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </DialogFooter>
+        <FormProcessor>
+          <div className="h-full flex flex-col">
+            <DialogHeader>
+              <DialogTitle>Your prompt</DialogTitle>
+              <DialogDescription>
+                You can change your prompt, this will cause to the recreation of
+                guide
+              </DialogDescription>
+              <PromptForm pushToGuideStatus={false} />
+            </DialogHeader>
+            <DialogFooter className="mt-auto flex-col! gap-5">
+              <p>{toggleExplanationString}</p>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button className="w-full">Change Prompt</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you sure that you want to change your answers and
+                      recreate this guide?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action will cause guide recreation. All previous
+                      progress, steps will be lost.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                      <CreateGuidePromptFormButton>
+                        Continue
+                      </CreateGuidePromptFormButton>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </DialogFooter>
+          </div>
+        </FormProcessor>
       </DialogContent>
     </Dialog>
   );

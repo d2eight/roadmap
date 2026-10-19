@@ -32,8 +32,7 @@ export function AnswerQuestionsButton({
           variant={variant}
           className={className}
         >
-          {children && <span className="mr-2">{children}</span>}
-          <LucideCheck />
+          {children}
         </Button>
       </TooltipTrigger>
       <TooltipContent>Send answers</TooltipContent>
