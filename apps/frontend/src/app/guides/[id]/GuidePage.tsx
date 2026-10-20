@@ -9,19 +9,11 @@ import { GuideContext } from '@/context/GuideContext';
 import { GuidePageFooter } from '@/components/custom-ui/GuidePageFooter';
 
 export default function GuidePage() {
-  const guideContext = useContext(GuideContext);
-
   return (
-    <>
-      {guideContext ? (
-        <FormProcessor>
-          <GuidePageHeader />
-          <GuidePageContent />
-          <GuidePageFooter />
-        </FormProcessor>
-      ) : (
-        <GuideNotFound />
-      )}
-    </>
+    <FormProcessor>
+      <GuidePageHeader />
+      <GuidePageContent />
+      <GuidePageFooter />
+    </FormProcessor>
   );
 }

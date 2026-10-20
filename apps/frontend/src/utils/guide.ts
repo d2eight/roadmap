@@ -8,7 +8,7 @@ export async function getGuideNEXT({ guideId }: { guideId: string }) {
   const session = await getSession({ headers: await headers() });
 
   if (!session) {
-    return;
+    return null;
   }
 
   return getGuide({

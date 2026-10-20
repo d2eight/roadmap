@@ -1,7 +1,12 @@
 import { GuidesContextProvider } from '@/context/GuidesContext';
 import { Guides } from '@/components/custom-ui/Guides';
 import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
-import { GuideModelWithRelations, QueryKeyType } from 'shared-types';
+import {
+  GuideModelWithRelations,
+  paramsSchema,
+  QueryKeyType,
+  SearchParamsNext,
+} from 'shared-types';
 import { FormProcessor } from '@/components/wrappers/FormProcessor';
 import { getQueryClient } from '@/query/getQueryClient';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
@@ -9,30 +14,45 @@ import { ParamsContextProvider } from '@/context/ParamsContext';
 import { getGuidesNEXT } from '@/utils/guide';
 import { pageSize } from '@/constants/constants';
 import { Filter } from '@/components/custom-ui/Filter';
+import { getGuides, getSession } from 'utils';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export default async function DashboardServerPage({
   searchParams,
 }: {
-  searchParams: any;
+  searchParams: SearchParamsNext;
 }) {
+  const session = await getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect('/auth/sign-in');
+  }
+
+  const userId = session.user.id;
   const params = await searchParams;
+  const parsedParams = paramsSchema.safeParse(params);
+
+  if (!parsedParams.success) {
+    return null;
+  }
+
   const queryClient = getQueryClient();
 
-  const orderBy = params.orderBy;
-  const page = parseInt(params.page);
-  const progressStatus = params.progressStatus.split(',');
+  const orderBy = parsedParams.data.orderBy;
+  const page = parsedParams.data.page;
+  const progressStatus = parsedParams.data.progressStatus;
   const queryKey: QueryKeyType = ['guides', page, orderBy, progressStatus];
 
   await queryClient.prefetchQuery({
     queryKey,
     queryFn: () =>
-      getGuidesNEXT({
-        pageSize: pageSize,
-        params: {
-          orderBy: orderBy,
-          page: page,
-          progressStatus: progressStatus,
-        },
+      getGuides({
+        pageSize,
+        userId,
+        params: parsedParams.data,
       }),
   });
 
@@ -53,7 +73,6 @@ export default async function DashboardServerPage({
           <div className="flex flex-col gap-5 xl:gap-15">
             <ParamsContextProvider>
               <Filter />
-
               <GuidesContextProvider>
                 <Guides />
                 <GuidesPagination />

@@ -6,6 +6,11 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ParamsContext } from '@/context/ParamsContext';
 import { getGuidesNEXT } from '@/utils/guide';
 import { pageSize } from '@/constants/constants';
+import { getGuides } from 'utils';
+import { fetchGuides } from '@/utils/guideApiActions';
+import { toast } from 'sonner';
+import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import { GuidesLoader } from '@/components/custom-ui/GuidesLoader';
 
 export const GuidesContext = createContext<{
   guides: GuideModelWithRelations[];
@@ -14,17 +19,27 @@ export const GuidesContext = createContext<{
 }>(null!);
 
 export function GuidesContextProvider({ children }: { children: ReactNode }) {
-  const { parsedParams, queryKey } = useContext(ParamsContext);
+  const { searchParams, queryKey } = useContext(ParamsContext);
   const queryClient = useQueryClient();
+  const { clientHandleApiError } = useClientHandleApiError();
 
+  const requestBody: RequestInit = {
+    method: 'GET',
+  };
   const { data, isLoading } = useQuery({
     queryKey,
     queryFn: async () => {
-      const result = await getGuidesNEXT({
-        pageSize: pageSize,
-        params: parsedParams,
+      const result = await fetchGuides({
+        requestBody,
+        searchParams,
       });
-      result?.[0].forEach((guide) => {
+
+      if (result.isErr()) {
+        clientHandleApiError(result.error);
+        throw result.error;
+      }
+
+      result.value.data[0].forEach((guide) => {
         queryClient.setQueryData<GuideModelWithRelations>(
           ['guide', guide.id],
           (cachedGuide) => {
@@ -36,12 +51,16 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
           },
         );
       });
-      return result;
+      return result.value.data;
     },
   });
 
   const guides = data?.[0] || [];
   const guidesCount = data?.[1] || 0;
+
+  if (isLoading) {
+    return <GuidesLoader />;
+  }
 
   return (
     <GuidesContext

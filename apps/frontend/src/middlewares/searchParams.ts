@@ -1,4 +1,4 @@
-import { paramsSchema, paramsSchemaType } from 'shared-types';
+import { paramsSchema } from 'shared-types';
 import { NextRequest, NextResponse } from 'next/server';
 import { searchParamsDefaultValues } from 'shared-constants';
 import { searchParamsToObj } from 'utils/client';

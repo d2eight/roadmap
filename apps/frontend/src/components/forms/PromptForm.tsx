@@ -33,7 +33,6 @@ import { DialogContext } from '@/context/DialogContext';
 import { guidesPageDefaultUrlString } from 'shared-constants';
 import { Switch } from '@/components/ui/switch';
 import { ParamsContext } from '@/context/ParamsContext';
-import { serverRevalidatePath } from '@/utils/revalidatePath';
 import {
   createGuide,
   createGuideQuestions,

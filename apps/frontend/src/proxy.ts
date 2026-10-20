@@ -5,8 +5,8 @@ import verifySearchParams from '@/middlewares/searchParams';
 export default async function proxy(request: NextRequest) {
   const sessionResponse = await verifySession({ request });
 
-  if (sessionResponse) {
-    return sessionResponse;
+  if (!sessionResponse.success) {
+    return sessionResponse.redirect;
   }
 
   if (request.nextUrl.pathname.startsWith('/guides')) {
@@ -26,8 +26,9 @@ export default async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|auth|_next/static|_next/image|.*\\.png$).*)',
+    '/((?!auth|_next/static|_next/image|.*\\.png$).*)',
     '/prompting/:path*',
     '/guides/:path*',
+    '/api/guides/:path*',
   ],
 };

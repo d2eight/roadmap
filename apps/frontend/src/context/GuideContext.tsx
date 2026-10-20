@@ -1,28 +1,17 @@
 'use client';
 
-import {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import {
-  GuideContextType,
-  GuideModelWithRelations,
-  GuideStepModelFetched,
-} from 'shared-types';
+import { createContext, ReactNode, useContext, useEffect } from 'react';
+import { GuideContextType } from 'shared-types';
 import { SocketContext } from './SocketContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getGuide } from 'utils';
-import { getGuideNEXT } from '@/utils/guide';
 import { GuideStatus } from 'database/enums';
 import { toast } from 'sonner';
 import { ParamsContext } from '@/context/ParamsContext';
-import { GuideModel } from '../../../../libs/db/generated/prisma/models/Guide';
-import { GuidesContext } from '@/context/GuidesContext';
+import { GuideModel } from 'database/models';
+import { fetchGuide } from '@/utils/guideApiActions';
+import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import { GuideNotFound } from '@/components/custom-ui/GuideNotFound';
+import { GuideLoader } from '@/components/custom-ui/GuideLoader';
 
 export const GuideContext = createContext<GuideContextType>(null!);
 
@@ -37,48 +26,65 @@ export default function GuideContextProvider({
 }) {
   const queryClient = useQueryClient();
   const { queryKey } = useContext(ParamsContext);
-  const { data } = useQuery({
-    queryKey: ['guide', guideId],
-    queryFn: () =>
-      getGuideNEXT({
-        guideId: guideId,
-      }),
-    enabled: autoQueryStatus,
-  });
   const { socketGuideData } = useContext(SocketContext);
+  const { clientHandleApiError } = useClientHandleApiError();
+  const requestBody: RequestInit = {
+    method: 'GET',
+  };
+  const { data, isLoading } = useQuery({
+    queryKey: ['guide', guideId],
+    queryFn: async () => {
+      const result = await fetchGuide({
+        guideId,
+        requestBody,
+      });
+
+      if (result.isErr()) {
+        toast.error(result.error.message);
+        clientHandleApiError(result.error);
+        throw result.error;
+      }
+
+      return result.value.data;
+    },
+    enabled: autoQueryStatus,
+    retry: false,
+  });
 
   useEffect(() => {
     if (socketGuideData && data && data.id === socketGuideData.id) {
-      (async () => {
-        queryClient.setQueryData(['guide', guideId], socketGuideData);
+      queryClient.setQueryData(['guide', guideId], socketGuideData);
 
-        const currentGuidesCache =
-          queryClient.getQueryData<[GuideModel[], number]>(queryKey);
+      const currentGuidesCache =
+        queryClient.getQueryData<[GuideModel[], number]>(queryKey);
 
-        if (currentGuidesCache) {
-          const currentGuidesData = currentGuidesCache[0];
-          const currentGuidesCount = currentGuidesCache[1];
+      if (currentGuidesCache) {
+        const currentGuidesData = currentGuidesCache[0];
+        const currentGuidesCount = currentGuidesCache[1];
 
-          const newGuidesData = currentGuidesData.map((guide) => {
-            if (guide.id === data.id) {
-              return socketGuideData;
-            }
-            return guide;
-          });
+        const newGuidesData = currentGuidesData.map((guide) => {
+          if (guide.id === data.id) {
+            return socketGuideData;
+          }
+          return guide;
+        });
 
-          const newGuidesCache = [newGuidesData, currentGuidesCount];
+        const newGuidesCache = [newGuidesData, currentGuidesCount];
 
-          queryClient.setQueryData(queryKey, newGuidesCache);
-        }
-        if (socketGuideData.status === 'FAILED') {
-          toast.error('Failed to create guide');
-        }
-      })();
+        queryClient.setQueryData(queryKey, newGuidesCache);
+      }
+      if (socketGuideData.status === 'FAILED') {
+        toast.error('Failed to create guide');
+      }
     }
   }, [socketGuideData]);
 
+  if (isLoading) {
+    return <GuideLoader />;
+  }
+
   if (!data) {
-    return children;
+    return <GuideNotFound />;
   }
 
   const getCompletedSteps = () =>

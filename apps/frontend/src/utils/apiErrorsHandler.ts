@@ -17,19 +17,6 @@ import { notFound, redirect, useRouter } from 'next/navigation';
 import { z, ZodFlattenedError } from 'zod';
 import { Result } from 'better-result';
 import { useCallback } from 'react';
-// , ZodError extends ZodFlattenedError<Form> | null
-
-function clientHandleApiError(error: ApiErrors): void;
-
-function clientHandleApiError<Form extends FieldValues>(
-  error: ApiErrors<z.ZodFlattenedError<Form>>,
-  form: UseFormReturn<Form>,
-): void;
-
-function clientHandleApiError<Form extends FieldValues>(
-  error: ApiErrors<ZodFlattenedError<Form> | null>,
-  form?: UseFormReturn<Form>,
-) {}
 
 type ClientHandleApiError = {
   (error: ApiErrors): void;

@@ -19,6 +19,59 @@ import {
   UnexpectedError,
   UnprocessableEntity,
 } from 'errors';
+import { SearchParams } from 'next/dist/server/request/search-params';
+
+export async function fetchGuide({
+  guideId,
+  requestBody,
+}: {
+  guideId: string;
+  requestBody: RequestInit;
+}): Promise<Result<ApiResponseSuccess<GuideModelWithRelations>, ApiErrors>> {
+  const response = await fetch(
+    `http://localhost:4444/api/guides/${guideId}`,
+    requestBody,
+  );
+
+  const responseJson = await response.json();
+  const responseStatusCode = response.status;
+
+  if (responseJson.success) {
+    return Result.ok(responseJson);
+  }
+
+  return handleApiError({
+    responseJson,
+    responseStatusCode,
+  });
+}
+
+export async function fetchGuides({
+  requestBody,
+  searchParams,
+}: {
+  requestBody: RequestInit;
+  searchParams: URLSearchParams;
+}): Promise<
+  Result<ApiResponseSuccess<[GuideModelWithRelations[], number]>, ApiErrors>
+> {
+  const response = await fetch(
+    `http://localhost:4444/api/guides?${searchParams}`,
+    requestBody,
+  );
+
+  const responseJson = await response.json();
+  const responseStatusCode = response.status;
+
+  if (responseJson.success) {
+    return Result.ok(responseJson);
+  }
+
+  return handleApiError({
+    responseJson,
+    responseStatusCode,
+  });
+}
 
 export async function createGuide(
   requestBody: RequestInit,

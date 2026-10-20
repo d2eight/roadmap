@@ -1,10 +1,5 @@
 import { Session, User } from 'better-auth';
-import {
-  answeredQuestionsSchemaType,
-  filterSchemaType,
-  paramsSchemaType,
-  promptSchemaType,
-} from './shared-zod-types';
+import { filterSchemaType, paramsSchemaType } from './shared-zod-types';
 import { Dispatch, JSX, SetStateAction } from 'react';
 import { BetterFetchError } from '@better-fetch/fetch';
 import { Socket } from 'socket.io-client';
@@ -12,7 +7,6 @@ import { Prisma } from 'database';
 import { ApiError } from './shared-classes';
 
 import { GuideStatus } from 'database/enums';
-import { z } from 'zod';
 import {
   NotFoundError,
   UnauthorizedError,
@@ -20,6 +14,7 @@ import {
   UnprocessableEntity,
 } from 'errors';
 import { JsonValue } from '@prisma/client/runtime/client';
+import { NextResponse } from 'next/server';
 
 export type BetterAuthSession = {
   session: Session;
@@ -161,3 +156,23 @@ export type ScrollInfo = {
   onTop: boolean;
   scrollY: number;
 };
+
+export type RouteIdParams = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+export type VerifySessionResponse =
+  | {
+      success: true;
+      data: NonNullable<BetterAuthSession>;
+    }
+  | {
+      success: false;
+      redirect: NextResponse;
+    };
+
+export type SearchParamsNext = Promise<{
+  [key: string]: string | string[] | undefined;
+}>;

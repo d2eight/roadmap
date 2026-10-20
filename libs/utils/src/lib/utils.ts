@@ -1,9 +1,6 @@
-'use server';
-
-import { Prisma, prisma } from 'database';
+import { prisma } from 'database';
 import { paramsSchemaType } from 'shared-types';
 import { auth } from 'auth';
-import { NextRequest } from 'next/server';
 import { getGuideStepProperties } from 'shared-constants';
 
 export async function getSession({ headers }: { headers: Headers }) {

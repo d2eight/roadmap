@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, ReactNode } from 'react';
+import { createContext, ReactNode, useCallback, useMemo } from 'react';
 import {
   ReadonlyURLSearchParams,
   usePathname,
@@ -10,6 +10,7 @@ import {
 import { paramsSchema, paramsSchemaType, QueryKeyType } from 'shared-types';
 import { searchParamsDefaultValues } from 'shared-constants';
 import { getDefaultSearchParams } from '@/utils/getDefaultSearchParams';
+import { searchParamsToObj } from 'utils/client';
 
 export const ParamsContext = createContext<{
   searchParams: ReadonlyURLSearchParams;
@@ -18,49 +19,22 @@ export const ParamsContext = createContext<{
   resetParams: () => void;
 }>(null!);
 
+function getParsedParams(searchParams: URLSearchParams): paramsSchemaType {
+  const result = paramsSchema.safeParse(searchParamsToObj(searchParams));
+
+  if (!result.success) {
+    return searchParamsDefaultValues;
+  }
+
+  return result.data;
+}
+
 export function ParamsContextProvider({ children }: { children: ReactNode }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const pageParsed = paramsSchema.shape.page.safeParse(
-    searchParams.get('page'),
-  );
-
-  const progressStatusParsed = paramsSchema.shape.progressStatus.safeParse(
-    searchParams.get('progressStatus'),
-  );
-
-  const orderByParsed = paramsSchema.shape.orderBy.safeParse(
-    searchParams.get('orderBy'),
-  );
-
-  const page = pageParsed.success
-    ? pageParsed.data
-    : searchParamsDefaultValues.page;
-
-  const orderBy = orderByParsed.success
-    ? orderByParsed.data
-    : searchParamsDefaultValues.orderBy;
-
-  const progressStatus = progressStatusParsed.success
-    ? progressStatusParsed.data
-    : searchParamsDefaultValues.progressStatus;
-
-  const parsedParams: paramsSchemaType = {
-    page: page,
-    orderBy: orderBy,
-    progressStatus: progressStatus,
-  };
-
-  const queryKey: QueryKeyType = [
-    'guides',
-    parsedParams.page,
-    parsedParams.orderBy,
-    parsedParams.progressStatus,
-  ];
-
-  const resetParams = () => {
+  const resetParams = useCallback(() => {
     const defaultParams = getDefaultSearchParams({
       searchParams,
     });
@@ -71,7 +45,19 @@ export function ParamsContextProvider({ children }: { children: ReactNode }) {
     if (isNotDefaultSearchParams) {
       return router.replace(`${pathname}?${defaultParams}`);
     }
-  };
+  }, [searchParams, router, pathname]);
+
+  const parsedParams = useMemo(
+    () => getParsedParams(searchParams),
+    [searchParams],
+  );
+
+  const queryKey: QueryKeyType = [
+    'guides',
+    parsedParams.page,
+    parsedParams.orderBy,
+    parsedParams.progressStatus,
+  ];
 
   return (
     <ParamsContext

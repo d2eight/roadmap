@@ -1,19 +1,25 @@
-import { headers } from 'next/headers';
-import { auth } from 'auth';
-import { redirect } from 'next/navigation';
-import { BetterAuthSession } from 'shared-types';
+import { BetterAuthSession, VerifySessionResponse } from 'shared-types';
 import { NextRequest, NextResponse } from 'next/server';
+import { getSession } from 'utils';
 
 export default async function verifySession({
   request,
 }: {
   request: NextRequest;
-}) {
-  const session: BetterAuthSession = await auth.api.getSession({
-    headers: await headers(),
+}): Promise<VerifySessionResponse> {
+  const session: BetterAuthSession = await getSession({
+    headers: request.headers,
   });
 
   if (!session) {
-    return NextResponse.redirect(new URL('/auth/sign-in', request.url));
+    return {
+      success: false,
+      redirect: NextResponse.redirect(new URL('/auth/sign-in', request.url)),
+    };
   }
+
+  return {
+    success: true,
+    data: session,
+  };
 }
