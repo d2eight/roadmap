@@ -18,22 +18,21 @@ import { z, ZodFlattenedError } from 'zod';
 import { Result } from 'better-result';
 import { useCallback } from 'react';
 
-type ClientHandleApiError = {
-  (error: ApiErrors): void;
-  <Form extends FieldValues>(
-    error: ApiErrors<ZodFlattenedError<Form> | null>,
-    form?: UseFormReturn<Form>,
-  ): void;
+type ClientHandleApiErrorParams<Form extends FieldValues> = {
+  error: ApiErrors<ZodFlattenedError<Form> | null>;
+  form?: UseFormReturn<Form>;
+  redirect?: boolean;
 };
 
 export function useClientHandleApiError() {
   const router = useRouter();
 
-  const clientHandleApiError = useCallback<ClientHandleApiError>(
-    <Form extends FieldValues>(
-      error: ApiErrors<ZodFlattenedError<Form> | null>,
-      form?: UseFormReturn<Form>,
-    ) => {
+  const clientHandleApiError = useCallback(
+    <Form extends FieldValues>({
+      error,
+      form,
+      redirect = true,
+    }: ClientHandleApiErrorParams<Form>) => {
       const errorMessage = error.message
         ? error.message
         : 'Something went wrong';
@@ -57,7 +56,7 @@ export function useClientHandleApiError() {
             message: errorMessage,
           });
         }
-      } else if (error instanceof NotFoundError) {
+      } else if (error instanceof NotFoundError && redirect) {
         router.replace('/404');
       }
 

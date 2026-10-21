@@ -46,7 +46,9 @@ export function DeleteGuideButton() {
       toast.success('You have successfully deleted guide!');
     },
     onError: (error) => {
-      clientHandleApiError(error);
+      clientHandleApiError({
+        error,
+      });
     },
   });
 

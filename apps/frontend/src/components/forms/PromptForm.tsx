@@ -118,7 +118,10 @@ export function PromptForm({
     },
     onError: (error) => {
       setProcessingStatus(false);
-      clientHandleApiError<promptSchemaType>(error, form);
+      clientHandleApiError({
+        error,
+        form,
+      });
     },
   });
 
@@ -141,7 +144,10 @@ export function PromptForm({
     },
     onError: (error) => {
       setProcessingStatus(false);
-      clientHandleApiError<promptSchemaType>(error, form);
+      clientHandleApiError({
+        error,
+        form,
+      });
     },
   });
 

@@ -61,7 +61,10 @@ export function GuideForm() {
     },
     onError: (error) => {
       setProcessingStatus(false);
-      clientHandleApiError<guideStepsSchemaType>(error, form);
+      clientHandleApiError({
+        error,
+        form,
+      });
     },
   });
 

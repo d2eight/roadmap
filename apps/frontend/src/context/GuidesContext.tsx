@@ -35,7 +35,9 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
       });
 
       if (result.isErr()) {
-        clientHandleApiError(result.error);
+        clientHandleApiError({
+          error: result.error,
+        });
         throw result.error;
       }
 

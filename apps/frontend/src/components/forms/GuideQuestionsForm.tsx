@@ -113,7 +113,10 @@ export default function GuideQuestionsForm() {
     },
     onError: (error) => {
       setProcessingStatus(false);
-      clientHandleApiError<guideQuestionsSchemaType>(error, form);
+      clientHandleApiError({
+        error,
+        form,
+      });
     },
   });
 
@@ -132,7 +135,10 @@ export default function GuideQuestionsForm() {
     },
     onError: (error) => {
       setProcessingStatus(false);
-      clientHandleApiError<guideQuestionsSchemaType>(error, form);
+      clientHandleApiError({
+        error,
+        form,
+      });
     },
   });
 

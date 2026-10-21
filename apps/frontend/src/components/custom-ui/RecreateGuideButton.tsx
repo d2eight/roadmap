@@ -44,7 +44,9 @@ export function RecreateGuideButton({
       toast.success('You have successfully initiated guide recreation!');
     },
     onError: (error) => {
-      clientHandleApiError(error);
+      clientHandleApiError({
+        error,
+      });
     },
   });
 

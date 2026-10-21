@@ -40,8 +40,10 @@ export default function GuideContextProvider({
       });
 
       if (result.isErr()) {
-        toast.error(result.error.message);
-        clientHandleApiError(result.error);
+        clientHandleApiError({
+          error: result.error,
+          redirect: false,
+        });
         throw result.error;
       }
 

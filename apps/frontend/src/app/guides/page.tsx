@@ -11,7 +11,6 @@ import { FormProcessor } from '@/components/wrappers/FormProcessor';
 import { getQueryClient } from '@/query/getQueryClient';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { ParamsContextProvider } from '@/context/ParamsContext';
-import { getGuidesNEXT } from '@/utils/guide';
 import { pageSize } from '@/constants/constants';
 import { Filter } from '@/components/custom-ui/Filter';
 import { getGuides, getSession } from 'utils';
