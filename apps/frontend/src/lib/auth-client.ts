@@ -1,6 +1,8 @@
-import { createAuthClient, ReactAuthClient } from 'better-auth/react';
+import { createAuthClient } from 'better-auth/react';
+import { clientEnv } from 'env/client';
+
 export const authClient = createAuthClient({
-  baseURL: 'http://localhost:3333',
+  baseURL: clientEnv.BETTER_AUTH_URL,
   fetchOptions: {
     credentials: 'include',
   },

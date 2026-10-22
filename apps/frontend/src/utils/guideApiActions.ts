@@ -13,13 +13,7 @@ import {
   promptSchemaType,
 } from 'shared-types';
 import { handleApiError } from '@/utils/apiErrorsHandler';
-import {
-  NotFoundError,
-  UnauthorizedError,
-  UnexpectedError,
-  UnprocessableEntity,
-} from 'errors';
-import { SearchParams } from 'next/dist/server/request/search-params';
+import { clientEnv } from 'env/client';
 
 export async function fetchGuide({
   guideId,
@@ -29,7 +23,7 @@ export async function fetchGuide({
   requestBody: RequestInit;
 }): Promise<Result<ApiResponseSuccess<GuideModelWithRelations>, ApiErrors>> {
   const response = await fetch(
-    `http://localhost:4444/api/guides/${guideId}`,
+    `${clientEnv.NEXT_URL}/api/guides/${guideId}`,
     requestBody,
   );
 
@@ -56,7 +50,7 @@ export async function fetchGuides({
   Result<ApiResponseSuccess<[GuideModelWithRelations[], number]>, ApiErrors>
 > {
   const response = await fetch(
-    `http://localhost:4444/api/guides?${searchParams}`,
+    `${clientEnv.NEXT_URL}/api/guides?${searchParams}`,
     requestBody,
   );
 
@@ -77,7 +71,7 @@ export async function createGuide(
   requestBody: RequestInit,
 ): Promise<Result<ApiResponseSuccess<string>, ApiErrors<PromptFormErrors>>> {
   const response = await fetch(
-    'http://localhost:3333/api/create-guide',
+    `${clientEnv.EXPRESS_URL}/api/create-guide`,
     requestBody,
   );
 
@@ -99,7 +93,7 @@ export async function createGuideQuestions(
   requestBody: RequestInit,
 ): Promise<Result<ApiResponseSuccess<string>, ApiErrors<PromptFormErrors>>> {
   const response = await fetch(
-    'http://localhost:3333/api/create-guide-questions',
+    `${clientEnv.EXPRESS_URL}/api/create-guide-questions`,
     requestBody,
   );
 
@@ -122,7 +116,7 @@ export async function createGuideWithAnsweredQuestions(
   requestBody: RequestInit,
 ): Promise<Result<ApiResponseSuccess, ApiErrors<GuideQuestionFormErrors>>> {
   const response = await fetch(
-    `http://localhost:3333/api/create-guide-with-answered-questions/${guideId}`,
+    `${clientEnv.EXPRESS_URL}/api/create-guide-with-answered-questions/${guideId}`,
     requestBody,
   );
 
@@ -150,7 +144,7 @@ export async function updateGuideProgress(
   >
 > {
   const response = await fetch(
-    `http://localhost:3333/api/update-guide-progress/${guideId}`,
+    `${clientEnv.EXPRESS_URL}/api/update-guide-progress/${guideId}`,
     requestBody,
   );
 
@@ -175,7 +169,7 @@ export async function deleteGuide(
   requestBody: RequestInit,
 ): Promise<Result<null, ApiErrors>> {
   const response = await fetch(
-    `http://localhost:3333/api/remove-guide/${guideId}`,
+    `${clientEnv.EXPRESS_URL}/api/remove-guide/${guideId}`,
     requestBody,
   );
 
@@ -198,7 +192,7 @@ export async function simpleRecreateGuide(
   requestBody: RequestInit,
 ) {
   const response = await fetch(
-    `http://localhost:3333/api/simple-recreate-guide/${guideId}`,
+    `${clientEnv.EXPRESS_URL}/api/simple-recreate-guide/${guideId}`,
     requestBody,
   );
 
@@ -218,7 +212,7 @@ export async function simpleRecreateGuide(
 
 export async function recreateGuide(guideId: string, requestBody: RequestInit) {
   const response = await fetch(
-    `http://localhost:3333/api/recreate-guide/${guideId}`,
+    `${clientEnv.EXPRESS_URL}/api/recreate-guide/${guideId}`,
     requestBody,
   );
 
@@ -241,7 +235,7 @@ export async function recreateGuideQuestions(
   requestBody: RequestInit,
 ) {
   const response = await fetch(
-    `http://localhost:3333/api/recreate-guide-questions/${guideId}`,
+    `${clientEnv.EXPRESS_URL}/api/recreate-guide-questions/${guideId}`,
     requestBody,
   );
 
@@ -264,7 +258,7 @@ export async function recreateGuideWithAnsweredQuestions(
   requestBody: RequestInit,
 ): Promise<Result<ApiResponseSuccess, ApiErrors<GuideQuestionFormErrors>>> {
   const response = await fetch(
-    `http://localhost:3333/api/recreate-guide-with-answered-questions/${guideId}`,
+    `${clientEnv.EXPRESS_URL}/api/recreate-guide-with-answered-questions/${guideId}`,
     requestBody,
   );
 

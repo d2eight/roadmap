@@ -1,14 +1,14 @@
 import { Server } from 'socket.io';
-import { server } from '@/apps/backend/src/main';
 import { auth } from 'auth';
 import { fromNodeHeaders } from 'better-auth/node';
+import { env } from 'env';
 
 let io = null;
 
 export const initSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: 'http://localhost:4444',
+      origin: env.NEXT_URL,
       credentials: true,
     },
   });

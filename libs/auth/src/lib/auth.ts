@@ -1,8 +1,8 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { prisma } from 'database';
+import { env } from 'env';
 
-const smth = '../';
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
@@ -10,8 +10,8 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  baseURL: 'http://localhost:3333',
-  trustedOrigins: ['http://localhost:4444'],
+  baseURL: env.EXPRESS_URL,
+  trustedOrigins: [env.NEXT_URL],
   session: {
     cookieCache: {
       enabled: true,

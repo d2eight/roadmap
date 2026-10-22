@@ -13,6 +13,7 @@ import {
 import { io, Socket } from 'socket.io-client';
 import { GuideModelWithRelations } from 'shared-types';
 import { GuidesContext } from './GuidesContext';
+import { clientEnv } from 'env/client';
 
 export const SocketContext = createContext<{
   socketGuideData: GuideModelWithRelations;
@@ -27,7 +28,7 @@ export const SocketContextProvider = ({
     useState<GuideModelWithRelations>(null!);
 
   useEffect(() => {
-    const socket = io('http://localhost:3333', {
+    const socket = io(clientEnv.EXPRESS_URL, {
       withCredentials: true,
     });
 

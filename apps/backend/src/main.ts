@@ -8,6 +8,7 @@ import { Queue } from 'bullmq';
 import initWorkers from './workers/workers';
 import { createServer } from 'node:http';
 import { getIO, initSocket } from './socket';
+import { env } from 'env';
 
 export const app = express();
 export const server = createServer(app);
@@ -21,7 +22,7 @@ export const guideQuestionsGenerationQueue = new Queue(
 
 app.use(
   cors({
-    origin: 'http://localhost:4444',
+    origin: env.NEXT_URL,
     credentials: true,
   }),
 );
@@ -31,7 +32,7 @@ app.all('/api/auth/*any', toNodeHandler(auth));
 
 app.use(guidesRouter);
 
-const port = process.env.PORT || 3333;
+const port = 3333;
 
 server.listen(port, () => {
   initWorkers();

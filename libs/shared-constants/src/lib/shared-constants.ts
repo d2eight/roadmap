@@ -1,5 +1,5 @@
 import { paramsSchemaType } from 'shared-types';
-import { Prisma, prisma } from 'database';
+import { Prisma } from 'database';
 
 export const searchParamsDefaultValues: paramsSchemaType = {
   orderBy: 'createdAt',

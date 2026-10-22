@@ -25,7 +25,9 @@
       "utils": ["./libs/utils/src/index.ts"],
       "utils/client": ["./libs/utils/src/index-client.ts"],
       "shared-constants": ["./libs/shared-constants/src/index.ts"],
-      "errors": ["./libs/errors/src/index.ts"]
+      "errors": ["./libs/errors/src/index.ts"],
+      "env": ["./libs/env/src/index.ts"],
+      "env/client": ["./libs/env/src/index-client.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
