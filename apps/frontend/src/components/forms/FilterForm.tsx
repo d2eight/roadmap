@@ -25,7 +25,7 @@ import {
 import { FilterProgressGroup } from '@/components/custom-ui/FilterProgressGroup';
 import { searchParamsDefaultValues } from 'shared-constants';
 import { usePathname, useRouter } from 'next/navigation';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
 import { ParamsContext } from '@/context/ParamsContext';
 
@@ -35,15 +35,22 @@ export function FilterForm() {
   const router = useRouter();
   const pathname = usePathname();
 
+  const progressStatus = useMemo(() => {
+    if (parsedParams.progressStatus.length === 4) {
+      return [];
+    }
+
+    return parsedParams.progressStatus;
+  }, [parsedParams.progressStatus]);
+
   const defaultValues: filterSchemaType = {
     orderBy: parsedParams.orderBy,
-    progressStatus: parsedParams.progressStatus,
+    progressStatus: progressStatus,
   };
 
   const form = useForm<filterSchemaType>({
     resolver: zodResolver(filterSchema),
     defaultValues: defaultValues,
-    shouldUnregister: false,
   });
 
   const orderByOptions: OrderByOptions = [
@@ -59,7 +66,9 @@ export function FilterForm() {
 
   function onSubmit(data: filterSchemaType) {
     const newOrderBy = data.orderBy;
-    const newProgressStatus = data.progressStatus;
+    const newProgressStatus = data.progressStatus.length
+      ? data.progressStatus
+      : searchParamsDefaultValues.progressStatus;
 
     if (
       parsedParams.orderBy === newOrderBy &&

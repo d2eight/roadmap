@@ -30,7 +30,7 @@ export function GuideCardFooter() {
       return (
         <CardFooter>
           <Button className="w-full" variant="secondary" asChild>
-            <Link href={`/guides/${guide.id}?${searchParams}`}>
+            <Link href={`/guides/${guide.id}`}>
               Generating a guide
               <Spinner />
             </Link>
@@ -41,7 +41,7 @@ export function GuideCardFooter() {
       return (
         <CardFooter>
           <Button className="w-full" variant="secondary" asChild>
-            <Link href={`/guides/${guide.id}?${searchParams}`}>
+            <Link href={`/guides/${guide.id}`}>
               Generating questions
               <Spinner />
             </Link>
@@ -52,7 +52,7 @@ export function GuideCardFooter() {
       return (
         <CardFooter>
           <Button className="w-full" variant="outline" asChild>
-            <Link href={`/guides/${guide.id}?${searchParams}`}>
+            <Link href={`/guides/${guide.id}`}>
               Open questions
               <ArrowRight />
             </Link>
@@ -63,7 +63,7 @@ export function GuideCardFooter() {
       return (
         <CardFooter>
           <Button className="w-full" asChild>
-            <Link href={`/guides/${guide.id}?${searchParams}`}>
+            <Link href={`/guides/${guide.id}`}>
               Open guide
               <ArrowRight />
             </Link>

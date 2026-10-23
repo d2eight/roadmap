@@ -118,7 +118,7 @@ export function SignInForm() {
                       <Input
                         {...field}
                         id={field.name}
-                        type="text"
+                        type="password"
                         aria-invalid={fieldState.invalid}
                         placeholder="*****"
                       />

@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "generatorVersion": "unknown",
-  "generatedAt": "2026-10-09T21:37:08.544Z",
+  "generatedAt": "2026-10-23T19:35:09.069Z",
   "outputPath": "/home/d2eight/programming/roadmap/libs/db/prisma/generated",
   "files": [
     "schemas/enums/TransactionIsolationLevel.schema.ts",

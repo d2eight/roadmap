@@ -198,6 +198,10 @@ export async function initiateAiQuestionsGeneration({
 function defineGuideProgressStatus(
   steps: GuideStepModel[],
 ): GuideProgressStatus {
+  if (isGuideRejected(steps)) {
+    return 'REJECTED';
+  }
+
   if (isGuideDone(steps)) {
     return 'DONE';
   }
@@ -210,13 +214,20 @@ function defineGuideProgressStatus(
 }
 
 const isGuideDone = (steps: GuideStepModel[]): boolean => {
-  return steps.every((step) => step.status === 'DONE');
+  const stepsWithoutRejected = steps.filter(
+    (step) => step.status !== 'REJECTED',
+  );
+  return stepsWithoutRejected.every((step) => step.status === 'DONE');
 };
 
 const isGuideInWork = (steps: GuideStepModel[]): boolean => {
   return steps.some(
     (step) => step.status === 'DONE' || step.status === 'INWORK',
   );
+};
+
+const isGuideRejected = (steps: GuideStepModel[]): boolean => {
+  return steps.every((step) => step.status === 'REJECTED');
 };
 
 export async function updateGuide({

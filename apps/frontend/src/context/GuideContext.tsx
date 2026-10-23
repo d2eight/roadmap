@@ -97,10 +97,16 @@ export default function GuideContextProvider({
       return acc;
     }, 0);
 
+  const getStepsCount = () => {
+    const involvedSteps = data.steps.filter(
+      (step) => step.status !== 'REJECTED',
+    );
+
+    return involvedSteps.length;
+  };
+
   const getQuestionsCount = () =>
-    data.questions
-      ? Object.keys(JSON.parse(data.questions as string)).length
-      : 0;
+    data.questions ? Object.keys(data.questions).length : 0;
 
   let context: GuideContextType;
 
@@ -117,6 +123,7 @@ export default function GuideContextProvider({
         guide: data,
         status: data.status,
         completedSteps: getCompletedSteps(),
+        stepsCount: getStepsCount(),
       };
       break;
     default:

@@ -19,7 +19,9 @@ export async function Header() {
             <Link href="/guides">Dashboard</Link>
           </Button>
         </div>
-        <div className="flex items-center gap-2">{/*<AuthButtons />*/}</div>
+        <div className="flex items-center gap-2">
+          <AuthButtons />
+        </div>
       </div>
     </header>
   );

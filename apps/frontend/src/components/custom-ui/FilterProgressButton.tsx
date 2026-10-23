@@ -10,25 +10,6 @@ export function FilterProgressButton({
   status: GuideProgressStatus;
   isActive: boolean;
 }) {
-  // switch (status) {
-  //   case 'PENDING':
-  //     return (
-  //
-  //     );
-  //   case 'INWORK':
-  //     return (
-  //       <ToggleGroupItem value={status}>
-  //         <GuideProgressBadge progressStatus={status} />
-  //       </ToggleGroupItem>
-  //     );
-  //   case 'DONE':
-  //     return (
-  //       <ToggleGroupItem value={status}>
-  //         <GuideProgressBadge progressStatus={status} />
-  //       </ToggleGroupItem>
-  //     );
-  // }
-
   return (
     <ToggleGroupItem
       className="hover:bg-transparent bg-transparent! p-0"

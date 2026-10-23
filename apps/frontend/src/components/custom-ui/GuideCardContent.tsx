@@ -13,7 +13,7 @@ import { QuestionsCount } from '@/components/custom-ui/QuestionsCount';
 import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
 
 export function GuideCardContent() {
-  const { guide, status, questionsCount, completedSteps } =
+  const { guide, status, questionsCount, completedSteps, stepsCount } =
     useContext(GuideContext);
 
   switch (status) {
@@ -41,7 +41,7 @@ export function GuideCardContent() {
           <div className="flex items-center justify-between gap-2">
             <GuideProgressBadge progressStatus={guide.progressStatus} />
             <CompletedSteps
-              guideLength={guide.steps.length}
+              stepsCount={stepsCount}
               completedSteps={completedSteps}
             />
             <GuideDate guideDate={guide.createdAt} />

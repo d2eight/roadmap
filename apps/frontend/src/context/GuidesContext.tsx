@@ -4,11 +4,7 @@ import { createContext, ReactNode, useContext, useEffect } from 'react';
 import { GuideModelWithRelations, QueryKeyType } from 'shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ParamsContext } from '@/context/ParamsContext';
-import { getGuidesNEXT } from '@/utils/guide';
-import { pageSize } from '@/constants/constants';
-import { getGuides } from 'utils';
 import { fetchGuides } from '@/utils/guideApiActions';
-import { toast } from 'sonner';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
 import { GuidesLoader } from '@/components/custom-ui/GuidesLoader';
 

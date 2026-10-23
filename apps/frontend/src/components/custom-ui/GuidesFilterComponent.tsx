@@ -9,8 +9,6 @@ import { FilterForm } from '@/components/forms/FilterForm';
 import { ApplyFiltersButton } from '@/components/custom-ui/ApplyFiltersButton';
 import { DialogContextProvider } from '@/context/DialogContext';
 import { CreateGuideButton } from '@/components/custom-ui/CreateGuideButton';
-import { useWindowWidth } from '@/utils/useWindowWidth';
-import { DialogClose } from '@/components/ui/dialog';
 
 export function GuidesFilterComponent() {
   return (

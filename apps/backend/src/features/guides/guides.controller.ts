@@ -182,7 +182,7 @@ export async function simpleRecreateGuide(
       }),
     ]);
 
-    guidesService.initiateAiStepsGeneration({
+    await guidesService.initiateAiStepsGeneration({
       guideId,
       userId,
     });
@@ -214,7 +214,7 @@ export async function recreateGuide(
   }
 
   try {
-    prisma.$transaction([
+    await prisma.$transaction([
       guidesService.resetGuideStatus({
         guideId,
         userId,
@@ -265,7 +265,7 @@ export async function recreateGuideQuestions(
   }
 
   try {
-    prisma.$transaction([
+    await prisma.$transaction([
       guidesService.resetGuideStatus({
         guideId,
         userId,
@@ -311,7 +311,7 @@ export async function recreateGuideWithAnsweredQuestions(
   const guideId: string = req.params.guideId as string;
 
   try {
-    prisma.$transaction([
+    await prisma.$transaction([
       guidesService.resetGuideStatus({
         guideId,
         userId,

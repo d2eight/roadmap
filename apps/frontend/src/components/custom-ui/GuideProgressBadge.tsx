@@ -49,6 +49,16 @@ export function GuideProgressBadge({
         </Badge>
       );
       break;
+    case 'REJECTED':
+      guideBadge = (
+        <Badge
+          className={`${className} bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300`}
+        >
+          {progressStatus}
+          {children && <div>{children}</div>}
+        </Badge>
+      );
+      break;
     default:
       guideBadge = (
         <Badge variant="destructive">

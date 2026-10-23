@@ -3,7 +3,7 @@ import { Prisma } from 'database';
 
 export const searchParamsDefaultValues: paramsSchemaType = {
   orderBy: 'createdAt',
-  progressStatus: ['PENDING', 'INWORK', 'DONE'],
+  progressStatus: ['PENDING', 'INWORK', 'DONE', 'REJECTED'],
   page: 1,
 };
 

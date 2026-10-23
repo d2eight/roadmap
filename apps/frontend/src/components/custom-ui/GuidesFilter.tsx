@@ -3,8 +3,7 @@
 import { GuidesFilterComponent } from '@/components/custom-ui/GuidesFilterComponent';
 import { ResetFiltersButton } from '@/components/custom-ui/ResetFiltersButton';
 import { OpenFiltersButton } from '@/components/custom-ui/OpenFiltersButton';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
+import { useEffect, useRef, useState } from 'react';
 import { DialogContextProvider } from '@/context/DialogContext';
 import { CreateGuideButton } from '@/components/custom-ui/CreateGuideButton';
 import { useWindowWidth } from '@/utils/useWindowWidth';

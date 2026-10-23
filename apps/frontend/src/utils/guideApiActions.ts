@@ -256,19 +256,20 @@ export async function recreateGuideQuestions(
 export async function recreateGuideWithAnsweredQuestions(
   guideId: string,
   requestBody: RequestInit,
-): Promise<Result<ApiResponseSuccess, ApiErrors<GuideQuestionFormErrors>>> {
+): Promise<Result<null, ApiErrors<GuideQuestionFormErrors>>> {
   const response = await fetch(
     `${clientEnv.EXPRESS_URL}/api/recreate-guide-with-answered-questions/${guideId}`,
     requestBody,
   );
 
-  const responseJson: ApiResponse<null, GuideQuestionFormErrors> =
-    await response.json();
   const responseStatusCode = response.status;
 
-  if (responseJson.success) {
-    return Result.ok(responseJson);
+  if (responseStatusCode === 204) {
+    return Result.ok(null);
   }
+
+  const responseJson: ApiResponseError<GuideQuestionFormErrors> =
+    await response.json();
 
   return handleApiError({
     responseJson,

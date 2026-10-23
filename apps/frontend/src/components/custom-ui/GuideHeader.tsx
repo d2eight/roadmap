@@ -38,43 +38,49 @@ import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
 import { UpdateProgressButton } from '@/components/custom-ui/UpdateProgressButton';
 
 export function GuideHeader() {
-  const { guide, completedSteps } = useContext(GuideContext);
+  const { guide, completedSteps, stepsCount, status } =
+    useContext(GuideContext);
 
   return (
-    <>
-      <CardHeader className="xl:px-0">
-        <CardTitle className="flex flex-row justify-between items-center ">
-          <h1>{guide.title}</h1>
-        </CardTitle>
-        <CardAction className="flex items-center gap-2">
-          <UpdateProgressButton variant="outline" className="hidden xl:flex" />
-          <DeleteGuideButton />
-          <RecreateGuideMenu />
-        </CardAction>
-      </CardHeader>
-      <CardContent className="xl:px-0 flex flex-row items-center gap-[10px]">
-        <CompletedSteps
-          guideLength={guide.steps.length}
-          completedSteps={completedSteps!}
-        />
-        <GuideDate guideDate={guide.createdAt} />
-      </CardContent>
-      <CardFooter className="xl:px-0">
-        <Accordion
-          className="border-none rounded-none"
-          type="multiple"
-          defaultValue={[]}
-        >
-          <AccordionItem className="data-open:bg-transparent" value="item-1">
-            <AccordionTrigger className="p-0 justify-center items-center **:data-[slot=accordion-trigger-icon]:ml-[0]! gap-[10px]">
-              <p>See description</p>
-            </AccordionTrigger>
-            <AccordionContent className="pt-[20px] pb-[0]">
-              {guide.description}
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </CardFooter>
-    </>
+    status === 'GUIDE_GENERATED' && (
+      <>
+        <CardHeader className="xl:px-0">
+          <CardTitle className="flex flex-row justify-between items-center ">
+            <h1>{guide.title}</h1>
+          </CardTitle>
+          <CardAction className="flex items-center gap-2">
+            <UpdateProgressButton
+              variant="outline"
+              className="hidden xl:flex"
+            />
+            <DeleteGuideButton />
+            <RecreateGuideMenu />
+          </CardAction>
+        </CardHeader>
+        <CardContent className="xl:px-0 flex flex-row items-center gap-[10px]">
+          <CompletedSteps
+            stepsCount={stepsCount}
+            completedSteps={completedSteps}
+          />
+          <GuideDate guideDate={guide.createdAt} />
+        </CardContent>
+        <CardFooter className="xl:px-0">
+          <Accordion
+            className="border-none rounded-none"
+            type="multiple"
+            defaultValue={[]}
+          >
+            <AccordionItem className="data-open:bg-transparent" value="item-1">
+              <AccordionTrigger className="p-0 justify-center items-center **:data-[slot=accordion-trigger-icon]:ml-[0]! gap-[10px]">
+                <p>See description</p>
+              </AccordionTrigger>
+              <AccordionContent className="pt-[20px] pb-[0]">
+                {guide.description}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </CardFooter>
+      </>
+    )
   );
 }

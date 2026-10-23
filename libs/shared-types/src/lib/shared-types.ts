@@ -69,14 +69,16 @@ export type GuideContextType =
   | {
       guide: GuideModelWithRelations;
       status: typeof GuideStatus.QUESTIONS_GENERATED;
-      completedSteps?: number;
+      completedSteps?: never;
       questionsCount: number;
+      stepsCount?: never;
     }
   | {
       guide: GuideModelWithRelations;
       status: typeof GuideStatus.GUIDE_GENERATED;
       completedSteps: number;
       questionsCount?: never;
+      stepsCount: number;
     }
   | {
       guide: GuideModelWithRelations;
@@ -87,6 +89,7 @@ export type GuideContextType =
       >;
       completedSteps?: never;
       questionsCount?: never;
+      stepsCount?: never;
     };
 
 export type SocketContextType = {
