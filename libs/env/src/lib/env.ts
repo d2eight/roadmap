@@ -11,6 +11,8 @@ const environmentSchema = z.object({
   REDIS_PASSWORD: z.string(),
   REDIS_USER: z.string(),
   REDIS_USER_PASSWORD: z.string(),
+  REDIS_HOST: z.string(),
+  REDIS_PORT: z.coerce.number(),
   NEXT_URL: z.string(),
   EXPRESS_URL: z.string(),
   BETTER_AUTH_SECRET: z.string(),

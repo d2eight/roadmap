@@ -5,6 +5,7 @@ import { aiCreateGuide } from './workersFunctions/aiCreateGuide';
 import { getGuide } from 'utils';
 import { setGuideFailure } from '../features/guides/guides.service';
 import { getIO } from '../socket';
+import { redisConnectionConfig } from '../redis';
 
 async function handleGuideJobFailure(
   job: Job<GuideJob> | undefined,
@@ -31,13 +32,6 @@ async function handleGuideJobFailure(
 }
 
 export default function initWorkers() {
-  const connection = {
-    host: 'localhost',
-    port: 6379,
-    maxRetriesPerRequest: null,
-    enableReadyCheck: false,
-  };
-
   const guideGenerationWorker = new Worker(
     'guideGenerationQueue',
     async (job: Job<GuideJob>) => {
@@ -53,7 +47,7 @@ export default function initWorkers() {
       await aiCreateGuide(guide);
     },
     {
-      connection,
+      connection: redisConnectionConfig,
     },
   );
 
@@ -72,7 +66,7 @@ export default function initWorkers() {
       await aiCreateGuideQuestions(guide);
     },
     {
-      connection,
+      connection: redisConnectionConfig,
     },
   );
 

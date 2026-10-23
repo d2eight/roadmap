@@ -4,14 +4,14 @@ import {
   promptSchemaType,
 } from 'shared-types';
 import { prisma } from 'database';
-import {
-  guideGenerationQueue,
-  guideQuestionsGenerationQueue,
-} from '../../main';
 import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
 import { GuideProgressStatus } from '@/libs/db/prisma/generated/schemas';
 import { getGuideStepProperties } from 'shared-constants';
 import { JobsOptions } from 'bullmq';
+import {
+  guideGenerationQueue,
+  guideQuestionsGenerationQueue,
+} from '../../queues';
 
 const getJobOptions = (guideId: string): JobsOptions => {
   return {

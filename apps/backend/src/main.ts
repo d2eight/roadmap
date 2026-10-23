@@ -1,10 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 
-import { fromNodeHeaders, toNodeHandler } from 'better-auth/node';
+import { toNodeHandler } from 'better-auth/node';
 import { auth } from 'auth';
 import { guidesRouter } from './features/guides/guides.routes';
-import { Queue } from 'bullmq';
 import initWorkers from './workers/workers';
 import { createServer } from 'node:http';
 import { getIO, initSocket } from './socket';
@@ -13,12 +12,6 @@ import { env } from 'env';
 export const app = express();
 export const server = createServer(app);
 initSocket(server);
-const io = getIO();
-
-export const guideGenerationQueue = new Queue('guideGenerationQueue');
-export const guideQuestionsGenerationQueue = new Queue(
-  'guideQuestionsGenerationQueue',
-);
 
 app.use(
   cors({
