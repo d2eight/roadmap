@@ -1,3 +1,3 @@
 export function searchParamsToObj(searchParams: URLSearchParams) {
-  return Object.fromEntries(searchParams.entries());
+    return Object.fromEntries(searchParams.entries());
 }

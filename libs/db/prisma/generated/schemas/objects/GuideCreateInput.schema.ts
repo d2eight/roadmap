@@ -4,23 +4,38 @@ import { NullableJsonNullValueInputSchema } from '../enums/NullableJsonNullValue
 import { GuideStatusSchema } from '../enums/GuideStatus.schema';
 import { GuideProgressStatusSchema } from '../enums/GuideProgressStatus.schema';
 import { UserCreateNestedOneWithoutGuidesInputObjectSchema as UserCreateNestedOneWithoutGuidesInputObjectSchema } from './UserCreateNestedOneWithoutGuidesInput.schema';
-import { GuideStepCreateNestedManyWithoutGuideInputObjectSchema as GuideStepCreateNestedManyWithoutGuideInputObjectSchema } from './GuideStepCreateNestedManyWithoutGuideInput.schema'
+import { GuideStepCreateNestedManyWithoutGuideInputObjectSchema as GuideStepCreateNestedManyWithoutGuideInputObjectSchema } from './GuideStepCreateNestedManyWithoutGuideInput.schema';
 
 import { JsonValueSchema as jsonSchema } from '../../helpers/json-helpers';
 
-const makeSchema = () => z.object({
-  id: z.string().optional(),
-  prompt: z.string(),
-  externalAiQuestionsStatus: z.boolean().optional(),
-  title: z.string().optional(),
-  description: z.string().optional(),
-  questions: z.union([NullableJsonNullValueInputSchema, jsonSchema]).optional(),
-  answeredQuestions: z.union([NullableJsonNullValueInputSchema, jsonSchema]).optional(),
-  status: GuideStatusSchema.optional(),
-  progressStatus: GuideProgressStatusSchema.optional(),
-  createdAt: z.coerce.date().optional(),
-  user: z.lazy(() => UserCreateNestedOneWithoutGuidesInputObjectSchema),
-  steps: z.lazy(() => GuideStepCreateNestedManyWithoutGuideInputObjectSchema).optional()
-}).strict();
-export const GuideCreateInputObjectSchema: z.ZodType<Prisma.GuideCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.GuideCreateInput>;
+const makeSchema = () =>
+    z
+        .object({
+            id: z.string().optional(),
+            prompt: z.string(),
+            externalAiQuestionsStatus: z.boolean().optional(),
+            title: z.string().optional(),
+            description: z.string().optional(),
+            questions: z
+                .union([NullableJsonNullValueInputSchema, jsonSchema])
+                .optional(),
+            answeredQuestions: z
+                .union([NullableJsonNullValueInputSchema, jsonSchema])
+                .optional(),
+            status: GuideStatusSchema.optional(),
+            progressStatus: GuideProgressStatusSchema.optional(),
+            createdAt: z.coerce.date().optional(),
+            user: z.lazy(
+                () => UserCreateNestedOneWithoutGuidesInputObjectSchema,
+            ),
+            steps: z
+                .lazy(
+                    () =>
+                        GuideStepCreateNestedManyWithoutGuideInputObjectSchema,
+                )
+                .optional(),
+        })
+        .strict();
+export const GuideCreateInputObjectSchema: z.ZodType<Prisma.GuideCreateInput> =
+    makeSchema() as unknown as z.ZodType<Prisma.GuideCreateInput>;
 export const GuideCreateInputObjectZodSchema = makeSchema();

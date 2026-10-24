@@ -6,6 +6,26 @@ import { SessionUpdateInputObjectSchema as SessionUpdateInputObjectSchema } from
 import { SessionUncheckedUpdateInputObjectSchema as SessionUncheckedUpdateInputObjectSchema } from './objects/SessionUncheckedUpdateInput.schema';
 import { SessionWhereUniqueInputObjectSchema as SessionWhereUniqueInputObjectSchema } from './objects/SessionWhereUniqueInput.schema';
 
-export const SessionUpdateOneSchema: z.ZodType<Prisma.SessionUpdateArgs> = z.object({ select: SessionSelectObjectSchema.optional(), include: SessionIncludeObjectSchema.optional(), data: z.union([SessionUpdateInputObjectSchema, SessionUncheckedUpdateInputObjectSchema]), where: SessionWhereUniqueInputObjectSchema }).strict() as unknown as z.ZodType<Prisma.SessionUpdateArgs>;
+export const SessionUpdateOneSchema: z.ZodType<Prisma.SessionUpdateArgs> = z
+    .object({
+        select: SessionSelectObjectSchema.optional(),
+        include: SessionIncludeObjectSchema.optional(),
+        data: z.union([
+            SessionUpdateInputObjectSchema,
+            SessionUncheckedUpdateInputObjectSchema,
+        ]),
+        where: SessionWhereUniqueInputObjectSchema,
+    })
+    .strict() as unknown as z.ZodType<Prisma.SessionUpdateArgs>;
 
-export const SessionUpdateOneZodSchema = z.object({ select: SessionSelectObjectSchema.optional(), include: SessionIncludeObjectSchema.optional(), data: z.union([SessionUpdateInputObjectSchema, SessionUncheckedUpdateInputObjectSchema]), where: SessionWhereUniqueInputObjectSchema }).strict();
+export const SessionUpdateOneZodSchema = z
+    .object({
+        select: SessionSelectObjectSchema.optional(),
+        include: SessionIncludeObjectSchema.optional(),
+        data: z.union([
+            SessionUpdateInputObjectSchema,
+            SessionUncheckedUpdateInputObjectSchema,
+        ]),
+        where: SessionWhereUniqueInputObjectSchema,
+    })
+    .strict();

@@ -5,6 +5,38 @@ import { GuideStepWhereInputObjectSchema as GuideStepWhereInputObjectSchema } fr
 import { GuideStepWhereUniqueInputObjectSchema as GuideStepWhereUniqueInputObjectSchema } from './objects/GuideStepWhereUniqueInput.schema';
 import { GuideStepCountAggregateInputObjectSchema as GuideStepCountAggregateInputObjectSchema } from './objects/GuideStepCountAggregateInput.schema';
 
-export const GuideStepCountSchema: z.ZodType<Prisma.GuideStepCountArgs> = z.object({ orderBy: z.union([GuideStepOrderByWithRelationInputObjectSchema, GuideStepOrderByWithRelationInputObjectSchema.array()]).optional(), where: GuideStepWhereInputObjectSchema.optional(), cursor: GuideStepWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), select: z.union([ z.literal(true), GuideStepCountAggregateInputObjectSchema ]).optional() }).strict() as unknown as z.ZodType<Prisma.GuideStepCountArgs>;
+export const GuideStepCountSchema: z.ZodType<Prisma.GuideStepCountArgs> = z
+    .object({
+        orderBy: z
+            .union([
+                GuideStepOrderByWithRelationInputObjectSchema,
+                GuideStepOrderByWithRelationInputObjectSchema.array(),
+            ])
+            .optional(),
+        where: GuideStepWhereInputObjectSchema.optional(),
+        cursor: GuideStepWhereUniqueInputObjectSchema.optional(),
+        take: z.number().optional(),
+        skip: z.number().optional(),
+        select: z
+            .union([z.literal(true), GuideStepCountAggregateInputObjectSchema])
+            .optional(),
+    })
+    .strict() as unknown as z.ZodType<Prisma.GuideStepCountArgs>;
 
-export const GuideStepCountZodSchema = z.object({ orderBy: z.union([GuideStepOrderByWithRelationInputObjectSchema, GuideStepOrderByWithRelationInputObjectSchema.array()]).optional(), where: GuideStepWhereInputObjectSchema.optional(), cursor: GuideStepWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), select: z.union([ z.literal(true), GuideStepCountAggregateInputObjectSchema ]).optional() }).strict();
+export const GuideStepCountZodSchema = z
+    .object({
+        orderBy: z
+            .union([
+                GuideStepOrderByWithRelationInputObjectSchema,
+                GuideStepOrderByWithRelationInputObjectSchema.array(),
+            ])
+            .optional(),
+        where: GuideStepWhereInputObjectSchema.optional(),
+        cursor: GuideStepWhereUniqueInputObjectSchema.optional(),
+        take: z.number().optional(),
+        skip: z.number().optional(),
+        select: z
+            .union([z.literal(true), GuideStepCountAggregateInputObjectSchema])
+            .optional(),
+    })
+    .strict();

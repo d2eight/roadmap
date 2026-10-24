@@ -5,6 +5,45 @@ import { VerificationWhereInputObjectSchema as VerificationWhereInputObjectSchem
 import { VerificationWhereUniqueInputObjectSchema as VerificationWhereUniqueInputObjectSchema } from './objects/VerificationWhereUniqueInput.schema';
 import { VerificationCountAggregateInputObjectSchema as VerificationCountAggregateInputObjectSchema } from './objects/VerificationCountAggregateInput.schema';
 
-export const VerificationCountSchema: z.ZodType<Prisma.VerificationCountArgs> = z.object({ orderBy: z.union([VerificationOrderByWithRelationInputObjectSchema, VerificationOrderByWithRelationInputObjectSchema.array()]).optional(), where: VerificationWhereInputObjectSchema.optional(), cursor: VerificationWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), select: z.union([ z.literal(true), VerificationCountAggregateInputObjectSchema ]).optional() }).strict() as unknown as z.ZodType<Prisma.VerificationCountArgs>;
+export const VerificationCountSchema: z.ZodType<Prisma.VerificationCountArgs> =
+    z
+        .object({
+            orderBy: z
+                .union([
+                    VerificationOrderByWithRelationInputObjectSchema,
+                    VerificationOrderByWithRelationInputObjectSchema.array(),
+                ])
+                .optional(),
+            where: VerificationWhereInputObjectSchema.optional(),
+            cursor: VerificationWhereUniqueInputObjectSchema.optional(),
+            take: z.number().optional(),
+            skip: z.number().optional(),
+            select: z
+                .union([
+                    z.literal(true),
+                    VerificationCountAggregateInputObjectSchema,
+                ])
+                .optional(),
+        })
+        .strict() as unknown as z.ZodType<Prisma.VerificationCountArgs>;
 
-export const VerificationCountZodSchema = z.object({ orderBy: z.union([VerificationOrderByWithRelationInputObjectSchema, VerificationOrderByWithRelationInputObjectSchema.array()]).optional(), where: VerificationWhereInputObjectSchema.optional(), cursor: VerificationWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), select: z.union([ z.literal(true), VerificationCountAggregateInputObjectSchema ]).optional() }).strict();
+export const VerificationCountZodSchema = z
+    .object({
+        orderBy: z
+            .union([
+                VerificationOrderByWithRelationInputObjectSchema,
+                VerificationOrderByWithRelationInputObjectSchema.array(),
+            ])
+            .optional(),
+        where: VerificationWhereInputObjectSchema.optional(),
+        cursor: VerificationWhereUniqueInputObjectSchema.optional(),
+        take: z.number().optional(),
+        skip: z.number().optional(),
+        select: z
+            .union([
+                z.literal(true),
+                VerificationCountAggregateInputObjectSchema,
+            ])
+            .optional(),
+    })
+    .strict();

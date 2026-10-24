@@ -2,20 +2,20 @@ import { TaggedError } from 'better-result';
 import { z, ZodError } from 'zod';
 
 export class UnexpectedError extends TaggedError('UnexpectedError')<{
-  message: string;
+    message: string;
 }> {}
 
 export class UnauthorizedError extends TaggedError('UnauthorizedError')<{
-  message: string;
+    message: string;
 }> {}
 
 export class UnprocessableEntity<Z = null> extends TaggedError(
-  'UnprocessableEntity',
+    'UnprocessableEntity',
 )<{
-  message: string;
-  zodError?: Z;
+    message: string;
+    zodError?: Z;
 }> {}
 
 export class NotFoundError extends TaggedError('NotFoundError')<{
-  message: string;
+    message: string;
 }> {}

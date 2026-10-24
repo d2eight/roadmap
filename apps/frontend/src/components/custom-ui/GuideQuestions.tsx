@@ -1,13 +1,12 @@
-'use client'
+'use client';
 
-import { FormProcessor } from '@/components/wrappers/FormProcessor';
+import { FormProcessor } from '@/context/FormProcessor';
 import GuideQuestionsForm from '@/components/forms/GuideQuestionsForm';
 
 export function GuideQuestions() {
-
-  return (
-    <FormProcessor>
-      <GuideQuestionsForm />
-    </FormProcessor>
-  );
+    return (
+        <FormProcessor>
+            <GuideQuestionsForm />
+        </FormProcessor>
+    );
 }

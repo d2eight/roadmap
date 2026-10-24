@@ -8,6 +8,34 @@ import { GuideUncheckedCreateInputObjectSchema as GuideUncheckedCreateInputObjec
 import { GuideUpdateInputObjectSchema as GuideUpdateInputObjectSchema } from './objects/GuideUpdateInput.schema';
 import { GuideUncheckedUpdateInputObjectSchema as GuideUncheckedUpdateInputObjectSchema } from './objects/GuideUncheckedUpdateInput.schema';
 
-export const GuideUpsertOneSchema: z.ZodType<Prisma.GuideUpsertArgs> = z.object({ select: GuideSelectObjectSchema.optional(), include: GuideIncludeObjectSchema.optional(), where: GuideWhereUniqueInputObjectSchema, create: z.union([ GuideCreateInputObjectSchema, GuideUncheckedCreateInputObjectSchema ]), update: z.union([ GuideUpdateInputObjectSchema, GuideUncheckedUpdateInputObjectSchema ]) }).strict() as unknown as z.ZodType<Prisma.GuideUpsertArgs>;
+export const GuideUpsertOneSchema: z.ZodType<Prisma.GuideUpsertArgs> = z
+    .object({
+        select: GuideSelectObjectSchema.optional(),
+        include: GuideIncludeObjectSchema.optional(),
+        where: GuideWhereUniqueInputObjectSchema,
+        create: z.union([
+            GuideCreateInputObjectSchema,
+            GuideUncheckedCreateInputObjectSchema,
+        ]),
+        update: z.union([
+            GuideUpdateInputObjectSchema,
+            GuideUncheckedUpdateInputObjectSchema,
+        ]),
+    })
+    .strict() as unknown as z.ZodType<Prisma.GuideUpsertArgs>;
 
-export const GuideUpsertOneZodSchema = z.object({ select: GuideSelectObjectSchema.optional(), include: GuideIncludeObjectSchema.optional(), where: GuideWhereUniqueInputObjectSchema, create: z.union([ GuideCreateInputObjectSchema, GuideUncheckedCreateInputObjectSchema ]), update: z.union([ GuideUpdateInputObjectSchema, GuideUncheckedUpdateInputObjectSchema ]) }).strict();
+export const GuideUpsertOneZodSchema = z
+    .object({
+        select: GuideSelectObjectSchema.optional(),
+        include: GuideIncludeObjectSchema.optional(),
+        where: GuideWhereUniqueInputObjectSchema,
+        create: z.union([
+            GuideCreateInputObjectSchema,
+            GuideUncheckedCreateInputObjectSchema,
+        ]),
+        update: z.union([
+            GuideUpdateInputObjectSchema,
+            GuideUncheckedUpdateInputObjectSchema,
+        ]),
+    })
+    .strict();

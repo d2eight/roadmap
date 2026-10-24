@@ -4,11 +4,11 @@ import { GuideCardDescription } from '@/components/custom-ui/GuideCardDescriptio
 import { GuideCardAction } from '@/components/custom-ui/GuideCardAction';
 
 export function GuideCardHeader() {
-  return (
-    <CardHeader>
-      <GuideCardTitle />
-      <GuideCardDescription />
-      <GuideCardAction />
-    </CardHeader>
-  );
+    return (
+        <CardHeader>
+            <GuideCardTitle />
+            <GuideCardDescription />
+            <GuideCardAction />
+        </CardHeader>
+    );
 }

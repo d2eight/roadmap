@@ -5,18 +5,69 @@ import { BoolFieldUpdateOperationsInputObjectSchema as BoolFieldUpdateOperations
 import { NullableStringFieldUpdateOperationsInputObjectSchema as NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema as DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
 import { SessionUpdateManyWithoutUserNestedInputObjectSchema as SessionUpdateManyWithoutUserNestedInputObjectSchema } from './SessionUpdateManyWithoutUserNestedInput.schema';
-import { AccountUpdateManyWithoutUserNestedInputObjectSchema as AccountUpdateManyWithoutUserNestedInputObjectSchema } from './AccountUpdateManyWithoutUserNestedInput.schema'
+import { AccountUpdateManyWithoutUserNestedInputObjectSchema as AccountUpdateManyWithoutUserNestedInputObjectSchema } from './AccountUpdateManyWithoutUserNestedInput.schema';
 
-const makeSchema = () => z.object({
-  id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-  name: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-  email: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-  emailVerified: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputObjectSchema)]).optional(),
-  image: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
-  createdAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
-  updatedAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
-  sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputObjectSchema).optional(),
-  accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputObjectSchema).optional()
-}).strict();
-export const UserUpdateWithoutGuidesInputObjectSchema: z.ZodType<Prisma.UserUpdateWithoutGuidesInput> = makeSchema() as unknown as z.ZodType<Prisma.UserUpdateWithoutGuidesInput>;
+const makeSchema = () =>
+    z
+        .object({
+            id: z
+                .union([
+                    z.string(),
+                    z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+                ])
+                .optional(),
+            name: z
+                .union([
+                    z.string(),
+                    z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+                ])
+                .optional(),
+            email: z
+                .union([
+                    z.string(),
+                    z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+                ])
+                .optional(),
+            emailVerified: z
+                .union([
+                    z.boolean(),
+                    z.lazy(() => BoolFieldUpdateOperationsInputObjectSchema),
+                ])
+                .optional(),
+            image: z
+                .union([
+                    z.string(),
+                    z.lazy(
+                        () =>
+                            NullableStringFieldUpdateOperationsInputObjectSchema,
+                    ),
+                ])
+                .optional()
+                .nullable(),
+            createdAt: z
+                .union([
+                    z.coerce.date(),
+                    z.lazy(
+                        () => DateTimeFieldUpdateOperationsInputObjectSchema,
+                    ),
+                ])
+                .optional(),
+            updatedAt: z
+                .union([
+                    z.coerce.date(),
+                    z.lazy(
+                        () => DateTimeFieldUpdateOperationsInputObjectSchema,
+                    ),
+                ])
+                .optional(),
+            sessions: z
+                .lazy(() => SessionUpdateManyWithoutUserNestedInputObjectSchema)
+                .optional(),
+            accounts: z
+                .lazy(() => AccountUpdateManyWithoutUserNestedInputObjectSchema)
+                .optional(),
+        })
+        .strict();
+export const UserUpdateWithoutGuidesInputObjectSchema: z.ZodType<Prisma.UserUpdateWithoutGuidesInput> =
+    makeSchema() as unknown as z.ZodType<Prisma.UserUpdateWithoutGuidesInput>;
 export const UserUpdateWithoutGuidesInputObjectZodSchema = makeSchema();

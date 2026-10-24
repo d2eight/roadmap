@@ -7,6 +7,42 @@ import { GuideCountAggregateInputObjectSchema as GuideCountAggregateInputObjectS
 import { GuideMinAggregateInputObjectSchema as GuideMinAggregateInputObjectSchema } from './objects/GuideMinAggregateInput.schema';
 import { GuideMaxAggregateInputObjectSchema as GuideMaxAggregateInputObjectSchema } from './objects/GuideMaxAggregateInput.schema';
 
-export const GuideAggregateSchema: z.ZodType<Prisma.GuideAggregateArgs> = z.object({ orderBy: z.union([GuideOrderByWithRelationInputObjectSchema, GuideOrderByWithRelationInputObjectSchema.array()]).optional(), where: GuideWhereInputObjectSchema.optional(), cursor: GuideWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), GuideCountAggregateInputObjectSchema ]).optional(), _min: GuideMinAggregateInputObjectSchema.optional(), _max: GuideMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.GuideAggregateArgs>;
+export const GuideAggregateSchema: z.ZodType<Prisma.GuideAggregateArgs> = z
+    .object({
+        orderBy: z
+            .union([
+                GuideOrderByWithRelationInputObjectSchema,
+                GuideOrderByWithRelationInputObjectSchema.array(),
+            ])
+            .optional(),
+        where: GuideWhereInputObjectSchema.optional(),
+        cursor: GuideWhereUniqueInputObjectSchema.optional(),
+        take: z.number().optional(),
+        skip: z.number().optional(),
+        _count: z
+            .union([z.literal(true), GuideCountAggregateInputObjectSchema])
+            .optional(),
+        _min: GuideMinAggregateInputObjectSchema.optional(),
+        _max: GuideMaxAggregateInputObjectSchema.optional(),
+    })
+    .strict() as unknown as z.ZodType<Prisma.GuideAggregateArgs>;
 
-export const GuideAggregateZodSchema = z.object({ orderBy: z.union([GuideOrderByWithRelationInputObjectSchema, GuideOrderByWithRelationInputObjectSchema.array()]).optional(), where: GuideWhereInputObjectSchema.optional(), cursor: GuideWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), GuideCountAggregateInputObjectSchema ]).optional(), _min: GuideMinAggregateInputObjectSchema.optional(), _max: GuideMaxAggregateInputObjectSchema.optional() }).strict();
+export const GuideAggregateZodSchema = z
+    .object({
+        orderBy: z
+            .union([
+                GuideOrderByWithRelationInputObjectSchema,
+                GuideOrderByWithRelationInputObjectSchema.array(),
+            ])
+            .optional(),
+        where: GuideWhereInputObjectSchema.optional(),
+        cursor: GuideWhereUniqueInputObjectSchema.optional(),
+        take: z.number().optional(),
+        skip: z.number().optional(),
+        _count: z
+            .union([z.literal(true), GuideCountAggregateInputObjectSchema])
+            .optional(),
+        _min: GuideMinAggregateInputObjectSchema.optional(),
+        _max: GuideMaxAggregateInputObjectSchema.optional(),
+    })
+    .strict();

@@ -6,49 +6,49 @@ import { pageSize } from '@/constants/constants';
 import { searchParamsToObj } from 'utils/client';
 
 export async function GET(request: NextRequest) {
-  const sessionResponse = await verifySession({ request });
+    const sessionResponse = await verifySession({ request });
 
-  if (!sessionResponse.success) {
+    if (!sessionResponse.success) {
+        return NextResponse.json(
+            {
+                success: false,
+                message: 'Unauthorized user, please sign in',
+            },
+            {
+                status: 401,
+            },
+        );
+    }
+
+    const userId = sessionResponse.data.user.id;
+    const searchParams = searchParamsToObj(request.nextUrl.searchParams);
+    const parsedSearchParams = paramsSchema.safeParse(searchParams);
+
+    if (!parsedSearchParams.success) {
+        return NextResponse.json(
+            {
+                success: false,
+                message: 'Unprocessable search params',
+            },
+            {
+                status: 422,
+            },
+        );
+    }
+
+    const guides = await getGuides({
+        pageSize,
+        userId,
+        params: parsedSearchParams.data,
+    });
+
     return NextResponse.json(
-      {
-        success: false,
-        message: 'Unauthorized user, please sign in',
-      },
-      {
-        status: 401,
-      },
+        {
+            success: true,
+            data: guides,
+        },
+        {
+            status: 200,
+        },
     );
-  }
-
-  const userId = sessionResponse.data.user.id;
-  const searchParams = searchParamsToObj(request.nextUrl.searchParams);
-  const parsedSearchParams = paramsSchema.safeParse(searchParams);
-
-  if (!parsedSearchParams.success) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: 'Unprocessable search params',
-      },
-      {
-        status: 422,
-      },
-    );
-  }
-
-  const guides = await getGuides({
-    pageSize,
-    userId,
-    params: parsedSearchParams.data,
-  });
-
-  return NextResponse.json(
-    {
-      success: true,
-      data: guides,
-    },
-    {
-      status: 200,
-    },
-  );
 }

@@ -9,42 +9,88 @@ import { GuideScalarFieldEnumSchema } from './enums/GuideScalarFieldEnum.schema'
 // Select schema needs to be in file to prevent circular imports
 //------------------------------------------------------
 
-export const GuideFindFirstSelectSchema: z.ZodType<Prisma.GuideSelect> = z.object({
-    id: z.boolean().optional(),
-    prompt: z.boolean().optional(),
-    externalAiQuestionsStatus: z.boolean().optional(),
-    user: z.boolean().optional(),
-    userId: z.boolean().optional(),
-    title: z.boolean().optional(),
-    description: z.boolean().optional(),
-    steps: z.boolean().optional(),
-    questions: z.boolean().optional(),
-    answeredQuestions: z.boolean().optional(),
-    status: z.boolean().optional(),
-    progressStatus: z.boolean().optional(),
-    createdAt: z.boolean().optional(),
-    updatedAt: z.boolean().optional(),
-    _count: z.boolean().optional()
-  }).strict() as unknown as z.ZodType<Prisma.GuideSelect>;
+export const GuideFindFirstSelectSchema: z.ZodType<Prisma.GuideSelect> = z
+    .object({
+        id: z.boolean().optional(),
+        prompt: z.boolean().optional(),
+        externalAiQuestionsStatus: z.boolean().optional(),
+        user: z.boolean().optional(),
+        userId: z.boolean().optional(),
+        title: z.boolean().optional(),
+        description: z.boolean().optional(),
+        steps: z.boolean().optional(),
+        questions: z.boolean().optional(),
+        answeredQuestions: z.boolean().optional(),
+        status: z.boolean().optional(),
+        progressStatus: z.boolean().optional(),
+        createdAt: z.boolean().optional(),
+        updatedAt: z.boolean().optional(),
+        _count: z.boolean().optional(),
+    })
+    .strict() as unknown as z.ZodType<Prisma.GuideSelect>;
 
-export const GuideFindFirstSelectZodSchema = z.object({
-    id: z.boolean().optional(),
-    prompt: z.boolean().optional(),
-    externalAiQuestionsStatus: z.boolean().optional(),
-    user: z.boolean().optional(),
-    userId: z.boolean().optional(),
-    title: z.boolean().optional(),
-    description: z.boolean().optional(),
-    steps: z.boolean().optional(),
-    questions: z.boolean().optional(),
-    answeredQuestions: z.boolean().optional(),
-    status: z.boolean().optional(),
-    progressStatus: z.boolean().optional(),
-    createdAt: z.boolean().optional(),
-    updatedAt: z.boolean().optional(),
-    _count: z.boolean().optional()
-  }).strict();
+export const GuideFindFirstSelectZodSchema = z
+    .object({
+        id: z.boolean().optional(),
+        prompt: z.boolean().optional(),
+        externalAiQuestionsStatus: z.boolean().optional(),
+        user: z.boolean().optional(),
+        userId: z.boolean().optional(),
+        title: z.boolean().optional(),
+        description: z.boolean().optional(),
+        steps: z.boolean().optional(),
+        questions: z.boolean().optional(),
+        answeredQuestions: z.boolean().optional(),
+        status: z.boolean().optional(),
+        progressStatus: z.boolean().optional(),
+        createdAt: z.boolean().optional(),
+        updatedAt: z.boolean().optional(),
+        _count: z.boolean().optional(),
+    })
+    .strict();
 
-export const GuideFindFirstSchema: z.ZodType<Prisma.GuideFindFirstArgs> = z.object({ select: GuideFindFirstSelectSchema.optional(), include: z.lazy(() => GuideIncludeObjectSchema.optional()), orderBy: z.union([GuideOrderByWithRelationInputObjectSchema, GuideOrderByWithRelationInputObjectSchema.array()]).optional(), where: GuideWhereInputObjectSchema.optional(), cursor: GuideWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([GuideScalarFieldEnumSchema, GuideScalarFieldEnumSchema.array()]).optional() }).strict() as unknown as z.ZodType<Prisma.GuideFindFirstArgs>;
+export const GuideFindFirstSchema: z.ZodType<Prisma.GuideFindFirstArgs> = z
+    .object({
+        select: GuideFindFirstSelectSchema.optional(),
+        include: z.lazy(() => GuideIncludeObjectSchema.optional()),
+        orderBy: z
+            .union([
+                GuideOrderByWithRelationInputObjectSchema,
+                GuideOrderByWithRelationInputObjectSchema.array(),
+            ])
+            .optional(),
+        where: GuideWhereInputObjectSchema.optional(),
+        cursor: GuideWhereUniqueInputObjectSchema.optional(),
+        take: z.number().optional(),
+        skip: z.number().optional(),
+        distinct: z
+            .union([
+                GuideScalarFieldEnumSchema,
+                GuideScalarFieldEnumSchema.array(),
+            ])
+            .optional(),
+    })
+    .strict() as unknown as z.ZodType<Prisma.GuideFindFirstArgs>;
 
-export const GuideFindFirstZodSchema = z.object({ select: GuideFindFirstSelectSchema.optional(), include: z.lazy(() => GuideIncludeObjectSchema.optional()), orderBy: z.union([GuideOrderByWithRelationInputObjectSchema, GuideOrderByWithRelationInputObjectSchema.array()]).optional(), where: GuideWhereInputObjectSchema.optional(), cursor: GuideWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([GuideScalarFieldEnumSchema, GuideScalarFieldEnumSchema.array()]).optional() }).strict();
+export const GuideFindFirstZodSchema = z
+    .object({
+        select: GuideFindFirstSelectSchema.optional(),
+        include: z.lazy(() => GuideIncludeObjectSchema.optional()),
+        orderBy: z
+            .union([
+                GuideOrderByWithRelationInputObjectSchema,
+                GuideOrderByWithRelationInputObjectSchema.array(),
+            ])
+            .optional(),
+        where: GuideWhereInputObjectSchema.optional(),
+        cursor: GuideWhereUniqueInputObjectSchema.optional(),
+        take: z.number().optional(),
+        skip: z.number().optional(),
+        distinct: z
+            .union([
+                GuideScalarFieldEnumSchema,
+                GuideScalarFieldEnumSchema.array(),
+            ])
+            .optional(),
+    })
+    .strict();

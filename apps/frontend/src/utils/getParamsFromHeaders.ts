@@ -2,15 +2,15 @@ import { paramsSchemaType } from 'shared-types';
 import { searchParamsDefaultValues } from 'shared-constants';
 
 export function getParamsFromHeaders({
-  headersList,
+    headersList,
 }: {
-  headersList: Headers;
+    headersList: Headers;
 }): paramsSchemaType {
-  const params = headersList.get('params');
+    const params = headersList.get('params');
 
-  if (!params) {
-    return searchParamsDefaultValues;
-  }
+    if (!params) {
+        return searchParamsDefaultValues;
+    }
 
-  return JSON.parse(params);
+    return JSON.parse(params);
 }

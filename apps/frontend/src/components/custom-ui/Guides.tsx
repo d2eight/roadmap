@@ -1,40 +1,40 @@
 'use client';
 
 import { GuideCard } from './GuideCard';
-import GuideContextProvider, { GuideContext } from '../../context/GuideContext';
+import GuideContextProvider from '../../context/GuideContext';
 import { GuideModelWithRelations } from 'shared-types';
-import { useContext, useEffect, useState } from 'react';
-import { GuidesContext } from '@/context/GuidesContext';
-import { FormProcessingContext } from '@/components/wrappers/FormProcessor';
+import { useEffect } from 'react';
+import { useGuidesContext } from '@/context/GuidesContext';
+import { useFormProcessingContext } from '@/context/FormProcessor';
 import { GuidesNotFound } from '@/components/custom-ui/GuidesNotFound';
 
 export function Guides() {
-  const { guides, isLoading } = useContext(GuidesContext);
-  const { setProcessingStatus } = useContext(FormProcessingContext);
+    const { guides, isLoading } = useGuidesContext();
+    const { setProcessingStatus } = useFormProcessingContext();
 
-  useEffect(() => {
-    if (isLoading) {
-      return;
+    useEffect(() => {
+        if (isLoading) {
+            return;
+        }
+
+        setProcessingStatus(false);
+    }, [guides]);
+
+    if (!guides.length) {
+        return <GuidesNotFound />;
     }
 
-    setProcessingStatus(false);
-  }, [guides]);
-
-  if (!guides.length) {
-    return <GuidesNotFound />;
-  }
-
-  return (
-    <div className="grid xl:grid-cols-3 xl:gap-10 grid-cols-1 auto-rows-[200px] gap-5">
-      {guides.map((guide: GuideModelWithRelations) => (
-        <GuideContextProvider
-          autoQueryStatus={false}
-          key={guide.id}
-          guideId={guide.id}
-        >
-          <GuideCard />
-        </GuideContextProvider>
-      ))}
-    </div>
-  );
+    return (
+        <div className="grid xl:grid-cols-3 xl:gap-10 grid-cols-1 auto-rows-[200px] gap-5">
+            {guides.map((guide: GuideModelWithRelations) => (
+                <GuideContextProvider
+                    autoQueryStatus={false}
+                    key={guide.id}
+                    guideId={guide.id}
+                >
+                    <GuideCard />
+                </GuideContextProvider>
+            ))}
+        </div>
+    );
 }

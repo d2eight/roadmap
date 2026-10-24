@@ -9,24 +9,97 @@ import { GuideProgressStatusSchema } from '../enums/GuideProgressStatus.schema';
 import { EnumGuideProgressStatusFieldUpdateOperationsInputObjectSchema as EnumGuideProgressStatusFieldUpdateOperationsInputObjectSchema } from './EnumGuideProgressStatusFieldUpdateOperationsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema as DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
 import { UserUpdateOneRequiredWithoutGuidesNestedInputObjectSchema as UserUpdateOneRequiredWithoutGuidesNestedInputObjectSchema } from './UserUpdateOneRequiredWithoutGuidesNestedInput.schema';
-import { GuideStepUpdateManyWithoutGuideNestedInputObjectSchema as GuideStepUpdateManyWithoutGuideNestedInputObjectSchema } from './GuideStepUpdateManyWithoutGuideNestedInput.schema'
+import { GuideStepUpdateManyWithoutGuideNestedInputObjectSchema as GuideStepUpdateManyWithoutGuideNestedInputObjectSchema } from './GuideStepUpdateManyWithoutGuideNestedInput.schema';
 
 import { JsonValueSchema as jsonSchema } from '../../helpers/json-helpers';
 
-const makeSchema = () => z.object({
-  id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-  prompt: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-  externalAiQuestionsStatus: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputObjectSchema)]).optional(),
-  title: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-  description: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-  questions: z.union([NullableJsonNullValueInputSchema, jsonSchema]).optional(),
-  answeredQuestions: z.union([NullableJsonNullValueInputSchema, jsonSchema]).optional(),
-  status: z.union([GuideStatusSchema, z.lazy(() => EnumGuideStatusFieldUpdateOperationsInputObjectSchema)]).optional(),
-  progressStatus: z.union([GuideProgressStatusSchema, z.lazy(() => EnumGuideProgressStatusFieldUpdateOperationsInputObjectSchema)]).optional(),
-  createdAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
-  updatedAt: z.union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)]).optional(),
-  user: z.lazy(() => UserUpdateOneRequiredWithoutGuidesNestedInputObjectSchema).optional(),
-  steps: z.lazy(() => GuideStepUpdateManyWithoutGuideNestedInputObjectSchema).optional()
-}).strict();
-export const GuideUpdateInputObjectSchema: z.ZodType<Prisma.GuideUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.GuideUpdateInput>;
+const makeSchema = () =>
+    z
+        .object({
+            id: z
+                .union([
+                    z.string(),
+                    z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+                ])
+                .optional(),
+            prompt: z
+                .union([
+                    z.string(),
+                    z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+                ])
+                .optional(),
+            externalAiQuestionsStatus: z
+                .union([
+                    z.boolean(),
+                    z.lazy(() => BoolFieldUpdateOperationsInputObjectSchema),
+                ])
+                .optional(),
+            title: z
+                .union([
+                    z.string(),
+                    z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+                ])
+                .optional(),
+            description: z
+                .union([
+                    z.string(),
+                    z.lazy(() => StringFieldUpdateOperationsInputObjectSchema),
+                ])
+                .optional(),
+            questions: z
+                .union([NullableJsonNullValueInputSchema, jsonSchema])
+                .optional(),
+            answeredQuestions: z
+                .union([NullableJsonNullValueInputSchema, jsonSchema])
+                .optional(),
+            status: z
+                .union([
+                    GuideStatusSchema,
+                    z.lazy(
+                        () =>
+                            EnumGuideStatusFieldUpdateOperationsInputObjectSchema,
+                    ),
+                ])
+                .optional(),
+            progressStatus: z
+                .union([
+                    GuideProgressStatusSchema,
+                    z.lazy(
+                        () =>
+                            EnumGuideProgressStatusFieldUpdateOperationsInputObjectSchema,
+                    ),
+                ])
+                .optional(),
+            createdAt: z
+                .union([
+                    z.coerce.date(),
+                    z.lazy(
+                        () => DateTimeFieldUpdateOperationsInputObjectSchema,
+                    ),
+                ])
+                .optional(),
+            updatedAt: z
+                .union([
+                    z.coerce.date(),
+                    z.lazy(
+                        () => DateTimeFieldUpdateOperationsInputObjectSchema,
+                    ),
+                ])
+                .optional(),
+            user: z
+                .lazy(
+                    () =>
+                        UserUpdateOneRequiredWithoutGuidesNestedInputObjectSchema,
+                )
+                .optional(),
+            steps: z
+                .lazy(
+                    () =>
+                        GuideStepUpdateManyWithoutGuideNestedInputObjectSchema,
+                )
+                .optional(),
+        })
+        .strict();
+export const GuideUpdateInputObjectSchema: z.ZodType<Prisma.GuideUpdateInput> =
+    makeSchema() as unknown as z.ZodType<Prisma.GuideUpdateInput>;
 export const GuideUpdateInputObjectZodSchema = makeSchema();

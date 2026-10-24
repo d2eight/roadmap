@@ -4,23 +4,23 @@ import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
 import { LucideCheck } from 'lucide-react';
 
 export function FilterProgressButton({
-  status,
-  isActive,
+    status,
+    isActive,
 }: {
-  status: GuideProgressStatus;
-  isActive: boolean;
+    status: GuideProgressStatus;
+    isActive: boolean;
 }) {
-  return (
-    <ToggleGroupItem
-      className="hover:bg-transparent bg-transparent! p-0"
-      value={status}
-    >
-      <GuideProgressBadge
-        className="w-[100px] h-[35px]"
-        progressStatus={status}
-      >
-        {isActive && <LucideCheck />}
-      </GuideProgressBadge>
-    </ToggleGroupItem>
-  );
+    return (
+        <ToggleGroupItem
+            className="hover:bg-transparent bg-transparent! p-0"
+            value={status}
+        >
+            <GuideProgressBadge
+                className="w-[100px] h-[35px]"
+                progressStatus={status}
+            >
+                {isActive && <LucideCheck />}
+            </GuideProgressBadge>
+        </ToggleGroupItem>
+    );
 }

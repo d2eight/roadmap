@@ -8,174 +8,174 @@ import { ApiError } from './shared-classes';
 
 import { GuideStatus } from 'database/enums';
 import {
-  NotFoundError,
-  UnauthorizedError,
-  UnexpectedError,
-  UnprocessableEntity,
+    NotFoundError,
+    UnauthorizedError,
+    UnexpectedError,
+    UnprocessableEntity,
 } from 'errors';
 import { JsonValue } from '@prisma/client/runtime/client';
 import { NextResponse } from 'next/server';
 
 export type BetterAuthSession = {
-  session: Session;
-  user: User;
+    session: Session;
+    user: User;
 } | null;
 
 export type ApiResponse<T = null, Z = null> =
-  | {
-      success: true;
-      data: T;
-    }
-  | {
-      success: false;
-      message: string;
-      zodError: Z;
-    };
+    | {
+          success: true;
+          data: T;
+      }
+    | {
+          success: false;
+          message: string;
+          zodError: Z;
+      };
 
 export type ApiResponseError<Z = null> = Extract<
-  ApiResponse<null, Z>,
-  { success: false }
+    ApiResponse<null, Z>,
+    { success: false }
 >;
 
 export type ApiResponseSuccess<T = null> = Extract<
-  ApiResponse<T, null>,
-  { success: true }
+    ApiResponse<T, null>,
+    { success: true }
 >;
 
 export type ApiErrors<ZodError = null> =
-  | UnauthorizedError
-  | NotFoundError
-  | UnprocessableEntity<ZodError>
-  | UnexpectedError;
+    | UnauthorizedError
+    | NotFoundError
+    | UnprocessableEntity<ZodError>
+    | UnexpectedError;
 
 export type GuideJob = {
-  userId: string;
-  guideId: string;
+    userId: string;
+    guideId: string;
 };
 
 export type AuthContextType = {
-  data: BetterAuthSession;
-  refetch: () => Promise<void>;
-  isPending: boolean;
-  error: BetterFetchError | null;
+    data: BetterAuthSession;
+    refetch: () => Promise<void>;
+    isPending: boolean;
+    error: BetterFetchError | null;
 };
 
 export type DialogContextType = {
-  dialogStatus: boolean;
-  setDialogStatus: Dispatch<SetStateAction<boolean>>;
+    dialogStatus: boolean;
+    setDialogStatus: Dispatch<SetStateAction<boolean>>;
 };
 
 export type GuideContextType =
-  | {
-      guide: GuideModelWithRelations;
-      status: typeof GuideStatus.QUESTIONS_GENERATED;
-      completedSteps?: never;
-      questionsCount: number;
-      stepsCount?: never;
-    }
-  | {
-      guide: GuideModelWithRelations;
-      status: typeof GuideStatus.GUIDE_GENERATED;
-      completedSteps: number;
-      questionsCount?: never;
-      stepsCount: number;
-    }
-  | {
-      guide: GuideModelWithRelations;
-      status: Exclude<
-        GuideStatus,
-        | typeof GuideStatus.QUESTIONS_GENERATED
-        | typeof GuideStatus.GUIDE_GENERATED
-      >;
-      completedSteps?: never;
-      questionsCount?: never;
-      stepsCount?: never;
-    };
+    | {
+          guide: GuideModelWithRelations;
+          status: typeof GuideStatus.QUESTIONS_GENERATED;
+          completedSteps?: never;
+          questionsCount: number;
+          stepsCount?: never;
+      }
+    | {
+          guide: GuideModelWithRelations;
+          status: typeof GuideStatus.GUIDE_GENERATED;
+          completedSteps: number;
+          questionsCount?: never;
+          stepsCount: number;
+      }
+    | {
+          guide: GuideModelWithRelations;
+          status: Exclude<
+              GuideStatus,
+              | typeof GuideStatus.QUESTIONS_GENERATED
+              | typeof GuideStatus.GUIDE_GENERATED
+          >;
+          completedSteps?: never;
+          questionsCount?: never;
+          stepsCount?: never;
+      };
 
 export type SocketContextType = {
-  socket: Socket;
+    socket: Socket;
 };
 
 export type GuideModelWithRelations = Prisma.GuideGetPayload<{
-  include: {
-    steps: {
-      select: {
+    include: {
+        steps: {
+            select: {
+                id: true;
+                guideId: true;
+                title: true;
+                description: true;
+                status: true;
+            };
+        };
+    };
+}>;
+
+export type GuideStepModelFetched = Prisma.GuideStepGetPayload<{
+    select: {
         id: true;
         guideId: true;
         title: true;
         description: true;
         status: true;
-      };
     };
-  };
-}>;
-
-export type GuideStepModelFetched = Prisma.GuideStepGetPayload<{
-  select: {
-    id: true;
-    guideId: true;
-    title: true;
-    description: true;
-    status: true;
-  };
 }>;
 
 export type OrderByOptions = [
-  {
-    value: Extract<filterSchemaType['orderBy'], 'createdAt'>;
-    label: string | JSX.Element;
-  },
-  {
-    value: Extract<filterSchemaType['orderBy'], 'updatedAt'>;
-    label: string | JSX.Element;
-  },
+    {
+        value: Extract<filterSchemaType['orderBy'], 'createdAt'>;
+        label: string | JSX.Element;
+    },
+    {
+        value: Extract<filterSchemaType['orderBy'], 'updatedAt'>;
+        label: string | JSX.Element;
+    },
 ];
 
 export type QueryKeyType = [
-  'guides',
-  paramsSchemaType['page'],
-  paramsSchemaType['orderBy'],
-  paramsSchemaType['progressStatus'],
+    'guides',
+    paramsSchemaType['page'],
+    paramsSchemaType['orderBy'],
+    paramsSchemaType['progressStatus'],
 ];
 
 export type PromptType = {
-  userPrompt: string;
-  answers?: JsonValue;
+    userPrompt: string;
+    answers?: JsonValue;
 };
 
 export type WidthLabel = '2xl' | 'xl' | 'lg' | 'md' | 'sm';
 
 export type WidthItem = {
-  size: number;
-  label: WidthLabel;
+    size: number;
+    label: WidthLabel;
 };
 
 export type WidthInfo = {
-  label: WidthLabel;
-  isDesktop: boolean;
+    label: WidthLabel;
+    isDesktop: boolean;
 };
 
 export type ScrollInfo = {
-  onTop: boolean;
-  scrollY: number;
+    onTop: boolean;
+    scrollY: number;
 };
 
 export type RouteIdParams = {
-  params: Promise<{
-    id: string;
-  }>;
+    params: Promise<{
+        id: string;
+    }>;
 };
 
 export type VerifySessionResponse =
-  | {
-      success: true;
-      data: NonNullable<BetterAuthSession>;
-    }
-  | {
-      success: false;
-      redirect: NextResponse;
-    };
+    | {
+          success: true;
+          data: NonNullable<BetterAuthSession>;
+      }
+    | {
+          success: false;
+          redirect: NextResponse;
+      };
 
 export type SearchParamsNext = Promise<{
-  [key: string]: string | string[] | undefined;
+    [key: string]: string | string[] | undefined;
 }>;

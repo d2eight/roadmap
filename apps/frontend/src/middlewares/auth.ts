@@ -3,23 +3,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from 'utils';
 
 export default async function verifySession({
-  request,
+    request,
 }: {
-  request: NextRequest;
+    request: NextRequest;
 }): Promise<VerifySessionResponse> {
-  const session: BetterAuthSession = await getSession({
-    headers: request.headers,
-  });
+    const session: BetterAuthSession = await getSession({
+        headers: request.headers,
+    });
 
-  if (!session) {
+    if (!session) {
+        return {
+            success: false,
+            redirect: NextResponse.redirect(
+                new URL('/auth/sign-in', request.url),
+            ),
+        };
+    }
+
     return {
-      success: false,
-      redirect: NextResponse.redirect(new URL('/auth/sign-in', request.url)),
+        success: true,
+        data: session,
     };
-  }
-
-  return {
-    success: true,
-    data: session,
-  };
 }

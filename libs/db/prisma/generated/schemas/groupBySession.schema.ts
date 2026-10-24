@@ -8,6 +8,44 @@ import { SessionCountAggregateInputObjectSchema as SessionCountAggregateInputObj
 import { SessionMinAggregateInputObjectSchema as SessionMinAggregateInputObjectSchema } from './objects/SessionMinAggregateInput.schema';
 import { SessionMaxAggregateInputObjectSchema as SessionMaxAggregateInputObjectSchema } from './objects/SessionMaxAggregateInput.schema';
 
-export const SessionGroupBySchema: z.ZodType<Prisma.SessionGroupByArgs> = z.object({ where: SessionWhereInputObjectSchema.optional(), orderBy: z.union([SessionOrderByWithAggregationInputObjectSchema, SessionOrderByWithAggregationInputObjectSchema.array()]).optional(), having: SessionScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(SessionScalarFieldEnumSchema), _count: z.union([ z.literal(true), SessionCountAggregateInputObjectSchema ]).optional(), _min: SessionMinAggregateInputObjectSchema.optional(), _max: SessionMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.SessionGroupByArgs>;
+export const SessionGroupBySchema: z.ZodType<Prisma.SessionGroupByArgs> = z
+    .object({
+        where: SessionWhereInputObjectSchema.optional(),
+        orderBy: z
+            .union([
+                SessionOrderByWithAggregationInputObjectSchema,
+                SessionOrderByWithAggregationInputObjectSchema.array(),
+            ])
+            .optional(),
+        having: SessionScalarWhereWithAggregatesInputObjectSchema.optional(),
+        take: z.number().optional(),
+        skip: z.number().optional(),
+        by: z.array(SessionScalarFieldEnumSchema),
+        _count: z
+            .union([z.literal(true), SessionCountAggregateInputObjectSchema])
+            .optional(),
+        _min: SessionMinAggregateInputObjectSchema.optional(),
+        _max: SessionMaxAggregateInputObjectSchema.optional(),
+    })
+    .strict() as unknown as z.ZodType<Prisma.SessionGroupByArgs>;
 
-export const SessionGroupByZodSchema = z.object({ where: SessionWhereInputObjectSchema.optional(), orderBy: z.union([SessionOrderByWithAggregationInputObjectSchema, SessionOrderByWithAggregationInputObjectSchema.array()]).optional(), having: SessionScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(SessionScalarFieldEnumSchema), _count: z.union([ z.literal(true), SessionCountAggregateInputObjectSchema ]).optional(), _min: SessionMinAggregateInputObjectSchema.optional(), _max: SessionMaxAggregateInputObjectSchema.optional() }).strict();
+export const SessionGroupByZodSchema = z
+    .object({
+        where: SessionWhereInputObjectSchema.optional(),
+        orderBy: z
+            .union([
+                SessionOrderByWithAggregationInputObjectSchema,
+                SessionOrderByWithAggregationInputObjectSchema.array(),
+            ])
+            .optional(),
+        having: SessionScalarWhereWithAggregatesInputObjectSchema.optional(),
+        take: z.number().optional(),
+        skip: z.number().optional(),
+        by: z.array(SessionScalarFieldEnumSchema),
+        _count: z
+            .union([z.literal(true), SessionCountAggregateInputObjectSchema])
+            .optional(),
+        _min: SessionMinAggregateInputObjectSchema.optional(),
+        _max: SessionMaxAggregateInputObjectSchema.optional(),
+    })
+    .strict();

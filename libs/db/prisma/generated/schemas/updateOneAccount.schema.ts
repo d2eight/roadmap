@@ -6,6 +6,26 @@ import { AccountUpdateInputObjectSchema as AccountUpdateInputObjectSchema } from
 import { AccountUncheckedUpdateInputObjectSchema as AccountUncheckedUpdateInputObjectSchema } from './objects/AccountUncheckedUpdateInput.schema';
 import { AccountWhereUniqueInputObjectSchema as AccountWhereUniqueInputObjectSchema } from './objects/AccountWhereUniqueInput.schema';
 
-export const AccountUpdateOneSchema: z.ZodType<Prisma.AccountUpdateArgs> = z.object({ select: AccountSelectObjectSchema.optional(), include: AccountIncludeObjectSchema.optional(), data: z.union([AccountUpdateInputObjectSchema, AccountUncheckedUpdateInputObjectSchema]), where: AccountWhereUniqueInputObjectSchema }).strict() as unknown as z.ZodType<Prisma.AccountUpdateArgs>;
+export const AccountUpdateOneSchema: z.ZodType<Prisma.AccountUpdateArgs> = z
+    .object({
+        select: AccountSelectObjectSchema.optional(),
+        include: AccountIncludeObjectSchema.optional(),
+        data: z.union([
+            AccountUpdateInputObjectSchema,
+            AccountUncheckedUpdateInputObjectSchema,
+        ]),
+        where: AccountWhereUniqueInputObjectSchema,
+    })
+    .strict() as unknown as z.ZodType<Prisma.AccountUpdateArgs>;
 
-export const AccountUpdateOneZodSchema = z.object({ select: AccountSelectObjectSchema.optional(), include: AccountIncludeObjectSchema.optional(), data: z.union([AccountUpdateInputObjectSchema, AccountUncheckedUpdateInputObjectSchema]), where: AccountWhereUniqueInputObjectSchema }).strict();
+export const AccountUpdateOneZodSchema = z
+    .object({
+        select: AccountSelectObjectSchema.optional(),
+        include: AccountIncludeObjectSchema.optional(),
+        data: z.union([
+            AccountUpdateInputObjectSchema,
+            AccountUncheckedUpdateInputObjectSchema,
+        ]),
+        where: AccountWhereUniqueInputObjectSchema,
+    })
+    .strict();

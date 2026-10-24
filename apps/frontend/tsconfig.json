@@ -1,54 +1,54 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "shared-types": ["../../libs/shared-types/src/index.ts"],
-      "shared-constants": ["../../libs/shared-constants/src/index.ts"],
-      "auth": ["../../libs/auth/src/index.ts"],
-      "database": ["../../libs/db/src/index.ts"],
-      "database/schemas": ["../../libs/db/src/schemas.ts"],
-      "database/models": ["../../libs/db/src/models.ts"],
-      "database/enums": ["../../libs/db/src/enums.ts"],
-      "utils": ["../../libs/utils/src/index.ts"],
-      "utils/client": ["../../libs/utils/src/index-client.ts"],
-      "errors": ["../../libs/errors/src/index.ts"],
-      "env": ["../../libs/env/src/index.ts"],
-      "env/client": ["../../libs/env/src/index-client.ts"]
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"],
+            "shared-types": ["../../libs/shared-types/src/index.ts"],
+            "shared-constants": ["../../libs/shared-constants/src/index.ts"],
+            "auth": ["../../libs/auth/src/index.ts"],
+            "database": ["../../libs/db/src/index.ts"],
+            "database/schemas": ["../../libs/db/src/schemas.ts"],
+            "database/models": ["../../libs/db/src/models.ts"],
+            "database/enums": ["../../libs/db/src/enums.ts"],
+            "utils": ["../../libs/utils/src/index.ts"],
+            "utils/client": ["../../libs/utils/src/index-client.ts"],
+            "errors": ["../../libs/errors/src/index.ts"],
+            "env": ["../../libs/env/src/index.ts"],
+            "env/client": ["../../libs/env/src/index-client.ts"]
+        },
+        "jsx": "preserve",
+        "strict": true,
+        "noEmit": true,
+        "emitDeclarationOnly": false,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "incremental": true,
+        "plugins": [{ "name": "next" }]
     },
-    "jsx": "preserve",
-    "strict": true,
-    "noEmit": true,
-    "emitDeclarationOnly": false,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "incremental": true,
-    "plugins": [{ "name": "next" }]
-  },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx",
+    "include": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.js",
+        "**/*.jsx",
 
-    "../../apps/frontend/.next/types/**/*.ts",
-    "../../dist/apps/frontend/.next/types/**/*.ts",
+        "../../apps/frontend/.next/types/**/*.ts",
+        "../../dist/apps/frontend/.next/types/**/*.ts",
 
-    "next-env.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "jest.config.ts",
-    "jest.config.cts",
-    "**/*.spec.ts",
-    "**/*.test.ts"
-  ]
+        "next-env.d.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "jest.config.ts",
+        "jest.config.cts",
+        "**/*.spec.ts",
+        "**/*.test.ts"
+    ]
 }

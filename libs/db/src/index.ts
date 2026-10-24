@@ -8,11 +8,11 @@ const connectionString = env.DATABASE_URL;
 const adapter = new PrismaPg({ connectionString });
 
 const prismaClientSingleton = () => {
-  return new PrismaClient({ adapter });
+    return new PrismaClient({ adapter });
 };
 
 declare global {
-  var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>;
+    var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>;
 }
 
 const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();

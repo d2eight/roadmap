@@ -6,36 +6,36 @@ import { env } from 'env';
 let io = null;
 
 export const initSocket = (server) => {
-  io = new Server(server, {
-    cors: {
-      origin: env.NEXT_URL,
-      credentials: true,
-    },
-  });
-
-  io.use(async (socket, next) => {
-    const session = await auth.api.getSession({
-      headers: fromNodeHeaders(socket.request.headers),
+    io = new Server(server, {
+        cors: {
+            origin: env.NEXT_URL,
+            credentials: true,
+        },
     });
 
-    if (!session) {
-      return next(new Error('No such session'));
-    }
+    io.use(async (socket, next) => {
+        const session = await auth.api.getSession({
+            headers: fromNodeHeaders(socket.request.headers),
+        });
 
-    socket.data.id = session.user.id;
-    next();
-  });
+        if (!session) {
+            return next(new Error('No such session'));
+        }
 
-  io.on('connection', (socket) => {
-    socket.join(socket.data.id);
-  });
+        socket.data.id = session.user.id;
+        next();
+    });
 
-  return io;
+    io.on('connection', (socket) => {
+        socket.join(socket.data.id);
+    });
+
+    return io;
 };
 
 export const getIO = () => {
-  if (!io) {
-    throw new Error();
-  }
-  return io;
+    if (!io) {
+        throw new Error();
+    }
+    return io;
 };

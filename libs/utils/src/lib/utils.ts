@@ -4,79 +4,79 @@ import { auth } from 'auth';
 import { getGuideStepProperties } from 'shared-constants';
 
 export async function getSession({ headers }: { headers: Headers }) {
-  return auth.api.getSession({
-    headers,
-  });
+    return auth.api.getSession({
+        headers,
+    });
 }
 
 export async function getGuide({
-  userId,
-  guideId,
+    userId,
+    guideId,
 }: {
-  userId: string;
-  guideId: string;
+    userId: string;
+    guideId: string;
 }) {
-  return prisma.guide.findUnique({
-    where: {
-      id: guideId,
-      userId: userId,
-    },
-    include: {
-      steps: {
-        ...getGuideStepProperties,
-      },
-    },
-  });
+    return prisma.guide.findUnique({
+        where: {
+            id: guideId,
+            userId: userId,
+        },
+        include: {
+            steps: {
+                ...getGuideStepProperties,
+            },
+        },
+    });
 }
 
 export async function getGuides({
-  pageSize,
-  userId,
-  params,
+    pageSize,
+    userId,
+    params,
 }: {
-  pageSize: number;
-  userId: string;
-  params: paramsSchemaType;
+    pageSize: number;
+    userId: string;
+    params: paramsSchemaType;
 }) {
-  const currentPage = params.page;
-  const orderBy = {
-    [`${params.orderBy}`]: 'desc',
-  };
-  const progressStatus = params.progressStatus;
+    const currentPage = params.page;
+    const orderBy = {
+        [`${params.orderBy}`]: 'desc',
+    };
+    const progressStatus = params.progressStatus;
 
-  return prisma.$transaction([
-    prisma.guide.findMany({
-      where: {
-        userId: userId,
-        progressStatus: {
-          in: progressStatus,
-        },
-      },
-      include: {
-        steps: {
-          select: {
-            id: true,
-            guideId: true,
-            title: true,
-            description: true,
-            status: true,
-          },
-          orderBy: {
-            id: 'asc',
-          },
-        },
-      },
-      skip: (currentPage - 1) * pageSize,
-      take: pageSize,
-      orderBy,
-    }),
-    prisma.guide.count({
-      where: {
-        userId: userId,
-        progressStatus: {
-          in: progressStatus,
-        },
-      },
-    }),
-  ]);
+    return prisma.$transaction([
+        prisma.guide.findMany({
+            where: {
+                userId: userId,
+                progressStatus: {
+                    in: progressStatus,
+                },
+            },
+            include: {
+                steps: {
+                    select: {
+                        id: true,
+                        guideId: true,
+                        title: true,
+                        description: true,
+                        status: true,
+                    },
+                    orderBy: {
+                        id: 'asc',
+                    },
+                },
+            },
+            skip: (currentPage - 1) * pageSize,
+            take: pageSize,
+            orderBy,
+        }),
+        prisma.guide.count({
+            where: {
+                userId: userId,
+                progressStatus: {
+                    in: progressStatus,
+                },
+            },
+        }),
+    ]);
 }
