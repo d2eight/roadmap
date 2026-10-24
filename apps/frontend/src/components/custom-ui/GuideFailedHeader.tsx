@@ -26,7 +26,7 @@ export function GuideFailedHeader() {
           <h1>{guide.title}</h1>
         </CardTitle>
         <CardAction className="flex items-center gap-2">
-          <DeleteGuideButton />
+          <DeleteGuideButton redirect={true} />
         </CardAction>
       </CardHeader>
       <CardContent className="px-0">

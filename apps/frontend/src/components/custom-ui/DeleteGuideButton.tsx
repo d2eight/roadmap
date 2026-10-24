@@ -18,18 +18,24 @@ import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { useContext } from 'react';
 import { GuideContext } from '@/context/GuideContext';
-import { ApiError, ApiErrors, paramsSchema } from 'shared-types';
+import { ApiErrors } from 'shared-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ParamsContext } from '@/context/ParamsContext';
 import { toast } from 'sonner';
 import { deleteGuide } from '@/utils/guideApiActions';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import { useRouter } from 'next/navigation';
 
-export function DeleteGuideButton() {
+export function DeleteGuideButton({
+  redirect = false,
+}: {
+  redirect?: boolean;
+}) {
   const { guide } = useContext(GuideContext);
   const queryClient = useQueryClient();
-  const { queryKey } = useContext(ParamsContext);
+  const { queryKey, defaultParams } = useContext(ParamsContext);
   const { clientHandleApiError } = useClientHandleApiError();
+  const router = useRouter();
 
   const isDisabled =
     guide.status !== 'GUIDE_GENERATED' &&
@@ -44,6 +50,9 @@ export function DeleteGuideButton() {
       });
       await queryClient.invalidateQueries({ queryKey });
       toast.success('You have successfully deleted guide!');
+      if (redirect) {
+        return router.replace(`/guides?${defaultParams}`);
+      }
     },
     onError: (error) => {
       clientHandleApiError({

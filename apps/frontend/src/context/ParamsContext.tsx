@@ -17,6 +17,7 @@ export const ParamsContext = createContext<{
   parsedParams: paramsSchemaType;
   queryKey: QueryKeyType;
   resetParams: () => void;
+  defaultParams: URLSearchParams;
 }>(null!);
 
 function getParsedParams(searchParams: URLSearchParams): paramsSchemaType {
@@ -34,11 +35,14 @@ export function ParamsContextProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const resetParams = useCallback(() => {
-    const defaultParams = getDefaultSearchParams({
+  const defaultParams = useMemo(() => {
+    console.log('aboba');
+    return getDefaultSearchParams({
       searchParams,
     });
+  }, []);
 
+  const resetParams = useCallback(() => {
     const isNotDefaultSearchParams =
       defaultParams.toString() !== searchParams.toString();
 
@@ -66,6 +70,7 @@ export function ParamsContextProvider({ children }: { children: ReactNode }) {
         parsedParams,
         queryKey,
         resetParams,
+        defaultParams,
       }}
     >
       {children}

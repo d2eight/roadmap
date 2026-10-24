@@ -53,7 +53,7 @@ export function GuideHeader() {
               variant="outline"
               className="hidden xl:flex"
             />
-            <DeleteGuideButton />
+            <DeleteGuideButton redirect={true} />
             <RecreateGuideMenu />
           </CardAction>
         </CardHeader>
