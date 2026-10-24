@@ -70,13 +70,11 @@ export default async function DashboardServerPage({
       <HydrationBoundary state={dehydrate(queryClient)}>
         <FormProcessor>
           <div className="flex flex-col gap-5 xl:gap-15">
-            <ParamsContextProvider>
-              <Filter />
-              <GuidesContextProvider>
-                <Guides />
-                <GuidesPagination />
-              </GuidesContextProvider>
-            </ParamsContextProvider>
+            <Filter />
+            <GuidesContextProvider>
+              <Guides />
+              <GuidesPagination />
+            </GuidesContextProvider>
           </div>
         </FormProcessor>
       </HydrationBoundary>

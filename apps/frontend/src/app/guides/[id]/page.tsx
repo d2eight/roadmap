@@ -8,6 +8,7 @@ import { getGuide, getSession } from 'utils';
 import { headers } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { GuideNotFound } from '@/components/custom-ui/GuideNotFound';
+import { SocketContextProvider } from '@/context/SocketContext';
 
 export default async function GuideServerPage({ params }: RouteIdParams) {
   const queryClient = getQueryClient();
@@ -42,11 +43,9 @@ export default async function GuideServerPage({ params }: RouteIdParams) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ParamsContextProvider>
-        <GuideContextProvider autoQueryStatus={true} guideId={guideId}>
-          <GuidePage />
-        </GuideContextProvider>
-      </ParamsContextProvider>
+      <GuideContextProvider autoQueryStatus={true} guideId={guideId}>
+        <GuidePage />
+      </GuideContextProvider>
     </HydrationBoundary>
   );
 }

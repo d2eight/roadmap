@@ -6,17 +6,20 @@ import { SocketContextProvider } from './context/SocketContext';
 import { TooltipProvider } from './components/ui/tooltip';
 import AuthContextProvider from '@/context/AuthContext';
 import { getQueryClient } from '@/query/getQueryClient';
+import { ParamsContextProvider } from '@/context/ParamsContext';
 
 export default function Providers({ children }: { children: ReactNode }) {
   const queryClient = getQueryClient();
 
   return (
-    <SocketContextProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <AuthContextProvider>{children}</AuthContextProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </SocketContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <ParamsContextProvider>
+        <SocketContextProvider>
+          <TooltipProvider>
+            <AuthContextProvider>{children}</AuthContextProvider>
+          </TooltipProvider>
+        </SocketContextProvider>
+      </ParamsContextProvider>
+    </QueryClientProvider>
   );
 }

@@ -3,17 +3,14 @@
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
 } from 'react';
 import { GuideContextType } from 'shared-types';
-import { SocketContext } from './SocketContext';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { GuideStatus } from 'database/enums';
-import { toast } from 'sonner';
-import { ParamsContext } from '@/context/ParamsContext';
-import { GuideModel } from 'database/models';
 import { fetchGuide } from '@/utils/guideApiActions';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
 import { GuideNotFound } from '@/components/custom-ui/GuideNotFound';
@@ -35,9 +32,6 @@ export default function GuideContextProvider({
   children: ReactNode;
   autoQueryStatus: boolean;
 }) {
-  const queryClient = useQueryClient();
-  const { queryKey } = useContext(ParamsContext);
-  const { socketGuideData } = useContext(SocketContext);
   const { clientHandleApiError } = useClientHandleApiError();
   const requestBody: RequestInit = {
     method: 'GET',
@@ -63,34 +57,6 @@ export default function GuideContextProvider({
     enabled: autoQueryStatus,
     retry: false,
   });
-
-  useEffect(() => {
-    if (socketGuideData && data && data.id === socketGuideData.id) {
-      queryClient.setQueryData(['guide', guideId], socketGuideData);
-
-      const currentGuidesCache =
-        queryClient.getQueryData<[GuideModel[], number]>(queryKey);
-
-      if (currentGuidesCache) {
-        const currentGuidesData = currentGuidesCache[0];
-        const currentGuidesCount = currentGuidesCache[1];
-
-        const newGuidesData = currentGuidesData.map((guide) => {
-          if (guide.id === data.id) {
-            return socketGuideData;
-          }
-          return guide;
-        });
-
-        const newGuidesCache = [newGuidesData, currentGuidesCount];
-
-        queryClient.setQueryData(queryKey, newGuidesCache);
-      }
-      if (socketGuideData.status === 'FAILED') {
-        toast.error('Failed to create guide');
-      }
-    }
-  }, [socketGuideData]);
 
   if (isLoading) {
     return <GuideLoader />;

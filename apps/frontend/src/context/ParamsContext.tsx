@@ -36,7 +36,6 @@ export function ParamsContextProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   const defaultParams = useMemo(() => {
-    console.log('aboba');
     return getDefaultSearchParams({
       searchParams,
     });
