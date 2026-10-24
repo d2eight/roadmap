@@ -25,6 +25,7 @@ import { NotebookPenIcon } from 'lucide-react';
 import { PromptForm } from '@/components/forms/PromptForm';
 import { toggleExplanationString } from '@/constants/constants';
 import { CreateGuidePromptFormButton } from '@/components/custom-ui/CreateGuidePromptFormButton';
+import { useGuideContext } from '@/context/GuideContext';
 
 export function ChangeGuidePromptButton({
     children,
@@ -33,6 +34,8 @@ export function ChangeGuidePromptButton({
     children?: ReactNode;
     className?: string;
 }) {
+    const { guide } = useGuideContext();
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -56,7 +59,10 @@ export function ChangeGuidePromptButton({
                                 You can change your prompt, this will cause to
                                 the recreation of guide
                             </DialogDescription>
-                            <PromptForm pushToGuideStatus={false} />
+                            <PromptForm
+                                guide={guide}
+                                pushToGuideStatus={false}
+                            />
                         </DialogHeader>
                         <DialogFooter className="mt-auto flex-col! gap-5">
                             <p>{toggleExplanationString}</p>

@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import {
     ApiErrors,
     ApiResponseSuccess,
+    GuideModelWithRelations,
     PromptFormErrors,
     promptSchema,
     promptSchemaType,
@@ -26,28 +27,28 @@ import {
     recreateGuide,
     recreateGuideQuestions,
 } from '@/utils/guideApiActions';
-
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import { useGuideContext } from '@/context/GuideContext';
+import { UnexpectedError } from 'errors';
 
 export function PromptForm({
     pushToGuideStatus,
+    guide,
 }: {
-    pushToGuideStatus: boolean;
+    pushToGuideStatus?: boolean;
+    guide?: GuideModelWithRelations;
 }) {
     const router = useRouter();
     const { processingStatus, setProcessingStatus } =
         useFormProcessingContext();
     const queryClient = useQueryClient();
     const params = useParamsContext();
-    const guideContext = useGuideContext();
-    const isRecreateForm = !!guideContext;
+    const isRecreateForm = !!guide;
     const { clientHandleApiError } = useClientHandleApiError();
 
-    const defaultPromptValue = isRecreateForm ? guideContext.guide.prompt : '';
+    const defaultPromptValue = isRecreateForm ? guide.prompt : '';
     const defaultExternalAiQuestionsStatusValue = (): boolean => {
         if (isRecreateForm) {
-            return !!guideContext.guide.questions;
+            return !!guide.questions;
         }
         return false;
     };
@@ -150,9 +151,15 @@ export function PromptForm({
         requestBody: RequestInit;
         externalAiQuestionsStatus: boolean;
     }) {
+        if (!isRecreateForm) {
+            throw new UnexpectedError({
+                message: 'Something went wrong',
+            });
+        }
+
         const result = externalAiQuestionsStatus
-            ? await recreateGuideQuestions(guideContext.guide.id, requestBody)
-            : await recreateGuide(guideContext.guide.id, requestBody);
+            ? await recreateGuideQuestions(guide.id, requestBody)
+            : await recreateGuide(guide.id, requestBody);
 
         if (result.isErr()) {
             throw result.error;
