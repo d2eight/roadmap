@@ -2,7 +2,7 @@ import z from 'zod';
 import { config } from 'dotenv';
 import * as path from 'node:path';
 
-config({ path: path.resolve(__dirname, '../../../../.env') });
+config({ path: path.resolve(process.cwd(), '.env') });
 
 const environmentSchema = z.object({
   POSTGRES_USER: z.string(),
@@ -13,6 +13,7 @@ const environmentSchema = z.object({
   REDIS_USER_PASSWORD: z.string(),
   REDIS_HOST: z.string(),
   REDIS_PORT: z.coerce.number(),
+  OPENAI_MODEL: z.string(),
   NEXT_URL: z.string(),
   EXPRESS_URL: z.string(),
   BETTER_AUTH_SECRET: z.string(),

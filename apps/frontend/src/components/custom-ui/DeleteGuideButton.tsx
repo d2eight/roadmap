@@ -39,7 +39,7 @@ export function DeleteGuideButton() {
   const { mutate } = useMutation<null, ApiErrors>({
     mutationFn: removeGuide,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
+      queryClient.removeQueries({
         queryKey: ['guide', guide.id],
       });
       await queryClient.invalidateQueries({ queryKey });

@@ -1,6 +1,12 @@
 'use client';
 
-import { createContext, ReactNode, useContext, useEffect } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
 import { GuideContextType } from 'shared-types';
 import { SocketContext } from './SocketContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -12,6 +18,11 @@ import { fetchGuide } from '@/utils/guideApiActions';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
 import { GuideNotFound } from '@/components/custom-ui/GuideNotFound';
 import { GuideLoader } from '@/components/custom-ui/GuideLoader';
+import {
+  getCompletedSteps,
+  getQuestionsCount,
+  getStepsCount,
+} from '@/utils/guideInfo';
 
 export const GuideContext = createContext<GuideContextType>(null!);
 
@@ -89,25 +100,6 @@ export default function GuideContextProvider({
     return <GuideNotFound />;
   }
 
-  const getCompletedSteps = () =>
-    data.steps.reduce((acc, curr) => {
-      if (curr.status === 'DONE') {
-        acc += 1;
-      }
-      return acc;
-    }, 0);
-
-  const getStepsCount = () => {
-    const involvedSteps = data.steps.filter(
-      (step) => step.status !== 'REJECTED',
-    );
-
-    return involvedSteps.length;
-  };
-
-  const getQuestionsCount = () =>
-    data.questions ? Object.keys(data.questions).length : 0;
-
   let context: GuideContextType;
 
   switch (data.status) {
@@ -115,15 +107,15 @@ export default function GuideContextProvider({
       context = {
         guide: data,
         status: data.status,
-        questionsCount: getQuestionsCount(),
+        questionsCount: getQuestionsCount(data),
       };
       break;
     case GuideStatus.GUIDE_GENERATED:
       context = {
         guide: data,
         status: data.status,
-        completedSteps: getCompletedSteps(),
-        stepsCount: getStepsCount(),
+        completedSteps: getCompletedSteps(data),
+        stepsCount: getStepsCount(data),
       };
       break;
     default:

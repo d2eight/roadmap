@@ -4,6 +4,7 @@ import { generateText, Output } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { aiQuestionsSchema } from 'shared-types';
 import { getIO } from '../../socket';
+import { env } from 'env';
 
 export async function aiCreateGuideQuestions(guide: GuideModel) {
   const guideId = guide.id;
@@ -31,7 +32,7 @@ export async function aiCreateGuideQuestions(guide: GuideModel) {
   };
 
   const { output } = await generateText({
-    model: openai('gpt-5.4-mini'),
+    model: openai(env.OPENAI_MODEL),
     output: Output.object({
       schema: aiQuestionsSchema,
     }),

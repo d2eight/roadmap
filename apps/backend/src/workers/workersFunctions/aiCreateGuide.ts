@@ -1,10 +1,11 @@
 import { generateText, Output } from 'ai';
 import { prisma } from 'database';
-import { aiGuideGenerationSchema, GuideJob, PromptType } from 'shared-types';
+import { aiGuideGenerationSchema } from 'shared-types';
 import { openai } from '@ai-sdk/openai';
 import { GuideStepCreateManyInput } from '@/libs/db/generated/prisma/models/GuideStep';
 import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
 import { getIO } from '../../socket';
+import { env } from 'env';
 
 export async function aiCreateGuide(guide: GuideModel) {
   const guideId = guide.id;
@@ -43,7 +44,7 @@ export async function aiCreateGuide(guide: GuideModel) {
       };
 
   const { output } = await generateText({
-    model: openai('gpt-5.4-mini'),
+    model: openai(env.OPENAI_MODEL),
     output: Output.object({
       schema: aiGuideGenerationSchema,
     }),

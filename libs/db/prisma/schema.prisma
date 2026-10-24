@@ -111,6 +111,9 @@ model Guide {
   progressStatus            GuideProgressStatus @default(PENDING)
   createdAt                 DateTime            @default(now())
   updatedAt                 DateTime            @updatedAt
+
+  @@index([userId, progressStatus])
+  @@index(userId, createdAt(sort: Desc))
 }
 
 enum GuideStepStatus {
@@ -129,4 +132,6 @@ model GuideStep {
   status      GuideStepStatus @default(PENDING)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
+
+  @@index([guideId])
 }
