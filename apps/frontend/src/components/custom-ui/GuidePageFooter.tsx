@@ -4,7 +4,7 @@ import { MobileGuidePageFooterWrapper } from '@/components/custom-ui/MobileGuide
 import { AnswerQuestionsButton } from '@/components/custom-ui/AnswerQuestionsButton';
 
 export function GuidePageFooter() {
-    const { status } = useGuideContext();
+    const { status, parsedQuestions } = useGuideContext();
 
     switch (status) {
         case 'GUIDE_GENERATED':
@@ -15,7 +15,11 @@ export function GuidePageFooter() {
                     </UpdateProgressButton>
                 </MobileGuidePageFooterWrapper>
             );
-        case 'QUESTIONS_GENERATED':
+        case 'QUESTIONS_GENERATED': {
+            if (!parsedQuestions.success) {
+                return null;
+            }
+
             return (
                 <>
                     <MobileGuidePageFooterWrapper>
@@ -34,5 +38,6 @@ export function GuidePageFooter() {
                     </AnswerQuestionsButton>
                 </>
             );
+        }
     }
 }

@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { ReactNode } from 'react';
 import { AnswerQuestionsButton } from '@/components/custom-ui/AnswerQuestionsButton';
+import { useGuideContext } from '@/context/GuideContext';
 
 export function RecreateGuideWithAnsweredQuestionsButton({
     children,
@@ -33,6 +34,20 @@ export function RecreateGuideWithAnsweredQuestionsButton({
     children?: ReactNode;
     className?: string;
 }) {
+    const { parsedQuestions, status, parsedAnswers } = useGuideContext();
+
+    if (status !== 'GUIDE_GENERATED') {
+        return null;
+    }
+
+    if (!parsedQuestions.success) {
+        return null;
+    }
+
+    if (!parsedAnswers.success) {
+        return null;
+    }
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -58,7 +73,10 @@ export function RecreateGuideWithAnsweredQuestionsButton({
                             </DialogDescription>
                         </DialogHeader>
                         <div className="-mx-4 no-scrollbar overflow-y-auto px-4">
-                            <GuideQuestionsForm />
+                            <GuideQuestionsForm
+                                guideQuestions={parsedQuestions.data}
+                                answeredQuestions={parsedAnswers.data}
+                            />
                         </div>
                         <DialogFooter className="pt-5">
                             <AlertDialog>

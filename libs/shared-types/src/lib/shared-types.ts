@@ -1,10 +1,14 @@
 import { Session, User } from 'better-auth';
-import { filterSchemaType, paramsSchemaType } from './shared-zod-types';
+import {
+    aiQuestionsSchemaType,
+    answeredQuestionsSchemaType,
+    filterSchemaType,
+    paramsSchemaType,
+} from './shared-zod-types';
 import { Dispatch, JSX, SetStateAction } from 'react';
 import { BetterFetchError } from '@better-fetch/fetch';
 import { Socket } from 'socket.io-client';
 import { Prisma } from 'database';
-import { ApiError } from './shared-classes';
 
 import { GuideStatus } from 'database/enums';
 import {
@@ -15,6 +19,7 @@ import {
 } from 'errors';
 import { JsonValue } from '@prisma/client/runtime/client';
 import { NextResponse } from 'next/server';
+import { ZodSafeParseResult } from 'zod';
 
 export type BetterAuthSession = {
     session: Session;
@@ -72,6 +77,8 @@ export type GuideContextType =
           completedSteps?: never;
           questionsCount: number;
           stepsCount?: never;
+          parsedQuestions: ZodSafeParseResult<aiQuestionsSchemaType>;
+          parsedAnswers?: never;
       }
     | {
           guide: GuideModelWithRelations;
@@ -79,6 +86,8 @@ export type GuideContextType =
           completedSteps: number;
           questionsCount?: never;
           stepsCount: number;
+          parsedQuestions: ZodSafeParseResult<aiQuestionsSchemaType>;
+          parsedAnswers: ZodSafeParseResult<answeredQuestionsSchemaType>;
       }
     | {
           guide: GuideModelWithRelations;
@@ -90,6 +99,8 @@ export type GuideContextType =
           completedSteps?: never;
           questionsCount?: never;
           stepsCount?: never;
+          parsedQuestions?: never;
+          parsedAnswers?: never;
       };
 
 export type SocketContextType = {

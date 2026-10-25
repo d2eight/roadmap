@@ -11,15 +11,15 @@ import { Button } from '@/components/ui/button';
 import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
 import { LucideRefreshCcw } from 'lucide-react';
 
-export function GuideFailedHeader() {
+export function GuideFailedHeader({ title }: { title?: string }) {
     const { guide } = useGuideContext();
     const icon = <LucideRefreshCcw />;
 
     return (
         <>
             <CardHeader className="px-0">
-                <CardTitle className="flex flex-row justify-between items-center ">
-                    <h1>{guide.title}</h1>
+                <CardTitle className="flex flex-row justify-between items-center truncate">
+                    <h1>{title || guide.title}</h1>
                 </CardTitle>
                 <CardAction className="flex items-center gap-2">
                     <DeleteGuideButton redirect={true} />

@@ -13,6 +13,7 @@ import {
     getQuestionsCount,
     getStepsCount,
 } from '@/utils/guideInfo';
+import { parseAnswers, parseQuestions } from '@/utils/zodParse';
 
 export const GuideContext = createContext<GuideContextType | null>(null);
 
@@ -77,6 +78,7 @@ export default function GuideContextProvider({
                 guide: data,
                 status: data.status,
                 questionsCount: getQuestionsCount(data),
+                parsedQuestions: parseQuestions(data.questions),
             };
             break;
         case GuideStatus.GUIDE_GENERATED:
@@ -85,6 +87,8 @@ export default function GuideContextProvider({
                 status: data.status,
                 completedSteps: getCompletedSteps(data),
                 stepsCount: getStepsCount(data),
+                parsedQuestions: parseQuestions(data.questions),
+                parsedAnswers: parseAnswers(data.answeredQuestions),
             };
             break;
         default:

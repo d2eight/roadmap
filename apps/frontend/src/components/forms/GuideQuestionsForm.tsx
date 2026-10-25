@@ -3,7 +3,6 @@
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
-import { notFound } from 'next/navigation';
 import {
     Field,
     FieldDescription,
@@ -37,20 +36,18 @@ import {
 } from '@/utils/guideApiActions';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
 
-export default function GuideQuestionsForm() {
+export default function GuideQuestionsForm({
+    guideQuestions,
+    answeredQuestions,
+}: {
+    guideQuestions: aiQuestionsSchemaType;
+    answeredQuestions?: answeredQuestionsSchemaType;
+}) {
     const { guide } = useGuideContext();
     const { processingStatus, setProcessingStatus } =
         useFormProcessingContext();
     const queryClient = useQueryClient();
     const { clientHandleApiError } = useClientHandleApiError();
-
-    if (!guide.questions) {
-        return notFound();
-    }
-
-    const guideQuestions: aiQuestionsSchemaType = JSON.parse(
-        guide.questions.toString(),
-    );
 
     const questionABCD = guideQuestions.aiQuestionABCD.question;
     const questionABCDOptions = guideQuestions.aiQuestionABCD.options;
@@ -64,28 +61,21 @@ export default function GuideQuestionsForm() {
 
     const questionText = guideQuestions.aiQuestionText.question;
 
-    const isRecreateForm = !!guide.answeredQuestions;
+    const isRecreateForm = !!answeredQuestions;
 
-    const alreadyAnsweredQuestions =
-        isRecreateForm &&
-        Object.keys(guide.answeredQuestions as object).length > 0
-            ? (guide.answeredQuestions as answeredQuestionsSchemaType)
-            : null;
-
-    const defaultValues: guideQuestionsSchemaType = {
-        questionABCD: alreadyAnsweredQuestions
-            ? alreadyAnsweredQuestions.questionABCD.answer
-            : '',
-        questionRange: alreadyAnsweredQuestions
-            ? alreadyAnsweredQuestions.questionRange.answer
-            : 0,
-        questionCheckbox: alreadyAnsweredQuestions
-            ? alreadyAnsweredQuestions.questionCheckbox.answer
-            : [],
-        questionText: alreadyAnsweredQuestions
-            ? alreadyAnsweredQuestions.questionText.answer
-            : '',
-    };
+    const defaultValues: guideQuestionsSchemaType = isRecreateForm
+        ? {
+              questionABCD: answeredQuestions.questionABCD.answer,
+              questionRange: answeredQuestions.questionRange.answer,
+              questionCheckbox: answeredQuestions.questionCheckbox.answer,
+              questionText: answeredQuestions.questionText.answer,
+          }
+        : {
+              questionABCD: '',
+              questionRange: 0,
+              questionCheckbox: [],
+              questionText: '',
+          };
 
     const form = useForm<guideQuestionsSchemaType>({
         resolver: zodResolver(guideQuestionsSchema),
