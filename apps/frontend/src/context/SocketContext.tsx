@@ -45,38 +45,38 @@ export const SocketContextProvider = ({
             setConnectionStatus(true);
         }
 
+        return () => {
+            socket.disconnect();
+            setConnectionStatus(false);
+        };
+    }, []);
+
+    useEffect(() => {
+        const socket = getSocket();
+
         const handleGuideUpdate = (data: GuideModelWithRelations) => {
             queryClient.setQueryData(['guide', data.id], data);
 
-            const currentGuidesCache =
-                queryClient.getQueryData<[GuideModelWithRelations[], number]>(
-                    queryKey,
-                );
-
-            if (currentGuidesCache) {
-                const currentGuidesData = currentGuidesCache[0];
-                const currentGuidesCount = currentGuidesCache[1];
-
-                const newGuidesData = currentGuidesData.map((guide) => {
-                    if (guide.id === data.id) {
-                        return data;
-                    }
-                    return guide;
-                });
-
-                const newGuidesCache = [newGuidesData, currentGuidesCount];
-
-                queryClient.setQueryData(queryKey, newGuidesCache);
-            }
+            queryClient.setQueriesData<[GuideModelWithRelations[], number]>(
+                { queryKey },
+                (currentGuidesCache) => {
+                    if (!currentGuidesCache) return currentGuidesCache;
+                    const [currentGuidesData, currentGuidesCount] =
+                        currentGuidesCache;
+                    const newGuidesData = currentGuidesData.map((guide) =>
+                        guide.id === data.id ? data : guide,
+                    );
+                    return [newGuidesData, currentGuidesCount];
+                },
+            );
         };
 
         socket.on('guide_update', handleGuideUpdate);
 
         return () => {
             socket.off('guide_update', handleGuideUpdate);
-            socket.disconnect();
         };
-    }, []);
+    }, [queryKey]);
 
     return (
         <SocketContext value={{ connectionStatus }}>{children}</SocketContext>

@@ -14,9 +14,7 @@ import {
 } from 'shared-types';
 import { StepCard } from '@/components/custom-ui/StepCard';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-    useFormProcessingContext,
-} from '@/context/FormProcessor';
+import { useFormProcessingContext } from '@/context/FormProcessor';
 import { toast } from 'sonner';
 import { RedAlert } from '@/components/custom-ui/RedAlert';
 import { FieldSet } from '@/components/ui/field';
@@ -30,12 +28,13 @@ export function GuideForm() {
     const queryClient = useQueryClient();
     const { clientHandleApiError } = useClientHandleApiError();
 
-    const initialSteps = guide.steps;
-
     const form = useForm<guideStepsSchemaType>({
         resolver: zodResolver(guideStepsSchema),
+        values: {
+            steps: guide.steps,
+        },
         defaultValues: {
-            steps: initialSteps,
+            steps: guide.steps,
         },
     });
 
@@ -67,7 +66,7 @@ export function GuideForm() {
     function onSubmit(data: guideStepsSchemaType) {
         const stepsToUpdate: GuideStepModelFetched[] = data.steps.filter(
             (step) => {
-                const initialStep = initialSteps.find(
+                const initialStep = guide.steps.find(
                     (item) => item.id === step.id,
                 );
                 if (initialStep && initialStep.status !== step.status) {

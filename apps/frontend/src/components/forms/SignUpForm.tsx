@@ -14,8 +14,7 @@ import {
 } from '../ui/card';
 import { Button } from '../ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useContext } from 'react';
-import { FormProcessingContext } from '../../context/FormProcessor';
+import { useFormProcessingContext } from '../../context/FormProcessor';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
@@ -24,9 +23,8 @@ import { signUpWithEmailAndPassword } from '@/utils/auth';
 
 export function SignUpForm() {
     const router = useRouter();
-    const { processingStatus, setProcessingStatus } = useContext(
-        FormProcessingContext,
-    );
+    const { processingStatus, setProcessingStatus } =
+        useFormProcessingContext();
 
     const form = useForm<userSignUpSchemaType>({
         resolver: zodResolver(userSignUpSchema),
@@ -156,7 +154,7 @@ export function SignUpForm() {
                                     <Input
                                         {...field}
                                         id={field.name}
-                                        type="text"
+                                        type="password"
                                         aria-invalid={fieldState.invalid}
                                         placeholder="*****"
                                     />

@@ -14,9 +14,8 @@ import {
     CardTitle,
 } from '../ui/card';
 import { Button } from '../ui/button';
-import { useContext } from 'react';
 import { useRouter } from 'next/navigation';
-import { FormProcessingContext } from '../../context/FormProcessor';
+import { useFormProcessingContext } from '../../context/FormProcessor';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { RedAlert } from '../custom-ui/RedAlert';
@@ -24,9 +23,8 @@ import { signInWithEmailAndPassword } from '@/utils/auth';
 
 export function SignInForm() {
     const router = useRouter();
-    const { processingStatus, setProcessingStatus } = useContext(
-        FormProcessingContext,
-    );
+    const { processingStatus, setProcessingStatus } =
+        useFormProcessingContext();
 
     const form = useForm<userSignInSchemaType>({
         resolver: zodResolver(userSignInSchema),
