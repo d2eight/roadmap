@@ -1,6 +1,14 @@
 import { paramsSchemaType } from 'shared-types';
 import { Prisma } from 'database';
 
+export const guidesResetData = {
+    status: 'INIT',
+    progressStatus: 'PENDING',
+    steps: {
+        deleteMany: {},
+    },
+} satisfies Prisma.GuideUpdateInput;
+
 export const searchParamsDefaultValues: paramsSchemaType = {
     orderBy: 'createdAt',
     progressStatus: ['PENDING', 'INWORK', 'DONE', 'REJECTED'],
@@ -10,7 +18,7 @@ export const searchParamsDefaultValues: paramsSchemaType = {
 export const guidesPageDefaultUrlString =
     '/guides?page=1&orderBy=createdAt&progressStatus=PENDING%2CINWORK%2CDONE';
 
-export const getGuideStepProperties: Prisma.Guide$stepsArgs = {
+export const getGuideStepProperties = {
     select: {
         id: true,
         guideId: true,
@@ -21,4 +29,4 @@ export const getGuideStepProperties: Prisma.Guide$stepsArgs = {
     orderBy: {
         id: 'asc',
     },
-};
+} satisfies Prisma.Guide$stepsArgs;
