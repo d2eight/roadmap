@@ -10,4 +10,4 @@ CODE_REVIEW.md
 # Next.js
 .next
 out
-*.tsbuildinfo
+tsconfig.tsbuildinfo

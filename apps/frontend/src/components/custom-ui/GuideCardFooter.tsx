@@ -7,9 +7,11 @@ import { ArrowRight, LucideRefreshCcw } from 'lucide-react';
 import { useGuideContext } from '@/context/GuideContext';
 import { CardFooter } from '@/components/ui/card';
 import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
+import { useParamsContext } from '@/context/ParamsContext';
 
 export function GuideCardFooter() {
     const { guide, status } = useGuideContext();
+    const { searchParams } = useParamsContext();
 
     switch (status) {
         case 'INIT':
@@ -17,7 +19,7 @@ export function GuideCardFooter() {
             return (
                 <CardFooter>
                     <Button className="w-full" variant="secondary" asChild>
-                        <Link href={`/guides/${guide.id}`}>
+                        <Link href={`/guides/${guide.id}?${searchParams}`}>
                             Generating a guide
                             <Spinner />
                         </Link>
@@ -28,7 +30,7 @@ export function GuideCardFooter() {
             return (
                 <CardFooter>
                     <Button className="w-full" variant="secondary" asChild>
-                        <Link href={`/guides/${guide.id}`}>
+                        <Link href={`/guides/${guide.id}?${searchParams}`}>
                             Generating questions
                             <Spinner />
                         </Link>
@@ -39,7 +41,7 @@ export function GuideCardFooter() {
             return (
                 <CardFooter>
                     <Button className="w-full" variant="outline" asChild>
-                        <Link href={`/guides/${guide.id}`}>
+                        <Link href={`/guides/${guide.id}?${searchParams}`}>
                             Open questions
                             <ArrowRight />
                         </Link>
@@ -50,7 +52,7 @@ export function GuideCardFooter() {
             return (
                 <CardFooter>
                     <Button className="w-full" asChild>
-                        <Link href={`/guides/${guide.id}`}>
+                        <Link href={`/guides/${guide.id}?${searchParams}`}>
                             Open guide
                             <ArrowRight />
                         </Link>

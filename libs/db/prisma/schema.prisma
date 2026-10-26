@@ -113,7 +113,7 @@ model Guide {
   updatedAt                 DateTime            @updatedAt
 
   @@index([userId, progressStatus])
-  @@index(userId, createdAt(sort: Desc))
+  @@index([userId, createdAt(sort: Desc)])
 }
 
 enum GuideStepStatus {

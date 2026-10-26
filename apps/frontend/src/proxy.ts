@@ -9,7 +9,7 @@ export default async function proxy(request: NextRequest) {
         return sessionResponse.redirect;
     }
 
-    if (request.nextUrl.pathname === '/guides') {
+    if (request.nextUrl.pathname.startsWith('/guides')) {
         const paramsResponse = await verifySearchParams({ request });
 
         if (paramsResponse) {

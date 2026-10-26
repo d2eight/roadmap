@@ -1,5 +1,4 @@
 import { TaggedError } from 'better-result';
-import { z, ZodError } from 'zod';
 
 export class UnexpectedError extends TaggedError('UnexpectedError')<{
     message: string;
