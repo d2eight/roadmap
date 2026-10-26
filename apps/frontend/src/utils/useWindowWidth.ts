@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { widthMap } from '@/constants/constants';
 import { WidthInfo } from 'shared-types';
 
@@ -7,6 +7,11 @@ export function useWindowWidth(): WidthInfo {
         typeof window !== 'undefined' && window.innerWidth
             ? window.innerWidth
             : 0,
+    );
+
+    const sortedWidthMap = useMemo(
+        () => [...widthMap].sort((a, b) => b.size - a.size),
+        [],
     );
 
     useEffect(() => {
@@ -21,9 +26,7 @@ export function useWindowWidth(): WidthInfo {
         };
     }, []);
 
-    widthMap.sort((a, b) => b.size - a.size);
-
-    const currentWidthLabel = widthMap.find(
+    const currentWidthLabel = sortedWidthMap.find(
         (item) => width >= item.size,
     )?.label;
     const label = currentWidthLabel ?? 'sm';

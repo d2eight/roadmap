@@ -14,7 +14,7 @@ export function useWindowScroll(): ScrollInfo {
         window.addEventListener('scroll', handleScroll);
 
         return () => {
-            window.removeEventListener('resize', handleScroll);
+            window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
