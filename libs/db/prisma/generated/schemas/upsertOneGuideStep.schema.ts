@@ -8,34 +8,6 @@ import { GuideStepUncheckedCreateInputObjectSchema as GuideStepUncheckedCreateIn
 import { GuideStepUpdateInputObjectSchema as GuideStepUpdateInputObjectSchema } from './objects/GuideStepUpdateInput.schema';
 import { GuideStepUncheckedUpdateInputObjectSchema as GuideStepUncheckedUpdateInputObjectSchema } from './objects/GuideStepUncheckedUpdateInput.schema';
 
-export const GuideStepUpsertOneSchema: z.ZodType<Prisma.GuideStepUpsertArgs> = z
-    .object({
-        select: GuideStepSelectObjectSchema.optional(),
-        include: GuideStepIncludeObjectSchema.optional(),
-        where: GuideStepWhereUniqueInputObjectSchema,
-        create: z.union([
-            GuideStepCreateInputObjectSchema,
-            GuideStepUncheckedCreateInputObjectSchema,
-        ]),
-        update: z.union([
-            GuideStepUpdateInputObjectSchema,
-            GuideStepUncheckedUpdateInputObjectSchema,
-        ]),
-    })
-    .strict() as unknown as z.ZodType<Prisma.GuideStepUpsertArgs>;
+export const GuideStepUpsertOneSchema: z.ZodType<Prisma.GuideStepUpsertArgs> = z.object({ select: GuideStepSelectObjectSchema.optional(), include: GuideStepIncludeObjectSchema.optional(), where: GuideStepWhereUniqueInputObjectSchema, create: z.union([ GuideStepCreateInputObjectSchema, GuideStepUncheckedCreateInputObjectSchema ]), update: z.union([ GuideStepUpdateInputObjectSchema, GuideStepUncheckedUpdateInputObjectSchema ]) }).strict() as unknown as z.ZodType<Prisma.GuideStepUpsertArgs>;
 
-export const GuideStepUpsertOneZodSchema = z
-    .object({
-        select: GuideStepSelectObjectSchema.optional(),
-        include: GuideStepIncludeObjectSchema.optional(),
-        where: GuideStepWhereUniqueInputObjectSchema,
-        create: z.union([
-            GuideStepCreateInputObjectSchema,
-            GuideStepUncheckedCreateInputObjectSchema,
-        ]),
-        update: z.union([
-            GuideStepUpdateInputObjectSchema,
-            GuideStepUncheckedUpdateInputObjectSchema,
-        ]),
-    })
-    .strict();
+export const GuideStepUpsertOneZodSchema = z.object({ select: GuideStepSelectObjectSchema.optional(), include: GuideStepIncludeObjectSchema.optional(), where: GuideStepWhereUniqueInputObjectSchema, create: z.union([ GuideStepCreateInputObjectSchema, GuideStepUncheckedCreateInputObjectSchema ]), update: z.union([ GuideStepUpdateInputObjectSchema, GuideStepUncheckedUpdateInputObjectSchema ]) }).strict();

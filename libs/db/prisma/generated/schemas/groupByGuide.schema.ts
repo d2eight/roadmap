@@ -8,44 +8,6 @@ import { GuideCountAggregateInputObjectSchema as GuideCountAggregateInputObjectS
 import { GuideMinAggregateInputObjectSchema as GuideMinAggregateInputObjectSchema } from './objects/GuideMinAggregateInput.schema';
 import { GuideMaxAggregateInputObjectSchema as GuideMaxAggregateInputObjectSchema } from './objects/GuideMaxAggregateInput.schema';
 
-export const GuideGroupBySchema: z.ZodType<Prisma.GuideGroupByArgs> = z
-    .object({
-        where: GuideWhereInputObjectSchema.optional(),
-        orderBy: z
-            .union([
-                GuideOrderByWithAggregationInputObjectSchema,
-                GuideOrderByWithAggregationInputObjectSchema.array(),
-            ])
-            .optional(),
-        having: GuideScalarWhereWithAggregatesInputObjectSchema.optional(),
-        take: z.number().optional(),
-        skip: z.number().optional(),
-        by: z.array(GuideScalarFieldEnumSchema),
-        _count: z
-            .union([z.literal(true), GuideCountAggregateInputObjectSchema])
-            .optional(),
-        _min: GuideMinAggregateInputObjectSchema.optional(),
-        _max: GuideMaxAggregateInputObjectSchema.optional(),
-    })
-    .strict() as unknown as z.ZodType<Prisma.GuideGroupByArgs>;
+export const GuideGroupBySchema: z.ZodType<Prisma.GuideGroupByArgs> = z.object({ where: GuideWhereInputObjectSchema.optional(), orderBy: z.union([GuideOrderByWithAggregationInputObjectSchema, GuideOrderByWithAggregationInputObjectSchema.array()]).optional(), having: GuideScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(GuideScalarFieldEnumSchema), _count: z.union([ z.literal(true), GuideCountAggregateInputObjectSchema ]).optional(), _min: GuideMinAggregateInputObjectSchema.optional(), _max: GuideMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.GuideGroupByArgs>;
 
-export const GuideGroupByZodSchema = z
-    .object({
-        where: GuideWhereInputObjectSchema.optional(),
-        orderBy: z
-            .union([
-                GuideOrderByWithAggregationInputObjectSchema,
-                GuideOrderByWithAggregationInputObjectSchema.array(),
-            ])
-            .optional(),
-        having: GuideScalarWhereWithAggregatesInputObjectSchema.optional(),
-        take: z.number().optional(),
-        skip: z.number().optional(),
-        by: z.array(GuideScalarFieldEnumSchema),
-        _count: z
-            .union([z.literal(true), GuideCountAggregateInputObjectSchema])
-            .optional(),
-        _min: GuideMinAggregateInputObjectSchema.optional(),
-        _max: GuideMaxAggregateInputObjectSchema.optional(),
-    })
-    .strict();
+export const GuideGroupByZodSchema = z.object({ where: GuideWhereInputObjectSchema.optional(), orderBy: z.union([GuideOrderByWithAggregationInputObjectSchema, GuideOrderByWithAggregationInputObjectSchema.array()]).optional(), having: GuideScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(GuideScalarFieldEnumSchema), _count: z.union([ z.literal(true), GuideCountAggregateInputObjectSchema ]).optional(), _min: GuideMinAggregateInputObjectSchema.optional(), _max: GuideMaxAggregateInputObjectSchema.optional() }).strict();

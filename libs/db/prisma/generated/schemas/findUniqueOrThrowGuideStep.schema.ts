@@ -4,19 +4,6 @@ import { GuideStepSelectObjectSchema as GuideStepSelectObjectSchema } from './ob
 import { GuideStepIncludeObjectSchema as GuideStepIncludeObjectSchema } from './objects/GuideStepInclude.schema';
 import { GuideStepWhereUniqueInputObjectSchema as GuideStepWhereUniqueInputObjectSchema } from './objects/GuideStepWhereUniqueInput.schema';
 
-export const GuideStepFindUniqueOrThrowSchema: z.ZodType<Prisma.GuideStepFindUniqueOrThrowArgs> =
-    z
-        .object({
-            select: GuideStepSelectObjectSchema.optional(),
-            include: GuideStepIncludeObjectSchema.optional(),
-            where: GuideStepWhereUniqueInputObjectSchema,
-        })
-        .strict() as unknown as z.ZodType<Prisma.GuideStepFindUniqueOrThrowArgs>;
+export const GuideStepFindUniqueOrThrowSchema: z.ZodType<Prisma.GuideStepFindUniqueOrThrowArgs> = z.object({ select: GuideStepSelectObjectSchema.optional(), include: GuideStepIncludeObjectSchema.optional(), where: GuideStepWhereUniqueInputObjectSchema }).strict() as unknown as z.ZodType<Prisma.GuideStepFindUniqueOrThrowArgs>;
 
-export const GuideStepFindUniqueOrThrowZodSchema = z
-    .object({
-        select: GuideStepSelectObjectSchema.optional(),
-        include: GuideStepIncludeObjectSchema.optional(),
-        where: GuideStepWhereUniqueInputObjectSchema,
-    })
-    .strict();
+export const GuideStepFindUniqueOrThrowZodSchema = z.object({ select: GuideStepSelectObjectSchema.optional(), include: GuideStepIncludeObjectSchema.optional(), where: GuideStepWhereUniqueInputObjectSchema }).strict();

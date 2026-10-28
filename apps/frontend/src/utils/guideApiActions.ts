@@ -13,6 +13,56 @@ import {
 import { handleApiError } from '@/utils/apiErrorsHandler';
 import { clientEnv } from 'env/client';
 
+export async function fetchCurrentGuide({
+    requestBody,
+}: {
+    requestBody: RequestInit;
+}): Promise<
+    Result<ApiResponseSuccess<GuideModelWithRelations | null>, ApiErrors>
+> {
+    const response = await fetch(
+        `${clientEnv.NEXT_URL}/api/guide/current`,
+        requestBody,
+    );
+
+    const responseJson = await response.json();
+    const responseStatusCode = response.status;
+
+    if (responseJson.success) {
+        return Result.ok(responseJson);
+    }
+
+    return handleApiError({
+        responseJson,
+        responseStatusCode,
+    });
+}
+
+export async function fetchDoneGuide({
+    requestBody,
+}: {
+    requestBody: RequestInit;
+}): Promise<
+    Result<ApiResponseSuccess<GuideModelWithRelations | null>, ApiErrors>
+> {
+    const response = await fetch(
+        `${clientEnv.NEXT_URL}/api/guide/done`,
+        requestBody,
+    );
+
+    const responseJson = await response.json();
+    const responseStatusCode = response.status;
+
+    if (responseJson.success) {
+        return Result.ok(responseJson);
+    }
+
+    return handleApiError({
+        responseJson,
+        responseStatusCode,
+    });
+}
+
 export async function fetchStatistics({
     requestBody,
 }: {

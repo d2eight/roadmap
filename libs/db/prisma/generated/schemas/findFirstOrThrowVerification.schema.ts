@@ -8,70 +8,24 @@ import { VerificationScalarFieldEnumSchema } from './enums/VerificationScalarFie
 // Select schema needs to be in file to prevent circular imports
 //------------------------------------------------------
 
-export const VerificationFindFirstOrThrowSelectSchema: z.ZodType<Prisma.VerificationSelect> =
-    z
-        .object({
-            id: z.boolean().optional(),
-            identifier: z.boolean().optional(),
-            value: z.boolean().optional(),
-            expiresAt: z.boolean().optional(),
-            createdAt: z.boolean().optional(),
-            updatedAt: z.boolean().optional(),
-        })
-        .strict() as unknown as z.ZodType<Prisma.VerificationSelect>;
+export const VerificationFindFirstOrThrowSelectSchema: z.ZodType<Prisma.VerificationSelect> = z.object({
+    id: z.boolean().optional(),
+    identifier: z.boolean().optional(),
+    value: z.boolean().optional(),
+    expiresAt: z.boolean().optional(),
+    createdAt: z.boolean().optional(),
+    updatedAt: z.boolean().optional()
+  }).strict() as unknown as z.ZodType<Prisma.VerificationSelect>;
 
-export const VerificationFindFirstOrThrowSelectZodSchema = z
-    .object({
-        id: z.boolean().optional(),
-        identifier: z.boolean().optional(),
-        value: z.boolean().optional(),
-        expiresAt: z.boolean().optional(),
-        createdAt: z.boolean().optional(),
-        updatedAt: z.boolean().optional(),
-    })
-    .strict();
+export const VerificationFindFirstOrThrowSelectZodSchema = z.object({
+    id: z.boolean().optional(),
+    identifier: z.boolean().optional(),
+    value: z.boolean().optional(),
+    expiresAt: z.boolean().optional(),
+    createdAt: z.boolean().optional(),
+    updatedAt: z.boolean().optional()
+  }).strict();
 
-export const VerificationFindFirstOrThrowSchema: z.ZodType<Prisma.VerificationFindFirstOrThrowArgs> =
-    z
-        .object({
-            select: VerificationFindFirstOrThrowSelectSchema.optional(),
-            orderBy: z
-                .union([
-                    VerificationOrderByWithRelationInputObjectSchema,
-                    VerificationOrderByWithRelationInputObjectSchema.array(),
-                ])
-                .optional(),
-            where: VerificationWhereInputObjectSchema.optional(),
-            cursor: VerificationWhereUniqueInputObjectSchema.optional(),
-            take: z.number().optional(),
-            skip: z.number().optional(),
-            distinct: z
-                .union([
-                    VerificationScalarFieldEnumSchema,
-                    VerificationScalarFieldEnumSchema.array(),
-                ])
-                .optional(),
-        })
-        .strict() as unknown as z.ZodType<Prisma.VerificationFindFirstOrThrowArgs>;
+export const VerificationFindFirstOrThrowSchema: z.ZodType<Prisma.VerificationFindFirstOrThrowArgs> = z.object({ select: VerificationFindFirstOrThrowSelectSchema.optional(),  orderBy: z.union([VerificationOrderByWithRelationInputObjectSchema, VerificationOrderByWithRelationInputObjectSchema.array()]).optional(), where: VerificationWhereInputObjectSchema.optional(), cursor: VerificationWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([VerificationScalarFieldEnumSchema, VerificationScalarFieldEnumSchema.array()]).optional() }).strict() as unknown as z.ZodType<Prisma.VerificationFindFirstOrThrowArgs>;
 
-export const VerificationFindFirstOrThrowZodSchema = z
-    .object({
-        select: VerificationFindFirstOrThrowSelectSchema.optional(),
-        orderBy: z
-            .union([
-                VerificationOrderByWithRelationInputObjectSchema,
-                VerificationOrderByWithRelationInputObjectSchema.array(),
-            ])
-            .optional(),
-        where: VerificationWhereInputObjectSchema.optional(),
-        cursor: VerificationWhereUniqueInputObjectSchema.optional(),
-        take: z.number().optional(),
-        skip: z.number().optional(),
-        distinct: z
-            .union([
-                VerificationScalarFieldEnumSchema,
-                VerificationScalarFieldEnumSchema.array(),
-            ])
-            .optional(),
-    })
-    .strict();
+export const VerificationFindFirstOrThrowZodSchema = z.object({ select: VerificationFindFirstOrThrowSelectSchema.optional(),  orderBy: z.union([VerificationOrderByWithRelationInputObjectSchema, VerificationOrderByWithRelationInputObjectSchema.array()]).optional(), where: VerificationWhereInputObjectSchema.optional(), cursor: VerificationWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([VerificationScalarFieldEnumSchema, VerificationScalarFieldEnumSchema.array()]).optional() }).strict();

@@ -9,7 +9,6 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import DashboardGuideTabs from '@/components/custom-ui/DashboardGuideTabs';
-import { DashboardGuidesIds } from 'shared-types';
 import DashboardStatisticsTabs from '@/components/custom-ui/DashboardStatisticsTabs';
 
 export default async function DashboardServerPage() {
@@ -29,8 +28,6 @@ export default async function DashboardServerPage() {
         queryFn: () => getUsersStatistics({ userId }),
     });
 
-    const dashboardGuideIds: DashboardGuidesIds = {};
-
     const currentGuide = await getCurrentUsersGuide({
         userId,
     });
@@ -40,22 +37,19 @@ export default async function DashboardServerPage() {
     });
 
     if (currentGuide) {
+        queryClient.setQueryData(['currentGuide'], currentGuide);
         queryClient.setQueryData(['guide', currentGuide.id], currentGuide);
-        dashboardGuideIds.currentGuideId = currentGuide.id;
     }
 
     if (doneGuide) {
+        queryClient.setQueryData(['doneGuide'], doneGuide);
         queryClient.setQueryData(['guide', doneGuide.id], doneGuide);
-        dashboardGuideIds.doneGuideId = doneGuide.id;
     }
 
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <div className="flex w-full gap-30">
-                <DashboardGuideTabs
-                    currentGuideId={dashboardGuideIds.currentGuideId}
-                    doneGuideId={dashboardGuideIds.doneGuideId}
-                />
+            <div className="flex w-full gap-15">
+                <DashboardGuideTabs />
                 <DashboardStatisticsTabs />
             </div>
         </HydrationBoundary>

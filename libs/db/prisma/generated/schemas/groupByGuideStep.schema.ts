@@ -10,48 +10,6 @@ import { GuideStepMaxAggregateInputObjectSchema as GuideStepMaxAggregateInputObj
 import { GuideStepAvgAggregateInputObjectSchema as GuideStepAvgAggregateInputObjectSchema } from './objects/GuideStepAvgAggregateInput.schema';
 import { GuideStepSumAggregateInputObjectSchema as GuideStepSumAggregateInputObjectSchema } from './objects/GuideStepSumAggregateInput.schema';
 
-export const GuideStepGroupBySchema: z.ZodType<Prisma.GuideStepGroupByArgs> = z
-    .object({
-        where: GuideStepWhereInputObjectSchema.optional(),
-        orderBy: z
-            .union([
-                GuideStepOrderByWithAggregationInputObjectSchema,
-                GuideStepOrderByWithAggregationInputObjectSchema.array(),
-            ])
-            .optional(),
-        having: GuideStepScalarWhereWithAggregatesInputObjectSchema.optional(),
-        take: z.number().optional(),
-        skip: z.number().optional(),
-        by: z.array(GuideStepScalarFieldEnumSchema),
-        _count: z
-            .union([z.literal(true), GuideStepCountAggregateInputObjectSchema])
-            .optional(),
-        _min: GuideStepMinAggregateInputObjectSchema.optional(),
-        _max: GuideStepMaxAggregateInputObjectSchema.optional(),
-        _avg: GuideStepAvgAggregateInputObjectSchema.optional(),
-        _sum: GuideStepSumAggregateInputObjectSchema.optional(),
-    })
-    .strict() as unknown as z.ZodType<Prisma.GuideStepGroupByArgs>;
+export const GuideStepGroupBySchema: z.ZodType<Prisma.GuideStepGroupByArgs> = z.object({ where: GuideStepWhereInputObjectSchema.optional(), orderBy: z.union([GuideStepOrderByWithAggregationInputObjectSchema, GuideStepOrderByWithAggregationInputObjectSchema.array()]).optional(), having: GuideStepScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(GuideStepScalarFieldEnumSchema), _count: z.union([ z.literal(true), GuideStepCountAggregateInputObjectSchema ]).optional(), _min: GuideStepMinAggregateInputObjectSchema.optional(), _max: GuideStepMaxAggregateInputObjectSchema.optional(), _avg: GuideStepAvgAggregateInputObjectSchema.optional(), _sum: GuideStepSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.GuideStepGroupByArgs>;
 
-export const GuideStepGroupByZodSchema = z
-    .object({
-        where: GuideStepWhereInputObjectSchema.optional(),
-        orderBy: z
-            .union([
-                GuideStepOrderByWithAggregationInputObjectSchema,
-                GuideStepOrderByWithAggregationInputObjectSchema.array(),
-            ])
-            .optional(),
-        having: GuideStepScalarWhereWithAggregatesInputObjectSchema.optional(),
-        take: z.number().optional(),
-        skip: z.number().optional(),
-        by: z.array(GuideStepScalarFieldEnumSchema),
-        _count: z
-            .union([z.literal(true), GuideStepCountAggregateInputObjectSchema])
-            .optional(),
-        _min: GuideStepMinAggregateInputObjectSchema.optional(),
-        _max: GuideStepMaxAggregateInputObjectSchema.optional(),
-        _avg: GuideStepAvgAggregateInputObjectSchema.optional(),
-        _sum: GuideStepSumAggregateInputObjectSchema.optional(),
-    })
-    .strict();
+export const GuideStepGroupByZodSchema = z.object({ where: GuideStepWhereInputObjectSchema.optional(), orderBy: z.union([GuideStepOrderByWithAggregationInputObjectSchema, GuideStepOrderByWithAggregationInputObjectSchema.array()]).optional(), having: GuideStepScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(GuideStepScalarFieldEnumSchema), _count: z.union([ z.literal(true), GuideStepCountAggregateInputObjectSchema ]).optional(), _min: GuideStepMinAggregateInputObjectSchema.optional(), _max: GuideStepMaxAggregateInputObjectSchema.optional(), _avg: GuideStepAvgAggregateInputObjectSchema.optional(), _sum: GuideStepSumAggregateInputObjectSchema.optional() }).strict();

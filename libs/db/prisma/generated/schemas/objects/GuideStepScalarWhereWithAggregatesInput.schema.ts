@@ -4,87 +4,19 @@ import { IntWithAggregatesFilterObjectSchema as IntWithAggregatesFilterObjectSch
 import { StringWithAggregatesFilterObjectSchema as StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
 import { EnumGuideStepStatusWithAggregatesFilterObjectSchema as EnumGuideStepStatusWithAggregatesFilterObjectSchema } from './EnumGuideStepStatusWithAggregatesFilter.schema';
 import { GuideStepStatusSchema } from '../enums/GuideStepStatus.schema';
-import { DateTimeWithAggregatesFilterObjectSchema as DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
+import { DateTimeWithAggregatesFilterObjectSchema as DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema'
 
-const guidestepscalarwherewithaggregatesinputSchema = z
-    .object({
-        AND: z
-            .union([
-                z.lazy(
-                    () => GuideStepScalarWhereWithAggregatesInputObjectSchema,
-                ),
-                z
-                    .lazy(
-                        () =>
-                            GuideStepScalarWhereWithAggregatesInputObjectSchema,
-                    )
-                    .array(),
-            ])
-            .optional(),
-        OR: z
-            .lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema)
-            .array()
-            .optional(),
-        NOT: z
-            .union([
-                z.lazy(
-                    () => GuideStepScalarWhereWithAggregatesInputObjectSchema,
-                ),
-                z
-                    .lazy(
-                        () =>
-                            GuideStepScalarWhereWithAggregatesInputObjectSchema,
-                    )
-                    .array(),
-            ])
-            .optional(),
-        id: z
-            .union([
-                z.lazy(() => IntWithAggregatesFilterObjectSchema),
-                z.number().int(),
-            ])
-            .optional(),
-        guideId: z
-            .union([
-                z.lazy(() => StringWithAggregatesFilterObjectSchema),
-                z.string(),
-            ])
-            .optional(),
-        title: z
-            .union([
-                z.lazy(() => StringWithAggregatesFilterObjectSchema),
-                z.string(),
-            ])
-            .optional(),
-        description: z
-            .union([
-                z.lazy(() => StringWithAggregatesFilterObjectSchema),
-                z.string(),
-            ])
-            .optional(),
-        status: z
-            .union([
-                z.lazy(
-                    () => EnumGuideStepStatusWithAggregatesFilterObjectSchema,
-                ),
-                GuideStepStatusSchema,
-            ])
-            .optional(),
-        createdAt: z
-            .union([
-                z.lazy(() => DateTimeWithAggregatesFilterObjectSchema),
-                z.coerce.date(),
-            ])
-            .optional(),
-        updatedAt: z
-            .union([
-                z.lazy(() => DateTimeWithAggregatesFilterObjectSchema),
-                z.coerce.date(),
-            ])
-            .optional(),
-    })
-    .strict();
-export const GuideStepScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.GuideStepScalarWhereWithAggregatesInput> =
-    guidestepscalarwherewithaggregatesinputSchema as unknown as z.ZodType<Prisma.GuideStepScalarWhereWithAggregatesInput>;
-export const GuideStepScalarWhereWithAggregatesInputObjectZodSchema =
-    guidestepscalarwherewithaggregatesinputSchema;
+const guidestepscalarwherewithaggregatesinputSchema = z.object({
+  AND: z.union([z.lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
+  OR: z.lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema).array().optional(),
+  NOT: z.union([z.lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => GuideStepScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
+  id: z.union([z.lazy(() => IntWithAggregatesFilterObjectSchema), z.number().int()]).optional(),
+  guideId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  title: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  description: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  status: z.union([z.lazy(() => EnumGuideStepStatusWithAggregatesFilterObjectSchema), GuideStepStatusSchema]).optional(),
+  createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),
+  updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional()
+}).strict();
+export const GuideStepScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.GuideStepScalarWhereWithAggregatesInput> = guidestepscalarwherewithaggregatesinputSchema as unknown as z.ZodType<Prisma.GuideStepScalarWhereWithAggregatesInput>;
+export const GuideStepScalarWhereWithAggregatesInputObjectZodSchema = guidestepscalarwherewithaggregatesinputSchema;

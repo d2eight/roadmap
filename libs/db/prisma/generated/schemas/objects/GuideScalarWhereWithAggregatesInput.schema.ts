@@ -7,102 +7,24 @@ import { EnumGuideStatusWithAggregatesFilterObjectSchema as EnumGuideStatusWithA
 import { GuideStatusSchema } from '../enums/GuideStatus.schema';
 import { EnumGuideProgressStatusWithAggregatesFilterObjectSchema as EnumGuideProgressStatusWithAggregatesFilterObjectSchema } from './EnumGuideProgressStatusWithAggregatesFilter.schema';
 import { GuideProgressStatusSchema } from '../enums/GuideProgressStatus.schema';
-import { DateTimeWithAggregatesFilterObjectSchema as DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
+import { DateTimeWithAggregatesFilterObjectSchema as DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema'
 
-const guidescalarwherewithaggregatesinputSchema = z
-    .object({
-        AND: z
-            .union([
-                z.lazy(() => GuideScalarWhereWithAggregatesInputObjectSchema),
-                z
-                    .lazy(() => GuideScalarWhereWithAggregatesInputObjectSchema)
-                    .array(),
-            ])
-            .optional(),
-        OR: z
-            .lazy(() => GuideScalarWhereWithAggregatesInputObjectSchema)
-            .array()
-            .optional(),
-        NOT: z
-            .union([
-                z.lazy(() => GuideScalarWhereWithAggregatesInputObjectSchema),
-                z
-                    .lazy(() => GuideScalarWhereWithAggregatesInputObjectSchema)
-                    .array(),
-            ])
-            .optional(),
-        id: z
-            .union([
-                z.lazy(() => StringWithAggregatesFilterObjectSchema),
-                z.string(),
-            ])
-            .optional(),
-        prompt: z
-            .union([
-                z.lazy(() => StringWithAggregatesFilterObjectSchema),
-                z.string(),
-            ])
-            .optional(),
-        externalAiQuestionsStatus: z
-            .union([
-                z.lazy(() => BoolWithAggregatesFilterObjectSchema),
-                z.boolean(),
-            ])
-            .optional(),
-        userId: z
-            .union([
-                z.lazy(() => StringWithAggregatesFilterObjectSchema),
-                z.string(),
-            ])
-            .optional(),
-        title: z
-            .union([
-                z.lazy(() => StringWithAggregatesFilterObjectSchema),
-                z.string(),
-            ])
-            .optional(),
-        description: z
-            .union([
-                z.lazy(() => StringWithAggregatesFilterObjectSchema),
-                z.string(),
-            ])
-            .optional(),
-        questions: z
-            .lazy(() => JsonNullableWithAggregatesFilterObjectSchema)
-            .optional(),
-        answeredQuestions: z
-            .lazy(() => JsonNullableWithAggregatesFilterObjectSchema)
-            .optional(),
-        status: z
-            .union([
-                z.lazy(() => EnumGuideStatusWithAggregatesFilterObjectSchema),
-                GuideStatusSchema,
-            ])
-            .optional(),
-        progressStatus: z
-            .union([
-                z.lazy(
-                    () =>
-                        EnumGuideProgressStatusWithAggregatesFilterObjectSchema,
-                ),
-                GuideProgressStatusSchema,
-            ])
-            .optional(),
-        createdAt: z
-            .union([
-                z.lazy(() => DateTimeWithAggregatesFilterObjectSchema),
-                z.coerce.date(),
-            ])
-            .optional(),
-        updatedAt: z
-            .union([
-                z.lazy(() => DateTimeWithAggregatesFilterObjectSchema),
-                z.coerce.date(),
-            ])
-            .optional(),
-    })
-    .strict();
-export const GuideScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.GuideScalarWhereWithAggregatesInput> =
-    guidescalarwherewithaggregatesinputSchema as unknown as z.ZodType<Prisma.GuideScalarWhereWithAggregatesInput>;
-export const GuideScalarWhereWithAggregatesInputObjectZodSchema =
-    guidescalarwherewithaggregatesinputSchema;
+const guidescalarwherewithaggregatesinputSchema = z.object({
+  AND: z.union([z.lazy(() => GuideScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => GuideScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
+  OR: z.lazy(() => GuideScalarWhereWithAggregatesInputObjectSchema).array().optional(),
+  NOT: z.union([z.lazy(() => GuideScalarWhereWithAggregatesInputObjectSchema), z.lazy(() => GuideScalarWhereWithAggregatesInputObjectSchema).array()]).optional(),
+  id: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  prompt: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  externalAiQuestionsStatus: z.union([z.lazy(() => BoolWithAggregatesFilterObjectSchema), z.boolean()]).optional(),
+  userId: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  title: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  description: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
+  questions: z.lazy(() => JsonNullableWithAggregatesFilterObjectSchema).optional(),
+  answeredQuestions: z.lazy(() => JsonNullableWithAggregatesFilterObjectSchema).optional(),
+  status: z.union([z.lazy(() => EnumGuideStatusWithAggregatesFilterObjectSchema), GuideStatusSchema]).optional(),
+  progressStatus: z.union([z.lazy(() => EnumGuideProgressStatusWithAggregatesFilterObjectSchema), GuideProgressStatusSchema]).optional(),
+  createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),
+  updatedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional()
+}).strict();
+export const GuideScalarWhereWithAggregatesInputObjectSchema: z.ZodType<Prisma.GuideScalarWhereWithAggregatesInput> = guidescalarwherewithaggregatesinputSchema as unknown as z.ZodType<Prisma.GuideScalarWhereWithAggregatesInput>;
+export const GuideScalarWhereWithAggregatesInputObjectZodSchema = guidescalarwherewithaggregatesinputSchema;

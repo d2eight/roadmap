@@ -6,26 +6,6 @@ import { GuideUpdateInputObjectSchema as GuideUpdateInputObjectSchema } from './
 import { GuideUncheckedUpdateInputObjectSchema as GuideUncheckedUpdateInputObjectSchema } from './objects/GuideUncheckedUpdateInput.schema';
 import { GuideWhereUniqueInputObjectSchema as GuideWhereUniqueInputObjectSchema } from './objects/GuideWhereUniqueInput.schema';
 
-export const GuideUpdateOneSchema: z.ZodType<Prisma.GuideUpdateArgs> = z
-    .object({
-        select: GuideSelectObjectSchema.optional(),
-        include: GuideIncludeObjectSchema.optional(),
-        data: z.union([
-            GuideUpdateInputObjectSchema,
-            GuideUncheckedUpdateInputObjectSchema,
-        ]),
-        where: GuideWhereUniqueInputObjectSchema,
-    })
-    .strict() as unknown as z.ZodType<Prisma.GuideUpdateArgs>;
+export const GuideUpdateOneSchema: z.ZodType<Prisma.GuideUpdateArgs> = z.object({ select: GuideSelectObjectSchema.optional(), include: GuideIncludeObjectSchema.optional(), data: z.union([GuideUpdateInputObjectSchema, GuideUncheckedUpdateInputObjectSchema]), where: GuideWhereUniqueInputObjectSchema }).strict() as unknown as z.ZodType<Prisma.GuideUpdateArgs>;
 
-export const GuideUpdateOneZodSchema = z
-    .object({
-        select: GuideSelectObjectSchema.optional(),
-        include: GuideIncludeObjectSchema.optional(),
-        data: z.union([
-            GuideUpdateInputObjectSchema,
-            GuideUncheckedUpdateInputObjectSchema,
-        ]),
-        where: GuideWhereUniqueInputObjectSchema,
-    })
-    .strict();
+export const GuideUpdateOneZodSchema = z.object({ select: GuideSelectObjectSchema.optional(), include: GuideIncludeObjectSchema.optional(), data: z.union([GuideUpdateInputObjectSchema, GuideUncheckedUpdateInputObjectSchema]), where: GuideWhereUniqueInputObjectSchema }).strict();

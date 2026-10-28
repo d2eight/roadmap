@@ -4,18 +4,6 @@ import { GuideStepSelectObjectSchema as GuideStepSelectObjectSchema } from './ob
 import { GuideStepIncludeObjectSchema as GuideStepIncludeObjectSchema } from './objects/GuideStepInclude.schema';
 import { GuideStepWhereUniqueInputObjectSchema as GuideStepWhereUniqueInputObjectSchema } from './objects/GuideStepWhereUniqueInput.schema';
 
-export const GuideStepDeleteOneSchema: z.ZodType<Prisma.GuideStepDeleteArgs> = z
-    .object({
-        select: GuideStepSelectObjectSchema.optional(),
-        include: GuideStepIncludeObjectSchema.optional(),
-        where: GuideStepWhereUniqueInputObjectSchema,
-    })
-    .strict() as unknown as z.ZodType<Prisma.GuideStepDeleteArgs>;
+export const GuideStepDeleteOneSchema: z.ZodType<Prisma.GuideStepDeleteArgs> = z.object({ select: GuideStepSelectObjectSchema.optional(), include: GuideStepIncludeObjectSchema.optional(), where: GuideStepWhereUniqueInputObjectSchema }).strict() as unknown as z.ZodType<Prisma.GuideStepDeleteArgs>;
 
-export const GuideStepDeleteOneZodSchema = z
-    .object({
-        select: GuideStepSelectObjectSchema.optional(),
-        include: GuideStepIncludeObjectSchema.optional(),
-        where: GuideStepWhereUniqueInputObjectSchema,
-    })
-    .strict();
+export const GuideStepDeleteOneZodSchema = z.object({ select: GuideStepSelectObjectSchema.optional(), include: GuideStepIncludeObjectSchema.optional(), where: GuideStepWhereUniqueInputObjectSchema }).strict();

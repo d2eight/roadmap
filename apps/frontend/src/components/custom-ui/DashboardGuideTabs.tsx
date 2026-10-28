@@ -13,29 +13,25 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
-import GuideContextProvider from '@/context/GuideContext';
 import { DashboardGuideCard } from '@/components/custom-ui/DashboardGuideCard';
-import { DashboardGuidesIds } from 'shared-types';
-import DashboardNoGuideCard from '@/components/custom-ui/DashboardNoGuideCard';
 import { DashboardGuideDoneCard } from '@/components/custom-ui/DashboardGuideDoneCard';
+import { CurrentGuideContextProvider } from '@/context/CurrentGuideContext';
+import { DoneGuideContextProvider } from '@/context/DoneGuideContext';
 
-export default function DashboardGuideTabs({
-    currentGuideId,
-    doneGuideId,
-}: DashboardGuidesIds) {
+export default function DashboardGuideTabs() {
     return (
-        <Card className="w-full h-auto">
+        <Card className="w-full h-auto max-h-[400px] overflow-hidden">
             <Tabs
                 defaultValue="inwork"
                 className="flex flex-col justify-between h-full"
             >
-                <CardHeader>
+                <CardHeader className="mb-3">
                     <CardTitle>Latest activities</CardTitle>
                     <CardDescription>
                         Information about your latest progress
                     </CardDescription>
                     <CardAction>
-                        <TabsList className="mb-5">
+                        <TabsList>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <span>
@@ -66,103 +62,17 @@ export default function DashboardGuideTabs({
                 <Separator />
                 <CardContent className="h-full pt-3.75">
                     <TabsContent value="inwork" className="h-full">
-                        {currentGuideId ? (
-                            <>
-                                <GuideContextProvider
-                                    guideId={currentGuideId}
-                                    autoQueryStatus={true}
-                                >
-                                    <DashboardGuideCard />
-                                </GuideContextProvider>
-                            </>
-                        ) : (
-                            <DashboardNoGuideCard />
-                        )}
+                        <CurrentGuideContextProvider>
+                            <DashboardGuideCard />
+                        </CurrentGuideContextProvider>
                     </TabsContent>
                     <TabsContent value="done" className="h-full">
-                        {doneGuideId ? (
-                            <>
-                                <GuideContextProvider
-                                    guideId={doneGuideId}
-                                    autoQueryStatus={true}
-                                >
-                                    <DashboardGuideDoneCard />
-                                </GuideContextProvider>
-                            </>
-                        ) : (
-                            <DashboardNoGuideCard />
-                        )}
+                        <DoneGuideContextProvider>
+                            <DashboardGuideDoneCard />
+                        </DoneGuideContextProvider>
                     </TabsContent>
                 </CardContent>
             </Tabs>
         </Card>
-
-        // <Tabs defaultValue="inwork" className="w-full h-full">
-        //     <Card className="h-full flex flex-col gap-3">
-        //         <CardHeader>
-        //             <CardTitle>Latest activities</CardTitle>
-        //             <CardDescription>Your latest guides</CardDescription>
-        //             <CardAction>
-        //                 <TabsList className="mb-5">
-        //                     <Tooltip>
-        //                         <TooltipTrigger asChild>
-        //                             <span>
-        //                                 <TabsTrigger value="inwork">
-        //                                     Current
-        //                                 </TabsTrigger>
-        //                             </span>
-        //                         </TooltipTrigger>
-        //                         <TooltipContent>
-        //                             Your current, unfinished guide
-        //                         </TooltipContent>
-        //                     </Tooltip>
-        //                     <Tooltip>
-        //                         <TooltipTrigger asChild>
-        //                             <span>
-        //                                 <TabsTrigger value="done">
-        //                                     Done
-        //                                 </TabsTrigger>
-        //                             </span>
-        //                         </TooltipTrigger>
-        //                         <TooltipContent>
-        //                             Your last finished guide
-        //                         </TooltipContent>
-        //                     </Tooltip>
-        //                 </TabsList>
-        //             </CardAction>
-        //         </CardHeader>
-        //         <Separator />
-        //         <CardContent className="h-full">
-        //             <TabsContent value="inwork" className="h-full">
-        //                 {currentGuideId ? (
-        //                     <>
-        //                         <GuideContextProvider
-        //                             guideId={currentGuideId}
-        //                             autoQueryStatus={true}
-        //                         >
-        //                             <DashboardGuideCard />
-        //                         </GuideContextProvider>
-        //                     </>
-        //                 ) : (
-        //                     <DashboardNoGuideCard />
-        //                 )}
-        //             </TabsContent>
-        //             <TabsContent value="done">
-        //                 {doneGuideId ? (
-        //                     <>
-        //                         <GuideContextProvider
-        //                             guideId={doneGuideId}
-        //                             autoQueryStatus={true}
-        //                         >
-        //                             <DashboardGuideCard />
-        //                         </GuideContextProvider>
-        //                     </>
-        //                 ) : (
-        //                     <DashboardNoGuideCard />
-        //                 )}
-        //             </TabsContent>
-        //         </CardContent>
-        //     </Card>
-        // </Tabs>
     );
 }

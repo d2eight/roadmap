@@ -39,19 +39,19 @@ export function GuideCardDoneInfo() {
                 <div className="flex">
                     <ItemDescription className="flex">
                         {days > 0 && (
-                            <span className="mr-2">
+                            <span className="mr-1">
                                 {days} {days > 1 ? 'days' : 'day'}
                             </span>
                         )}
                         {hours > 0 && (
-                            <span className="mr-2">
+                            <span className="mr-1">
                                 {hours} {hours > 1 ? 'hours' : 'hour'}
                             </span>
                         )}
-                        <span className="mr-2">
+                        <span className="mr-1">
                             {minutes} {minutes > 1 ? 'minutes' : 'minute'}
                         </span>
-                        <span>took you to complete this guide</span>
+                        <span>- took you to complete this guide</span>
                     </ItemDescription>
                 </div>
             </ItemContent>

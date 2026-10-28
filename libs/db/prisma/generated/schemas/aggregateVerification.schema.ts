@@ -7,49 +7,6 @@ import { VerificationCountAggregateInputObjectSchema as VerificationCountAggrega
 import { VerificationMinAggregateInputObjectSchema as VerificationMinAggregateInputObjectSchema } from './objects/VerificationMinAggregateInput.schema';
 import { VerificationMaxAggregateInputObjectSchema as VerificationMaxAggregateInputObjectSchema } from './objects/VerificationMaxAggregateInput.schema';
 
-export const VerificationAggregateSchema: z.ZodType<Prisma.VerificationAggregateArgs> =
-    z
-        .object({
-            orderBy: z
-                .union([
-                    VerificationOrderByWithRelationInputObjectSchema,
-                    VerificationOrderByWithRelationInputObjectSchema.array(),
-                ])
-                .optional(),
-            where: VerificationWhereInputObjectSchema.optional(),
-            cursor: VerificationWhereUniqueInputObjectSchema.optional(),
-            take: z.number().optional(),
-            skip: z.number().optional(),
-            _count: z
-                .union([
-                    z.literal(true),
-                    VerificationCountAggregateInputObjectSchema,
-                ])
-                .optional(),
-            _min: VerificationMinAggregateInputObjectSchema.optional(),
-            _max: VerificationMaxAggregateInputObjectSchema.optional(),
-        })
-        .strict() as unknown as z.ZodType<Prisma.VerificationAggregateArgs>;
+export const VerificationAggregateSchema: z.ZodType<Prisma.VerificationAggregateArgs> = z.object({ orderBy: z.union([VerificationOrderByWithRelationInputObjectSchema, VerificationOrderByWithRelationInputObjectSchema.array()]).optional(), where: VerificationWhereInputObjectSchema.optional(), cursor: VerificationWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), VerificationCountAggregateInputObjectSchema ]).optional(), _min: VerificationMinAggregateInputObjectSchema.optional(), _max: VerificationMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.VerificationAggregateArgs>;
 
-export const VerificationAggregateZodSchema = z
-    .object({
-        orderBy: z
-            .union([
-                VerificationOrderByWithRelationInputObjectSchema,
-                VerificationOrderByWithRelationInputObjectSchema.array(),
-            ])
-            .optional(),
-        where: VerificationWhereInputObjectSchema.optional(),
-        cursor: VerificationWhereUniqueInputObjectSchema.optional(),
-        take: z.number().optional(),
-        skip: z.number().optional(),
-        _count: z
-            .union([
-                z.literal(true),
-                VerificationCountAggregateInputObjectSchema,
-            ])
-            .optional(),
-        _min: VerificationMinAggregateInputObjectSchema.optional(),
-        _max: VerificationMaxAggregateInputObjectSchema.optional(),
-    })
-    .strict();
+export const VerificationAggregateZodSchema = z.object({ orderBy: z.union([VerificationOrderByWithRelationInputObjectSchema, VerificationOrderByWithRelationInputObjectSchema.array()]).optional(), where: VerificationWhereInputObjectSchema.optional(), cursor: VerificationWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), VerificationCountAggregateInputObjectSchema ]).optional(), _min: VerificationMinAggregateInputObjectSchema.optional(), _max: VerificationMaxAggregateInputObjectSchema.optional() }).strict();

@@ -4,19 +4,6 @@ import { SessionSelectObjectSchema as SessionSelectObjectSchema } from './object
 import { SessionUpdateManyMutationInputObjectSchema as SessionUpdateManyMutationInputObjectSchema } from './objects/SessionUpdateManyMutationInput.schema';
 import { SessionWhereInputObjectSchema as SessionWhereInputObjectSchema } from './objects/SessionWhereInput.schema';
 
-export const SessionUpdateManyAndReturnSchema: z.ZodType<Prisma.SessionUpdateManyAndReturnArgs> =
-    z
-        .object({
-            select: SessionSelectObjectSchema.optional(),
-            data: SessionUpdateManyMutationInputObjectSchema,
-            where: SessionWhereInputObjectSchema.optional(),
-        })
-        .strict() as unknown as z.ZodType<Prisma.SessionUpdateManyAndReturnArgs>;
+export const SessionUpdateManyAndReturnSchema: z.ZodType<Prisma.SessionUpdateManyAndReturnArgs> = z.object({ select: SessionSelectObjectSchema.optional(), data: SessionUpdateManyMutationInputObjectSchema, where: SessionWhereInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.SessionUpdateManyAndReturnArgs>;
 
-export const SessionUpdateManyAndReturnZodSchema = z
-    .object({
-        select: SessionSelectObjectSchema.optional(),
-        data: SessionUpdateManyMutationInputObjectSchema,
-        where: SessionWhereInputObjectSchema.optional(),
-    })
-    .strict();
+export const SessionUpdateManyAndReturnZodSchema = z.object({ select: SessionSelectObjectSchema.optional(), data: SessionUpdateManyMutationInputObjectSchema, where: SessionWhereInputObjectSchema.optional() }).strict();

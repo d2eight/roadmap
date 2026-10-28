@@ -9,76 +9,28 @@ import { GuideStepScalarFieldEnumSchema } from './enums/GuideStepScalarFieldEnum
 // Select schema needs to be in file to prevent circular imports
 //------------------------------------------------------
 
-export const GuideStepFindFirstSelectSchema: z.ZodType<Prisma.GuideStepSelect> =
-    z
-        .object({
-            id: z.boolean().optional(),
-            guide: z.boolean().optional(),
-            guideId: z.boolean().optional(),
-            title: z.boolean().optional(),
-            description: z.boolean().optional(),
-            status: z.boolean().optional(),
-            createdAt: z.boolean().optional(),
-            updatedAt: z.boolean().optional(),
-        })
-        .strict() as unknown as z.ZodType<Prisma.GuideStepSelect>;
+export const GuideStepFindFirstSelectSchema: z.ZodType<Prisma.GuideStepSelect> = z.object({
+    id: z.boolean().optional(),
+    guide: z.boolean().optional(),
+    guideId: z.boolean().optional(),
+    title: z.boolean().optional(),
+    description: z.boolean().optional(),
+    status: z.boolean().optional(),
+    createdAt: z.boolean().optional(),
+    updatedAt: z.boolean().optional()
+  }).strict() as unknown as z.ZodType<Prisma.GuideStepSelect>;
 
-export const GuideStepFindFirstSelectZodSchema = z
-    .object({
-        id: z.boolean().optional(),
-        guide: z.boolean().optional(),
-        guideId: z.boolean().optional(),
-        title: z.boolean().optional(),
-        description: z.boolean().optional(),
-        status: z.boolean().optional(),
-        createdAt: z.boolean().optional(),
-        updatedAt: z.boolean().optional(),
-    })
-    .strict();
+export const GuideStepFindFirstSelectZodSchema = z.object({
+    id: z.boolean().optional(),
+    guide: z.boolean().optional(),
+    guideId: z.boolean().optional(),
+    title: z.boolean().optional(),
+    description: z.boolean().optional(),
+    status: z.boolean().optional(),
+    createdAt: z.boolean().optional(),
+    updatedAt: z.boolean().optional()
+  }).strict();
 
-export const GuideStepFindFirstSchema: z.ZodType<Prisma.GuideStepFindFirstArgs> =
-    z
-        .object({
-            select: GuideStepFindFirstSelectSchema.optional(),
-            include: z.lazy(() => GuideStepIncludeObjectSchema.optional()),
-            orderBy: z
-                .union([
-                    GuideStepOrderByWithRelationInputObjectSchema,
-                    GuideStepOrderByWithRelationInputObjectSchema.array(),
-                ])
-                .optional(),
-            where: GuideStepWhereInputObjectSchema.optional(),
-            cursor: GuideStepWhereUniqueInputObjectSchema.optional(),
-            take: z.number().optional(),
-            skip: z.number().optional(),
-            distinct: z
-                .union([
-                    GuideStepScalarFieldEnumSchema,
-                    GuideStepScalarFieldEnumSchema.array(),
-                ])
-                .optional(),
-        })
-        .strict() as unknown as z.ZodType<Prisma.GuideStepFindFirstArgs>;
+export const GuideStepFindFirstSchema: z.ZodType<Prisma.GuideStepFindFirstArgs> = z.object({ select: GuideStepFindFirstSelectSchema.optional(), include: z.lazy(() => GuideStepIncludeObjectSchema.optional()), orderBy: z.union([GuideStepOrderByWithRelationInputObjectSchema, GuideStepOrderByWithRelationInputObjectSchema.array()]).optional(), where: GuideStepWhereInputObjectSchema.optional(), cursor: GuideStepWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([GuideStepScalarFieldEnumSchema, GuideStepScalarFieldEnumSchema.array()]).optional() }).strict() as unknown as z.ZodType<Prisma.GuideStepFindFirstArgs>;
 
-export const GuideStepFindFirstZodSchema = z
-    .object({
-        select: GuideStepFindFirstSelectSchema.optional(),
-        include: z.lazy(() => GuideStepIncludeObjectSchema.optional()),
-        orderBy: z
-            .union([
-                GuideStepOrderByWithRelationInputObjectSchema,
-                GuideStepOrderByWithRelationInputObjectSchema.array(),
-            ])
-            .optional(),
-        where: GuideStepWhereInputObjectSchema.optional(),
-        cursor: GuideStepWhereUniqueInputObjectSchema.optional(),
-        take: z.number().optional(),
-        skip: z.number().optional(),
-        distinct: z
-            .union([
-                GuideStepScalarFieldEnumSchema,
-                GuideStepScalarFieldEnumSchema.array(),
-            ])
-            .optional(),
-    })
-    .strict();
+export const GuideStepFindFirstZodSchema = z.object({ select: GuideStepFindFirstSelectSchema.optional(), include: z.lazy(() => GuideStepIncludeObjectSchema.optional()), orderBy: z.union([GuideStepOrderByWithRelationInputObjectSchema, GuideStepOrderByWithRelationInputObjectSchema.array()]).optional(), where: GuideStepWhereInputObjectSchema.optional(), cursor: GuideStepWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([GuideStepScalarFieldEnumSchema, GuideStepScalarFieldEnumSchema.array()]).optional() }).strict();

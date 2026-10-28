@@ -201,13 +201,3 @@ export type UsersStatistics = {
     guidesCounts: UsersGuidesStatistics;
     stepsCounts: UsersStepsStatistics;
 };
-
-export type DashboardGuidesIds = {
-    currentGuideId?: string;
-    doneGuideId?: string;
-};
-
-// export type DashboardGuidesIds = {
-//     currentGuideId?: string;
-//     doneGuideId?: string;
-// };

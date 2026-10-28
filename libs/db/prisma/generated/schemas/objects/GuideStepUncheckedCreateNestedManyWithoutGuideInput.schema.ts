@@ -4,57 +4,13 @@ import { GuideStepCreateWithoutGuideInputObjectSchema as GuideStepCreateWithoutG
 import { GuideStepUncheckedCreateWithoutGuideInputObjectSchema as GuideStepUncheckedCreateWithoutGuideInputObjectSchema } from './GuideStepUncheckedCreateWithoutGuideInput.schema';
 import { GuideStepCreateOrConnectWithoutGuideInputObjectSchema as GuideStepCreateOrConnectWithoutGuideInputObjectSchema } from './GuideStepCreateOrConnectWithoutGuideInput.schema';
 import { GuideStepCreateManyGuideInputEnvelopeObjectSchema as GuideStepCreateManyGuideInputEnvelopeObjectSchema } from './GuideStepCreateManyGuideInputEnvelope.schema';
-import { GuideStepWhereUniqueInputObjectSchema as GuideStepWhereUniqueInputObjectSchema } from './GuideStepWhereUniqueInput.schema';
+import { GuideStepWhereUniqueInputObjectSchema as GuideStepWhereUniqueInputObjectSchema } from './GuideStepWhereUniqueInput.schema'
 
-const makeSchema = () =>
-    z
-        .object({
-            create: z
-                .union([
-                    z.lazy(() => GuideStepCreateWithoutGuideInputObjectSchema),
-                    z
-                        .lazy(
-                            () => GuideStepCreateWithoutGuideInputObjectSchema,
-                        )
-                        .array(),
-                    z.lazy(
-                        () =>
-                            GuideStepUncheckedCreateWithoutGuideInputObjectSchema,
-                    ),
-                    z
-                        .lazy(
-                            () =>
-                                GuideStepUncheckedCreateWithoutGuideInputObjectSchema,
-                        )
-                        .array(),
-                ])
-                .optional(),
-            connectOrCreate: z
-                .union([
-                    z.lazy(
-                        () =>
-                            GuideStepCreateOrConnectWithoutGuideInputObjectSchema,
-                    ),
-                    z
-                        .lazy(
-                            () =>
-                                GuideStepCreateOrConnectWithoutGuideInputObjectSchema,
-                        )
-                        .array(),
-                ])
-                .optional(),
-            createMany: z
-                .lazy(() => GuideStepCreateManyGuideInputEnvelopeObjectSchema)
-                .optional(),
-            connect: z
-                .union([
-                    z.lazy(() => GuideStepWhereUniqueInputObjectSchema),
-                    z.lazy(() => GuideStepWhereUniqueInputObjectSchema).array(),
-                ])
-                .optional(),
-        })
-        .strict();
-export const GuideStepUncheckedCreateNestedManyWithoutGuideInputObjectSchema: z.ZodType<Prisma.GuideStepUncheckedCreateNestedManyWithoutGuideInput> =
-    makeSchema() as unknown as z.ZodType<Prisma.GuideStepUncheckedCreateNestedManyWithoutGuideInput>;
-export const GuideStepUncheckedCreateNestedManyWithoutGuideInputObjectZodSchema =
-    makeSchema();
+const makeSchema = () => z.object({
+  create: z.union([z.lazy(() => GuideStepCreateWithoutGuideInputObjectSchema), z.lazy(() => GuideStepCreateWithoutGuideInputObjectSchema).array(), z.lazy(() => GuideStepUncheckedCreateWithoutGuideInputObjectSchema), z.lazy(() => GuideStepUncheckedCreateWithoutGuideInputObjectSchema).array()]).optional(),
+  connectOrCreate: z.union([z.lazy(() => GuideStepCreateOrConnectWithoutGuideInputObjectSchema), z.lazy(() => GuideStepCreateOrConnectWithoutGuideInputObjectSchema).array()]).optional(),
+  createMany: z.lazy(() => GuideStepCreateManyGuideInputEnvelopeObjectSchema).optional(),
+  connect: z.union([z.lazy(() => GuideStepWhereUniqueInputObjectSchema), z.lazy(() => GuideStepWhereUniqueInputObjectSchema).array()]).optional()
+}).strict();
+export const GuideStepUncheckedCreateNestedManyWithoutGuideInputObjectSchema: z.ZodType<Prisma.GuideStepUncheckedCreateNestedManyWithoutGuideInput> = makeSchema() as unknown as z.ZodType<Prisma.GuideStepUncheckedCreateNestedManyWithoutGuideInput>;
+export const GuideStepUncheckedCreateNestedManyWithoutGuideInputObjectZodSchema = makeSchema();

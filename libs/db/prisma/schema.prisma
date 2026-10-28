@@ -90,9 +90,9 @@ enum GuideStatus {
 }
 
 enum GuideProgressStatus {
-  DONE
   PENDING
   INWORK
+  DONE
   REJECTED
 }
 
@@ -117,9 +117,9 @@ model Guide {
 }
 
 enum GuideStepStatus {
-  DONE
   PENDING
   INWORK
+  DONE
   REJECTED
 }
 

@@ -7,33 +7,6 @@ import { VerificationUncheckedCreateInputObjectSchema as VerificationUncheckedCr
 import { VerificationUpdateInputObjectSchema as VerificationUpdateInputObjectSchema } from './objects/VerificationUpdateInput.schema';
 import { VerificationUncheckedUpdateInputObjectSchema as VerificationUncheckedUpdateInputObjectSchema } from './objects/VerificationUncheckedUpdateInput.schema';
 
-export const VerificationUpsertOneSchema: z.ZodType<Prisma.VerificationUpsertArgs> =
-    z
-        .object({
-            select: VerificationSelectObjectSchema.optional(),
-            where: VerificationWhereUniqueInputObjectSchema,
-            create: z.union([
-                VerificationCreateInputObjectSchema,
-                VerificationUncheckedCreateInputObjectSchema,
-            ]),
-            update: z.union([
-                VerificationUpdateInputObjectSchema,
-                VerificationUncheckedUpdateInputObjectSchema,
-            ]),
-        })
-        .strict() as unknown as z.ZodType<Prisma.VerificationUpsertArgs>;
+export const VerificationUpsertOneSchema: z.ZodType<Prisma.VerificationUpsertArgs> = z.object({ select: VerificationSelectObjectSchema.optional(),  where: VerificationWhereUniqueInputObjectSchema, create: z.union([ VerificationCreateInputObjectSchema, VerificationUncheckedCreateInputObjectSchema ]), update: z.union([ VerificationUpdateInputObjectSchema, VerificationUncheckedUpdateInputObjectSchema ]) }).strict() as unknown as z.ZodType<Prisma.VerificationUpsertArgs>;
 
-export const VerificationUpsertOneZodSchema = z
-    .object({
-        select: VerificationSelectObjectSchema.optional(),
-        where: VerificationWhereUniqueInputObjectSchema,
-        create: z.union([
-            VerificationCreateInputObjectSchema,
-            VerificationUncheckedCreateInputObjectSchema,
-        ]),
-        update: z.union([
-            VerificationUpdateInputObjectSchema,
-            VerificationUncheckedUpdateInputObjectSchema,
-        ]),
-    })
-    .strict();
+export const VerificationUpsertOneZodSchema = z.object({ select: VerificationSelectObjectSchema.optional(),  where: VerificationWhereUniqueInputObjectSchema, create: z.union([ VerificationCreateInputObjectSchema, VerificationUncheckedCreateInputObjectSchema ]), update: z.union([ VerificationUpdateInputObjectSchema, VerificationUncheckedUpdateInputObjectSchema ]) }).strict();

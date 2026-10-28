@@ -1,13 +1,13 @@
 import * as z from 'zod';
 export const UserCreateResultSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    email: z.string(),
-    emailVerified: z.boolean(),
-    image: z.string().optional(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
-    sessions: z.array(z.unknown()),
-    accounts: z.array(z.unknown()),
-    guides: z.array(z.unknown()),
+  id: z.string(),
+  name: z.string(),
+  email: z.string(),
+  emailVerified: z.boolean(),
+  image: z.string().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  sessions: z.array(z.unknown()),
+  accounts: z.array(z.unknown()),
+  guides: z.array(z.unknown())
 });

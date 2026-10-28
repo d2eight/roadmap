@@ -7,42 +7,6 @@ import { AccountCountAggregateInputObjectSchema as AccountCountAggregateInputObj
 import { AccountMinAggregateInputObjectSchema as AccountMinAggregateInputObjectSchema } from './objects/AccountMinAggregateInput.schema';
 import { AccountMaxAggregateInputObjectSchema as AccountMaxAggregateInputObjectSchema } from './objects/AccountMaxAggregateInput.schema';
 
-export const AccountAggregateSchema: z.ZodType<Prisma.AccountAggregateArgs> = z
-    .object({
-        orderBy: z
-            .union([
-                AccountOrderByWithRelationInputObjectSchema,
-                AccountOrderByWithRelationInputObjectSchema.array(),
-            ])
-            .optional(),
-        where: AccountWhereInputObjectSchema.optional(),
-        cursor: AccountWhereUniqueInputObjectSchema.optional(),
-        take: z.number().optional(),
-        skip: z.number().optional(),
-        _count: z
-            .union([z.literal(true), AccountCountAggregateInputObjectSchema])
-            .optional(),
-        _min: AccountMinAggregateInputObjectSchema.optional(),
-        _max: AccountMaxAggregateInputObjectSchema.optional(),
-    })
-    .strict() as unknown as z.ZodType<Prisma.AccountAggregateArgs>;
+export const AccountAggregateSchema: z.ZodType<Prisma.AccountAggregateArgs> = z.object({ orderBy: z.union([AccountOrderByWithRelationInputObjectSchema, AccountOrderByWithRelationInputObjectSchema.array()]).optional(), where: AccountWhereInputObjectSchema.optional(), cursor: AccountWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), AccountCountAggregateInputObjectSchema ]).optional(), _min: AccountMinAggregateInputObjectSchema.optional(), _max: AccountMaxAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.AccountAggregateArgs>;
 
-export const AccountAggregateZodSchema = z
-    .object({
-        orderBy: z
-            .union([
-                AccountOrderByWithRelationInputObjectSchema,
-                AccountOrderByWithRelationInputObjectSchema.array(),
-            ])
-            .optional(),
-        where: AccountWhereInputObjectSchema.optional(),
-        cursor: AccountWhereUniqueInputObjectSchema.optional(),
-        take: z.number().optional(),
-        skip: z.number().optional(),
-        _count: z
-            .union([z.literal(true), AccountCountAggregateInputObjectSchema])
-            .optional(),
-        _min: AccountMinAggregateInputObjectSchema.optional(),
-        _max: AccountMaxAggregateInputObjectSchema.optional(),
-    })
-    .strict();
+export const AccountAggregateZodSchema = z.object({ orderBy: z.union([AccountOrderByWithRelationInputObjectSchema, AccountOrderByWithRelationInputObjectSchema.array()]).optional(), where: AccountWhereInputObjectSchema.optional(), cursor: AccountWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), AccountCountAggregateInputObjectSchema ]).optional(), _min: AccountMinAggregateInputObjectSchema.optional(), _max: AccountMaxAggregateInputObjectSchema.optional() }).strict();

@@ -2,6 +2,7 @@
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -51,29 +52,31 @@ export default function DashboardStatisticsTabs() {
 
     return (
         <Card className="w-full">
-            <CardHeader>
-                <CardTitle>Statistics</CardTitle>
-                <CardDescription>
-                    Statistics about your progress, based on statuses
-                </CardDescription>
-            </CardHeader>
-            <Separator />
-            <CardContent>
-                <Tabs defaultValue="guides">
-                    <TabsList>
+            <Tabs defaultValue="guides">
+                <CardHeader className="mb-3">
+                    <CardTitle>Statistics</CardTitle>
+                    <CardDescription>
+                        Statistics about your progress, based on statuses
+                    </CardDescription>
+                    <CardAction>
                         <TabsList>
-                            <TabsTrigger value="guides">Guides</TabsTrigger>
-                            <TabsTrigger value="steps">Steps</TabsTrigger>
+                            <TabsList>
+                                <TabsTrigger value="guides">Guides</TabsTrigger>
+                                <TabsTrigger value="steps">Steps</TabsTrigger>
+                            </TabsList>
                         </TabsList>
-                    </TabsList>
+                    </CardAction>
+                </CardHeader>
+                <Separator />
+                <CardContent>
                     <TabsContent value="guides">
                         <DataTable data={data.guidesCounts} />
                     </TabsContent>
                     <TabsContent value="steps">
                         <DataTable data={data.stepsCounts} />
                     </TabsContent>
-                </Tabs>
-            </CardContent>
+                </CardContent>
+            </Tabs>
         </Card>
     );
 }

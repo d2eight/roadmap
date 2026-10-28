@@ -2,7 +2,7 @@ import z from 'zod';
 import { config } from 'dotenv';
 import * as path from 'node:path';
 
-config({ path: path.resolve(process.cwd(), '.env') });
+config({ path: path.resolve(__dirname, '../../../../.env') });
 
 const environmentSchema = z.object({
     POSTGRES_USER: z.string(),

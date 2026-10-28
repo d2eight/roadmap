@@ -8,34 +8,6 @@ import { SessionUncheckedCreateInputObjectSchema as SessionUncheckedCreateInputO
 import { SessionUpdateInputObjectSchema as SessionUpdateInputObjectSchema } from './objects/SessionUpdateInput.schema';
 import { SessionUncheckedUpdateInputObjectSchema as SessionUncheckedUpdateInputObjectSchema } from './objects/SessionUncheckedUpdateInput.schema';
 
-export const SessionUpsertOneSchema: z.ZodType<Prisma.SessionUpsertArgs> = z
-    .object({
-        select: SessionSelectObjectSchema.optional(),
-        include: SessionIncludeObjectSchema.optional(),
-        where: SessionWhereUniqueInputObjectSchema,
-        create: z.union([
-            SessionCreateInputObjectSchema,
-            SessionUncheckedCreateInputObjectSchema,
-        ]),
-        update: z.union([
-            SessionUpdateInputObjectSchema,
-            SessionUncheckedUpdateInputObjectSchema,
-        ]),
-    })
-    .strict() as unknown as z.ZodType<Prisma.SessionUpsertArgs>;
+export const SessionUpsertOneSchema: z.ZodType<Prisma.SessionUpsertArgs> = z.object({ select: SessionSelectObjectSchema.optional(), include: SessionIncludeObjectSchema.optional(), where: SessionWhereUniqueInputObjectSchema, create: z.union([ SessionCreateInputObjectSchema, SessionUncheckedCreateInputObjectSchema ]), update: z.union([ SessionUpdateInputObjectSchema, SessionUncheckedUpdateInputObjectSchema ]) }).strict() as unknown as z.ZodType<Prisma.SessionUpsertArgs>;
 
-export const SessionUpsertOneZodSchema = z
-    .object({
-        select: SessionSelectObjectSchema.optional(),
-        include: SessionIncludeObjectSchema.optional(),
-        where: SessionWhereUniqueInputObjectSchema,
-        create: z.union([
-            SessionCreateInputObjectSchema,
-            SessionUncheckedCreateInputObjectSchema,
-        ]),
-        update: z.union([
-            SessionUpdateInputObjectSchema,
-            SessionUncheckedUpdateInputObjectSchema,
-        ]),
-    })
-    .strict();
+export const SessionUpsertOneZodSchema = z.object({ select: SessionSelectObjectSchema.optional(), include: SessionIncludeObjectSchema.optional(), where: SessionWhereUniqueInputObjectSchema, create: z.union([ SessionCreateInputObjectSchema, SessionUncheckedCreateInputObjectSchema ]), update: z.union([ SessionUpdateInputObjectSchema, SessionUncheckedUpdateInputObjectSchema ]) }).strict();

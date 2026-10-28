@@ -5,24 +5,6 @@ import { AccountIncludeObjectSchema as AccountIncludeObjectSchema } from './obje
 import { AccountCreateInputObjectSchema as AccountCreateInputObjectSchema } from './objects/AccountCreateInput.schema';
 import { AccountUncheckedCreateInputObjectSchema as AccountUncheckedCreateInputObjectSchema } from './objects/AccountUncheckedCreateInput.schema';
 
-export const AccountCreateOneSchema: z.ZodType<Prisma.AccountCreateArgs> = z
-    .object({
-        select: AccountSelectObjectSchema.optional(),
-        include: AccountIncludeObjectSchema.optional(),
-        data: z.union([
-            AccountCreateInputObjectSchema,
-            AccountUncheckedCreateInputObjectSchema,
-        ]),
-    })
-    .strict() as unknown as z.ZodType<Prisma.AccountCreateArgs>;
+export const AccountCreateOneSchema: z.ZodType<Prisma.AccountCreateArgs> = z.object({ select: AccountSelectObjectSchema.optional(), include: AccountIncludeObjectSchema.optional(), data: z.union([AccountCreateInputObjectSchema, AccountUncheckedCreateInputObjectSchema]) }).strict() as unknown as z.ZodType<Prisma.AccountCreateArgs>;
 
-export const AccountCreateOneZodSchema = z
-    .object({
-        select: AccountSelectObjectSchema.optional(),
-        include: AccountIncludeObjectSchema.optional(),
-        data: z.union([
-            AccountCreateInputObjectSchema,
-            AccountUncheckedCreateInputObjectSchema,
-        ]),
-    })
-    .strict();
+export const AccountCreateOneZodSchema = z.object({ select: AccountSelectObjectSchema.optional(), include: AccountIncludeObjectSchema.optional(), data: z.union([AccountCreateInputObjectSchema, AccountUncheckedCreateInputObjectSchema]) }).strict();
