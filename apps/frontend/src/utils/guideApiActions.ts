@@ -8,9 +8,33 @@ import {
     GuideQuestionFormErrors,
     GuideStepsFormErrors,
     PromptFormErrors,
+    UsersStatistics,
 } from 'shared-types';
 import { handleApiError } from '@/utils/apiErrorsHandler';
 import { clientEnv } from 'env/client';
+
+export async function fetchStatistics({
+    requestBody,
+}: {
+    requestBody: RequestInit;
+}): Promise<Result<ApiResponseSuccess<UsersStatistics>, ApiErrors>> {
+    const response = await fetch(
+        `${clientEnv.NEXT_URL}/api/statistics`,
+        requestBody,
+    );
+
+    const responseJson = await response.json();
+    const responseStatusCode = response.status;
+
+    if (responseJson.success) {
+        return Result.ok(responseJson);
+    }
+
+    return handleApiError({
+        responseJson,
+        responseStatusCode,
+    });
+}
 
 export async function fetchGuide({
     guideId,

@@ -21,30 +21,42 @@ export async function GET(request: NextRequest, { params }: RouteIdParams) {
     const guideId = (await params).id;
     const userId = sessionResponse.data.user.id;
 
-    const guide = await getGuide({
-        userId,
-        guideId,
-    });
+    try {
+        const guide = await getGuide({
+            userId,
+            guideId,
+        });
 
-    if (!guide) {
+        if (!guide) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: 'Such a guide does not exists',
+                },
+                {
+                    status: 404,
+                },
+            );
+        }
+
+        return NextResponse.json(
+            {
+                success: true,
+                data: guide,
+            },
+            {
+                status: 200,
+            },
+        );
+    } catch (error) {
         return NextResponse.json(
             {
                 success: false,
-                message: 'Such a guide does not exists',
+                message: 'Something went wrong, unable to fetch guides',
             },
             {
-                status: 404,
+                status: 500,
             },
         );
     }
-
-    return NextResponse.json(
-        {
-            success: true,
-            data: guide,
-        },
-        {
-            status: 200,
-        },
-    );
 }

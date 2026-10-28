@@ -1,4 +1,8 @@
-import { GuideProgressStatus, GuideStatus } from 'database/enums';
+import {
+    GuideProgressStatus,
+    GuideStatus,
+    GuideStepStatus,
+} from 'database/enums';
 import { Badge } from '@/components/ui/badge';
 import { JSX, ReactNode } from 'react';
 import {
@@ -12,7 +16,7 @@ export function GuideProgressBadge({
     className,
     children,
 }: {
-    progressStatus: GuideProgressStatus | GuideStatus;
+    progressStatus: GuideProgressStatus | GuideStatus | GuideStepStatus;
     className?: string;
     children?: ReactNode;
 }) {

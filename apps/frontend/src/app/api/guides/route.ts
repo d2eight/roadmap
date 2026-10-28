@@ -36,19 +36,31 @@ export async function GET(request: NextRequest) {
         );
     }
 
-    const guides = await getGuides({
-        pageSize,
-        userId,
-        params: parsedSearchParams.data,
-    });
+    try {
+        const guides = await getGuides({
+            pageSize,
+            userId,
+            params: parsedSearchParams.data,
+        });
 
-    return NextResponse.json(
-        {
-            success: true,
-            data: guides,
-        },
-        {
-            status: 200,
-        },
-    );
+        return NextResponse.json(
+            {
+                success: true,
+                data: guides,
+            },
+            {
+                status: 200,
+            },
+        );
+    } catch (error) {
+        return NextResponse.json(
+            {
+                success: false,
+                message: 'Something went wrong, unable to fetch guides',
+            },
+            {
+                status: 500,
+            },
+        );
+    }
 }

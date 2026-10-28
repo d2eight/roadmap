@@ -7,7 +7,7 @@ import { CardContent } from '@/components/ui/card';
 import { QuestionsCount } from '@/components/custom-ui/QuestionsCount';
 import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
 
-export function GuideCardContent() {
+export function GuideCardContent({ className }: { className?: string }) {
     const { guide, status, questionsCount, completedSteps, stepsCount } =
         useGuideContext();
 
@@ -16,7 +16,7 @@ export function GuideCardContent() {
         case 'GUIDE_GENERATION':
         case 'QUESTIONS_GENERATION':
             return (
-                <CardContent>
+                <CardContent className={`${className && className}`}>
                     <div className="flex items-center gap-2">
                         <p className="shimmer text-sm text-muted-foreground">
                             Please wait&hellip;
@@ -26,13 +26,13 @@ export function GuideCardContent() {
             );
         case 'QUESTIONS_GENERATED':
             return (
-                <CardContent>
+                <CardContent className={`${className && className}`}>
                     <QuestionsCount questionsCount={questionsCount} />
                 </CardContent>
             );
         case 'GUIDE_GENERATED':
             return (
-                <CardContent>
+                <CardContent className={`${className && className}`}>
                     <div className="flex items-center justify-between gap-2">
                         <GuideProgressBadge
                             progressStatus={guide.progressStatus}
@@ -47,7 +47,7 @@ export function GuideCardContent() {
             );
         default:
             return (
-                <CardContent>
+                <CardContent className={`${className && className}`}>
                     <div className="flex items-center justify-between gap-2">
                         <GuideProgressBadge progressStatus={guide.status} />
                         <GuideDate guideDate={guide.createdAt} />

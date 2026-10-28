@@ -3,13 +3,21 @@
 import { useGuideContext } from '@/context/GuideContext';
 import { CardTitle } from '@/components/ui/card';
 
-export function GuideCardTitle() {
+export function GuideCardTitle({ className }: { className?: string }) {
     const { guide } = useGuideContext();
 
     switch (guide.status) {
         case 'GUIDE_GENERATED':
-            return <CardTitle className="truncate">{guide.title}</CardTitle>;
+            return (
+                <CardTitle className={`${className && className} truncate`}>
+                    {guide.title}
+                </CardTitle>
+            );
         default:
-            return <CardTitle className="truncate">{guide.prompt}</CardTitle>;
+            return (
+                <CardTitle className={`${className && className} truncate`}>
+                    {guide.prompt}
+                </CardTitle>
+            );
     }
 }

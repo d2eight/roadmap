@@ -10,6 +10,7 @@ import { GuideNotFound } from '@/components/custom-ui/GuideNotFound';
 import { GuideLoader } from '@/components/custom-ui/GuideLoader';
 import {
     getCompletedSteps,
+    getCurrentStep,
     getQuestionsCount,
     getStepsCount,
 } from '@/utils/guideInfo';
@@ -89,6 +90,7 @@ export default function GuideContextProvider({
                 stepsCount: getStepsCount(data),
                 parsedQuestions: parseQuestions(data.questions),
                 parsedAnswers: parseAnswers(data.answeredQuestions),
+                currentStep: getCurrentStep(data),
             };
             break;
         default:

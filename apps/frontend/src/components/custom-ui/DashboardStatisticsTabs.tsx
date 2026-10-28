@@ -1,0 +1,79 @@
+'use client';
+
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { useQuery } from '@tanstack/react-query';
+import { UsersStatistics } from 'shared-types';
+import { fetchStatistics } from '@/utils/guideApiActions';
+import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import { Spinner } from '@/components/ui/spinner';
+import { DataTable } from '@/components/custom-ui/DataTable';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
+
+export default function DashboardStatisticsTabs() {
+    const { clientHandleApiError } = useClientHandleApiError();
+
+    const requestBody: RequestInit = {
+        method: 'GET',
+    };
+    const { data, isLoading } = useQuery<UsersStatistics>({
+        queryKey: ['statistics'],
+        queryFn: async () => {
+            const result = await fetchStatistics({ requestBody });
+
+            if (result.isErr()) {
+                clientHandleApiError({
+                    error: result.error,
+                    redirect: false,
+                });
+                throw result.error;
+            }
+
+            return result.value.data;
+        },
+    });
+
+    if (isLoading) {
+        return (
+            <Card className="w-full relative">
+                <Spinner className="size-20 absolute inset-0 m-auto" />
+            </Card>
+        );
+    }
+
+    if (!data) return null;
+
+    return (
+        <Card className="w-full">
+            <CardHeader>
+                <CardTitle>Statistics</CardTitle>
+                <CardDescription>
+                    Statistics about your progress, based on statuses
+                </CardDescription>
+            </CardHeader>
+            <Separator />
+            <CardContent>
+                <Tabs defaultValue="guides">
+                    <TabsList>
+                        <TabsList>
+                            <TabsTrigger value="guides">Guides</TabsTrigger>
+                            <TabsTrigger value="steps">Steps</TabsTrigger>
+                        </TabsList>
+                    </TabsList>
+                    <TabsContent value="guides">
+                        <DataTable data={data.guidesCounts} />
+                    </TabsContent>
+                    <TabsContent value="steps">
+                        <DataTable data={data.stepsCounts} />
+                    </TabsContent>
+                </Tabs>
+            </CardContent>
+        </Card>
+    );
+}

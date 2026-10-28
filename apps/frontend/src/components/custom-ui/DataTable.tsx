@@ -1,0 +1,41 @@
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { UsersGuidesStatistics } from 'shared-types';
+import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
+import { GuideStepStatus } from 'database/enums';
+import { GuideStatus } from 'database/enums';
+
+export function DataTable({ data }: { data: UsersGuidesStatistics }) {
+    return (
+        <Table>
+            <TableCaption>Status table</TableCaption>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Count</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {Object.entries(data).map(([key, value]) => (
+                    <TableRow key={key}>
+                        <TableCell>
+                            <GuideProgressBadge
+                                progressStatus={
+                                    key as GuideStatus | GuideStepStatus
+                                }
+                            />
+                        </TableCell>
+                        <TableCell>{value}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    );
+}

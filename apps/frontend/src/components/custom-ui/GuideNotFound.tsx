@@ -31,13 +31,12 @@ export function GuideNotFound() {
                 <EmptyDescription>
                     {' '}
                     Such a guide, does not exist.
-                    <br /> Create, a new guide, or go back to the dashboard
-                    page.
+                    <br /> Create, a new guide, or go back to the guides page.
                 </EmptyDescription>
             </EmptyHeader>
             <EmptyContent className="flex flex-row justify-center">
                 <Button asChild>
-                    <Link href={`/guides?${searchParams}`}>Dashboard</Link>
+                    <Link href={`/guides?${searchParams}`}>Guides</Link>
                 </Button>
                 <CreateGuideButton
                     button={createGuideCustomButton}

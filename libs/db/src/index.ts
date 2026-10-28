@@ -21,4 +21,4 @@ export { prisma };
 
 globalThis.prismaGlobal = prisma;
 
-export { Prisma } from '../generated/prisma/client';
+export * from '../generated/prisma/client';

@@ -21,7 +21,6 @@ export function GuideContentFailed() {
                 </EmptyMedia>
                 <EmptyTitle>Failure</EmptyTitle>
                 <EmptyDescription>
-                    {' '}
                     Unfortunately, guide was not created
                     <br /> Prompt and all related data has been saved, try again
                 </EmptyDescription>

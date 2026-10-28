@@ -7,13 +7,16 @@ import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { toast } from 'sonner';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function AuthButtons() {
     const router = useRouter();
     const { data, error } = useContext(AuthContext);
+    const queryClient = useQueryClient();
 
     const handleSignOut = async () => {
         await authClient.signOut();
+        queryClient.clear();
         if (error) {
             toast.error('Something went wrong, try again.');
         } else {

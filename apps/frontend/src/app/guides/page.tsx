@@ -16,7 +16,7 @@ import { getGuides, getSession } from 'utils';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export default async function DashboardServerPage({
+export default async function GuidesServerPage({
     searchParams,
 }: {
     searchParams: SearchParamsNext;

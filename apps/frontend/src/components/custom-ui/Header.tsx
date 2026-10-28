@@ -10,13 +10,13 @@ export async function Header() {
                 <Image src="/logo.png" width={50} height={50} alt="logo" />
                 <div>
                     <Button asChild variant="link">
-                        <Link href="/">Home</Link>
+                        <Link href="/home">Home</Link>
                     </Button>
                     <Button asChild variant="link">
                         <Link href="/prompting">Prompting</Link>
                     </Button>
                     <Button asChild variant="link">
-                        <Link href="/guides">Dashboard</Link>
+                        <Link href="/guides">Guides</Link>
                     </Button>
                 </div>
                 <div className="flex items-center gap-2">

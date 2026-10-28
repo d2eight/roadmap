@@ -4,10 +4,7 @@ export default async function GuidesPageLayout({
     children: React.ReactNode;
 }) {
     return (
-        <section
-            id="guides-section"
-            className="xl:px-[40px] py-[50px] px-[20px]"
-        >
+        <section id="guides-section" className="xl:px-10 py-12.5 px-5">
             {children}
         </section>
     );

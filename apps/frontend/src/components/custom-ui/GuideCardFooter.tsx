@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 import { Spinner } from '@/components/ui/spinner';
 import { ArrowRight, LucideRefreshCcw } from 'lucide-react';
@@ -8,8 +8,17 @@ import { useGuideContext } from '@/context/GuideContext';
 import { CardFooter } from '@/components/ui/card';
 import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
 import { useParamsContext } from '@/context/ParamsContext';
+import { VariantProps } from 'class-variance-authority';
 
-export function GuideCardFooter() {
+export function GuideCardFooter({
+    className,
+    label,
+    variant,
+}: {
+    className?: string;
+    label?: string;
+    variant?: VariantProps<typeof buttonVariants>['variant'];
+}) {
     const { guide, status } = useGuideContext();
     const { searchParams } = useParamsContext();
 
@@ -17,7 +26,7 @@ export function GuideCardFooter() {
         case 'INIT':
         case 'GUIDE_GENERATION':
             return (
-                <CardFooter>
+                <CardFooter className={`${className && className}`}>
                     <Button className="w-full" variant="secondary" asChild>
                         <Link href={`/guides/${guide.id}?${searchParams}`}>
                             Generating a guide
@@ -28,7 +37,7 @@ export function GuideCardFooter() {
             );
         case 'QUESTIONS_GENERATION':
             return (
-                <CardFooter>
+                <CardFooter className={`${className && className}`}>
                     <Button className="w-full" variant="secondary" asChild>
                         <Link href={`/guides/${guide.id}?${searchParams}`}>
                             Generating questions
@@ -39,7 +48,7 @@ export function GuideCardFooter() {
             );
         case 'QUESTIONS_GENERATED':
             return (
-                <CardFooter>
+                <CardFooter className={`${className && className}`}>
                     <Button className="w-full" variant="outline" asChild>
                         <Link href={`/guides/${guide.id}?${searchParams}`}>
                             Open questions
@@ -50,10 +59,14 @@ export function GuideCardFooter() {
             );
         case 'GUIDE_GENERATED':
             return (
-                <CardFooter>
-                    <Button className="w-full" asChild>
+                <CardFooter className={`${className && className}`}>
+                    <Button
+                        className="w-full"
+                        asChild
+                        variant={variant ?? 'default'}
+                    >
                         <Link href={`/guides/${guide.id}?${searchParams}`}>
-                            Open guide
+                            {label ?? 'Open guide'}
                             <ArrowRight />
                         </Link>
                     </Button>
@@ -62,7 +75,9 @@ export function GuideCardFooter() {
         default: {
             const icon = <LucideRefreshCcw />;
             return (
-                <CardFooter className="cursor-pointer">
+                <CardFooter
+                    className={`${className && className} cursor-pointer`}
+                >
                     <Button variant="destructive" asChild>
                         <div className="w-full">
                             <RecreateGuideMenu

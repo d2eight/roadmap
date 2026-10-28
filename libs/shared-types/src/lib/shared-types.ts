@@ -9,8 +9,7 @@ import { Dispatch, JSX, SetStateAction } from 'react';
 import { BetterFetchError } from '@better-fetch/fetch';
 import { Socket } from 'socket.io-client';
 import { Prisma } from 'database';
-
-import { GuideStatus } from 'database/enums';
+import { GuideProgressStatus, GuideStatus } from 'database/enums';
 import {
     NotFoundError,
     UnauthorizedError,
@@ -20,6 +19,7 @@ import {
 import { JsonValue } from '@prisma/client/runtime/client';
 import { NextResponse } from 'next/server';
 import { ZodSafeParseResult } from 'zod';
+import { GuideStepStatus } from 'database/enums';
 
 export type BetterAuthSession = {
     session: Session;
@@ -79,6 +79,7 @@ export type GuideContextType =
           stepsCount?: never;
           parsedQuestions: ZodSafeParseResult<aiQuestionsSchemaType>;
           parsedAnswers?: never;
+          currentStep?: never;
       }
     | {
           guide: GuideModelWithRelations;
@@ -88,6 +89,7 @@ export type GuideContextType =
           stepsCount: number;
           parsedQuestions: ZodSafeParseResult<aiQuestionsSchemaType>;
           parsedAnswers: ZodSafeParseResult<answeredQuestionsSchemaType>;
+          currentStep: GuideStepModelFetched | null;
       }
     | {
           guide: GuideModelWithRelations;
@@ -101,6 +103,7 @@ export type GuideContextType =
           stepsCount?: never;
           parsedQuestions?: never;
           parsedAnswers?: never;
+          currentStep?: never;
       };
 
 export type SocketContextType = {
@@ -190,3 +193,21 @@ export type VerifySessionResponse =
 export type SearchParamsNext = Promise<{
     [key: string]: string | string[] | undefined;
 }>;
+
+export type UsersGuidesStatistics = Record<GuideProgressStatus, number>;
+export type UsersStepsStatistics = Record<GuideStepStatus, number>;
+
+export type UsersStatistics = {
+    guidesCounts: UsersGuidesStatistics;
+    stepsCounts: UsersStepsStatistics;
+};
+
+export type DashboardGuidesIds = {
+    currentGuideId?: string;
+    doneGuideId?: string;
+};
+
+// export type DashboardGuidesIds = {
+//     currentGuideId?: string;
+//     doneGuideId?: string;
+// };
