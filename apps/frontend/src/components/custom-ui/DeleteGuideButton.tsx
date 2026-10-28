@@ -48,6 +48,15 @@ export function DeleteGuideButton({
                 queryKey: ['guide', guide.id],
             });
             await queryClient.invalidateQueries({ queryKey });
+            await queryClient.invalidateQueries({
+                queryKey: ['statistics'],
+            });
+            await queryClient.invalidateQueries({
+                queryKey: ['currentGuide'],
+            });
+            await queryClient.invalidateQueries({
+                queryKey: ['doneGuide'],
+            });
             toast.success('You have successfully deleted guide!');
             if (redirect) {
                 return router.replace(`/guides?${defaultParams}`);

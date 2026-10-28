@@ -16,6 +16,11 @@ import { Spinner } from '@/components/ui/spinner';
 import { DataTable } from '@/components/custom-ui/DataTable';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 export default function DashboardStatisticsTabs() {
     const { clientHandleApiError } = useClientHandleApiError();
@@ -60,10 +65,26 @@ export default function DashboardStatisticsTabs() {
                     </CardDescription>
                     <CardAction>
                         <TabsList>
-                            <TabsList>
-                                <TabsTrigger value="guides">Guides</TabsTrigger>
-                                <TabsTrigger value="steps">Steps</TabsTrigger>
-                            </TabsList>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <span>
+                                        <TabsTrigger value="guides">
+                                            Guides
+                                        </TabsTrigger>
+                                    </span>
+                                </TooltipTrigger>
+                                <TooltipContent>Guides statuses</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <span>
+                                        <TabsTrigger value="steps">
+                                            Steps
+                                        </TabsTrigger>
+                                    </span>
+                                </TooltipTrigger>
+                                <TooltipContent>Steps statuses</TooltipContent>
+                            </Tooltip>
                         </TabsList>
                     </CardAction>
                 </CardHeader>

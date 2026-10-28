@@ -95,6 +95,15 @@ export default function GuideQuestionsForm({
             await queryClient.invalidateQueries({
                 queryKey: ['guide', guide.id],
             });
+            await queryClient.invalidateQueries({
+                queryKey: ['statistics'],
+            });
+            await queryClient.invalidateQueries({
+                queryKey: ['currentGuide'],
+            });
+            await queryClient.invalidateQueries({
+                queryKey: ['doneGuide'],
+            });
         },
         onError: (error) => {
             setProcessingStatus(false);

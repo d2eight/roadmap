@@ -24,7 +24,7 @@ export function GuideCardStep() {
             </ItemMedia>
             <ItemContent>
                 <ItemTitle>{currentStep.title}</ItemTitle>
-                <ItemDescription className="line-clamp-4">
+                <ItemDescription className="line-clamp-3">
                     {currentStep.description}
                 </ItemDescription>
             </ItemContent>

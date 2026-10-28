@@ -36,6 +36,15 @@ export function RecreateGuideButton({
         mutationFn: recreate,
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey });
+            await queryClient.invalidateQueries({
+                queryKey: ['statistics'],
+            });
+            await queryClient.invalidateQueries({
+                queryKey: ['currentGuide'],
+            });
+            await queryClient.invalidateQueries({
+                queryKey: ['doneGuide'],
+            });
             toast.success('You have successfully initiated guide recreation!');
         },
         onError: (error) => {
