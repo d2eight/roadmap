@@ -1,6 +1,7 @@
 import { prisma } from 'database';
 import {
     paramsSchemaType,
+    UsersGenerationsStatistics,
     UsersGuidesStatistics,
     UsersStatistics,
     UsersStepsStatistics,
@@ -16,11 +17,42 @@ export async function getSession({ headers }: { headers: Headers }) {
     });
 }
 
+function normalizeDate(date: Date) {
+    return new Date(date.setHours(0, 0, 0, 0));
+}
+
+export function getDatesArray({
+    startDate,
+    endDate,
+}: {
+    startDate: Date;
+    endDate: Date;
+}) {
+    const dates = [];
+    const currentDate = new Date(startDate);
+    currentDate.setHours(0, 0, 0, 0);
+
+    const lastDate = new Date(endDate);
+    lastDate.setHours(0, 0, 0, 0);
+
+    while (currentDate <= lastDate) {
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+}
+
 export async function getUsersStatistics({
     userId,
 }: {
     userId: string;
 }): Promise<UsersStatistics> {
+    const endDate = new Date();
+    const startDate = new Date(endDate);
+    startDate.setDate(endDate.getDate() - 15);
+    const dates = getDatesArray({ startDate, endDate });
+
     const stepsOperation = prisma.guideStep.groupBy({
         by: ['status'],
         where: {
@@ -39,10 +71,30 @@ export async function getUsersStatistics({
         _count: { _all: true },
     });
 
-    const [stepsInfo, guidesInfo] = await prisma.$transaction([
-        stepsOperation,
-        guidesOperation,
-    ]);
+    const allGuidesForDatesOperation = prisma.guide.findMany({
+        where: {
+            userId,
+            OR: [
+                { createdAt: { gte: startDate, lte: endDate } },
+                {
+                    updatedAt: { gte: startDate, lte: endDate },
+                    progressStatus: 'DONE',
+                },
+            ],
+        },
+        select: {
+            createdAt: true,
+            updatedAt: true,
+            progressStatus: true,
+        },
+    });
+
+    const [stepsInfo, guidesInfo, allGuidesForDatesInfo] =
+        await prisma.$transaction([
+            stepsOperation,
+            guidesOperation,
+            allGuidesForDatesOperation,
+        ]);
 
     const stepsCounts = Object.values(GuideStepStatus).reduce((acc, status) => {
         const count = stepsInfo.find((item) => item.status === status)?._count
@@ -63,9 +115,59 @@ export async function getUsersStatistics({
         {} as UsersGuidesStatistics,
     );
 
+    const datesCountsInit = dates.map((item) => ({
+        date: item,
+        createdCount: 0,
+        doneCount: 0,
+    })) satisfies UsersGenerationsStatistics;
+
+    const datesCounts = allGuidesForDatesInfo
+        .reduce((acc, curr) => {
+            const guideCreatedAtDate = new Date(
+                curr.createdAt.getFullYear(),
+                curr.createdAt.getMonth(),
+                curr.createdAt.getDate(),
+            );
+
+            const guideUpdatedAtDate = new Date(
+                curr.updatedAt.getFullYear(),
+                curr.updatedAt.getMonth(),
+                curr.updatedAt.getDate(),
+            );
+
+            const [dateWithNewCreatedGuide, dateWithNewDoneGuide] = [
+                acc.find(
+                    (item) =>
+                        item.date.getTime() === guideCreatedAtDate.getTime(),
+                ),
+
+                acc.find(
+                    (item) =>
+                        item.date.getTime() === guideUpdatedAtDate.getTime(),
+                ),
+            ];
+
+            if (dateWithNewCreatedGuide) {
+                dateWithNewCreatedGuide.createdCount += 1;
+            }
+
+            if (dateWithNewDoneGuide && curr.progressStatus === 'DONE') {
+                dateWithNewDoneGuide.doneCount += 1;
+            }
+
+            return acc;
+        }, datesCountsInit)
+        .map((item) => {
+            return {
+                ...item,
+                date: item.date.toLocaleDateString(),
+            };
+        });
+
     return {
         stepsCounts,
         guidesCounts,
+        datesCounts,
     };
 }
 

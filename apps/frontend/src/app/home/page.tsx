@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import DashboardGuideTabs from '@/components/custom-ui/DashboardGuideTabs';
 import DashboardStatisticsTabs from '@/components/custom-ui/DashboardStatisticsTabs';
+import DateChart from '@/components/custom-ui/DateChart';
 
 export default async function DashboardServerPage() {
     const session = await getSession({
@@ -48,9 +49,12 @@ export default async function DashboardServerPage() {
 
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <div className="flex w-full gap-15">
-                <DashboardGuideTabs />
-                <DashboardStatisticsTabs />
+            <div className="flex flex-col gap-15">
+                <div className="flex w-full gap-15">
+                    <DashboardGuideTabs />
+                    <DashboardStatisticsTabs />
+                </div>
+                <DateChart />
             </div>
         </HydrationBoundary>
     );
