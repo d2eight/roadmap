@@ -17,6 +17,7 @@ import { DashboardGuideCard } from '@/components/custom-ui/DashboardGuideCard';
 import { DashboardGuideDoneCard } from '@/components/custom-ui/DashboardGuideDoneCard';
 import { CurrentGuideContextProvider } from '@/context/CurrentGuideContext';
 import { DoneGuideContextProvider } from '@/context/DoneGuideContext';
+import { LucideFlame } from 'lucide-react';
 
 export default function DashboardGuideTabs() {
     return (
@@ -26,9 +27,12 @@ export default function DashboardGuideTabs() {
                 className="flex flex-col justify-between h-full"
             >
                 <CardHeader className="mb-3">
-                    <CardTitle>Latest activities</CardTitle>
+                    <CardTitle className="flex items-start gap-1">
+                        <p>Latest activities</p>
+                        <LucideFlame fill="#FF9A00" size="20" />
+                    </CardTitle>
                     <CardDescription>
-                        Information about your latest progress
+                        Pick up where you left off
                     </CardDescription>
                     <CardAction>
                         <TabsList>

@@ -5,9 +5,10 @@ import { GuideModelWithRelations } from 'shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchCurrentGuide } from '@/utils/guideApiActions';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import { GuideLoader } from '@/components/custom-ui/GuideLoader';
-import DashboardNoGuideCard from '@/components/custom-ui/DashboardNoGuideCard';
 import GuideContextProvider from '@/context/GuideContext';
+import DashboardNoGuideCard from '@/components/custom-ui/DashboardNoGuideCard';
+import { EmptyFailed } from '@/components/custom-ui/EmptyFailed';
+import { CurrentGuideLoader } from '@/components/custom-ui/CurrentGuideLoader';
 
 const CurrentGuideContext = createContext<GuideModelWithRelations | null>(null);
 
@@ -31,7 +32,7 @@ export function CurrentGuideContextProvider({
     const requestBody: RequestInit = {
         method: 'GET',
     };
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, isError } = useQuery({
         queryKey: ['currentGuide'],
         queryFn: async () => {
             const result = await fetchCurrentGuide({ requestBody });
@@ -56,18 +57,27 @@ export function CurrentGuideContextProvider({
     });
 
     if (isLoading) {
-        return <GuideLoader />;
+        return <CurrentGuideLoader />;
     }
 
-    if (!data) {
-        return <DashboardNoGuideCard />;
+    if (isError) {
+        return <EmptyFailed description="Cant load guide, try again later" />;
     }
 
     return (
-        <CurrentGuideContext value={data}>
-            <GuideContextProvider guideId={data.id} autoQueryStatus={false}>
-                {children}
-            </GuideContextProvider>
-        </CurrentGuideContext>
+        <>
+            {data ? (
+                <CurrentGuideContext value={data}>
+                    <GuideContextProvider
+                        guideId={data.id}
+                        autoQueryStatus={false}
+                    >
+                        {children}
+                    </GuideContextProvider>
+                </CurrentGuideContext>
+            ) : (
+                <DashboardNoGuideCard />
+            )}
+        </>
     );
 }

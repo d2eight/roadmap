@@ -1,7 +1,6 @@
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -15,7 +14,6 @@ import { GuideStatus } from 'database/enums';
 export function DataTable({ data }: { data: UsersGuidesStatistics }) {
     return (
         <Table>
-            <TableCaption>Status table</TableCaption>
             <TableHeader>
                 <TableRow>
                     <TableHead>Status</TableHead>

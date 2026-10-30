@@ -31,8 +31,9 @@ import {
 } from '@/components/ui/select';
 import { handleDaysAmount } from 'utils/client';
 import { Spinner } from '@/components/ui/spinner';
-import { DateChartFailed } from '@/components/custom-ui/DateChartFailed';
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
+import { EmptyFailed } from '@/components/custom-ui/EmptyFailed';
+import { LucideChartColumn, LucideHistory } from 'lucide-react';
 
 const chartConfig = {
     createdCount: {
@@ -91,8 +92,9 @@ export default function DateChart() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>
-                    Your activity for the last {daysAmount} days
+                <CardTitle className="flex items-center gap-2">
+                    <p> Your activity for the last {daysAmount} days</p>
+                    <LucideHistory size="20" />
                 </CardTitle>
                 <CardAction>
                     <Select
@@ -127,7 +129,14 @@ export default function DateChart() {
                     {isLoading && (
                         <Spinner className="size-20 inset-0 m-auto absolute" />
                     )}
-                    {isError && <DateChartFailed />}
+                    {isError && (
+                        <div className="absolute w-full h-full top-0 flex items-center justify-center">
+                            <EmptyFailed
+                                icon={<LucideChartColumn color="red" />}
+                                description="Cant load graph, try again later"
+                            />
+                        </div>
+                    )}
                     {data && (
                         <BarChart data={data}>
                             <CartesianGrid vertical={false} />

@@ -12,8 +12,6 @@ import { useQuery } from '@tanstack/react-query';
 import { UsersStatistics } from 'shared-types';
 import { fetchStatistics } from '@/utils/guideApiActions';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import { Spinner } from '@/components/ui/spinner';
-import { DataTable } from '@/components/custom-ui/DataTable';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -21,6 +19,8 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { CurrentGuideLoader } from '@/components/custom-ui/CurrentGuideLoader';
+import { DataTable } from '@/components/custom-ui/DataTable';
 
 export default function DashboardStatisticsTabs() {
     const { clientHandleApiError } = useClientHandleApiError();
@@ -46,11 +46,7 @@ export default function DashboardStatisticsTabs() {
     });
 
     if (isLoading) {
-        return (
-            <Card className="w-full relative">
-                <Spinner className="size-20 absolute inset-0 m-auto" />
-            </Card>
-        );
+        return <CurrentGuideLoader />;
     }
 
     if (!data) return null;
@@ -59,9 +55,9 @@ export default function DashboardStatisticsTabs() {
         <Card className="w-full">
             <Tabs defaultValue="guides">
                 <CardHeader className="mb-3">
-                    <CardTitle>Statistics</CardTitle>
+                    <CardTitle>Progress Summary</CardTitle>
                     <CardDescription>
-                        Statistics about your progress, based on statuses
+                        Overall progress based on statuses
                     </CardDescription>
                     <CardAction>
                         <TabsList>
