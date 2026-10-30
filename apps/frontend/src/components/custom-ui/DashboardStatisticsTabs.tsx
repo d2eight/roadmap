@@ -19,8 +19,8 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { CurrentGuideLoader } from '@/components/custom-ui/CurrentGuideLoader';
 import { DataTable } from '@/components/custom-ui/DataTable';
+import { SummaryLoader } from '@/components/custom-ui/SummaryLoader';
 
 export default function DashboardStatisticsTabs() {
     const { clientHandleApiError } = useClientHandleApiError();
@@ -45,15 +45,9 @@ export default function DashboardStatisticsTabs() {
         },
     });
 
-    if (isLoading) {
-        return <CurrentGuideLoader />;
-    }
-
-    if (!data) return null;
-
     return (
-        <Card className="w-full">
-            <Tabs defaultValue="guides">
+        <Card className="w-full h-auto min-h-100 overflow-hidden">
+            <Tabs defaultValue="guides" className="h-full">
                 <CardHeader className="mb-3">
                     <CardTitle>Progress Summary</CardTitle>
                     <CardDescription>
@@ -86,12 +80,17 @@ export default function DashboardStatisticsTabs() {
                 </CardHeader>
                 <Separator />
                 <CardContent>
-                    <TabsContent value="guides">
-                        <DataTable data={data.guidesCounts} />
-                    </TabsContent>
-                    <TabsContent value="steps">
-                        <DataTable data={data.stepsCounts} />
-                    </TabsContent>
+                    {isLoading && <SummaryLoader />}
+                    {data && (
+                        <>
+                            <TabsContent value="guides">
+                                <DataTable data={data.guidesCounts} />
+                            </TabsContent>
+                            <TabsContent value="steps">
+                                <DataTable data={data.stepsCounts} />
+                            </TabsContent>
+                        </>
+                    )}
                 </CardContent>
             </Tabs>
         </Card>

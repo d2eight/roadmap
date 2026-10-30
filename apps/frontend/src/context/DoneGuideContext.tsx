@@ -5,9 +5,9 @@ import { GuideModelWithRelations } from 'shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchDoneGuide } from '@/utils/guideApiActions';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import { GuideLoader } from '@/components/custom-ui/GuideLoader';
 import DashboardNoGuideCard from '@/components/custom-ui/DashboardNoGuideCard';
 import GuideContextProvider from '@/context/GuideContext';
+import { CurrentGuideLoader } from '@/components/custom-ui/CurrentGuideLoader';
 
 const DoneGuideContext = createContext<GuideModelWithRelations | null>(null);
 
@@ -56,7 +56,7 @@ export function DoneGuideContextProvider({
     });
 
     if (isLoading) {
-        return <GuideLoader />;
+        return <CurrentGuideLoader />;
     }
 
     if (!data) {

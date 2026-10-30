@@ -21,7 +21,7 @@ import { LucideFlame } from 'lucide-react';
 
 export default function DashboardGuideTabs() {
     return (
-        <Card className="w-full h-auto max-h-[400px] overflow-hidden">
+        <Card className="w-full h-auto min-h-100 overflow-hidden">
             <Tabs
                 defaultValue="inwork"
                 className="flex flex-col justify-between h-full"
