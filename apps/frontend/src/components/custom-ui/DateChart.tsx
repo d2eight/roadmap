@@ -9,11 +9,30 @@ import {
     ChartTooltipContent,
 } from '@/components/ui/chart';
 import { useQuery } from '@tanstack/react-query';
-import { UsersStatistics } from 'shared-types';
-import { fetchStatistics } from '@/utils/guideApiActions';
+import { DaysAmountSchemaType, UsersActivity } from 'shared-types';
+import { fetchUsersActivity } from '@/utils/guideApiActions';
 import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { useState } from 'react';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { handleDaysAmount } from 'utils/client';
+import { Spinner } from '@/components/ui/spinner';
+import { DateChartFailed } from '@/components/custom-ui/DateChartFailed';
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 
 const chartConfig = {
     createdCount: {
@@ -28,14 +47,34 @@ const chartConfig = {
 
 export default function DateChart() {
     const { clientHandleApiError } = useClientHandleApiError();
+    const [daysAmount, setDaysAmount] = useState<DaysAmountSchemaType>(15);
+    const searchParams = new URLSearchParams();
+    searchParams.set('daysAmount', daysAmount.toString());
+
+    const selectOptions: {
+        label: string;
+        daysAmount: string;
+    }[] = [
+        {
+            label: '15 days',
+            daysAmount: '15',
+        },
+        {
+            label: '30 days',
+            daysAmount: '30',
+        },
+    ];
 
     const requestBody: RequestInit = {
         method: 'GET',
     };
-    const { data } = useQuery<UsersStatistics>({
-        queryKey: ['statistics'],
+    const { data, isLoading, isError } = useQuery<UsersActivity>({
+        queryKey: ['activity', daysAmount],
         queryFn: async () => {
-            const result = await fetchStatistics({ requestBody });
+            const result = await fetchUsersActivity({
+                requestBody,
+                searchParams,
+            });
 
             if (result.isErr()) {
                 clientHandleApiError({
@@ -49,34 +88,66 @@ export default function DateChart() {
         },
     });
 
-    if (!data) {
-        return null;
-    }
-
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Your activity for the lat 15 days</CardTitle>
+                <CardTitle>
+                    Your activity for the last {daysAmount} days
+                </CardTitle>
+                <CardAction>
+                    <Select
+                        value={daysAmount.toString()}
+                        onValueChange={(value) => {
+                            const newDaysAmount = handleDaysAmount(value);
+                            setDaysAmount(newDaysAmount);
+                            return newDaysAmount.toString();
+                        }}
+                    >
+                        <SelectTrigger>
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Days</SelectLabel>
+                                {selectOptions.map((option, index) => (
+                                    <SelectItem
+                                        key={index}
+                                        value={option.daysAmount}
+                                    >
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </CardAction>
             </CardHeader>
-            <ChartContainer config={chartConfig}>
-                <span></span>
-                <BarChart data={data.datesCounts}>
-                    <CartesianGrid vertical={false} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <ChartLegend content={<ChartLegendContent />} />
-                    <XAxis dataKey="date" />
-                    <Bar
-                        dataKey="createdCount"
-                        fill="var(--color-createdCount)"
-                        radius={4}
-                    ></Bar>
-                    <Bar
-                        dataKey="doneCount"
-                        fill="var(--color-doneCount)"
-                        radius={4}
-                    ></Bar>
-                </BarChart>
-            </ChartContainer>
+            <CardContent>
+                <ChartContainer config={chartConfig} className="relative">
+                    {isLoading && (
+                        <Spinner className="size-20 inset-0 m-auto absolute" />
+                    )}
+                    {isError && <DateChartFailed />}
+                    {data && (
+                        <BarChart data={data}>
+                            <CartesianGrid vertical={false} />
+                            <ChartTooltip content={<ChartTooltipContent />} />
+                            <ChartLegend content={<ChartLegendContent />} />
+                            <XAxis dataKey="date" />
+                            <Bar
+                                dataKey="createdCount"
+                                fill="var(--color-createdCount)"
+                                radius={4}
+                            ></Bar>
+                            <Bar
+                                dataKey="doneCount"
+                                fill="var(--color-doneCount)"
+                                radius={4}
+                            ></Bar>
+                        </BarChart>
+                    )}
+                </ChartContainer>
+            </CardContent>
         </Card>
     );
 }

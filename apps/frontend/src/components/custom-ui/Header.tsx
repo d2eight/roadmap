@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '../ui/button';
-import { AuthButtons } from './AuthButtons';
+import { AuthButtons } from '@/components/custom-ui/AuthButtons';
 
 export async function Header() {
     return (

@@ -3,6 +3,7 @@ import {
     getCurrentUsersGuide,
     getDoneUsersGuide,
     getSession,
+    getUsersActivity,
     getUsersStatistics,
 } from 'utils';
 import { headers } from 'next/headers';
@@ -23,10 +24,16 @@ export default async function DashboardServerPage() {
 
     const queryClient = getQueryClient();
     const userId = session.user.id;
+    const daysAmount = 15;
 
     await queryClient.prefetchQuery({
         queryKey: ['statistics'],
         queryFn: () => getUsersStatistics({ userId }),
+    });
+
+    await queryClient.prefetchQuery({
+        queryKey: ['activity', daysAmount],
+        queryFn: () => getUsersActivity({ userId, daysAmount }),
     });
 
     const currentGuide = await getCurrentUsersGuide({

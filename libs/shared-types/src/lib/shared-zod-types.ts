@@ -194,3 +194,9 @@ export type GuideQuestionFormErrors =
     z.ZodFlattenedError<guideQuestionsSchemaType>;
 
 export type GuideStepsFormErrors = z.ZodFlattenedError<guideStepsSchemaType>;
+
+export const daysAmountSchema = z.coerce
+    .number()
+    .pipe(z.union([z.literal(15), z.literal(30)]));
+
+export type DaysAmountSchemaType = z.infer<typeof daysAmountSchema>;

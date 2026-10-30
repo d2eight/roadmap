@@ -196,15 +196,14 @@ export type SearchParamsNext = Promise<{
 
 export type UsersGuidesStatistics = Record<GuideProgressStatus, number>;
 export type UsersStepsStatistics = Record<GuideStepStatus, number>;
-export type UsersGenerationsStatisticsItem = {
+export type UsersActivityItem = {
     date: Date | string;
     createdCount: number;
     doneCount: number;
 };
-export type UsersGenerationsStatistics = UsersGenerationsStatisticsItem[];
+export type UsersActivity = UsersActivityItem[];
 
 export type UsersStatistics = {
     guidesCounts: UsersGuidesStatistics;
     stepsCounts: UsersStepsStatistics;
-    datesCounts: UsersGenerationsStatistics;
 };

@@ -1,7 +1,8 @@
 import { prisma } from 'database';
 import {
+    DaysAmountSchemaType,
     paramsSchemaType,
-    UsersGenerationsStatistics,
+    UsersActivity,
     UsersGuidesStatistics,
     UsersStatistics,
     UsersStepsStatistics,
@@ -43,35 +44,19 @@ export function getDatesArray({
     return dates;
 }
 
-export async function getUsersStatistics({
+export async function getUsersActivity({
     userId,
+    daysAmount = 15,
 }: {
     userId: string;
-}): Promise<UsersStatistics> {
+    daysAmount?: DaysAmountSchemaType;
+}): Promise<UsersActivity> {
     const endDate = new Date();
     const startDate = new Date(endDate);
-    startDate.setDate(endDate.getDate() - 15);
+    startDate.setDate(endDate.getDate() - daysAmount);
     const dates = getDatesArray({ startDate, endDate });
 
-    const stepsOperation = prisma.guideStep.groupBy({
-        by: ['status'],
-        where: {
-            guide: {
-                userId,
-            },
-        },
-        _count: { _all: true },
-    });
-
-    const guidesOperation = prisma.guide.groupBy({
-        by: ['progressStatus'],
-        where: {
-            userId,
-        },
-        _count: { _all: true },
-    });
-
-    const allGuidesForDatesOperation = prisma.guide.findMany({
+    const allGuidesForDates = await prisma.guide.findMany({
         where: {
             userId,
             OR: [
@@ -89,39 +74,13 @@ export async function getUsersStatistics({
         },
     });
 
-    const [stepsInfo, guidesInfo, allGuidesForDatesInfo] =
-        await prisma.$transaction([
-            stepsOperation,
-            guidesOperation,
-            allGuidesForDatesOperation,
-        ]);
-
-    const stepsCounts = Object.values(GuideStepStatus).reduce((acc, status) => {
-        const count = stepsInfo.find((item) => item.status === status)?._count
-            ._all;
-        acc[status] = count ?? 0;
-        return acc;
-    }, {} as UsersStepsStatistics);
-
-    const guidesCounts = Object.values(GuideProgressStatus).reduce(
-        (acc, status) => {
-            const count = guidesInfo.find((item) => {
-                return item.progressStatus === status;
-            })?._count._all;
-
-            acc[status] = count ?? 0;
-            return acc;
-        },
-        {} as UsersGuidesStatistics,
-    );
-
     const datesCountsInit = dates.map((item) => ({
         date: item,
         createdCount: 0,
         doneCount: 0,
-    })) satisfies UsersGenerationsStatistics;
+    })) satisfies UsersActivity;
 
-    const datesCounts = allGuidesForDatesInfo
+    const datesCounts = allGuidesForDates
         .reduce((acc, curr) => {
             const guideCreatedAtDate = new Date(
                 curr.createdAt.getFullYear(),
@@ -164,10 +123,59 @@ export async function getUsersStatistics({
             };
         });
 
+    return datesCounts;
+}
+
+export async function getUsersStatistics({
+    userId,
+}: {
+    userId: string;
+}): Promise<UsersStatistics> {
+    const stepsOperation = prisma.guideStep.groupBy({
+        by: ['status'],
+        where: {
+            guide: {
+                userId,
+            },
+        },
+        _count: { _all: true },
+    });
+
+    const guidesOperation = prisma.guide.groupBy({
+        by: ['progressStatus'],
+        where: {
+            userId,
+        },
+        _count: { _all: true },
+    });
+
+    const [stepsInfo, guidesInfo] = await prisma.$transaction([
+        stepsOperation,
+        guidesOperation,
+    ]);
+
+    const stepsCounts = Object.values(GuideStepStatus).reduce((acc, status) => {
+        const count = stepsInfo.find((item) => item.status === status)?._count
+            ._all;
+        acc[status] = count ?? 0;
+        return acc;
+    }, {} as UsersStepsStatistics);
+
+    const guidesCounts = Object.values(GuideProgressStatus).reduce(
+        (acc, status) => {
+            const count = guidesInfo.find((item) => {
+                return item.progressStatus === status;
+            })?._count._all;
+
+            acc[status] = count ?? 0;
+            return acc;
+        },
+        {} as UsersGuidesStatistics,
+    );
+
     return {
         stepsCounts,
         guidesCounts,
-        datesCounts,
     };
 }
 

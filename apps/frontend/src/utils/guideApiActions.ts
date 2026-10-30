@@ -8,10 +8,36 @@ import {
     GuideQuestionFormErrors,
     GuideStepsFormErrors,
     PromptFormErrors,
+    UsersActivity,
     UsersStatistics,
 } from 'shared-types';
 import { handleApiError } from '@/utils/apiErrorsHandler';
 import { clientEnv } from 'env/client';
+
+export async function fetchUsersActivity({
+    requestBody,
+    searchParams,
+}: {
+    requestBody: RequestInit;
+    searchParams: URLSearchParams;
+}): Promise<Result<ApiResponseSuccess<UsersActivity>, ApiErrors>> {
+    const response = await fetch(
+        `${clientEnv.NEXT_URL}/api/activity?${searchParams}`,
+        requestBody,
+    );
+
+    const responseJson = await response.json();
+    const responseStatusCode = response.status;
+
+    if (responseJson.success) {
+        return Result.ok(responseJson);
+    }
+
+    return handleApiError({
+        responseJson,
+        responseStatusCode,
+    });
+}
 
 export async function fetchCurrentGuide({
     requestBody,
