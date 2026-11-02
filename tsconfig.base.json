@@ -14,6 +14,7 @@
         "lib": ["es2020", "dom"],
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
+        "strict": true,
         "paths": {
             "database": ["./libs/db/src/index.ts"],
             "database/schemas": ["./libs/db/src/schemas.ts"],

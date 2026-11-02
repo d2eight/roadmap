@@ -1,11 +1,12 @@
 import { Server } from 'socket.io';
+import { Server as HttpServer } from 'node:http';
 import { auth } from 'auth';
 import { fromNodeHeaders } from 'better-auth/node';
 import { env } from 'env';
 
-let io = null;
+let io: Server | null = null;
 
-export const initSocket = (server) => {
+export const initSocket = (server: HttpServer) => {
     io = new Server(server, {
         cors: {
             origin: env.NEXT_URL,

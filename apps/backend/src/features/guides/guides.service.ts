@@ -3,7 +3,7 @@ import {
     GuideStepModelFetched,
     promptSchemaType,
 } from 'shared-types';
-import { prisma } from 'database';
+import { prisma, Prisma } from 'database';
 import { GuideProgressStatus } from '@/libs/db/prisma/generated/schemas';
 import { getGuideStepProperties, guidesResetData } from 'shared-constants';
 import { JobsOptions } from 'bullmq';
@@ -107,8 +107,8 @@ export function resetGuideWithQuestions({
         data: {
             ...guidesResetData,
             prompt,
-            answeredQuestions: null,
-            questions: null,
+            answeredQuestions: Prisma.JsonNull,
+            questions: Prisma.JsonNull,
         },
     });
 }

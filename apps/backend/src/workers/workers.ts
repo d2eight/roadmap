@@ -7,10 +7,7 @@ import { setGuideFailure } from '../features/guides/guides.service';
 import { getIO } from '../socket';
 import { redisConnectionConfig } from '../redis';
 
-async function handleGuideJobFailure(
-    job: Job<GuideJob> | undefined,
-    error: Error,
-) {
+async function handleGuideJobFailure(job: Job<GuideJob>, error: Error) {
     if (!job || error instanceof UnrecoverableError) {
         return;
     }
@@ -70,14 +67,19 @@ export default function initWorkers() {
         },
     );
 
-    guideGenerationWorker.on('failed', async (job: Job<GuideJob>, error) => {
+    guideGenerationWorker.on('failed', async (job, error) => {
+        if (!job) {
+            console.error('Failed, no job');
+            return;
+        }
         return await handleGuideJobFailure(job, error);
     });
 
-    guideQuestionsGenerationWorker.on(
-        'failed',
-        async (job: Job<GuideJob>, error) => {
-            return await handleGuideJobFailure(job, error);
-        },
-    );
+    guideQuestionsGenerationWorker.on('failed', async (job, error) => {
+        if (!job) {
+            console.error('Failed, no job');
+            return;
+        }
+        return await handleGuideJobFailure(job, error);
+    });
 }

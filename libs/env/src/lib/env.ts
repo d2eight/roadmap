@@ -20,7 +20,6 @@ const environmentSchema = z.object({
     BETTER_AUTH_URL: z.string(),
     DATABASE_URL: z.string(),
     OPENAI_API_KEY: z.string(),
-    GOOGLE_GENERATIVE_AI_API_KEY: z.string(),
 });
 
 type EnvironmentSchemaType = z.infer<typeof environmentSchema>;
