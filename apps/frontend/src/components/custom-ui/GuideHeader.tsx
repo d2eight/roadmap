@@ -56,7 +56,7 @@ export function GuideHeader() {
                             className="data-open:bg-transparent"
                             value="item-1"
                         >
-                            <AccordionTrigger className="p-0 justify-center items-center **:data-[slot=accordion-trigger-icon]:ml-[0]! gap-[10px]">
+                            <AccordionTrigger className="p-0 justify-center items-center **:data-[slot=accordion-trigger-icon]:ml-0! gap-2.5">
                                 <p>See description</p>
                             </AccordionTrigger>
                             <AccordionContent className="pt-[20px] pb-[0]">

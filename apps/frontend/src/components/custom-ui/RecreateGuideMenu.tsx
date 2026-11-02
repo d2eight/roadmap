@@ -28,7 +28,6 @@ export function RecreateGuideMenu({
     icon?: ReactNode;
 }) {
     const { guide } = useGuideContext();
-
     return (
         <Tooltip>
             <DropdownMenu modal={false}>

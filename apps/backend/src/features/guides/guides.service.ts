@@ -1,5 +1,6 @@
 import {
     answeredQuestionsSchemaType,
+    guideQuestionsSchemaType,
     GuideStepModelFetched,
     promptSchemaType,
 } from 'shared-types';
@@ -141,7 +142,7 @@ export function addGuideAnsweredQuestions({
 }: {
     guideId: string;
     userId: string;
-    answeredQuestions: answeredQuestionsSchemaType;
+    answeredQuestions: guideQuestionsSchemaType;
 }) {
     return prisma.guide.update({
         where: {

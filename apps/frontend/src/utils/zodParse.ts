@@ -1,7 +1,4 @@
-import {
-    aiQuestionsSchema,
-    answeredQuestionsSchema,
-} from 'shared-types';
+import { aiQuestionsSchema, guideQuestionsSchema } from 'shared-types';
 import { JsonValue } from '@prisma/client/runtime/client';
 
 export function parseQuestions(questions: JsonValue) {
@@ -9,5 +6,5 @@ export function parseQuestions(questions: JsonValue) {
 }
 
 export function parseAnswers(answers: JsonValue) {
-    return answeredQuestionsSchema.safeParse(answers);
+    return guideQuestionsSchema.safeParse(answers);
 }

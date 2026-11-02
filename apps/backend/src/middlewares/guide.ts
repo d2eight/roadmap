@@ -21,6 +21,15 @@ export function guideMiddleware({
                     userId: userId,
                 },
             });
+            if (
+                guide.status === 'GUIDE_GENERATION' ||
+                guide.status === 'QUESTIONS_GENERATION'
+            ) {
+                return res.status(429).json({
+                    success: false,
+                    message: 'Guide is already in generation phase',
+                });
+            }
             res.locals.prompt = guide.prompt;
             next();
         } catch (error) {

@@ -1,10 +1,8 @@
 import { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
-import {
-    ApiErrors,
-    ApiResponseError,
-} from 'shared-types';
+import { ApiErrors, ApiResponseError } from 'shared-types';
 import {
     NotFoundError,
+    TooManyRequestsError,
     UnauthorizedError,
     UnexpectedError,
     UnprocessableEntity,
@@ -92,6 +90,12 @@ export function handleApiError<Z = null>({
                 new UnprocessableEntity<Z>({
                     message: responseJson.message,
                     zodError: responseJson.zodError,
+                }),
+            );
+        case 429:
+            return Result.err(
+                new TooManyRequestsError({
+                    message: responseJson.message,
                 }),
             );
         default:

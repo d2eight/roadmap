@@ -1,8 +1,8 @@
 import { Session, User } from 'better-auth';
 import {
     aiQuestionsSchemaType,
-    answeredQuestionsSchemaType,
     filterSchemaType,
+    guideQuestionsSchemaType,
     paramsSchemaType,
 } from './shared-zod-types';
 import { Dispatch, JSX, SetStateAction } from 'react';
@@ -88,7 +88,7 @@ export type GuideContextType =
           questionsCount?: never;
           stepsCount: number;
           parsedQuestions: ZodSafeParseResult<aiQuestionsSchemaType>;
-          parsedAnswers: ZodSafeParseResult<answeredQuestionsSchemaType>;
+          parsedAnswers: ZodSafeParseResult<guideQuestionsSchemaType>;
           currentStep: GuideStepModelFetched | null;
       }
     | {

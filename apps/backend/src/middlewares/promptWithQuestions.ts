@@ -1,8 +1,5 @@
 import express from 'express';
-import {
-    answeredQuestionsSchema,
-    answeredQuestionsSchemaType,
-} from 'shared-types';
+import { guideQuestionsSchema, guideQuestionsSchemaType } from 'shared-types';
 import { z } from 'zod';
 
 export function questionsValidationMiddleware({
@@ -15,11 +12,11 @@ export function questionsValidationMiddleware({
         res: express.Response,
         next: express.NextFunction,
     ) => {
-        const answeredQuestions: answeredQuestionsSchemaType = req.body;
+        const answeredQuestions: guideQuestionsSchemaType = req.body;
 
         try {
             res.locals.answeredQuestions =
-                answeredQuestionsSchema.parse(answeredQuestions);
+                guideQuestionsSchema.parse(answeredQuestions);
             next();
         } catch (error) {
             if (error instanceof z.ZodError) {

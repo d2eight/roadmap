@@ -16,7 +16,6 @@ import { Slider } from '../ui/slider';
 import { Checkbox } from '../ui/checkbox';
 import {
     aiQuestionsSchemaType,
-    answeredQuestionsSchemaType,
     ApiErrors,
     ApiResponseSuccess,
     GuideQuestionFormErrors,
@@ -41,7 +40,7 @@ export default function GuideQuestionsForm({
     answeredQuestions,
 }: {
     guideQuestions: aiQuestionsSchemaType;
-    answeredQuestions?: answeredQuestionsSchemaType;
+    answeredQuestions?: guideQuestionsSchemaType;
 }) {
     const { guide } = useGuideContext();
     const { processingStatus, setProcessingStatus } =
@@ -65,10 +64,10 @@ export default function GuideQuestionsForm({
 
     const defaultValues: guideQuestionsSchemaType = isRecreateForm
         ? {
-              questionABCD: answeredQuestions.questionABCD.answer,
-              questionRange: answeredQuestions.questionRange.answer,
-              questionCheckbox: answeredQuestions.questionCheckbox.answer,
-              questionText: answeredQuestions.questionText.answer,
+              questionABCD: answeredQuestions.questionABCD,
+              questionRange: answeredQuestions.questionRange,
+              questionCheckbox: answeredQuestions.questionCheckbox,
+              questionText: answeredQuestions.questionText,
           }
         : {
               questionABCD: '',
@@ -76,6 +75,8 @@ export default function GuideQuestionsForm({
               questionCheckbox: [],
               questionText: '',
           };
+
+    console.log(defaultValues);
 
     const form = useForm<guideQuestionsSchemaType>({
         resolver: zodResolver(guideQuestionsSchema),
@@ -162,34 +163,15 @@ export default function GuideQuestionsForm({
         return result.value;
     }
 
-    async function onSubmit(data: guideQuestionsSchemaType) {
+    async function onSubmit(answers: guideQuestionsSchemaType) {
         setProcessingStatus(true);
-
-        const answeredQuestions: answeredQuestionsSchemaType = {
-            questionABCD: {
-                ...guideQuestions.aiQuestionABCD,
-                answer: data.questionABCD,
-            },
-            questionRange: {
-                ...guideQuestions.aiQuestionRange,
-                answer: data.questionRange,
-            },
-            questionCheckbox: {
-                ...guideQuestions.aiQuestionCheckbox,
-                answer: data.questionCheckbox,
-            },
-            questionText: {
-                ...guideQuestions.aiQuestionText,
-                answer: data.questionText,
-            },
-        };
 
         const requestBody: RequestInit = {
             headers: {
                 'Content-Type': 'application/json',
             },
             credentials: 'include',
-            body: JSON.stringify(answeredQuestions),
+            body: JSON.stringify(answers),
         };
 
         if (isRecreateForm) {

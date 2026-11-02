@@ -18,3 +18,7 @@ export class UnprocessableEntity<Z = null> extends TaggedError(
 export class NotFoundError extends TaggedError('NotFoundError')<{
     message: string;
 }> {}
+
+export class TooManyRequestsError extends TaggedError('TooManyRequestsError')<{
+    message: string;
+}> {}

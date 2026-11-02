@@ -32,6 +32,7 @@ export async function aiCreateGuide(guide: GuideModel) {
                   "Generate a new guide, for this user prompt. Generate it, like you are a expert in requested topic. We've asked our user questions, and he answered them. Create a highly personalized guide based on user answers. Inside the description field(for guide in general), provide general information about the guide: what it is about, its goal, and what knowledge and skills the user will gain. Follow the output schema",
               prompt: JSON.stringify({
                   userPrompt: guide.prompt,
+                  questions: guide.questions,
                   answers: guide.answeredQuestions,
               }),
           }
