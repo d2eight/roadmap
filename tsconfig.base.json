@@ -16,7 +16,6 @@
         "skipDefaultLibCheck": true,
         "strict": true,
         "paths": {
-            "@/*": ["./apps/frontend/src/*"],
             "database": ["./libs/db/src/index.ts"],
             "database/schemas": ["./libs/db/src/schemas.ts"],
             "database/models": ["./libs/db/src/models.ts"],

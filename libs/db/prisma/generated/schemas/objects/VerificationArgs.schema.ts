@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import type { Prisma } from '../../../../generated/prisma/client';
 import { VerificationSelectObjectSchema as VerificationSelectObjectSchema } from './VerificationSelect.schema'
 
 const makeSchema = () => z.object({

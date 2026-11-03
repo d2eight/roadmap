@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import type { Prisma } from '../../../../generated/prisma/client';
 import { GuideSelectObjectSchema as GuideSelectObjectSchema } from './GuideSelect.schema';
 import { GuideIncludeObjectSchema as GuideIncludeObjectSchema } from './GuideInclude.schema'
 

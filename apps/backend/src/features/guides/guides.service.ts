@@ -4,8 +4,8 @@ import {
     GuideStepModelFetched,
     promptSchemaType,
 } from 'shared-types';
-import { prisma, Prisma } from 'database';
-import { GuideProgressStatus } from '@/libs/db/prisma/generated/schemas';
+import { GuideProgressStatus, prisma, Prisma } from 'database';
+
 import { getGuideStepProperties, guidesResetData } from 'shared-constants';
 import { JobsOptions } from 'bullmq';
 import {

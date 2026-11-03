@@ -9,9 +9,9 @@ import {
 } from 'errors';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { ZodFlattenedError } from 'zod';
 import { Result } from 'better-result';
 import { useCallback } from 'react';
+import { ZodFlattenedError } from 'zod';
 
 type ClientHandleApiErrorParams<Form extends FieldValues> = {
     error: ApiErrors<ZodFlattenedError<Form> | null>;

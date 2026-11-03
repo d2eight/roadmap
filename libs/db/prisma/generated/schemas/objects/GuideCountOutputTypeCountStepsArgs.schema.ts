@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import type { Prisma } from '../../../../generated/prisma/client';
 import { GuideStepWhereInputObjectSchema as GuideStepWhereInputObjectSchema } from './GuideStepWhereInput.schema'
 
 const makeSchema = () => z.object({
