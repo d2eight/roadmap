@@ -1,17 +1,10 @@
 'use client';
 
-import {
-    Empty,
-    EmptyContent,
-    EmptyDescription,
-    EmptyHeader,
-    EmptyMedia,
-    EmptyTitle,
-} from '@/components/ui/empty';
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '../ui/empty';
 import { SearchXIcon } from 'lucide-react';
 import { Button } from '../ui/button';
-import { CreateGuideButton } from '@/components/custom-ui/CreateGuideButton';
-import { useParamsContext } from '@/context/ParamsContext';
+import { CreateGuideButton } from './CreateGuideButton';
+import { useParamsContext } from '../../context/ParamsContext';
 import Link from 'next/link';
 
 export function GuideNotFound() {

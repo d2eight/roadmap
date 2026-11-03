@@ -1,10 +1,7 @@
 'use client';
 
-import {
-    PaginationItem,
-    PaginationNext,
-} from '@/components/ui/pagination';
-import { Button } from '@/components/ui/button';
+import { PaginationItem, PaginationNext } from '../ui/pagination';
+import { Button } from '../ui/button';
 
 export function NextPagePaginationItem({
     navigateToPage,

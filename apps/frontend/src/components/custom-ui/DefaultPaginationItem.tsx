@@ -1,6 +1,6 @@
 'use client';
 
-import { PaginationItem, PaginationLink } from '@/components/ui/pagination';
+import { PaginationItem, PaginationLink } from '../ui/pagination';
 
 export function DefaultPaginationItem({
     thisPage,

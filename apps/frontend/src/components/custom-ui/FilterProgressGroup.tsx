@@ -1,9 +1,9 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { filterSchemaType } from 'shared-types';
-import { ToggleGroup } from '@/components/ui/toggle-group';
+import { ToggleGroup } from '../ui/toggle-group';
 import { GuideProgressStatus } from 'database/enums';
-import { FilterProgressButton } from '@/components/custom-ui/FilterProgressButton';
-import { Field, FieldLabel } from '@/components/ui/field';
+import { FilterProgressButton } from './FilterProgressButton';
+import { Field, FieldLabel } from '../ui/field';
 import { searchParamsDefaultValues } from 'shared-constants';
 
 export function FilterProgressGroup({

@@ -1,11 +1,11 @@
 'use client';
 
-import { useGuideContext } from '@/context/GuideContext';
-import { CompletedSteps } from '@/components/custom-ui/CompletedSteps';
-import { GuideDate } from '@/components/custom-ui/GuideDate';
-import { CardContent } from '@/components/ui/card';
-import { QuestionsCount } from '@/components/custom-ui/QuestionsCount';
-import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
+import { useGuideContext } from '../../context/GuideContext';
+import { CompletedSteps } from './CompletedSteps';
+import { GuideDate } from './GuideDate';
+import { CardContent } from '../ui/card';
+import { QuestionsCount } from './QuestionsCount';
+import { GuideProgressBadge } from './GuideProgressBadge';
 
 export function GuideCardContent({ className }: { className?: string }) {
     const { guide, status, questionsCount, completedSteps, stepsCount } =

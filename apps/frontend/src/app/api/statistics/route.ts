@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import verifySession from '@/middlewares/auth';
 import { getUsersStatistics } from 'utils';
+import verifySession from '../../../middlewares/auth';
 
 export async function GET(request: NextRequest) {
     const sessionResponse = await verifySession({ request });

@@ -16,18 +16,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useFormProcessingContext } from '../../context/FormProcessor';
 import { toast } from 'sonner';
-import { RedAlert } from '@/components/custom-ui/RedAlert';
-import { Textarea } from '@/components/ui/textarea';
+import { RedAlert } from '../custom-ui/RedAlert';
+import { Textarea } from '../ui/textarea';
 import { guidesPageDefaultUrlString } from 'shared-constants';
-import { Switch } from '@/components/ui/switch';
-import { useParamsContext } from '@/context/ParamsContext';
-import {
-    createGuide,
-    createGuideQuestions,
-    recreateGuide,
-    recreateGuideQuestions,
-} from '@/utils/guideApiActions';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import { Switch } from '../ui/switch';
+import { useParamsContext } from '../../context/ParamsContext';
+import { createGuide, createGuideQuestions, recreateGuide, recreateGuideQuestions } from '../../utils/guideApiActions';
+import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
 import { UnexpectedError } from 'errors';
 
 export function PromptForm({

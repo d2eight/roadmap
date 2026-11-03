@@ -1,13 +1,8 @@
-import { useGuideContext } from '@/context/GuideContext';
-import {
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import { GuideDate } from '@/components/custom-ui/GuideDate';
-import { QuestionsCount } from '@/components/custom-ui/QuestionsCount';
-import { GuideFailedHeader } from '@/components/custom-ui/GuideFailedHeader';
+import { useGuideContext } from '../../context/GuideContext';
+import { CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { GuideDate } from './GuideDate';
+import { QuestionsCount } from './QuestionsCount';
+import { GuideFailedHeader } from './GuideFailedHeader';
 
 export function GuideQuestionsHeader() {
     const { guide, questionsCount, status, parsedQuestions } =

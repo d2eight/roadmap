@@ -1,7 +1,7 @@
-import { Card, CardAction, CardFooter, CardHeader } from '@/components/ui/card';
-import { FilterForm } from '@/components/forms/FilterForm';
-import { ApplyFiltersButton } from '@/components/custom-ui/ApplyFiltersButton';
-import { CreateGuideButton } from '@/components/custom-ui/CreateGuideButton';
+import { Card, CardAction, CardFooter, CardHeader } from '../ui/card';
+import { FilterForm } from '../forms/FilterForm';
+import { ApplyFiltersButton } from './ApplyFiltersButton';
+import { CreateGuideButton } from './CreateGuideButton';
 
 export function GuidesFilterComponent() {
     return (

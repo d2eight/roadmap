@@ -4,17 +4,12 @@ import { createContext, ReactNode, useContext } from 'react';
 import { GuideContextType } from 'shared-types';
 import { useQuery } from '@tanstack/react-query';
 import { GuideStatus } from 'database/enums';
-import { fetchGuide } from '@/utils/guideApiActions';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import { GuideNotFound } from '@/components/custom-ui/GuideNotFound';
-import { GuideLoader } from '@/components/custom-ui/GuideLoader';
-import {
-    getCompletedSteps,
-    getCurrentStep,
-    getQuestionsCount,
-    getStepsCount,
-} from '@/utils/guideInfo';
-import { parseAnswers, parseQuestions } from '@/utils/zodParse';
+import { fetchGuide } from '../utils/guideApiActions';
+import { useClientHandleApiError } from '../utils/apiErrorsHandler';
+import { GuideNotFound } from '../components/custom-ui/GuideNotFound';
+import { GuideLoader } from '../components/custom-ui/GuideLoader';
+import { getCompletedSteps, getCurrentStep, getQuestionsCount, getStepsCount } from '../utils/guideInfo';
+import { parseAnswers, parseQuestions } from '../utils/zodParse';
 
 export const GuideContext = createContext<GuideContextType | null>(null);
 

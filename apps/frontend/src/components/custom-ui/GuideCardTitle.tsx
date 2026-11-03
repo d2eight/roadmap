@@ -1,7 +1,7 @@
 'use client';
 
-import { useGuideContext } from '@/context/GuideContext';
-import { CardTitle } from '@/components/ui/card';
+import { useGuideContext } from '../../context/GuideContext';
+import { CardTitle } from '../ui/card';
 
 export function GuideCardTitle({ className }: { className?: string }) {
     const { guide } = useGuideContext();

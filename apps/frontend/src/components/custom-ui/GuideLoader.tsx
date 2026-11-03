@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton';
-import { SkeletonBasic } from '@/components/custom-ui/SkeletonBasic';
+import { Skeleton } from '../ui/skeleton';
+import { SkeletonBasic } from './SkeletonBasic';
 
 export function GuideLoader() {
     return (

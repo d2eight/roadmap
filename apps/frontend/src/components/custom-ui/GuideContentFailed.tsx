@@ -1,14 +1,7 @@
-import {
-    Empty,
-    EmptyContent,
-    EmptyDescription,
-    EmptyHeader,
-    EmptyMedia,
-    EmptyTitle,
-} from '@/components/ui/empty';
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '../ui/empty';
 import { CircleMinus, LucideRefreshCcw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
+import { Button } from '../ui/button';
+import { RecreateGuideMenu } from './RecreateGuideMenu';
 
 export function GuideContentFailed() {
     const icon = <LucideRefreshCcw />;

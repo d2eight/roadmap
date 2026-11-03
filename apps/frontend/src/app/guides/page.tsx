@@ -1,17 +1,17 @@
-import { GuidesContextProvider } from '@/context/GuidesContext';
-import { Guides } from '@/components/custom-ui/Guides';
-import { GuidesPagination } from '@/components/custom-ui/GuidesPagination';
+import { GuidesContextProvider } from '../../context/GuidesContext';
+import { Guides } from '../../components/custom-ui/Guides';
+import { GuidesPagination } from '../../components/custom-ui/GuidesPagination';
 import {
     GuideModelWithRelations,
     paramsSchema,
     QueryKeyType,
     SearchParamsNext,
 } from 'shared-types';
-import { FormProcessor } from '@/context/FormProcessor';
-import { getQueryClient } from '@/query/getQueryClient';
+import { FormProcessor } from '../../context/FormProcessor';
+import { getQueryClient } from '../../query/getQueryClient';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { pageSize } from '@/constants/constants';
-import { Filter } from '@/components/custom-ui/Filter';
+import { pageSize } from '../../constants/constants';
+import { Filter } from '../../components/custom-ui/Filter';
 import { getGuides, getSession } from 'utils';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';

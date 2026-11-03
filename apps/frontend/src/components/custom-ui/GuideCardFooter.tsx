@@ -1,13 +1,13 @@
 'use client';
 
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '../ui/button';
 import Link from 'next/link';
-import { Spinner } from '@/components/ui/spinner';
+import { Spinner } from '../ui/spinner';
 import { ArrowRight, LucideRefreshCcw } from 'lucide-react';
-import { useGuideContext } from '@/context/GuideContext';
-import { CardFooter } from '@/components/ui/card';
-import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
-import { useParamsContext } from '@/context/ParamsContext';
+import { useGuideContext } from '../../context/GuideContext';
+import { CardFooter } from '../ui/card';
+import { RecreateGuideMenu } from './RecreateGuideMenu';
+import { useParamsContext } from '../../context/ParamsContext';
 import { VariantProps } from 'class-variance-authority';
 
 export function GuideCardFooter({

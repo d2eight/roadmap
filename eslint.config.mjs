@@ -8,6 +8,15 @@ export default [
     {
         ignores: ['**/dist', '**/out-tsc'],
     },
+    // {
+    //     ignores: [
+    //         '**/.next/**',
+    //         '**/dist/',
+    //         '**/build/**',
+    //         '**/out-tsc',
+    //         '**/node_modules/**',
+    //     ],
+    // },
     {
         files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
         rules: {

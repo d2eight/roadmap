@@ -1,4 +1,4 @@
-import { authClient } from '@/lib/auth-client';
+import { authClient } from '../lib/auth-client';
 import { Result } from 'better-result';
 import { userSignInSchemaType, userSignUpSchemaType } from 'shared-types';
 

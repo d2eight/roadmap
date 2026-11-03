@@ -1,9 +1,9 @@
 'use client';
 
 import { Card } from '../ui/card';
-import { GuideCardHeader } from '@/components/custom-ui/GuideCardHeader';
-import { GuideCardContent } from '@/components/custom-ui/GuideCardContent';
-import { GuideCardFooter } from '@/components/custom-ui/GuideCardFooter';
+import { GuideCardHeader } from './GuideCardHeader';
+import { GuideCardContent } from './GuideCardContent';
+import { GuideCardFooter } from './GuideCardFooter';
 
 export function GuideCard() {
     return (

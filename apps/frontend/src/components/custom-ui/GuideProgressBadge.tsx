@@ -3,13 +3,9 @@ import {
     GuideStatus,
     GuideStepStatus,
 } from 'database/enums';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '../ui/badge';
 import { JSX, ReactNode } from 'react';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 export function GuideProgressBadge({
     progressStatus,

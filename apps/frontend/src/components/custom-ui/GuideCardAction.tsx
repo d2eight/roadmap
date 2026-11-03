@@ -1,5 +1,5 @@
-import { CardAction } from '@/components/ui/card';
-import { DeleteGuideButton } from '@/components/custom-ui/DeleteGuideButton';
+import { CardAction } from '../ui/card';
+import { DeleteGuideButton } from './DeleteGuideButton';
 
 export function GuideCardAction() {
     return (

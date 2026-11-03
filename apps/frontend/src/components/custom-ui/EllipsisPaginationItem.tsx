@@ -1,6 +1,6 @@
 'use client';
 
-import { PaginationEllipsis, PaginationItem } from '@/components/ui/pagination';
+import { PaginationEllipsis, PaginationItem } from '../ui/pagination';
 
 export function EllipsisPaginationItem() {
     return (

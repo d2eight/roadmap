@@ -7,7 +7,7 @@ import {
     LucideXCircle,
 } from 'lucide-react';
 import { GuideStepStatus } from 'database/enums';
-import { ToggleGroupItem } from '@/components/ui/toggle-group';
+import { ToggleGroupItem } from '../ui/toggle-group';
 
 export function StepStatusButton({
     status,

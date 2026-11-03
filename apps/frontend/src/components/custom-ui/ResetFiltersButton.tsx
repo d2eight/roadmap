@@ -1,11 +1,7 @@
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { FilterXIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useParamsContext } from '@/context/ParamsContext';
+import { Button } from '../ui/button';
+import { useParamsContext } from '../../context/ParamsContext';
 
 export function ResetFiltersButton() {
     const { resetParams } = useParamsContext();

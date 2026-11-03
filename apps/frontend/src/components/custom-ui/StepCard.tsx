@@ -1,12 +1,6 @@
-import {
-    Card,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { UseFormReturn } from 'react-hook-form';
-import { StepRadioGroup } from '@/components/custom-ui/StepRadioGroup';
+import { StepRadioGroup } from './StepRadioGroup';
 import { GuideStepModelFetched, guideStepsSchemaType } from 'shared-types';
 
 export function StepCard({

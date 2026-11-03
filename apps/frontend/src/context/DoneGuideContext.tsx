@@ -3,11 +3,12 @@
 import { createContext, ReactNode, useContext } from 'react';
 import { GuideModelWithRelations } from 'shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchDoneGuide } from '@/utils/guideApiActions';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import DashboardNoGuideCard from '@/components/custom-ui/DashboardNoGuideCard';
-import GuideContextProvider from '@/context/GuideContext';
-import { CurrentGuideLoader } from '@/components/custom-ui/CurrentGuideLoader';
+import { fetchDoneGuide } from '../utils/guideApiActions';
+import { useClientHandleApiError } from '../utils/apiErrorsHandler';
+
+import { CurrentGuideLoader } from '../components/custom-ui/CurrentGuideLoader';
+import DashboardNoGuideCard from '../components/custom-ui/DashboardNoGuideCard';
+import GuideContextProvider from './GuideContext';
 
 const DoneGuideContext = createContext<GuideModelWithRelations | null>(null);
 

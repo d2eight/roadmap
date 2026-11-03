@@ -1,8 +1,8 @@
 'use client';
 
-import { useGuideContext } from '@/context/GuideContext';
-import { CardAction } from '@/components/ui/card';
-import { CompletedSteps } from '@/components/custom-ui/CompletedSteps';
+import { useGuideContext } from '../../context/GuideContext';
+import { CardAction } from '../ui/card';
+import { CompletedSteps } from './CompletedSteps';
 
 export function DashboardGuideCardCompletedSteps() {
     const guide = useGuideContext();

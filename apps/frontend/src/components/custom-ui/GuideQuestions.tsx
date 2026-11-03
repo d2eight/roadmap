@@ -1,9 +1,9 @@
 'use client';
 
-import { FormProcessor } from '@/context/FormProcessor';
-import GuideQuestionsForm from '@/components/forms/GuideQuestionsForm';
-import { useGuideContext } from '@/context/GuideContext';
-import { GuideContentFailed } from '@/components/custom-ui/GuideContentFailed';
+import { FormProcessor } from '../../context/FormProcessor';
+import { useGuideContext } from '../../context/GuideContext';
+import { GuideContentFailed } from './GuideContentFailed';
+import GuideQuestionsForm from '../forms/GuideQuestionsForm';
 
 export function GuideQuestions() {
     const { parsedQuestions, status } = useGuideContext();

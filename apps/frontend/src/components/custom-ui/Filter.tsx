@@ -1,8 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Spinner } from '@/components/ui/spinner';
-import { InfiniteProgress } from '@/components/custom-ui/InfiniteProgress';
+import { Spinner } from '../ui/spinner';
+import { InfiniteProgress } from './InfiniteProgress';
 
 export const Filter = dynamic(
     () => import('../../components/custom-ui/GuidesFilter'),

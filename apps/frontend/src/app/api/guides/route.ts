@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import verifySession from '@/middlewares/auth';
 import { paramsSchema } from 'shared-types';
 import { getGuides } from 'utils';
-import { pageSize } from '@/constants/constants';
+import { pageSize } from '../../../constants/constants';
 import { searchParamsToObj } from 'utils/client';
+import verifySession from '../../../middlewares/auth';
 
 export async function GET(request: NextRequest) {
     const sessionResponse = await verifySession({ request });

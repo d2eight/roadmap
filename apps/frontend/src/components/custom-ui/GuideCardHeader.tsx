@@ -1,7 +1,7 @@
-import { CardHeader } from '@/components/ui/card';
-import { GuideCardTitle } from '@/components/custom-ui/GuideCardTitle';
-import { GuideCardDescription } from '@/components/custom-ui/GuideCardDescription';
-import { GuideCardAction } from '@/components/custom-ui/GuideCardAction';
+import { CardHeader } from '../ui/card';
+import { GuideCardTitle } from './GuideCardTitle';
+import { GuideCardDescription } from './GuideCardDescription';
+import { GuideCardAction } from './GuideCardAction';
 
 export function GuideCardHeader() {
     return (

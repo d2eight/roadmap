@@ -1,26 +1,15 @@
 'use client';
 
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { useQuery } from '@tanstack/react-query';
 import { UsersStatistics } from 'shared-types';
-import { fetchStatistics } from '@/utils/guideApiActions';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { DataTable } from '@/components/custom-ui/DataTable';
-import { SummaryLoader } from '@/components/custom-ui/SummaryLoader';
+import { fetchStatistics } from '../../utils/guideApiActions';
+import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Separator } from '../ui/separator';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { DataTable } from './DataTable';
+import { SummaryLoader } from './SummaryLoader';
 
 export default function DashboardStatisticsTabs() {
     const { clientHandleApiError } = useClientHandleApiError();

@@ -1,9 +1,5 @@
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { Button } from '../ui/button';
 import { LucideCheck } from 'lucide-react';
 
 export function ApplyFiltersButton() {

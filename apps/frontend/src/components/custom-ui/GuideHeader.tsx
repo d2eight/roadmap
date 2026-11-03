@@ -1,24 +1,13 @@
-import { useGuideContext } from '@/context/GuideContext';
-import {
-    CardAction,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import { CompletedSteps } from '@/components/custom-ui/CompletedSteps';
-import { GuideDate } from '@/components/custom-ui/GuideDate';
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '@/components/ui/accordion';
+import { useGuideContext } from '../../context/GuideContext';
+import { CardAction, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { CompletedSteps } from './CompletedSteps';
+import { GuideDate } from './GuideDate';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
-import { DeleteGuideButton } from '@/components/custom-ui/DeleteGuideButton';
+import { DeleteGuideButton } from './DeleteGuideButton';
 
-import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
-import { UpdateProgressButton } from '@/components/custom-ui/UpdateProgressButton';
+import { RecreateGuideMenu } from './RecreateGuideMenu';
+import { UpdateProgressButton } from './UpdateProgressButton';
 
 export function GuideHeader() {
     const { guide, completedSteps, stepsCount, status } = useGuideContext();

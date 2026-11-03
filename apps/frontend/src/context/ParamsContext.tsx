@@ -15,7 +15,7 @@ import {
 } from 'next/navigation';
 import { paramsSchema, paramsSchemaType, QueryKeyType } from 'shared-types';
 import { searchParamsDefaultValues } from 'shared-constants';
-import { getDefaultSearchParams } from '@/utils/getDefaultSearchParams';
+import { getDefaultSearchParams } from '../utils/getDefaultSearchParams';
 import { searchParamsToObj } from 'utils/client';
 
 export const ParamsContext = createContext<{

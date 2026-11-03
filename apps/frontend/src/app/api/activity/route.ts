@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import verifySession from '@/middlewares/auth';
 import { getUsersActivity } from 'utils';
 import { daysAmountSchema } from 'shared-types';
+import verifySession from '../../../middlewares/auth';
 
 export async function GET(request: NextRequest) {
     const sessionResponse = await verifySession({ request });

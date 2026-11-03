@@ -1,10 +1,7 @@
 'use client';
 
-import {
-    PaginationItem,
-    PaginationPrevious,
-} from '@/components/ui/pagination';
-import { Button } from '@/components/ui/button';
+import { PaginationItem, PaginationPrevious } from '../ui/pagination';
+import { Button } from '../ui/button';
 
 export function PreviousPagePaginationItem({
     navigateToPage,

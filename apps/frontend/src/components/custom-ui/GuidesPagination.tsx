@@ -1,15 +1,15 @@
 'use client';
 
 import { JSX } from 'react';
-import { Pagination } from '@/components/ui/pagination';
-import { useGuidesContext } from '@/context/GuidesContext';
+import { Pagination } from '../ui/pagination';
+import { useGuidesContext } from '../../context/GuidesContext';
 import { useRouter } from 'next/navigation';
-import { EllipsisPaginationItem } from '@/components/custom-ui/EllipsisPaginationItem';
-import { DefaultPaginationItem } from '@/components/custom-ui/DefaultPaginationItem';
-import { PreviousPagePaginationItem } from '@/components/custom-ui/PreviousPagePaginationItem';
-import { NextPagePaginationItem } from '@/components/custom-ui/NextPagePaginationItem';
-import { useParamsContext } from '@/context/ParamsContext';
-import { pageSize } from '@/constants/constants';
+import { EllipsisPaginationItem } from './EllipsisPaginationItem';
+import { DefaultPaginationItem } from './DefaultPaginationItem';
+import { PreviousPagePaginationItem } from './PreviousPagePaginationItem';
+import { NextPagePaginationItem } from './NextPagePaginationItem';
+import { useParamsContext } from '../../context/ParamsContext';
+import { pageSize } from '../../constants/constants';
 
 export function GuidesPagination() {
     const { guidesCount } = useGuidesContext();

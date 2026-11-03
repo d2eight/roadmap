@@ -1,22 +1,11 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Separator } from '@/components/ui/separator';
-import { DashboardGuideCard } from '@/components/custom-ui/DashboardGuideCard';
-import { DashboardGuideDoneCard } from '@/components/custom-ui/DashboardGuideDoneCard';
-import { CurrentGuideContextProvider } from '@/context/CurrentGuideContext';
-import { DoneGuideContextProvider } from '@/context/DoneGuideContext';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { Separator } from '../ui/separator';
+import { DashboardGuideCard } from './DashboardGuideCard';
+import { DashboardGuideDoneCard } from './DashboardGuideDoneCard';
+import { CurrentGuideContextProvider } from '../../context/CurrentGuideContext';
+import { DoneGuideContextProvider } from '../../context/DoneGuideContext';
 import { LucideFlame } from 'lucide-react';
 
 export default function DashboardGuideTabs() {

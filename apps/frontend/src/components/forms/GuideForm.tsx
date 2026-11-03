@@ -1,6 +1,6 @@
 'use client';
 
-import { useGuideContext } from '@/context/GuideContext';
+import { useGuideContext } from '../../context/GuideContext';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -12,15 +12,15 @@ import {
     guideStepsSchema,
     guideStepsSchemaType,
 } from 'shared-types';
-import { StepCard } from '@/components/custom-ui/StepCard';
+import { StepCard } from '../custom-ui/StepCard';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useFormProcessingContext } from '@/context/FormProcessor';
+import { useFormProcessingContext } from '../../context/FormProcessor';
 import { toast } from 'sonner';
-import { RedAlert } from '@/components/custom-ui/RedAlert';
-import { FieldSet } from '@/components/ui/field';
-import { updateGuideProgress } from '@/utils/guideApiActions';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import { useParamsContext } from '@/context/ParamsContext';
+import { RedAlert } from '../custom-ui/RedAlert';
+import { FieldSet } from '../ui/field';
+import { updateGuideProgress } from '../../utils/guideApiActions';
+import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
+import { useParamsContext } from '../../context/ParamsContext';
 
 export function GuideForm() {
     const { guide } = useGuideContext();

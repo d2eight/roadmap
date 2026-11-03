@@ -1,6 +1,6 @@
 import { GuideProgressStatus } from 'database/enums';
-import { ToggleGroupItem } from '@/components/ui/toggle-group';
-import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
+import { ToggleGroupItem } from '../ui/toggle-group';
+import { GuideProgressBadge } from './GuideProgressBadge';
 import { LucideCheck } from 'lucide-react';
 
 export function FilterProgressButton({

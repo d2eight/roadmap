@@ -1,23 +1,13 @@
-import { Button } from '@/components/ui/button';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { Button } from '../ui/button';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { recreateGuideQuestions } from '@/utils/guideApiActions';
+import { recreateGuideQuestions } from '../../utils/guideApiActions';
 import { ReactNode } from 'react';
-import { useGuideContext } from '@/context/GuideContext';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import { useGuideContext } from '../../context/GuideContext';
+import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
 import { ApiErrors, promptSchemaType } from 'shared-types';
 import { toast } from 'sonner';
-import { useParamsContext } from '@/context/ParamsContext';
+import { useParamsContext } from '../../context/ParamsContext';
 import { QuestionMarkIcon } from '@radix-ui/react-icons';
 
 export function RecreateGuideQuestionsButton({

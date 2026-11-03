@@ -1,4 +1,4 @@
-import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
+import { GuideModel } from 'database/models';
 import { prisma } from 'database';
 import { generateText, Output } from 'ai';
 import { openai } from '@ai-sdk/openai';

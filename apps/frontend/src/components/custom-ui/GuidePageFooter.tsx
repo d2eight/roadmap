@@ -1,7 +1,7 @@
-import { UpdateProgressButton } from '@/components/custom-ui/UpdateProgressButton';
-import { useGuideContext } from '@/context/GuideContext';
-import { MobileGuidePageFooterWrapper } from '@/components/custom-ui/MobileGuidePageFooterWrapper';
-import { AnswerQuestionsButton } from '@/components/custom-ui/AnswerQuestionsButton';
+import { UpdateProgressButton } from './UpdateProgressButton';
+import { useGuideContext } from '../../context/GuideContext';
+import { MobileGuidePageFooterWrapper } from './MobileGuidePageFooterWrapper';
+import { AnswerQuestionsButton } from './AnswerQuestionsButton';
 
 export function GuidePageFooter() {
     const { status, parsedQuestions } = useGuideContext();

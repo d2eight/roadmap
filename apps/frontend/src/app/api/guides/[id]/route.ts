@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { RouteIdParams } from 'shared-types';
-import verifySession from '@/middlewares/auth';
 import { getGuide } from 'utils';
+import verifySession from '../../../../middlewares/auth';
 
 export async function GET(request: NextRequest, { params }: RouteIdParams) {
     const sessionResponse = await verifySession({ request });

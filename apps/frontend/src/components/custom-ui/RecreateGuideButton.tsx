@@ -1,24 +1,14 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/button';
 import { LucideRefreshCcw } from 'lucide-react';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { simpleRecreateGuide } from '@/utils/guideApiActions';
+import { simpleRecreateGuide } from '../../utils/guideApiActions';
 import { ReactNode } from 'react';
-import { useGuideContext } from '@/context/GuideContext';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import { useGuideContext } from '../../context/GuideContext';
+import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
 import { ApiErrors } from 'shared-types';
 import { toast } from 'sonner';
-import { useParamsContext } from '@/context/ParamsContext';
+import { useParamsContext } from '../../context/ParamsContext';
 
 export function RecreateGuideButton({
     children,

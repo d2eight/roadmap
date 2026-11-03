@@ -2,8 +2,8 @@ import { generateText, Output } from 'ai';
 import { prisma } from 'database';
 import { aiGuideGenerationSchema } from 'shared-types';
 import { openai } from '@ai-sdk/openai';
-import { GuideStepCreateManyInput } from '@/libs/db/generated/prisma/models/GuideStep';
-import { GuideModel } from '@/libs/db/generated/prisma/models/Guide';
+import { GuideStepCreateManyInput } from 'database/models';
+import { GuideModel } from 'database/models';
 import { getIO } from '../../socket';
 import { env } from 'env';
 

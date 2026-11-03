@@ -24,16 +24,13 @@ import {
 } from 'shared-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useGuideContext } from '../../context/GuideContext';
-import { useFormProcessingContext } from '@/context/FormProcessor';
+import { useFormProcessingContext } from '../../context/FormProcessor';
 import { toast } from 'sonner';
-import { RedAlert } from '@/components/custom-ui/RedAlert';
-import { Separator } from '@/components/ui/separator';
-import { Textarea } from '@/components/ui/textarea';
-import {
-    createGuideWithAnsweredQuestions,
-    recreateGuideWithAnsweredQuestions,
-} from '@/utils/guideApiActions';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import { RedAlert } from '../custom-ui/RedAlert';
+import { Separator } from '../ui/separator';
+import { Textarea } from '../ui/textarea';
+import { createGuideWithAnsweredQuestions, recreateGuideWithAnsweredQuestions } from '../../utils/guideApiActions';
+import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
 
 export default function GuideQuestionsForm({
     guideQuestions,

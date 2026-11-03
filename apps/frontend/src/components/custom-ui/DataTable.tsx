@@ -1,13 +1,6 @@
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { UsersGuidesStatistics } from 'shared-types';
-import { GuideProgressBadge } from '@/components/custom-ui/GuideProgressBadge';
+import { GuideProgressBadge } from './GuideProgressBadge';
 import { GuideStepStatus } from 'database/enums';
 import { GuideStatus } from 'database/enums';
 

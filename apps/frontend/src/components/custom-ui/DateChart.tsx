@@ -1,38 +1,17 @@
 'use client';
 
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
-    ChartTooltip,
-    ChartTooltipContent,
-} from '@/components/ui/chart';
+import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '../ui/chart';
 import { useQuery } from '@tanstack/react-query';
 import { DaysAmountSchemaType, UsersActivity } from 'shared-types';
-import { fetchUsersActivity } from '@/utils/guideApiActions';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { fetchUsersActivity } from '../../utils/guideApiActions';
+import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { useState } from 'react';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select';
 import { handleDaysAmount } from 'utils/client';
-import { Spinner } from '@/components/ui/spinner';
+import { Spinner } from '../ui/spinner';
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
-import { EmptyFailed } from '@/components/custom-ui/EmptyFailed';
+import { EmptyFailed } from './EmptyFailed';
 import { LucideChartColumn, LucideHistory } from 'lucide-react';
 
 const chartConfig = {

@@ -19,7 +19,7 @@ import { useFormProcessingContext } from '../../context/FormProcessor';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
 import { RedAlert } from '../custom-ui/RedAlert';
-import { signInWithEmailAndPassword } from '@/utils/auth';
+import { signInWithEmailAndPassword } from '../../utils/auth';
 
 export function SignInForm() {
     const router = useRouter();

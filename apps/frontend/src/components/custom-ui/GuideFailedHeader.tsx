@@ -1,14 +1,8 @@
-import { useGuideContext } from '@/context/GuideContext';
-import {
-    CardAction,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import { DeleteGuideButton } from '@/components/custom-ui/DeleteGuideButton';
-import { Button } from '@/components/ui/button';
-import { RecreateGuideMenu } from '@/components/custom-ui/RecreateGuideMenu';
+import { useGuideContext } from '../../context/GuideContext';
+import { CardAction, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { DeleteGuideButton } from './DeleteGuideButton';
+import { Button } from '../ui/button';
+import { RecreateGuideMenu } from './RecreateGuideMenu';
 import { LucideRefreshCcw } from 'lucide-react';
 
 export function GuideFailedHeader({ title }: { title?: string }) {

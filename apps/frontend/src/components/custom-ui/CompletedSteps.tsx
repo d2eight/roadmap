@@ -1,10 +1,6 @@
 'use client';
 
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { LucideNotebookPen } from 'lucide-react';
 
 export function CompletedSteps({

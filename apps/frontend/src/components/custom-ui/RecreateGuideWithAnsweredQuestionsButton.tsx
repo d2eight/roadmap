@@ -6,12 +6,11 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/components/ui/dialog';
+} from '../ui/dialog';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/button';
 import { Pencil } from 'lucide-react';
-import { FormProcessor } from '@/context/FormProcessor';
-import GuideQuestionsForm from '@/components/forms/GuideQuestionsForm';
+import { FormProcessor } from '../../context/FormProcessor';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -22,10 +21,11 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from '../ui/alert-dialog';
 import { ReactNode } from 'react';
-import { AnswerQuestionsButton } from '@/components/custom-ui/AnswerQuestionsButton';
-import { useGuideContext } from '@/context/GuideContext';
+import { AnswerQuestionsButton } from './AnswerQuestionsButton';
+import { useGuideContext } from '../../context/GuideContext';
+import GuideQuestionsForm from '../forms/GuideQuestionsForm';
 
 export function RecreateGuideWithAnsweredQuestionsButton({
     children,

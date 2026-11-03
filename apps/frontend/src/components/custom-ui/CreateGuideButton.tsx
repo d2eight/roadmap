@@ -1,26 +1,14 @@
 'use client';
 
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { Button } from '../ui/button';
 import { LucidePlus } from 'lucide-react';
-import { FormProcessor } from '@/context/FormProcessor';
-import { PromptForm } from '@/components/forms/PromptForm';
+import { FormProcessor } from '../../context/FormProcessor';
+import { PromptForm } from '../forms/PromptForm';
 import { JSX } from 'react';
-import { CreateGuidePromptFormButton } from '@/components/custom-ui/CreateGuidePromptFormButton';
-import { toggleExplanationString } from '@/constants/constants';
+import { CreateGuidePromptFormButton } from './CreateGuidePromptFormButton';
+import { toggleExplanationString } from '../../constants/constants';
 
 export function CreateGuideButton({
     button,

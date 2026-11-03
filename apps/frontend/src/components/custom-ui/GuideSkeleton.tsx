@@ -1,4 +1,4 @@
-import { SkeletonBasic } from '@/components/custom-ui/SkeletonBasic';
+import { SkeletonBasic } from './SkeletonBasic';
 
 export function GuideSkeleton({ prompt }: { prompt: string }) {
     function truncateText({

@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/button';
 import { ReactNode } from 'react';
-import { useFormProcessingContext } from '@/context/FormProcessor';
+import { useFormProcessingContext } from '../../context/FormProcessor';
 
 export function CreateGuidePromptFormButton({
     children = 'Create guide',

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import verifySession from '@/middlewares/auth';
-import verifySearchParams from '@/middlewares/searchParams';
+import verifySearchParams from './middlewares/searchParams';
+import verifySession from './middlewares/auth';
 
 export default async function proxy(request: NextRequest) {
     const sessionResponse = await verifySession({ request });

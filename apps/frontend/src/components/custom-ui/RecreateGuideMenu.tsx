@@ -1,22 +1,13 @@
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { Button } from '../ui/button';
 import { LucideEllipsisVertical } from 'lucide-react';
-import { RecreateGuideButton } from '@/components/custom-ui/RecreateGuideButton';
-import { RecreateGuideWithAnsweredQuestionsButton } from '@/components/custom-ui/RecreateGuideWithAnsweredQuestionsButton';
-import { ChangeGuidePromptButton } from '@/components/custom-ui/ChangeGuidePromptButton';
+import { RecreateGuideButton } from './RecreateGuideButton';
+import { RecreateGuideWithAnsweredQuestionsButton } from './RecreateGuideWithAnsweredQuestionsButton';
+import { ChangeGuidePromptButton } from './ChangeGuidePromptButton';
 import { ReactNode } from 'react';
-import { useGuideContext } from '@/context/GuideContext';
-import { RecreateGuideQuestionsButton } from '@/components/custom-ui/RecreateGuideQuestionsButton';
+import { useGuideContext } from '../../context/GuideContext';
+import { RecreateGuideQuestionsButton } from './RecreateGuideQuestionsButton';
 
 export function RecreateGuideMenu({
     children,

@@ -1,8 +1,8 @@
-import { GuideCardTitle } from '@/components/custom-ui/GuideCardTitle';
-import { GuideCardFooter } from '@/components/custom-ui/GuideCardFooter';
-import { CardDescription, CardHeader } from '@/components/ui/card';
-import { DashboardGuideCardCompletedSteps } from '@/components/custom-ui/DashboardGuideCardCompletedSteps';
-import { GuideCardDoneInfo } from '@/components/custom-ui/GuideCardDoneInfo';
+import { GuideCardTitle } from './GuideCardTitle';
+import { GuideCardFooter } from './GuideCardFooter';
+import { CardDescription, CardHeader } from '../ui/card';
+import { DashboardGuideCardCompletedSteps } from './DashboardGuideCardCompletedSteps';
+import { GuideCardDoneInfo } from './GuideCardDoneInfo';
 
 export function DashboardGuideDoneCard() {
     return (

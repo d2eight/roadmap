@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { widthMap } from '@/constants/constants';
+import { widthMap } from '../constants/constants';
 import { WidthInfo } from 'shared-types';
 
 export function useWindowWidth(): WidthInfo {

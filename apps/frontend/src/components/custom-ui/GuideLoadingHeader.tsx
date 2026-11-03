@@ -1,5 +1,5 @@
-import { CardContent, CardFooter } from '@/components/ui/card';
-import { useGuideContext } from '@/context/GuideContext';
+import { CardContent, CardFooter } from '../ui/card';
+import { useGuideContext } from '../../context/GuideContext';
 
 export function GuideLoadingHeader() {
     const { guide, status } = useGuideContext();

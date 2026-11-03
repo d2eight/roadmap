@@ -1,5 +1,5 @@
-import { useGuideContext } from '@/context/GuideContext';
-import { CardDescription } from '@/components/ui/card';
+import { useGuideContext } from '../../context/GuideContext';
+import { CardDescription } from '../ui/card';
 
 export function GuideCardDescription() {
     const { guide } = useGuideContext();

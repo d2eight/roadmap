@@ -8,9 +8,9 @@ import {
     useState,
 } from 'react';
 import { GuideModelWithRelations } from 'shared-types';
-import { getSocket } from '@/socket';
+import { getSocket } from '../socket';
 import { useQueryClient } from '@tanstack/react-query';
-import { useParamsContext } from '@/context/ParamsContext';
+import { useParamsContext } from './ParamsContext';
 
 export const SocketContext = createContext<{
     connectionStatus: boolean;

@@ -3,26 +3,14 @@
 import { Controller, useForm } from 'react-hook-form';
 import { filterSchema, filterSchemaType, OrderByOptions } from 'shared-types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import {
-    Field,
-    FieldLabel,
-    FieldLegend,
-    FieldSet,
-} from '@/components/ui/field';
-import { FilterProgressGroup } from '@/components/custom-ui/FilterProgressGroup';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Field, FieldLabel, FieldLegend, FieldSet } from '../ui/field';
+import { FilterProgressGroup } from '../custom-ui/FilterProgressGroup';
 import { searchParamsDefaultValues } from 'shared-constants';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
-import { useFormProcessingContext } from '@/context/FormProcessor';
-import { useParamsContext } from '@/context/ParamsContext';
+import { useFormProcessingContext } from '../../context/FormProcessor';
+import { useParamsContext } from '../../context/ParamsContext';
 
 export function FilterForm() {
     const { setProcessingStatus } = useFormProcessingContext();

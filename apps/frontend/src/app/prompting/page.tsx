@@ -1,15 +1,8 @@
 import { PromptForm } from '../../components/forms/PromptForm';
 import { FormProcessor } from '../../context/FormProcessor';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import { CreateGuidePromptFormButton } from '@/components/custom-ui/CreateGuidePromptFormButton';
-import { toggleExplanationString } from '@/constants/constants';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/ui/card';
+import { CreateGuidePromptFormButton } from '../../components/custom-ui/CreateGuidePromptFormButton';
+import { toggleExplanationString } from '../../constants/constants';
 
 export default async function PromptingPage() {
     return (

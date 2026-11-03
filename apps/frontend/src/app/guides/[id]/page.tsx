@@ -1,13 +1,13 @@
 import GuideContextProvider from '../../../context/GuideContext';
 import GuidePage from './GuidePage';
-import { getQueryClient } from '@/query/getQueryClient';
+import { getQueryClient } from '../../../query/getQueryClient';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { ParamsContextProvider } from '@/context/ParamsContext';
+import { ParamsContextProvider } from '../../../context/ParamsContext';
 import { RouteIdParams } from 'shared-types';
 import { getGuide, getSession } from 'utils';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { GuideNotFound } from '@/components/custom-ui/GuideNotFound';
+import { GuideNotFound } from '../../../components/custom-ui/GuideNotFound';
 
 export default async function GuideServerPage({ params }: RouteIdParams) {
     const queryClient = getQueryClient();

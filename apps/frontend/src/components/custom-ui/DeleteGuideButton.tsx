@@ -1,28 +1,14 @@
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { Button } from '../ui/button';
 import { Trash2 } from 'lucide-react';
-import { useGuideContext } from '@/context/GuideContext';
+import { useGuideContext } from '../../context/GuideContext';
 import { ApiErrors } from 'shared-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useParamsContext } from '@/context/ParamsContext';
+import { useParamsContext } from '../../context/ParamsContext';
 import { toast } from 'sonner';
-import { deleteGuide } from '@/utils/guideApiActions';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
+import { deleteGuide } from '../../utils/guideApiActions';
+import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
 import { useRouter } from 'next/navigation';
 
 export function DeleteGuideButton({

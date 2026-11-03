@@ -1,12 +1,8 @@
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { Filter } from 'lucide-react';
-import { GuidesFilterComponent } from '@/components/custom-ui/GuidesFilterComponent';
-import { Button } from '@/components/ui/button';
+import { GuidesFilterComponent } from './GuidesFilterComponent';
+import { Button } from '../ui/button';
 
 export function OpenFiltersButton() {
     return (

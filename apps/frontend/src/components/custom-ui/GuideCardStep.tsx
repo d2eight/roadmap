@@ -1,13 +1,7 @@
 'use client';
 
-import { useGuideContext } from '@/context/GuideContext';
-import {
-    Item,
-    ItemContent,
-    ItemDescription,
-    ItemMedia,
-    ItemTitle,
-} from '@/components/ui/item';
+import { useGuideContext } from '../../context/GuideContext';
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '../ui/item';
 import { LucideCornerDownRight } from 'lucide-react';
 
 export function GuideCardStep() {

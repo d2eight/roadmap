@@ -5,7 +5,7 @@ import {
     guideQuestionsSchemaType,
     promptSchemaType,
 } from 'shared-types';
-import { GuideStepModel } from '@/libs/db/generated/prisma/models/GuideStep';
+import { GuideStepModel } from 'database/models';
 
 export async function createGuide(
     req: express.Request,

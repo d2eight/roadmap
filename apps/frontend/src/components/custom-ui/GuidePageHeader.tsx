@@ -1,9 +1,9 @@
-import { useGuideContext } from '@/context/GuideContext';
-import { GuideHeader } from '@/components/custom-ui/GuideHeader';
-import { GuideQuestionsHeader } from '@/components/custom-ui/GuideQuestionsHeader';
-import { GuideHeaderWrapper } from '@/components/custom-ui/GuideHeaderWrapper';
-import { GuideLoadingHeader } from '@/components/custom-ui/GuideLoadingHeader';
-import { GuideFailedHeader } from '@/components/custom-ui/GuideFailedHeader';
+import { useGuideContext } from '../../context/GuideContext';
+import { GuideHeader } from './GuideHeader';
+import { GuideQuestionsHeader } from './GuideQuestionsHeader';
+import { GuideHeaderWrapper } from './GuideHeaderWrapper';
+import { GuideLoadingHeader } from './GuideLoadingHeader';
+import { GuideFailedHeader } from './GuideFailedHeader';
 
 export function GuidePageHeader() {
     const { status } = useGuideContext();

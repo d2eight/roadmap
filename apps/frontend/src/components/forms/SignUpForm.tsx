@@ -18,8 +18,8 @@ import { useFormProcessingContext } from '../../context/FormProcessor';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
-import { RedAlert } from '@/components/custom-ui/RedAlert';
-import { signUpWithEmailAndPassword } from '@/utils/auth';
+import { RedAlert } from '../custom-ui/RedAlert';
+import { signUpWithEmailAndPassword } from '../../utils/auth';
 
 export function SignUpForm() {
     const router = useRouter();

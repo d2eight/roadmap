@@ -11,7 +11,7 @@ import {
     UsersActivity,
     UsersStatistics,
 } from 'shared-types';
-import { handleApiError } from '@/utils/apiErrorsHandler';
+import { handleApiError } from './apiErrorsHandler';
 import { clientEnv } from 'env/client';
 
 export async function fetchUsersActivity({

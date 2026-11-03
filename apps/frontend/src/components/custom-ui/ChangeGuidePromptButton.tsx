@@ -1,31 +1,13 @@
 import { ReactNode } from 'react';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { FormProcessor } from '@/context/FormProcessor';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Button } from '../ui/button';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
+import { FormProcessor } from '../../context/FormProcessor';
 import { NotebookPenIcon } from 'lucide-react';
-import { PromptForm } from '@/components/forms/PromptForm';
-import { toggleExplanationString } from '@/constants/constants';
-import { CreateGuidePromptFormButton } from '@/components/custom-ui/CreateGuidePromptFormButton';
-import { useGuideContext } from '@/context/GuideContext';
+import { PromptForm } from '../forms/PromptForm';
+import { toggleExplanationString } from '../../constants/constants';
+import { CreateGuidePromptFormButton } from './CreateGuidePromptFormButton';
+import { useGuideContext } from '../../context/GuideContext';
 
 export function ChangeGuidePromptButton({
     children,

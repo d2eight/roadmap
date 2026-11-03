@@ -3,10 +3,10 @@
 import { createContext, ReactNode, useContext } from 'react';
 import { GuideModelWithRelations } from 'shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParamsContext } from '@/context/ParamsContext';
-import { fetchGuides } from '@/utils/guideApiActions';
-import { useClientHandleApiError } from '@/utils/apiErrorsHandler';
-import { GuidesLoader } from '@/components/custom-ui/GuidesLoader';
+import { useParamsContext } from './ParamsContext';
+import { fetchGuides } from '../utils/guideApiActions';
+import { useClientHandleApiError } from '../utils/apiErrorsHandler';
+import { GuidesLoader } from '../components/custom-ui/GuidesLoader';
 
 export const GuidesContext = createContext<{
     guides: GuideModelWithRelations[];

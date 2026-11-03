@@ -1,9 +1,9 @@
-import { useGuideContext } from '@/context/GuideContext';
-import { GuideSkeleton } from '@/components/custom-ui/GuideSkeleton';
-import { GuideQuestions } from '@/components/custom-ui/GuideQuestions';
-import { GuideForm } from '@/components/forms/GuideForm';
-import { GuideNotFound } from '@/components/custom-ui/GuideNotFound';
-import { GuideContentFailed } from '@/components/custom-ui/GuideContentFailed';
+import { useGuideContext } from '../../context/GuideContext';
+import { GuideSkeleton } from './GuideSkeleton';
+import { GuideQuestions } from './GuideQuestions';
+import { GuideForm } from '../forms/GuideForm';
+import { GuideNotFound } from './GuideNotFound';
+import { GuideContentFailed } from './GuideContentFailed';
 
 export function GuidePageContent() {
     const { guide, status } = useGuideContext();

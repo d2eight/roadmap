@@ -1,10 +1,6 @@
 'use client';
 
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { MessageCircleQuestionMark } from 'lucide-react';
 
 export function QuestionsCount({ questionsCount }: { questionsCount: number }) {

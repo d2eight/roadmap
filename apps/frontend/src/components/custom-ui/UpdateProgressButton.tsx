@@ -1,12 +1,8 @@
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { Button, buttonVariants } from '../ui/button';
 import { LucideCheck } from 'lucide-react';
 import { ReactNode } from 'react';
-import { useFormProcessingContext } from '@/context/FormProcessor';
+import { useFormProcessingContext } from '../../context/FormProcessor';
 import { VariantProps } from 'class-variance-authority';
 
 export function UpdateProgressButton({

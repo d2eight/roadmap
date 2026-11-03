@@ -1,18 +1,13 @@
 'use client';
 
-import { GuidesFilterComponent } from '@/components/custom-ui/GuidesFilterComponent';
-import { ResetFiltersButton } from '@/components/custom-ui/ResetFiltersButton';
-import { OpenFiltersButton } from '@/components/custom-ui/OpenFiltersButton';
+import { GuidesFilterComponent } from './GuidesFilterComponent';
+import { ResetFiltersButton } from './ResetFiltersButton';
+import { OpenFiltersButton } from './OpenFiltersButton';
 import { useEffect, useState } from 'react';
-import { CreateGuideButton } from '@/components/custom-ui/CreateGuideButton';
-import { useWindowWidth } from '@/utils/useWindowWidth';
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '@/components/ui/accordion';
-import { useWindowScroll } from '@/utils/useWindowScroll';
+import { CreateGuideButton } from './CreateGuideButton';
+import { useWindowWidth } from '../../utils/useWindowWidth';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
+import { useWindowScroll } from '../../utils/useWindowScroll';
 
 export default function GuidesFilter() {
     const { isDesktop } = useWindowWidth();
