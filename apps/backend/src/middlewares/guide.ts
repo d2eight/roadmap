@@ -1,10 +1,12 @@
 import express from 'express';
-import { prisma } from 'database';
+import { GuideStatus, prisma } from 'database';
 
 export function guideMiddleware({
     errorMessage = 'Such a guide does not exists',
+    requiredStatuses = [],
 }: {
     errorMessage?: string;
+    requiredStatuses?: GuideStatus[];
 }) {
     return async (
         req: express.Request,
@@ -21,15 +23,14 @@ export function guideMiddleware({
                     userId: userId,
                 },
             });
-            if (
-                guide.status === 'GUIDE_GENERATION' ||
-                guide.status === 'QUESTIONS_GENERATION'
-            ) {
-                return res.status(429).json({
+
+            if(requiredStatuses.length > 0 && !requiredStatuses.includes(guide.status)) {
+                return res.status(409).json({
                     success: false,
-                    message: 'Guide is already in generation phase',
+                    message: 'Guide status doesn\'t match!',
                 });
             }
+
             res.locals.prompt = guide.prompt;
             next();
         } catch (error) {

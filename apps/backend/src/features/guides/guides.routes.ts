@@ -44,7 +44,9 @@ guidesRouter.patch(
         errorMessage: 'Guide was not created, please sign in',
     }),
     questionsValidationMiddleware({}),
-    guideMiddleware({}),
+    guideMiddleware({
+        requiredStatuses: ['QUESTIONS_GENERATED'],
+    }),
     createGuideWithAnsweredQuestions,
 );
 
@@ -61,7 +63,9 @@ guidesRouter.patch(
     authMiddleware({
         errorMessage: 'Guide progress was not updated, please sign in',
     }),
-    guideMiddleware({}),
+    guideMiddleware({
+        requiredStatuses: ['GUIDE_GENERATED'],
+    }),
     stepsValidationMiddleware({}),
     updateGuide,
 );
@@ -71,7 +75,9 @@ guidesRouter.put(
     authMiddleware({
         errorMessage: 'Guide was not recreated, please sign in',
     }),
-    guideMiddleware({}),
+    guideMiddleware({
+        requiredStatuses: ['GUIDE_GENERATED'],
+    }),
     simpleRecreateGuide,
 );
 
@@ -80,7 +86,9 @@ guidesRouter.put(
     authMiddleware({
         errorMessage: 'Guide was not recreated, please sign in',
     }),
-    guideMiddleware({}),
+    guideMiddleware({
+        requiredStatuses: ['GUIDE_GENERATED'],
+    }),
     promptValidationMiddleware({}),
     recreateGuide,
 );
@@ -90,7 +98,9 @@ guidesRouter.put(
     authMiddleware({
         errorMessage: 'Guide was not recreated, please sign in',
     }),
-    guideMiddleware({}),
+    guideMiddleware({
+        requiredStatuses: ['GUIDE_GENERATED', 'QUESTIONS_GENERATED']
+    }),
     promptValidationMiddleware({}),
     recreateGuideQuestions,
 );
@@ -101,6 +111,8 @@ guidesRouter.put(
         errorMessage: 'Guide questions were not created, please sign in',
     }),
     questionsValidationMiddleware({}),
-    guideMiddleware({}),
+    guideMiddleware({
+        requiredStatuses: ['GUIDE_GENERATED'],
+    }),
     recreateGuideWithAnsweredQuestions,
 );

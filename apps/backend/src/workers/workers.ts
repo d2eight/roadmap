@@ -17,14 +17,18 @@ async function handleGuideJobFailure(job: Job<GuideJob>, error: Error) {
     if (isFinalAttempt) {
         const io = getIO();
 
-        const guideFailure = await setGuideFailure({
-            guideId: job.data.guideId,
-            userId: job.data.userId,
-        });
+        try {
+            const guideFailure = await setGuideFailure({
+                guideId: job.data.guideId,
+                userId: job.data.userId,
+            });
 
-        io.to(job.data.userId).emit('guide_update', {
-            ...guideFailure,
-        });
+            io.to(job.data.userId).emit('guide_update', {
+                ...guideFailure,
+            });
+        } catch (error) {
+            console.error('setGuideFailure', error);
+        }
     }
 }
 
