@@ -2,6 +2,7 @@ import { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
 import { ApiErrors, ApiResponseError } from 'shared-types';
 import {
     NotFoundError,
+    StatusError,
     TooManyRequestsError,
     UnauthorizedError,
     UnexpectedError,
@@ -55,6 +56,8 @@ export function useClientHandleApiError() {
                 }
             } else if (error instanceof NotFoundError && redirect) {
                 router.replace('/404');
+            } else if (error instanceof StatusError) {
+                router.replace('/prompting');
             }
 
             toast.error(errorMessage);
@@ -82,6 +85,12 @@ export function handleApiError<Z = null>({
         case 404:
             return Result.err(
                 new NotFoundError({
+                    message: responseJson.message,
+                }),
+            );
+        case 409:
+            return Result.err(
+                new StatusError({
                     message: responseJson.message,
                 }),
             );

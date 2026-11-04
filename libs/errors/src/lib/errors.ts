@@ -22,3 +22,7 @@ export class NotFoundError extends TaggedError('NotFoundError')<{
 export class TooManyRequestsError extends TaggedError('TooManyRequestsError')<{
     message: string;
 }> {}
+
+export class StatusError extends TaggedError('StatusError')<{
+    message: string;
+}> {}
