@@ -11,6 +11,7 @@ import { GuideModelWithRelations } from 'shared-types';
 import { getSocket } from '../socket';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParamsContext } from './ParamsContext';
+import { useAuthContext } from './AuthContext';
 
 export const SocketContext = createContext<{
     connectionStatus: boolean;
@@ -34,6 +35,7 @@ export const SocketContextProvider = ({
     const [connectionStatus, setConnectionStatus] = useState<boolean>(false);
 
     const { queryKey } = useParamsContext();
+    const { data } = useAuthContext();
 
     const queryClient = useQueryClient();
 
@@ -49,7 +51,7 @@ export const SocketContextProvider = ({
             socket.disconnect();
             setConnectionStatus(false);
         };
-    }, []);
+    }, [data]);
 
     useEffect(() => {
         const socket = getSocket();

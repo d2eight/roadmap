@@ -12,6 +12,7 @@ import { Prisma } from 'database';
 import { GuideProgressStatus, GuideStatus } from 'database/enums';
 import {
     NotFoundError,
+    TooManyRequestsError,
     UnauthorizedError,
     UnexpectedError,
     UnprocessableEntity,
@@ -51,7 +52,8 @@ export type ApiErrors<ZodError = null> =
     | UnauthorizedError
     | NotFoundError
     | UnprocessableEntity<ZodError>
-    | UnexpectedError;
+    | UnexpectedError
+    | TooManyRequestsError
 
 export type GuideJob = {
     userId: string;

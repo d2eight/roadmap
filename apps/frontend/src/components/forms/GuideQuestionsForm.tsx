@@ -73,8 +73,6 @@ export default function GuideQuestionsForm({
               questionText: '',
           };
 
-    console.log(defaultValues);
-
     const form = useForm<guideQuestionsSchemaType>({
         resolver: zodResolver(guideQuestionsSchema),
         defaultValues,

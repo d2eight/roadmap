@@ -13,13 +13,13 @@ export default function Providers({ children }: { children: ReactNode }) {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <ParamsContextProvider>
-                <SocketContextProvider>
-                    <TooltipProvider>
-                        <AuthContextProvider>{children}</AuthContextProvider>
-                    </TooltipProvider>
-                </SocketContextProvider>
-            </ParamsContextProvider>
+            <AuthContextProvider>
+                <ParamsContextProvider>
+                    <SocketContextProvider>
+                        <TooltipProvider>{children}</TooltipProvider>
+                    </SocketContextProvider>
+                </ParamsContextProvider>
+            </AuthContextProvider>
         </QueryClientProvider>
     );
 }

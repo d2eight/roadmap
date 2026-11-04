@@ -4,14 +4,13 @@ import { Button } from '../ui/button';
 import Link from 'next/link';
 import { authClient } from '../../lib/auth-client';
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 
 export function AuthButtons() {
     const router = useRouter();
-    const { data, error } = useContext(AuthContext);
+    const { data, error } = useAuthContext();
     const queryClient = useQueryClient();
 
     const handleSignOut = async () => {
