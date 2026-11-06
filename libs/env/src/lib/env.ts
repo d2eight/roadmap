@@ -5,20 +5,17 @@ import * as path from 'node:path';
 config({ path: path.resolve(__dirname, '../../../../.env') });
 
 const environmentSchema = z.object({
+    DATABASE_URL: z.string(),
     POSTGRES_USER: z.string(),
     POSTGRES_PASSWORD: z.string(),
     POSTGRES_DB: z.string(),
-    REDIS_PASSWORD: z.string(),
-    REDIS_USER: z.string(),
-    REDIS_USER_PASSWORD: z.string(),
     REDIS_HOST: z.string(),
     REDIS_PORT: z.coerce.number(),
-    OPENAI_MODEL: z.string(),
     NEXT_URL: z.string(),
     EXPRESS_URL: z.string(),
     BETTER_AUTH_SECRET: z.string(),
     BETTER_AUTH_URL: z.string(),
-    DATABASE_URL: z.string(),
+    OPENAI_MODEL: z.string(),
     OPENAI_API_KEY: z.string(),
 });
 

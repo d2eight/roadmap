@@ -15,16 +15,21 @@ export const initSocket = (server: HttpServer) => {
     });
 
     io.use(async (socket, next) => {
-        const session = await auth.api.getSession({
-            headers: fromNodeHeaders(socket.request.headers),
-        });
+        try {
+            const session = await auth.api.getSession({
+                headers: fromNodeHeaders(socket.request.headers),
+            });
 
-        if (!session) {
-            return next(new Error('No such session'));
+            if (!session) {
+                return next(new Error('No such session'));
+            }
+
+            socket.data.id = session.user.id;
+            next();
+        } catch (error) {
+            console.error('Socket auth error:', error);
+            next(new Error('Internal auth error'));
         }
-
-        socket.data.id = session.user.id;
-        next();
     });
 
     io.on('connection', (socket) => {

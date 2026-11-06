@@ -20,9 +20,8 @@ app.use(
     }),
 );
 
-app.use(express.json());
 app.all('/api/auth/*any', toNodeHandler(auth));
-
+app.use(express.json());
 app.use(guidesRouter);
 
 const port = 3333;
