@@ -1,20 +1,12 @@
-import { GuidesContextProvider } from '../../context/GuidesContext';
-import { Guides } from '../../components/custom-ui/Guides';
-import { GuidesPagination } from '../../components/custom-ui/GuidesPagination';
-import {
-    GuideModelWithRelations,
-    paramsSchema,
-    QueryKeyType,
-    SearchParamsNext,
-} from 'shared-types';
-import { FormProcessor } from '../../context/FormProcessor';
-import { getQueryClient } from '../../query/getQueryClient';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { pageSize } from '../../constants/constants';
+import { paramsSchema, SearchParamsNext } from 'shared-types';
 import { Filter } from '../../components/custom-ui/Filter';
-import { getGuides, getSession } from 'utils';
+import { getSession } from 'utils';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react'
+import { GuidesLoader } from '../../components/custom-ui/GuidesLoader';
+import { GuidesSection } from './_components/GuidesSection';
+import { QueryErrorBoundary } from '../../components/errors/QueryErrorBoundary';
 
 export default async function GuidesServerPage({
     searchParams,
@@ -29,54 +21,25 @@ export default async function GuidesServerPage({
         redirect('/auth/sign-in');
     }
 
-    const userId = session.user.id;
-    const params = await searchParams;
-    const parsedParams = paramsSchema.safeParse(params);
+    const parsedParams = paramsSchema.safeParse(await searchParams);
 
     if (!parsedParams.success) {
-        return null;
+        redirect('/guides');
     }
 
-    const queryClient = getQueryClient();
-
-    const orderBy = parsedParams.data.orderBy;
-    const page = parsedParams.data.page;
-    const progressStatus = parsedParams.data.progressStatus;
-    const queryKey: QueryKeyType = ['guides', page, orderBy, progressStatus];
-
-    await queryClient.prefetchQuery({
-        queryKey,
-        queryFn: () =>
-            getGuides({
-                pageSize,
-                userId,
-                params: parsedParams.data,
-            }),
-    });
-
-    const result =
-        queryClient.getQueryData<[GuideModelWithRelations[], number]>(queryKey);
-
-    result?.[0].forEach((guide: GuideModelWithRelations) => {
-        queryClient.setQueryData<GuideModelWithRelations>(
-            ['guide', guide.id],
-            guide,
-        );
-    });
+    const { orderBy, page, progressStatus } = parsedParams.data;
 
     return (
-        <>
-            <HydrationBoundary state={dehydrate(queryClient)}>
-                <FormProcessor>
-                    <div className="flex flex-col gap-5 xl:gap-15">
-                        <Filter />
-                        <GuidesContextProvider>
-                            <Guides />
-                            <GuidesPagination />
-                        </GuidesContextProvider>
-                    </div>
-                </FormProcessor>
-            </HydrationBoundary>
-        </>
+        <div className="flex flex-col gap-5 xl:gap-15">
+            <Filter />
+            <QueryErrorBoundary key={`${page}-${orderBy}-${progressStatus}`}>
+                <Suspense fallback={<GuidesLoader />}>
+                    <GuidesSection
+                        userId={session.user.id}
+                        params={parsedParams.data}
+                    ></GuidesSection>
+                </Suspense>
+            </QueryErrorBoundary>
+        </div>
     );
 }

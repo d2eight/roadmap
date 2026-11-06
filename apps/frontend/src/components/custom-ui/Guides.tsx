@@ -3,22 +3,11 @@
 import { GuideCard } from './GuideCard';
 import GuideContextProvider from '../../context/GuideContext';
 import { GuideModelWithRelations } from 'shared-types';
-import { useEffect } from 'react';
 import { useGuidesContext } from '../../context/GuidesContext';
-import { useFormProcessingContext } from '../../context/FormProcessor';
 import { GuidesNotFound } from './GuidesNotFound';
 
 export function Guides() {
-    const { guides, isLoading } = useGuidesContext();
-    const { setProcessingStatus } = useFormProcessingContext();
-
-    useEffect(() => {
-        if (isLoading) {
-            return;
-        }
-
-        setProcessingStatus(false);
-    }, [guides]);
+    const { guides } = useGuidesContext();
 
     if (!guides.length) {
         return <GuidesNotFound />;

@@ -2,16 +2,14 @@
 
 import { createContext, ReactNode, useContext } from 'react';
 import { GuideModelWithRelations } from 'shared-types';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSuspenseQuery, useQueryClient } from '@tanstack/react-query';
 import { useParamsContext } from './ParamsContext';
 import { fetchGuides } from '../utils/guideApiActions';
 import { useClientHandleApiError } from '../utils/apiErrorsHandler';
-import { GuidesLoader } from '../components/custom-ui/GuidesLoader';
 
 export const GuidesContext = createContext<{
     guides: GuideModelWithRelations[];
     guidesCount: number;
-    isLoading: boolean;
 } | null>(null);
 
 export const useGuidesContext = () => {
@@ -32,7 +30,7 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
     const requestBody: RequestInit = {
         method: 'GET',
     };
-    const { data, isLoading } = useQuery({
+    const { data } = useSuspenseQuery<[GuideModelWithRelations[], number]>({
         queryKey,
         queryFn: async () => {
             const result = await fetchGuides({
@@ -63,19 +61,14 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
         },
     });
 
-    const guides = data?.[0] || [];
-    const guidesCount = data?.[1] || 0;
-
-    if (isLoading) {
-        return <GuidesLoader />;
-    }
+    const guides = data[0] || [];
+    const guidesCount = data[1] || 0;
 
     return (
         <GuidesContext
             value={{
                 guides,
                 guidesCount,
-                isLoading,
             }}
         >
             {children}

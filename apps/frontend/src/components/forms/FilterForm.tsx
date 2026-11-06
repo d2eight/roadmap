@@ -9,11 +9,9 @@ import { FilterProgressGroup } from '../custom-ui/FilterProgressGroup';
 import { searchParamsDefaultValues } from 'shared-constants';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
-import { useFormProcessingContext } from '../../context/FormProcessor';
 import { useParamsContext } from '../../context/ParamsContext';
 
 export function FilterForm() {
-    const { setProcessingStatus } = useFormProcessingContext();
     const { searchParams, parsedParams } = useParamsContext();
     const router = useRouter();
     const pathname = usePathname();
@@ -60,9 +58,7 @@ export function FilterForm() {
         ) {
             return;
         }
-
-        setProcessingStatus(true);
-
+        
         const newParams = new URLSearchParams(searchParams.toString());
         newParams.set('orderBy', newOrderBy);
         newParams.set('progressStatus', newProgressStatus.join(','));
