@@ -1,3 +1,5 @@
+'use client'
+
 import { useGuideContext } from '../../context/GuideContext';
 import { GuideSkeleton } from './GuideSkeleton';
 import { GuideQuestions } from './GuideQuestions';

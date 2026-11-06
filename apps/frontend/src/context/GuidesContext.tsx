@@ -6,6 +6,7 @@ import { useSuspenseQuery, useQueryClient } from '@tanstack/react-query';
 import { useParamsContext } from './ParamsContext';
 import { fetchGuides } from '../utils/guideApiActions';
 import { useClientHandleApiError } from '../utils/apiErrorsHandler';
+import { GuidesNotFound } from '../components/custom-ui/GuidesNotFound';
 
 export const GuidesContext = createContext<{
     guides: GuideModelWithRelations[];
@@ -63,6 +64,10 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
 
     const guides = data[0] || [];
     const guidesCount = data[1] || 0;
+
+    if (!guides.length) {
+        return <GuidesNotFound />;
+    }
 
     return (
         <GuidesContext

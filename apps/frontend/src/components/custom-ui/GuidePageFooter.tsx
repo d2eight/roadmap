@@ -1,3 +1,5 @@
+'use client'
+
 import { UpdateProgressButton } from './UpdateProgressButton';
 import { useGuideContext } from '../../context/GuideContext';
 import { MobileGuidePageFooterWrapper } from './MobileGuidePageFooterWrapper';

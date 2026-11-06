@@ -1,17 +1,13 @@
-import GuideContextProvider from '../../../context/GuideContext';
-import GuidePage from './GuidePage';
-import { getQueryClient } from '../../../query/getQueryClient';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { ParamsContextProvider } from '../../../context/ParamsContext';
 import { RouteIdParams } from 'shared-types';
-import { getGuide, getSession } from 'utils';
+import { getSession } from 'utils';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { GuideNotFound } from '../../../components/custom-ui/GuideNotFound';
+import { Suspense } from 'react';
+import GuideSection from './_components/GuideSection';
+import { GuideLoader } from '../../../components/custom-ui/GuideLoader';
+import { QueryErrorBoundary } from '../../../components/errors/QueryErrorBoundary';
 
 export default async function GuideServerPage({ params }: RouteIdParams) {
-    const queryClient = getQueryClient();
-
     const session = await getSession({
         headers: await headers(),
     });
@@ -23,28 +19,11 @@ export default async function GuideServerPage({ params }: RouteIdParams) {
     const guideId = (await params).id;
     const userId = session.user.id;
 
-    const guide = await queryClient.fetchQuery({
-        queryKey: ['guide', guideId],
-        queryFn: () =>
-            getGuide({
-                userId,
-                guideId,
-            }),
-    });
-
-    if (!guide) {
-        return (
-            <ParamsContextProvider>
-                <GuideNotFound />
-            </ParamsContextProvider>
-        );
-    }
-
     return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
-            <GuideContextProvider autoQueryStatus={true} guideId={guideId}>
-                <GuidePage />
-            </GuideContextProvider>
-        </HydrationBoundary>
+        <QueryErrorBoundary>
+            <Suspense fallback={<GuideLoader />}>
+                <GuideSection guideId={guideId} userId={userId} />
+            </Suspense>
+        </QueryErrorBoundary>
     );
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
 import { ApiErrors, ApiResponseError } from 'shared-types';
 import {

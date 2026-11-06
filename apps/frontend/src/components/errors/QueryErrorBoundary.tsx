@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode } from 'react';
+import { ReactNode, startTransition } from 'react';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import {
@@ -12,8 +12,11 @@ import {
 } from '../ui/empty';
 import { LucideCloudAlert, LucideRefreshCcw } from 'lucide-react';
 import { Button } from '../ui/button';
+import { useRouter } from 'next/navigation';
 
 export function QueryErrorBoundary({ children }: { children: ReactNode }) {
+    const router = useRouter();
+
     return (
         <QueryErrorResetBoundary>
             {({ reset }) => (
@@ -35,7 +38,12 @@ export function QueryErrorBoundary({ children }: { children: ReactNode }) {
                                 <EmptyContent>
                                     <Button
                                         variant="outline"
-                                        onClick={resetErrorBoundary}
+                                        onClick={() =>
+                                            startTransition(() => {
+                                                router.refresh();
+                                                resetErrorBoundary();
+                                            })
+                                        }
                                     >
                                         Try again
                                         <LucideRefreshCcw />

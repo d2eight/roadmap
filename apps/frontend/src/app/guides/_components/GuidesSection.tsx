@@ -33,8 +33,6 @@ export async function GuidesSection({
             }),
     });
 
-    console.log(guides);
-
     guides.forEach((guide: GuideModelWithRelations) => {
         queryClient.setQueryData<GuideModelWithRelations>(
             ['guide', guide.id],
