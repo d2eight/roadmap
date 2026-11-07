@@ -8,7 +8,7 @@ import { useClientHandleApiError } from '../utils/apiErrorsHandler';
 
 import { CurrentGuideLoader } from '../components/custom-ui/CurrentGuideLoader';
 import DashboardNoGuideCard from '../components/custom-ui/DashboardNoGuideCard';
-import GuideContextProvider from './GuideContext';
+import { GuideContextProvider } from './GuideContext';
 
 const DoneGuideContext = createContext<GuideModelWithRelations | null>(null);
 
@@ -66,7 +66,7 @@ export function DoneGuideContextProvider({
 
     return (
         <DoneGuideContext value={data}>
-            <GuideContextProvider guideId={data.id} autoQueryStatus={false}>
+            <GuideContextProvider guideId={data.id}>
                 {children}
             </GuideContextProvider>
         </DoneGuideContext>

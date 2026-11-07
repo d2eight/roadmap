@@ -51,6 +51,7 @@ export function GuideContextProvider({
 
             return result.value.data;
         },
+        retry: false
     });
 
     if (!data) {

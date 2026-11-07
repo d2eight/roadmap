@@ -7,8 +7,8 @@ import { fetchCurrentGuide } from '../utils/guideApiActions';
 import { useClientHandleApiError } from '../utils/apiErrorsHandler';
 import { EmptyFailed } from '../components/custom-ui/EmptyFailed';
 import { CurrentGuideLoader } from '../components/custom-ui/CurrentGuideLoader';
-import GuideContextProvider from './GuideContext';
 import DashboardNoGuideCard from '../components/custom-ui/DashboardNoGuideCard';
+import { GuideContextProvider } from './GuideContext';
 
 const CurrentGuideContext = createContext<GuideModelWithRelations | null>(null);
 
@@ -70,7 +70,6 @@ export function CurrentGuideContextProvider({
                 <CurrentGuideContext value={data}>
                     <GuideContextProvider
                         guideId={data.id}
-                        autoQueryStatus={false}
                     >
                         {children}
                     </GuideContextProvider>

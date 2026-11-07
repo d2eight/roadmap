@@ -35,19 +35,25 @@ export function DeleteGuideButton({
             queryClient.removeQueries({
                 queryKey: ['guide', guide.id],
             });
-            await queryClient.invalidateQueries({ queryKey });
+            await queryClient.invalidateQueries({
+                queryKey: ['guides'],
+                refetchType: 'all'
+            });
             await queryClient.invalidateQueries({
                 queryKey: ['statistics'],
+                refetchType: 'all',
             });
             await queryClient.invalidateQueries({
                 queryKey: ['currentGuide'],
+                refetchType: 'all',
             });
             await queryClient.invalidateQueries({
                 queryKey: ['doneGuide'],
+                refetchType: 'all',
             });
             toast.success('You have successfully deleted guide!');
             if (redirect) {
-                return router.replace(`/guides?${defaultParams}`);
+                router.replace(`/guides?${defaultParams}`);
             }
         },
         onError: (error) => {
