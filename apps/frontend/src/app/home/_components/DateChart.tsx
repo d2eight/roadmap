@@ -1,7 +1,7 @@
 'use client';
 
 import { DaysAmountSchemaType } from 'shared-types';
-import { Suspense, useState } from 'react';
+import { startTransition, Suspense, useState } from 'react';
 import { handleDaysAmount } from 'utils/client';
 import { LucideHistory } from 'lucide-react';
 import { ChartConfig, ChartContainer } from '../../../components/ui/chart';
@@ -67,7 +67,9 @@ export default function DateChart() {
                         value={daysAmount.toString()}
                         onValueChange={(value) => {
                             const newDaysAmount = handleDaysAmount(value);
-                            setDaysAmount(newDaysAmount);
+                            startTransition(() => {
+                                setDaysAmount(newDaysAmount);
+                            });
                             return newDaysAmount.toString();
                         }}
                     >

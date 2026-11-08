@@ -11,7 +11,7 @@ import { redirect } from 'next/navigation';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import DashboardGuideTabs from '../../components/custom-ui/DashboardGuideTabs';
 import DashboardStatisticsTabs from 'src/components/custom-ui/DashboardStatisticsTabs';
-import DateChart from '../../components/custom-ui/DateChart';
+import DateChart from './_components/DateChart';
 
 export default async function DashboardServerPage() {
     const session = await getSession({

@@ -10,17 +10,17 @@ export async function Header() {
                 <Image src="/logo.png" width={50} height={50} alt="logo" />
                 <div>
                     <Button asChild variant="link">
-                        <Link href="/home" prefetch={true}>
+                        <Link href="/home">
                             Home
                         </Link>
                     </Button>
                     <Button asChild variant="link">
-                        <Link href="/prompting" prefetch={true}>
+                        <Link href="/prompting">
                             Prompting
                         </Link>
                     </Button>
                     <Button asChild variant="link">
-                        <Link href="/guides" prefetch={true}>
+                        <Link href="/guides">
                             Guides
                         </Link>
                     </Button>
