@@ -47,7 +47,7 @@ export default async function DashboardServerPage() {
             }),
     });
 
-    await queryClient.prefetchQuery({
+    queryClient.prefetchQuery({
         queryKey: ['activity', daysAmount],
         queryFn: () => getUsersActivity({ userId, daysAmount }),
     });
