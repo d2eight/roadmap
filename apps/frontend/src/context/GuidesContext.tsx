@@ -65,7 +65,7 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
     const guides = data[0] || [];
     const guidesCount = data[1] || 0;
 
-    if (!guides.length) {
+    if (guidesCount === 0) {
         return <GuidesNotFound />;
     }
 
