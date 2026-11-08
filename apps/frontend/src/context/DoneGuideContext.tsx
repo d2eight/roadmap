@@ -2,13 +2,12 @@
 
 import { createContext, ReactNode, useContext } from 'react';
 import { GuideModelWithRelations } from 'shared-types';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { fetchDoneGuide } from '../utils/guideApiActions';
 import { useClientHandleApiError } from '../utils/apiErrorsHandler';
 
-import { CurrentGuideLoader } from '../components/custom-ui/CurrentGuideLoader';
-import DashboardNoGuideCard from '../components/custom-ui/DashboardNoGuideCard';
 import { GuideContextProvider } from './GuideContext';
+import DashboardNoGuideCard from '../components/custom-ui/DashboardNoGuideCard';
 
 const DoneGuideContext = createContext<GuideModelWithRelations | null>(null);
 
@@ -28,11 +27,10 @@ export function DoneGuideContextProvider({
     children: ReactNode;
 }) {
     const { clientHandleApiError } = useClientHandleApiError();
-    const queryClient = useQueryClient();
     const requestBody: RequestInit = {
         method: 'GET',
     };
-    const { data, isLoading } = useQuery({
+    const { data } = useSuspenseQuery({
         queryKey: ['doneGuide'],
         queryFn: async () => {
             const result = await fetchDoneGuide({ requestBody });
@@ -45,30 +43,21 @@ export function DoneGuideContextProvider({
                 throw result.error;
             }
 
-            if (result.value.data) {
-                queryClient.setQueryData(
-                    ['guide', result.value.data.id],
-                    result.value.data,
-                );
-            }
-
             return result.value.data;
         },
     });
 
-    if (isLoading) {
-        return <CurrentGuideLoader />;
-    }
-
-    if (!data) {
-        return <DashboardNoGuideCard />;
-    }
-
     return (
-        <DoneGuideContext value={data}>
-            <GuideContextProvider guideId={data.id}>
-                {children}
-            </GuideContextProvider>
-        </DoneGuideContext>
+        <>
+            {data ? (
+                <DoneGuideContext value={data}>
+                    <GuideContextProvider initialData={data} guideId={data.id}>
+                        {children}
+                    </GuideContextProvider>
+                </DoneGuideContext>
+            ) : (
+                <DashboardNoGuideCard />
+            )}
+        </>
     );
 }

@@ -1,39 +1,14 @@
 'use client';
 
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { useQuery } from '@tanstack/react-query';
-import { UsersStatistics } from 'shared-types';
-import { fetchStatistics } from '../../utils/guideApiActions';
-import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
 import { Separator } from '../ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
-import { DataTable } from './DataTable';
+import { Suspense } from 'react';
 import { SummaryLoader } from './SummaryLoader';
+import { StatisticsTabsSection } from '../../app/home/_components/StatisticsTabsSection';
 
 export default function DashboardStatisticsTabs() {
-    const { clientHandleApiError } = useClientHandleApiError();
-
-    const requestBody: RequestInit = {
-        method: 'GET',
-    };
-    const { data, isLoading } = useQuery<UsersStatistics>({
-        queryKey: ['statistics'],
-        queryFn: async () => {
-            const result = await fetchStatistics({ requestBody });
-
-            if (result.isErr()) {
-                clientHandleApiError({
-                    error: result.error,
-                    redirect: false,
-                });
-                throw result.error;
-            }
-
-            return result.value.data;
-        },
-    });
-
     return (
         <Card className="w-full h-auto min-h-100 overflow-hidden">
             <Tabs defaultValue="guides" className="h-full">
@@ -69,17 +44,9 @@ export default function DashboardStatisticsTabs() {
                 </CardHeader>
                 <Separator />
                 <CardContent>
-                    {isLoading && <SummaryLoader />}
-                    {data && (
-                        <>
-                            <TabsContent value="guides">
-                                <DataTable data={data.guidesCounts} />
-                            </TabsContent>
-                            <TabsContent value="steps">
-                                <DataTable data={data.stepsCounts} />
-                            </TabsContent>
-                        </>
-                    )}
+                    <Suspense fallback={<SummaryLoader />}>
+                        <StatisticsTabsSection />
+                    </Suspense>
                 </CardContent>
             </Tabs>
         </Card>

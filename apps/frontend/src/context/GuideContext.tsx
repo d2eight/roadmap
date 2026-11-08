@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, ReactNode, useContext } from 'react';
-import { GuideContextType } from 'shared-types';
+import { GuideContextType, GuideModelWithRelations } from 'shared-types';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { GuideStatus } from 'database/enums';
 import { fetchGuide } from '../utils/guideApiActions';
@@ -25,9 +25,11 @@ export const useGuideContext = () => {
 export function GuideContextProvider({
     guideId,
     children,
+    initialData,
 }: {
     guideId: string;
     children: ReactNode;
+    initialData?: GuideModelWithRelations;
 }) {
     const { clientHandleApiError } = useClientHandleApiError();
     const requestBody: RequestInit = {
@@ -51,7 +53,8 @@ export function GuideContextProvider({
 
             return result.value.data;
         },
-        retry: false
+        initialData,
+        retry: false,
     });
 
     if (!data) {

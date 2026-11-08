@@ -69,8 +69,6 @@ export function GuidesContextProvider({ children }: { children: ReactNode }) {
         return <GuidesNotFound />;
     }
 
-    console.log(guides);
-
     return (
         <GuidesContext
             value={{

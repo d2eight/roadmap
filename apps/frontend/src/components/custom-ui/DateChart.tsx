@@ -1,18 +1,14 @@
 'use client';
 
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '../ui/chart';
-import { useQuery } from '@tanstack/react-query';
-import { DaysAmountSchemaType, UsersActivity } from 'shared-types';
-import { fetchUsersActivity } from '../../utils/guideApiActions';
-import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
+import { ChartConfig, ChartContainer } from '../ui/chart';
+import { DaysAmountSchemaType } from 'shared-types';
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select';
 import { handleDaysAmount } from 'utils/client';
-import { Spinner } from '../ui/spinner';
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
-import { EmptyFailed } from './EmptyFailed';
-import { LucideChartColumn, LucideHistory } from 'lucide-react';
+import { LucideHistory } from 'lucide-react';
+import { ChartSection } from '../../app/home/_components/ChartSection';
+import { Skeleton } from '../ui/skeleton';
 
 const chartConfig = {
     createdCount: {
@@ -26,7 +22,6 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function DateChart() {
-    const { clientHandleApiError } = useClientHandleApiError();
     const [daysAmount, setDaysAmount] = useState<DaysAmountSchemaType>(15);
     const searchParams = new URLSearchParams();
     searchParams.set('daysAmount', daysAmount.toString());
@@ -44,29 +39,6 @@ export default function DateChart() {
             daysAmount: '30',
         },
     ];
-
-    const requestBody: RequestInit = {
-        method: 'GET',
-    };
-    const { data, isLoading, isError } = useQuery<UsersActivity>({
-        queryKey: ['activity', daysAmount],
-        queryFn: async () => {
-            const result = await fetchUsersActivity({
-                requestBody,
-                searchParams,
-            });
-
-            if (result.isErr()) {
-                clientHandleApiError({
-                    error: result.error,
-                    redirect: false,
-                });
-                throw result.error;
-            }
-
-            return result.value.data;
-        },
-    });
 
     return (
         <Card>
@@ -104,37 +76,26 @@ export default function DateChart() {
                 </CardAction>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig} className="relative">
-                    {isLoading && (
-                        <Spinner className="size-20 inset-0 m-auto absolute" />
-                    )}
-                    {isError && (
-                        <div className="absolute w-full h-full top-0 flex items-center justify-center">
-                            <EmptyFailed
-                                icon={<LucideChartColumn color="red" />}
-                                description="Cant load graph, try again later"
-                            />
-                        </div>
-                    )}
-                    {data && (
-                        <BarChart data={data}>
-                            <CartesianGrid vertical={false} />
-                            <ChartTooltip content={<ChartTooltipContent />} />
-                            <ChartLegend content={<ChartLegendContent />} />
-                            <XAxis dataKey="date" />
-                            <Bar
-                                dataKey="createdCount"
-                                fill="var(--color-createdCount)"
-                                radius={4}
-                            ></Bar>
-                            <Bar
-                                dataKey="doneCount"
-                                fill="var(--color-doneCount)"
-                                radius={4}
-                            ></Bar>
-                        </BarChart>
-                    )}
-                </ChartContainer>
+                <Suspense
+                    fallback={
+                        <Skeleton className="w-full h-179" />
+                    }
+                >
+                    <ChartContainer config={chartConfig} className="relative">
+                        {/*{isError && (*/}
+                        {/*    <div className="absolute w-full h-full top-0 flex items-center justify-center">*/}
+                        {/*        <EmptyFailed*/}
+                        {/*            icon={<LucideChartColumn color="red" />}*/}
+                        {/*            description="Cant load graph, try again later"*/}
+                        {/*        />*/}
+                        {/*    </div>*/}
+                        {/*)}*/}
+                        <ChartSection
+                            daysAmount={daysAmount}
+                            searchParams={searchParams}
+                        />
+                    </ChartContainer>
+                </Suspense>
             </CardContent>
         </Card>
     );

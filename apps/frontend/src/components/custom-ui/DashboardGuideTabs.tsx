@@ -2,11 +2,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { Separator } from '../ui/separator';
-import { DashboardGuideCard } from './DashboardGuideCard';
-import { DashboardGuideDoneCard } from './DashboardGuideDoneCard';
-import { CurrentGuideContextProvider } from '../../context/CurrentGuideContext';
-import { DoneGuideContextProvider } from '../../context/DoneGuideContext';
 import { LucideFlame } from 'lucide-react';
+import { Suspense } from 'react';
+import { CurrentGuideContextProvider } from '../../context/CurrentGuideContext';
+import { DashboardGuideCard } from './DashboardGuideCard';
+import { CurrentGuideLoader } from './CurrentGuideLoader';
+import { DashboardGuideDoneCard } from './DashboardGuideDoneCard';
+import { DoneGuideContextProvider } from '../../context/DoneGuideContext';
 
 export default function DashboardGuideTabs() {
     return (
@@ -55,14 +57,18 @@ export default function DashboardGuideTabs() {
                 <Separator />
                 <CardContent className="h-full pt-3.75">
                     <TabsContent value="inwork" className="h-full">
-                        <CurrentGuideContextProvider>
-                            <DashboardGuideCard />
-                        </CurrentGuideContextProvider>
+                        <Suspense fallback={<CurrentGuideLoader />}>
+                            <CurrentGuideContextProvider>
+                                <DashboardGuideCard />
+                            </CurrentGuideContextProvider>
+                        </Suspense>
                     </TabsContent>
                     <TabsContent value="done" className="h-full">
-                        <DoneGuideContextProvider>
-                            <DashboardGuideDoneCard />
-                        </DoneGuideContextProvider>
+                        <Suspense fallback={<CurrentGuideLoader />}>
+                            <DoneGuideContextProvider>
+                                <DashboardGuideDoneCard />
+                            </DoneGuideContextProvider>
+                        </Suspense>
                     </TabsContent>
                 </CardContent>
             </Tabs>
