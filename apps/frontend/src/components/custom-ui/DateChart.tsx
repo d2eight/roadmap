@@ -3,7 +3,7 @@
 import { ChartConfig, ChartContainer } from '../ui/chart';
 import { DaysAmountSchemaType } from 'shared-types';
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Suspense, useState } from 'react';
+import { startTransition, Suspense, useState } from 'react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select';
 import { handleDaysAmount } from 'utils/client';
 import { LucideHistory } from 'lucide-react';
@@ -53,7 +53,9 @@ export default function DateChart() {
                         value={daysAmount.toString()}
                         onValueChange={(value) => {
                             const newDaysAmount = handleDaysAmount(value);
-                            setDaysAmount(newDaysAmount);
+                            startTransition(() => {
+                                setDaysAmount(newDaysAmount);
+                            })
                             return newDaysAmount.toString();
                         }}
                     >
