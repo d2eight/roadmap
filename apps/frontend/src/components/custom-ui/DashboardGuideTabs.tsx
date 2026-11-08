@@ -9,6 +9,7 @@ import { DashboardGuideCard } from './DashboardGuideCard';
 import { CurrentGuideLoader } from './CurrentGuideLoader';
 import { DashboardGuideDoneCard } from './DashboardGuideDoneCard';
 import { DoneGuideContextProvider } from '../../context/DoneGuideContext';
+import { QueryErrorBoundary } from '../errors/QueryErrorBoundary';
 
 export default function DashboardGuideTabs() {
     return (
@@ -57,18 +58,22 @@ export default function DashboardGuideTabs() {
                 <Separator />
                 <CardContent className="h-full pt-3.75">
                     <TabsContent value="inwork" className="h-full">
-                        <Suspense fallback={<CurrentGuideLoader />}>
-                            <CurrentGuideContextProvider>
-                                <DashboardGuideCard />
-                            </CurrentGuideContextProvider>
-                        </Suspense>
+                        <QueryErrorBoundary>
+                            <Suspense fallback={<CurrentGuideLoader />}>
+                                <CurrentGuideContextProvider>
+                                    <DashboardGuideCard />
+                                </CurrentGuideContextProvider>
+                            </Suspense>
+                        </QueryErrorBoundary>
                     </TabsContent>
                     <TabsContent value="done" className="h-full">
-                        <Suspense fallback={<CurrentGuideLoader />}>
-                            <DoneGuideContextProvider>
-                                <DashboardGuideDoneCard />
-                            </DoneGuideContextProvider>
-                        </Suspense>
+                        <QueryErrorBoundary>
+                            <Suspense fallback={<CurrentGuideLoader />}>
+                                <DoneGuideContextProvider>
+                                    <DashboardGuideDoneCard />
+                                </DoneGuideContextProvider>
+                            </Suspense>
+                        </QueryErrorBoundary>
                     </TabsContent>
                 </CardContent>
             </Tabs>

@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { Suspense } from 'react';
 import { SummaryLoader } from './SummaryLoader';
 import { StatisticsTabsSection } from '../../app/home/_components/StatisticsTabsSection';
+import { QueryErrorBoundary } from '../errors/QueryErrorBoundary';
 
 export default function DashboardStatisticsTabs() {
     return (
@@ -44,9 +45,11 @@ export default function DashboardStatisticsTabs() {
                 </CardHeader>
                 <Separator />
                 <CardContent>
-                    <Suspense fallback={<SummaryLoader />}>
-                        <StatisticsTabsSection />
-                    </Suspense>
+                    <QueryErrorBoundary>
+                        <Suspense fallback={<SummaryLoader />}>
+                            <StatisticsTabsSection />
+                        </Suspense>
+                    </QueryErrorBoundary>
                 </CardContent>
             </Tabs>
         </Card>

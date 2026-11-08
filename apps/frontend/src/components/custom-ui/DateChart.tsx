@@ -9,6 +9,7 @@ import { handleDaysAmount } from 'utils/client';
 import { LucideHistory } from 'lucide-react';
 import { ChartSection } from '../../app/home/_components/ChartSection';
 import { Skeleton } from '../ui/skeleton';
+import { QueryErrorBoundary } from '../errors/QueryErrorBoundary';
 
 const chartConfig = {
     createdCount: {
@@ -76,26 +77,19 @@ export default function DateChart() {
                 </CardAction>
             </CardHeader>
             <CardContent>
-                <Suspense
-                    fallback={
-                        <Skeleton className="w-full h-179" />
-                    }
-                >
-                    <ChartContainer config={chartConfig} className="relative">
-                        {/*{isError && (*/}
-                        {/*    <div className="absolute w-full h-full top-0 flex items-center justify-center">*/}
-                        {/*        <EmptyFailed*/}
-                        {/*            icon={<LucideChartColumn color="red" />}*/}
-                        {/*            description="Cant load graph, try again later"*/}
-                        {/*        />*/}
-                        {/*    </div>*/}
-                        {/*)}*/}
-                        <ChartSection
-                            daysAmount={daysAmount}
-                            searchParams={searchParams}
-                        />
-                    </ChartContainer>
-                </Suspense>
+                <QueryErrorBoundary>
+                    <Suspense fallback={<Skeleton className="w-full h-179" />}>
+                        <ChartContainer
+                            config={chartConfig}
+                            className="relative"
+                        >
+                            <ChartSection
+                                daysAmount={daysAmount}
+                                searchParams={searchParams}
+                            />
+                        </ChartContainer>
+                    </Suspense>
+                </QueryErrorBoundary>
             </CardContent>
         </Card>
     );
