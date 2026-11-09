@@ -211,3 +211,7 @@ export type UsersStatistics = {
     guidesCounts: UsersGuidesStatistics;
     stepsCounts: UsersStepsStatistics;
 };
+
+export type ProcessedSearchParamsInfo = {
+    processedSearchParams: URLSearchParams
+} & paramsSchemaType;

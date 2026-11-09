@@ -8,10 +8,8 @@ import {
     useMemo,
 } from 'react';
 import {
-    ReadonlyURLSearchParams,
     usePathname,
     useRouter,
-    useSearchParams,
 } from 'next/navigation';
 import { paramsSchema, paramsSchemaType, QueryKeyType } from 'shared-types';
 import { searchParamsDefaultValues } from 'shared-constants';
@@ -19,7 +17,7 @@ import { getDefaultSearchParams } from '../utils/getDefaultSearchParams';
 import { searchParamsToObj } from 'utils/client';
 
 export const ParamsContext = createContext<{
-    searchParams: ReadonlyURLSearchParams;
+    searchParams: URLSearchParams;
     parsedParams: paramsSchemaType;
     queryKey: QueryKeyType;
     resetParams: () => void;
@@ -46,8 +44,14 @@ function getParsedParams(searchParams: URLSearchParams): paramsSchemaType {
     return result.data;
 }
 
-export function ParamsContextProvider({ children }: { children: ReactNode }) {
-    const searchParams = useSearchParams();
+export function ParamsContextProvider({
+    children,
+    processedSearchParams,
+}: {
+    children: ReactNode;
+    processedSearchParams: URLSearchParams;
+}) {
+    const searchParams = new URLSearchParams(processedSearchParams);
     const router = useRouter();
     const pathname = usePathname();
 

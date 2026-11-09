@@ -18,12 +18,11 @@ import { useFormProcessingContext } from '../../context/FormProcessor';
 import { toast } from 'sonner';
 import { RedAlert } from '../custom-ui/RedAlert';
 import { Textarea } from '../ui/textarea';
-import { guidesPageDefaultUrlString } from 'shared-constants';
 import { Switch } from '../ui/switch';
-import { useParamsContext } from '../../context/ParamsContext';
 import { createGuide, createGuideQuestions, recreateGuide, recreateGuideQuestions } from '../../utils/guideApiActions';
 import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
 import { UnexpectedError } from 'errors';
+import { guidesPageDefaultUrlString } from 'shared-constants';
 
 export function PromptForm({
     pushToGuideStatus,
@@ -36,7 +35,6 @@ export function PromptForm({
     const { processingStatus, setProcessingStatus } =
         useFormProcessingContext();
     const queryClient = useQueryClient();
-    const params = useParamsContext();
     const isRecreateForm = !!guide;
     const { clientHandleApiError } = useClientHandleApiError();
 
@@ -76,12 +74,6 @@ export function PromptForm({
 
             if (pushToGuideStatus) {
                 return router.push(`/guides/${newGuideId}`);
-            }
-
-            if (params.parsedParams.page === 1) {
-                return await queryClient.invalidateQueries({
-                    queryKey: params.queryKey,
-                });
             } else {
                 return router.push(guidesPageDefaultUrlString);
             }
@@ -109,7 +101,8 @@ export function PromptForm({
             toast.success('Successfully initiated to recreate guide');
 
             await queryClient.invalidateQueries({
-                queryKey: params.queryKey,
+                queryKey: ['guides'],
+                refetchType: 'all',
             });
         },
         onError: (error) => {

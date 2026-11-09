@@ -14,8 +14,8 @@ import { pageSize } from '../../constants/constants';
 export function GuidesPagination() {
     const { guidesCount } = useGuidesContext();
     const { searchParams } = useParamsContext();
-
     const router = useRouter();
+
     const currentPage = Number(searchParams.get('page') ?? 1);
     const pagesCount = Math.ceil(guidesCount / pageSize);
     const firstPage = 1;

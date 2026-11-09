@@ -1,8 +1,8 @@
 import { GuideCardTitle } from './GuideCardTitle';
-import { GuideCardFooter } from './GuideCardFooter';
 import { CardDescription, CardHeader } from '../ui/card';
 import { GuideCardStep } from './GuideCardStep';
 import { DashboardGuideCardCompletedSteps } from './DashboardGuideCardCompletedSteps';
+import { GuideCardFooter } from './GuideCardFooter';
 
 export function DashboardGuideCard() {
     return (

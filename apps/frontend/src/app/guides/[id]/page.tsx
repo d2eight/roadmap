@@ -1,4 +1,3 @@
-import { RouteIdParams } from 'shared-types';
 import { getGuide, getSession } from 'utils';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -12,8 +11,11 @@ import { GuidePageHeader } from '../../../components/custom-ui/GuidePageHeader';
 import { GuidePageContent } from '../../../components/custom-ui/GuidePageContent';
 import { GuidePageFooter } from '../../../components/custom-ui/GuidePageFooter';
 import { getQueryClient } from '../../../query/getQueryClient';
+import { ParamsContextProvider } from '../../../context/ParamsContext';
+import { SocketContextProvider } from '../../../context/SocketContext';
+import getSearchParamsAndParse from '../../../utils/getSearchParams';
 
-export default async function GuideServerPage({ params }: RouteIdParams) {
+export default async function GuideServerPage(props: PageProps<'/guides/[id]'>) {
     const session = await getSession({
         headers: await headers(),
     });
@@ -22,8 +24,12 @@ export default async function GuideServerPage({ params }: RouteIdParams) {
         redirect('/auth/sign-in');
     }
 
-    const guideId = (await params).id;
+    const guideId = (await props.params).id;
     const userId = session.user.id;
+
+    const { processedSearchParams } = await getSearchParamsAndParse({
+        searchParams: props.searchParams,
+    });
 
     const queryClient = getQueryClient();
 
@@ -38,17 +44,23 @@ export default async function GuideServerPage({ params }: RouteIdParams) {
 
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <QueryErrorBoundary>
-                <Suspense fallback={<GuideLoader />}>
-                    <GuideContextProvider guideId={guideId}>
-                        <FormProcessor>
-                            <GuidePageHeader />
-                            <GuidePageContent />
-                            <GuidePageFooter />
-                        </FormProcessor>
-                    </GuideContextProvider>
-                </Suspense>
-            </QueryErrorBoundary>
+            <ParamsContextProvider
+                processedSearchParams={processedSearchParams}
+            >
+                <SocketContextProvider>
+                    <QueryErrorBoundary>
+                        <Suspense fallback={<GuideLoader />}>
+                            <GuideContextProvider guideId={guideId}>
+                                <FormProcessor>
+                                    <GuidePageHeader />
+                                    <GuidePageContent />
+                                    <GuidePageFooter />
+                                </FormProcessor>
+                            </GuideContextProvider>
+                        </Suspense>
+                    </QueryErrorBoundary>
+                </SocketContextProvider>
+            </ParamsContextProvider>
         </HydrationBoundary>
     );
 }

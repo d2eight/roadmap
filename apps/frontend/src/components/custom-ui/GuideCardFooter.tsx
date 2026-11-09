@@ -7,7 +7,6 @@ import { ArrowRight, LucideRefreshCcw } from 'lucide-react';
 import { useGuideContext } from '../../context/GuideContext';
 import { CardFooter } from '../ui/card';
 import { RecreateGuideMenu } from './RecreateGuideMenu';
-import { useParamsContext } from '../../context/ParamsContext';
 import { VariantProps } from 'class-variance-authority';
 
 export function GuideCardFooter({
@@ -20,7 +19,7 @@ export function GuideCardFooter({
     variant?: VariantProps<typeof buttonVariants>['variant'];
 }) {
     const { guide, status } = useGuideContext();
-    const { searchParams } = useParamsContext();
+    // const { searchParams } = useParamsContext();
 
     switch (status) {
         case 'INIT':
@@ -28,7 +27,7 @@ export function GuideCardFooter({
             return (
                 <CardFooter className={`${className && className}`}>
                     <Button className="w-full" variant="secondary" asChild>
-                        <Link href={`/guides/${guide.id}?${searchParams}`}>
+                        <Link href={`/guides/${guide.id}`}>
                             Generating a guide
                             <Spinner />
                         </Link>
@@ -39,7 +38,7 @@ export function GuideCardFooter({
             return (
                 <CardFooter className={`${className && className}`}>
                     <Button className="w-full" variant="secondary" asChild>
-                        <Link href={`/guides/${guide.id}?${searchParams}`}>
+                        <Link href={`/guides/${guide.id}`}>
                             Generating questions
                             <Spinner />
                         </Link>
@@ -50,7 +49,7 @@ export function GuideCardFooter({
             return (
                 <CardFooter className={`${className && className}`}>
                     <Button className="w-full" variant="outline" asChild>
-                        <Link href={`/guides/${guide.id}?${searchParams}`}>
+                        <Link href={`/guides/${guide.id}`}>
                             Open questions
                             <ArrowRight />
                         </Link>
@@ -65,7 +64,7 @@ export function GuideCardFooter({
                         asChild
                         variant={variant ?? 'default'}
                     >
-                        <Link href={`/guides/${guide.id}?${searchParams}`}>
+                        <Link href={`/guides/${guide.id}`}>
                             {label ?? 'Open guide'}
                             <ArrowRight />
                         </Link>
