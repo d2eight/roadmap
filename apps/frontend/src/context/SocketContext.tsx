@@ -10,7 +10,6 @@ import {
 import { GuideModelWithRelations } from 'shared-types';
 import { getSocket } from '../socket';
 import { useQueryClient } from '@tanstack/react-query';
-import { useParamsContext } from './ParamsContext';
 import { useAuthContext } from './AuthContext';
 
 export const SocketContext = createContext<{
@@ -34,7 +33,6 @@ export const SocketContextProvider = ({
 }) => {
     const [connectionStatus, setConnectionStatus] = useState<boolean>(false);
 
-    const { queryKey } = useParamsContext();
     const { data } = useAuthContext();
 
     const queryClient = useQueryClient();
@@ -47,20 +45,11 @@ export const SocketContextProvider = ({
             setConnectionStatus(true);
         }
 
-        return () => {
-            socket.disconnect();
-            setConnectionStatus(false);
-        };
-    }, [data]);
-
-    useEffect(() => {
-        const socket = getSocket();
-
         const handleGuideUpdate = (data: GuideModelWithRelations) => {
             queryClient.setQueryData(['guide', data.id], data);
 
             queryClient.setQueriesData<[GuideModelWithRelations[], number]>(
-                { queryKey },
+                { queryKey: ['guides']},
                 (currentGuidesCache) => {
                     if (!currentGuidesCache) return currentGuidesCache;
                     const [currentGuidesData, currentGuidesCount] =
@@ -76,11 +65,14 @@ export const SocketContextProvider = ({
         socket.on('guide_update', handleGuideUpdate);
 
         return () => {
+            socket.disconnect();
             socket.off('guide_update', handleGuideUpdate);
+            setConnectionStatus(false);
         };
-    }, [queryKey]);
+    }, [data]);
 
     return (
         <SocketContext value={{ connectionStatus }}>{children}</SocketContext>
     );
 };
+

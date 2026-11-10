@@ -12,7 +12,6 @@ import { GuidePageContent } from '../../../components/custom-ui/GuidePageContent
 import { GuidePageFooter } from '../../../components/custom-ui/GuidePageFooter';
 import { getQueryClient } from '../../../query/getQueryClient';
 import { ParamsContextProvider } from '../../../context/ParamsContext';
-import { SocketContextProvider } from '../../../context/SocketContext';
 import getSearchParamsAndParse from '../../../utils/getSearchParams';
 
 export default async function GuideServerPage(props: PageProps<'/guides/[id]'>) {
@@ -47,19 +46,17 @@ export default async function GuideServerPage(props: PageProps<'/guides/[id]'>) 
             <ParamsContextProvider
                 processedSearchParams={processedSearchParams}
             >
-                <SocketContextProvider>
-                    <QueryErrorBoundary>
-                        <Suspense fallback={<GuideLoader />}>
-                            <GuideContextProvider guideId={guideId}>
-                                <FormProcessor>
-                                    <GuidePageHeader />
-                                    <GuidePageContent />
-                                    <GuidePageFooter />
-                                </FormProcessor>
-                            </GuideContextProvider>
-                        </Suspense>
-                    </QueryErrorBoundary>
-                </SocketContextProvider>
+                <QueryErrorBoundary>
+                    <Suspense fallback={<GuideLoader />}>
+                        <GuideContextProvider guideId={guideId}>
+                            <FormProcessor>
+                                <GuidePageHeader />
+                                <GuidePageContent />
+                                <GuidePageFooter />
+                            </FormProcessor>
+                        </GuideContextProvider>
+                    </Suspense>
+                </QueryErrorBoundary>
             </ParamsContextProvider>
         </HydrationBoundary>
     );

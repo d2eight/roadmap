@@ -1,4 +1,4 @@
-import { prisma } from 'database';
+import { GuideStatus, prisma } from 'database';
 import {
     DaysAmountSchemaType,
     paramsSchemaType,
@@ -183,6 +183,9 @@ export async function getCurrentUsersGuide({ userId }: { userId: string }) {
     return prisma.guide.findFirst({
         where: {
             userId: userId,
+            status: {
+                not: GuideStatus.FAILED
+            }
         },
         orderBy: {
             updatedAt: 'desc',

@@ -8,7 +8,6 @@ import { QueryErrorBoundary } from '../../components/errors/QueryErrorBoundary';
 import { GuidesLoader } from '../../components/custom-ui/GuidesLoader';
 import { Suspense } from 'react';
 import { GuidesSection } from './_components/GuidesSection';
-import { SocketContextProvider } from '../../context/SocketContext';
 import getSearchParamsAndParse from '../../utils/getSearchParams';
 
 export default async function GuidesServerPage({
@@ -34,23 +33,21 @@ export default async function GuidesServerPage({
             <ParamsContextProvider
                 processedSearchParams={processedSearchParams}
             >
-                <SocketContextProvider>
-                    <Filter />
-                    <QueryErrorBoundary
-                        key={`${page}-${orderBy}-${progressStatus}`}
-                    >
-                        <Suspense fallback={<GuidesLoader />}>
-                            <GuidesSection
-                                userId={session.user.id}
-                                params={{
-                                    orderBy,
-                                    page,
-                                    progressStatus,
-                                }}
-                            />
-                        </Suspense>
-                    </QueryErrorBoundary>
-                </SocketContextProvider>
+                <Filter />
+                <QueryErrorBoundary
+                    key={`${page}-${orderBy}-${progressStatus}`}
+                >
+                    <Suspense fallback={<GuidesLoader />}>
+                        <GuidesSection
+                            userId={session.user.id}
+                            params={{
+                                orderBy,
+                                page,
+                                progressStatus,
+                            }}
+                        />
+                    </Suspense>
+                </QueryErrorBoundary>
             </ParamsContextProvider>
         </div>
     );
