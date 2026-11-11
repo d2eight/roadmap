@@ -10,6 +10,11 @@
             "options": {
                 "port": 4444
             }
+        },
+        "start": {
+            "options": {
+                "port": 4444
+            }
         }
     }
 }
