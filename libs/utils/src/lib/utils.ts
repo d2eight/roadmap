@@ -63,7 +63,7 @@ export async function getUsersActivity({
                 { createdAt: { gte: startDate, lte: endDate } },
                 {
                     updatedAt: { gte: startDate, lte: endDate },
-                    progressStatus: 'DONE',
+                    progressStatus: GuideProgressStatus.DONE,
                 },
             ],
         },
@@ -110,7 +110,7 @@ export async function getUsersActivity({
                 dateWithNewCreatedGuide.createdCount += 1;
             }
 
-            if (dateWithNewDoneGuide && curr.progressStatus === 'DONE') {
+            if (dateWithNewDoneGuide && curr.progressStatus === GuideProgressStatus.DONE) {
                 dateWithNewDoneGuide.doneCount += 1;
             }
 
@@ -183,9 +183,10 @@ export async function getCurrentUsersGuide({ userId }: { userId: string }) {
     return prisma.guide.findFirst({
         where: {
             userId: userId,
-            status: {
-                not: GuideStatus.FAILED
-            }
+            status: GuideStatus.GUIDE_GENERATED,
+            progressStatus: {
+                not: GuideProgressStatus.DONE
+            },
         },
         orderBy: {
             updatedAt: 'desc',
@@ -202,7 +203,8 @@ export async function getDoneUsersGuide({ userId }: { userId: string }) {
     return prisma.guide.findFirst({
         where: {
             userId: userId,
-            progressStatus: 'DONE',
+            progressStatus: GuideProgressStatus.DONE,
+            status: GuideStatus.GUIDE_GENERATED,
         },
         orderBy: {
             updatedAt: 'desc',
