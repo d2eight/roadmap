@@ -30,7 +30,12 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "incremental": true,
-        "plugins": [{ "name": "next" }]
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "ignoreDeprecations": "6.0"
     },
     "include": [
         "**/*.ts",

@@ -43,5 +43,8 @@
                 "unitTestRunner": "none"
             }
         }
+    },
+    "affected": {
+        "legacy": true
     }
 }
