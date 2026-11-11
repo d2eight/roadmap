@@ -38,15 +38,18 @@ export const SocketContextProvider = ({
     const queryClient = useQueryClient();
 
     useEffect(() => {
+        if(!data) {
+            return;
+        }
+
         const socket = getSocket();
 
         if (socket.disconnected) {
             socket.connect();
-            setConnectionStatus(true);
         }
 
-        const handleGuideUpdate = (data: GuideModelWithRelations) => {
-            queryClient.setQueryData(['guide', data.id], data);
+        const handleGuideUpdate = (guide: GuideModelWithRelations) => {
+            queryClient.setQueryData(['guide', guide.id], guide);
 
             queryClient.setQueriesData<[GuideModelWithRelations[], number]>(
                 { queryKey: ['guides']},
@@ -54,8 +57,9 @@ export const SocketContextProvider = ({
                     if (!currentGuidesCache) return currentGuidesCache;
                     const [currentGuidesData, currentGuidesCount] =
                         currentGuidesCache;
-                    const newGuidesData = currentGuidesData.map((guide) =>
-                        guide.id === data.id ? data : guide,
+                    const newGuidesData = currentGuidesData.map(
+                        (currentGuide) =>
+                            currentGuide.id === guide.id ? guide : currentGuide,
                     );
                     return [newGuidesData, currentGuidesCount];
                 },
@@ -63,6 +67,7 @@ export const SocketContextProvider = ({
         };
 
         socket.on('guide_update', handleGuideUpdate);
+        socket.on('connect', () => setConnectionStatus(true));
 
         return () => {
             socket.disconnect();
