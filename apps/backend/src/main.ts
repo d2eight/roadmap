@@ -24,6 +24,13 @@ app.all('/api/auth/*any', toNodeHandler(auth));
 app.use(express.json());
 app.use(guidesRouter);
 
+app.use((req, res, next) => {
+    return res.status(404).json({
+        success: false,
+        message: 'There is no such a resource',
+    });
+});
+
 const port = 3333;
 
 server.listen(port, () => {

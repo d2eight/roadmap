@@ -8,7 +8,6 @@ import { useGuideContext } from '../../context/GuideContext';
 import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
 import { ApiErrors } from 'shared-types';
 import { toast } from 'sonner';
-import { useParamsContext } from '../../context/ParamsContext';
 
 export function RecreateGuideButton({
     children,
@@ -18,14 +17,13 @@ export function RecreateGuideButton({
     className?: string;
 }) {
     const { guide } = useGuideContext();
-    const { queryKey } = useParamsContext();
     const queryClient = useQueryClient();
     const { clientHandleApiError } = useClientHandleApiError();
 
     const { mutate } = useMutation<null, ApiErrors>({
         mutationFn: recreate,
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey });
+            await queryClient.invalidateQueries({ queryKey: ['guides'] });
             await queryClient.invalidateQueries({
                 queryKey: ['statistics'],
             });

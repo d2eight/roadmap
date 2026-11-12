@@ -20,7 +20,7 @@ export function DeleteGuideButton({
 }) {
     const { guide } = useGuideContext();
     const queryClient = useQueryClient();
-    const { queryKey, defaultParams } = useParamsContext();
+    const { defaultParams } = useParamsContext();
     const { clientHandleApiError } = useClientHandleApiError();
     const router = useRouter();
 

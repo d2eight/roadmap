@@ -20,7 +20,6 @@ import { RedAlert } from '../custom-ui/RedAlert';
 import { FieldSet } from '../ui/field';
 import { updateGuideProgress } from '../../utils/guideApiActions';
 import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
-import { useParamsContext } from '../../context/ParamsContext';
 
 export function GuideForm() {
     const { guide } = useGuideContext();
@@ -28,7 +27,6 @@ export function GuideForm() {
         useFormProcessingContext();
     const queryClient = useQueryClient();
     const { clientHandleApiError } = useClientHandleApiError();
-    const { queryKey } = useParamsContext();
 
     const form = useForm<guideStepsSchemaType>({
         resolver: zodResolver(guideStepsSchema),
@@ -56,7 +54,7 @@ export function GuideForm() {
             toast.success('Successfully updated your progress');
             queryClient.setQueryData(['guide', guide.id], result.data);
             await queryClient.invalidateQueries({
-                queryKey,
+                queryKey: ['guides'],
             });
             await queryClient.invalidateQueries({
                 queryKey: ['statistics'],

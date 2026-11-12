@@ -36,7 +36,7 @@ export type ApiResponse<T = null, Z = null> =
     | {
           success: false;
           message: string;
-          zodError: Z;
+          zodError?: Z;
       };
 
 export type ApiResponseError<Z = null> = Extract<
