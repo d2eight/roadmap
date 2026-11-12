@@ -25,9 +25,8 @@ export function promptValidationMiddleware({
                 });
             }
             return res.status(500).json({
-                error: {
-                    message: 'Something went wrong',
-                },
+                success: false,
+                message: 'Something went wrong',
             });
         }
     };

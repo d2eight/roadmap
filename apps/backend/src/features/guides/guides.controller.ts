@@ -54,9 +54,7 @@ export async function createGuideQuestions(
     if (!promptData.externalAiQuestionsStatus) {
         return res.status(422).json({
             success: false,
-            error: {
-                message: 'Invalid data',
-            },
+            message: 'Invalid data',
         });
     }
 
@@ -82,9 +80,7 @@ export async function createGuideQuestions(
 
         return res.status(500).json({
             success: false,
-            error: {
-                message: 'Something went wrong',
-            },
+            message: 'Something went wrong',
         });
     }
 }
@@ -132,10 +128,17 @@ export async function deleteGuide(
     const userId: string = res.locals.userId;
     const guideId = req.params.guideId as string;
     try {
-        await guidesService.deleteGuide({
+        const deletedGuide = await guidesService.deleteGuide({
             guideId,
             userId,
         });
+
+        if(!deletedGuide) {
+            return res.status(404).json({
+                success: false,
+                message: 'This guide does not exists',
+            });
+        }
 
         return res.status(204).end();
     } catch (error) {

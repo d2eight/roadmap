@@ -1,5 +1,6 @@
 import express from 'express';
-import { GuideStatus, prisma } from 'database';
+import { GuideStatus } from 'database';
+import { getGuide } from 'utils';
 
 export function guideMiddleware({
     errorMessage = 'Such a guide does not exists',
@@ -17,12 +18,14 @@ export function guideMiddleware({
         const guideId = req.params.guideId as string;
 
         try {
-            const guide = await prisma.guide.findUniqueOrThrow({
-                where: {
-                    id: guideId,
-                    userId: userId,
-                },
-            });
+            const guide = await getGuide({userId, guideId});
+
+            if(!guide) {
+                return res.status(404).json({
+                    success: false,
+                    message: errorMessage,
+                });
+            }
 
             if(requiredStatuses.length > 0 && !requiredStatuses.includes(guide.status)) {
                 return res.status(409).json({
@@ -34,9 +37,9 @@ export function guideMiddleware({
             res.locals.prompt = guide.prompt;
             next();
         } catch (error) {
-            return res.status(404).json({
+            return res.status(500).json({
                 success: false,
-                message: errorMessage,
+                message: 'Somthing wen wrong',
             });
         }
     };
