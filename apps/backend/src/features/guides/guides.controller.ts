@@ -6,6 +6,7 @@ import {
     promptSchemaType,
 } from 'shared-types';
 import { GuideStepModel } from 'database/models';
+import { Prisma } from 'database';
 
 export async function createGuide(
     req: express.Request,
@@ -128,21 +129,21 @@ export async function deleteGuide(
     const userId: string = res.locals.userId;
     const guideId = req.params.guideId as string;
     try {
-        const deletedGuide = await guidesService.deleteGuide({
+        await guidesService.deleteGuide({
             guideId,
             userId,
         });
 
-        if(!deletedGuide) {
+        return res.status(204).end();
+    } catch (error) {
+        console.error('Failed to delete guide:', error);
+
+        if(error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
             return res.status(404).json({
                 success: false,
                 message: 'This guide does not exists',
             });
         }
-
-        return res.status(204).end();
-    } catch (error) {
-        console.error('Failed to delete guide:', error);
 
         return res.status(500).json({
             success: false,
