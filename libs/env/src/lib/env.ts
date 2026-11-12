@@ -5,18 +5,18 @@ import * as path from 'node:path';
 config({ path: path.resolve(__dirname, '../../../../.env') });
 
 const environmentSchema = z.object({
-    DATABASE_URL: z.string(),
-    POSTGRES_USER: z.string(),
-    POSTGRES_PASSWORD: z.string(),
-    POSTGRES_DB: z.string(),
-    REDIS_HOST: z.string(),
+    DATABASE_URL: z.string().min(1),
+    POSTGRES_USER: z.string().min(1),
+    POSTGRES_PASSWORD: z.string().min(1),
+    POSTGRES_DB: z.string().min(1),
+    REDIS_HOST: z.string().min(1),
     REDIS_PORT: z.coerce.number(),
-    NEXT_URL: z.string(),
-    EXPRESS_URL: z.string(),
-    BETTER_AUTH_SECRET: z.string(),
-    BETTER_AUTH_URL: z.string(),
-    OPENAI_MODEL: z.string(),
-    OPENAI_API_KEY: z.string(),
+    NEXT_URL: z.string().min(1),
+    EXPRESS_URL: z.string().min(1),
+    BETTER_AUTH_SECRET: z.string().min(1),
+    BETTER_AUTH_URL: z.string().min(1),
+    OPENAI_MODEL: z.string().min(1),
+    OPENAI_API_KEY: z.string().min(1),
 });
 
 type EnvironmentSchemaType = z.infer<typeof environmentSchema>;

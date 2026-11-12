@@ -141,7 +141,7 @@ export async function deleteGuide(
         if(error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
             return res.status(404).json({
                 success: false,
-                message: 'This guide does not exists',
+                message: 'Guide not found',
             });
         }
 

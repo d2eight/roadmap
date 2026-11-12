@@ -39,7 +39,7 @@ export function guideMiddleware({
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Somthing wen wrong',
+                message: 'Something went wrong',
             });
         }
     };

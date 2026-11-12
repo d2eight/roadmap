@@ -1,9 +1,9 @@
 import z from 'zod';
 
 const environmentClientSchema = z.object({
-    NEXT_URL: z.string(),
-    BETTER_AUTH_URL: z.string(),
-    EXPRESS_URL: z.string(),
+    NEXT_URL: z.string().min(1),
+    BETTER_AUTH_URL: z.string().min(1),
+    EXPRESS_URL: z.string().min(1),
 });
 
 type EnvironmentClientSchemaType = z.infer<typeof environmentClientSchema>;
