@@ -10,7 +10,7 @@ const environmentSchema = z.object({
     POSTGRES_PASSWORD: z.string().min(1),
     POSTGRES_DB: z.string().min(1),
     REDIS_HOST: z.string().min(1),
-    REDIS_PORT: z.coerce.number(),
+    REDIS_PORT: z.coerce.number().int().positive(),
     NEXT_URL: z.string().min(1),
     EXPRESS_URL: z.string().min(1),
     BETTER_AUTH_SECRET: z.string().min(1),
