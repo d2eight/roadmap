@@ -105,6 +105,15 @@ Reads and writes go through different applications that share one database and o
 3. Failed jobs are retried with backoff; after the last attempt the guide is marked `FAILED` and can be recreated.
 4. Every status change is emitted over Socket.IO to a room scoped to the user.
 
+### Error handling
+
+Every error response has the same shape, `{ success: false, message }`, so the frontend handles them in one place.
+
+- **Validation:** request bodies are parsed with the shared Zod schemas in middleware; invalid input returns `422`.
+- **Auth and ownership:** `401` without a session, `404` when the guide does not exist or belongs to another user.
+- **State machine:** `409` when the guide's status does not allow the requested action.
+- **Fallbacks:** unknown routes return a JSON `404`, and a global error handler turns malformed JSON into `400` and anything unhandled into `500`.
+
 ## Guide lifecycle
 
 ```mermaid
@@ -163,17 +172,34 @@ git clone git@github.com:d2eight/roadmap.git
 cd roadmap
 npm ci
 
-cp .env.example .env              # fill in the values
-docker compose up -d              # Postgres and Redis
-npx prisma migrate dev --config libs/db/prisma.config.ts
+cp .env.example .env    # then set BETTER_AUTH_SECRET and OPENAI_API_KEY
+docker compose up -d    # Postgres and Redis
+npm run db:migrate      # apply migrations
+npm run db:generate     # generate the Prisma client and Zod schemas
 
-npx nx run-many -t dev
+npm run dev             # frontend and backend in watch mode
 ```
 
 - Frontend: http://localhost:4444
 - Backend: http://localhost:3333
 
-<!-- TODO: describe each variable in .env.example or give local defaults there -->
+`.env.example` already contains working local values for Postgres, Redis and the app URLs. Only two values have to be filled in:
+
+| Variable | How to get it |
+|---|---|
+| `BETTER_AUTH_SECRET` | Any random string of 32+ characters, e.g. `openssl rand -base64 32` |
+| `OPENAI_API_KEY` | Your OpenAI API key; `OPENAI_MODEL` selects the model |
+
+### Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Run both apps in development mode |
+| `npm run build` | Build both apps |
+| `npm run lint` | Lint all projects |
+| `npm run typecheck` | Type-check both apps |
+| `npm run db:migrate` | Create and apply Prisma migrations |
+| `npm run db:generate` | Regenerate the Prisma client and Zod schemas |
 
 ## Known limitations
 
@@ -185,7 +211,6 @@ Trade-offs I'm aware of and would address next:
 - **No timeout on LLM calls** and a single worker per queue, so one hanging request blocks the queue.
 - **Missed WebSocket events are not replayed** after a reconnect; queries are not invalidated when the connection is restored.
 - **Password rules are enforced only on the client**, and there is no email verification.
-- **Inconsistent API error format** across endpoints.
 - <!-- TODO: tests -->
 
 <!-- TODO: License -->
