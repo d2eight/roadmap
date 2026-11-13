@@ -23,13 +23,33 @@ app.use(
 app.all('/api/auth/*any', toNodeHandler(auth));
 app.use(express.json());
 app.use(guidesRouter);
-
 app.use((req, res, next) => {
     return res.status(404).json({
         success: false,
         message: 'There is no such a resource',
     });
 });
+app.use(
+    (
+        err: unknown,
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction,
+    ) => {
+        if (err instanceof SyntaxError && 'body' in err) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid JSON',
+            });
+        } else {
+            console.error(err)
+            return res.status(500).json({
+                success: false,
+                message: 'Something went wrong, unexpected behaviour',
+            });
+        }
+    },
+);
 
 const port = 3333;
 
