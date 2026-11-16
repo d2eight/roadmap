@@ -15,9 +15,6 @@ export const searchParamsDefaultValues: paramsSchemaType = {
     page: 1,
 };
 
-export const guidesPageDefaultUrlString =
-    '/guides?page=1&orderBy=createdAt&progressStatus=PENDING%2CINWORK%2CDONE';
-
 export const getGuideStepProperties = {
     select: {
         id: true,

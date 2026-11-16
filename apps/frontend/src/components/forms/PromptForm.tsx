@@ -22,7 +22,7 @@ import { Switch } from '../ui/switch';
 import { createGuide, createGuideQuestions, recreateGuide, recreateGuideQuestions } from '../../utils/guideApiActions';
 import { useClientHandleApiError } from '../../utils/apiErrorsHandler';
 import { UnexpectedError } from 'errors';
-import { guidesPageDefaultUrlString } from 'shared-constants';
+import { getDefaultSearchParams } from '../../utils/getDefaultSearchParams';
 
 export function PromptForm({
     pushToGuideStatus,
@@ -75,7 +75,7 @@ export function PromptForm({
             if (pushToGuideStatus) {
                 return router.push(`/guides/${newGuideId}`);
             } else {
-                return router.push(guidesPageDefaultUrlString);
+                return router.push(`/guides?${getDefaultSearchParams({})}`);
             }
         },
         onError: (error) => {
