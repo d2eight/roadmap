@@ -31,7 +31,7 @@ export async function GET(request: NextRequest, { params }: RouteIdParams) {
             return NextResponse.json(
                 {
                     success: false,
-                    message: 'Such a guide does not exists',
+                    message: 'Such a guide does not exist',
                 },
                 {
                     status: 404,

@@ -32,7 +32,7 @@ export function QueryErrorBoundary({ children }: { children: ReactNode }) {
                                     </EmptyMedia>
                                     <EmptyTitle>Server error</EmptyTitle>
                                     <EmptyDescription>
-                                        Cant reach requested data
+                                        Can't reach requested data
                                     </EmptyDescription>
                                 </EmptyHeader>
                                 <EmptyContent>

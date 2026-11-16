@@ -3,7 +3,7 @@ import { GuideStatus } from 'database';
 import { getGuide } from 'utils';
 
 export function guideMiddleware({
-    errorMessage = 'Such a guide does not exists',
+    errorMessage = 'Such a guide does not exist',
     requiredStatuses = [],
 }: {
     errorMessage?: string;

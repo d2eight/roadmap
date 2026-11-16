@@ -40,7 +40,7 @@ export async function createGuide(
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: 'Guide was no created, unexpected error',
+            message: 'Guide was not created, unexpected error',
         });
     }
 }

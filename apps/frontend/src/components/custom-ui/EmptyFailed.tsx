@@ -5,7 +5,7 @@ import { JSX } from 'react';
 export function EmptyFailed({
     icon = <LucideCircleMinus color="red" />,
     title = 'Something went wrong',
-    description = 'Cant load requested data',
+    description = 'Can not load requested data',
 }: {
     icon?: JSX.Element;
     title?: string;
