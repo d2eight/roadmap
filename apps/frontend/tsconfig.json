@@ -3,7 +3,6 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            //            "@/*": ["./src/*"],
             "shared-types": ["../../libs/shared-types/src/index.ts"],
             "shared-constants": ["../../libs/shared-constants/src/index.ts"],
             "auth": ["../../libs/auth/src/index.ts"],
@@ -42,10 +41,8 @@
         "**/*.tsx",
         "**/*.js",
         "**/*.jsx",
-
         "../../apps/frontend/.next/types/**/*.ts",
         "../../dist/apps/frontend/.next/types/**/*.ts",
-
         "next-env.d.ts"
     ],
     "exclude": [

@@ -179,7 +179,7 @@ export const filterSchema = z.object({
 export type filterSchemaType = z.infer<typeof filterSchema>;
 
 export const paramsSchema = filterSchema.extend({
-    page: z.coerce.number(),
+    page: z.coerce.number().int().positive(),
     progressStatus: z
         .string()
         .transform((value) => value.split(','))
