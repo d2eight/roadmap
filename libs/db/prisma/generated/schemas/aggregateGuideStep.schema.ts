@@ -1,4 +1,4 @@
-import type { Prisma } from '../../../generated/prisma/client';
+import type { Prisma } from '../../../generated/prisma/browser';
 import * as z from 'zod';
 import { GuideStepOrderByWithRelationInputObjectSchema as GuideStepOrderByWithRelationInputObjectSchema } from './objects/GuideStepOrderByWithRelationInput.schema';
 import { GuideStepWhereInputObjectSchema as GuideStepWhereInputObjectSchema } from './objects/GuideStepWhereInput.schema';

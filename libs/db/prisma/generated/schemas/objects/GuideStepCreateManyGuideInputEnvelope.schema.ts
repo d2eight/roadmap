@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import type { Prisma } from '../../../../generated/prisma/client';
+import type { Prisma } from '../../../../generated/prisma/browser';
 import { GuideStepCreateManyGuideInputObjectSchema as GuideStepCreateManyGuideInputObjectSchema } from './GuideStepCreateManyGuideInput.schema'
 
 const makeSchema = () => z.object({

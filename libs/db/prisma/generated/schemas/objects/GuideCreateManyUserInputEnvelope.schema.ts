@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import type { Prisma } from '../../../../generated/prisma/client';
+import type { Prisma } from '../../../../generated/prisma/browser';
 import { GuideCreateManyUserInputObjectSchema as GuideCreateManyUserInputObjectSchema } from './GuideCreateManyUserInput.schema'
 
 const makeSchema = () => z.object({

@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import type { Prisma } from '../../../../generated/prisma/client';
+import type { Prisma } from '../../../../generated/prisma/browser';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
 import { GuideStepCountOrderByAggregateInputObjectSchema as GuideStepCountOrderByAggregateInputObjectSchema } from './GuideStepCountOrderByAggregateInput.schema';
 import { GuideStepAvgOrderByAggregateInputObjectSchema as GuideStepAvgOrderByAggregateInputObjectSchema } from './GuideStepAvgOrderByAggregateInput.schema';

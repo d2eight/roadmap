@@ -1,5 +1,4 @@
 import * as z from 'zod';
-import type { Prisma } from '../../../../generated/prisma/client';
 import { GuideStepSelectObjectSchema as GuideStepSelectObjectSchema } from './GuideStepSelect.schema';
 import { GuideStepIncludeObjectSchema as GuideStepIncludeObjectSchema } from './GuideStepInclude.schema'
 

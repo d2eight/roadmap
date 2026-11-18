@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import type { Prisma } from '../../../../generated/prisma/client';
+import type { Prisma } from '../../../../generated/prisma/browser';
 import { GuideCountOutputTypeCountStepsArgsObjectSchema as GuideCountOutputTypeCountStepsArgsObjectSchema } from './GuideCountOutputTypeCountStepsArgs.schema'
 
 const makeSchema = () => z.object({

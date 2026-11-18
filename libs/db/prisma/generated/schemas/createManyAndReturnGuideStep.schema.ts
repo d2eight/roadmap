@@ -1,4 +1,4 @@
-import type { Prisma } from '../../../generated/prisma/client';
+import type { Prisma } from '../../../generated/prisma/browser';
 import * as z from 'zod';
 import { GuideStepSelectObjectSchema as GuideStepSelectObjectSchema } from './objects/GuideStepSelect.schema';
 import { GuideStepCreateManyInputObjectSchema as GuideStepCreateManyInputObjectSchema } from './objects/GuideStepCreateManyInput.schema';

@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import type { Prisma } from '../../../../generated/prisma/client';
+import type { Prisma } from '../../../../generated/prisma/browser';
 import { GuideStepScalarWhereInputObjectSchema as GuideStepScalarWhereInputObjectSchema } from './GuideStepScalarWhereInput.schema';
 import { GuideStepUpdateManyMutationInputObjectSchema as GuideStepUpdateManyMutationInputObjectSchema } from './GuideStepUpdateManyMutationInput.schema';
 import { GuideStepUncheckedUpdateManyWithoutGuideInputObjectSchema as GuideStepUncheckedUpdateManyWithoutGuideInputObjectSchema } from './GuideStepUncheckedUpdateManyWithoutGuideInput.schema'

@@ -1,7 +1,7 @@
 import * as z from 'zod';
 export const GuideStepUpdateResultSchema = z.nullable(z.object({
   id: z.number().int(),
-  guide: z.unknown(),
+  guide: z.unknown().optional(),
   guideId: z.string(),
   title: z.string(),
   description: z.string(),

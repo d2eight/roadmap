@@ -8,8 +8,8 @@ export const GuideStepInputSchema = z.object({
     title: z.string(),
     description: z.string(),
     status: GuideStepStatusSchema,
-    createdAt: z.date(),
-    updatedAt: z.date()
+    createdAt: z.coerce.date(),
+    updatedAt: z.coerce.date()
 }).strict();
 
 export type GuideStepInputType = z.infer<typeof GuideStepInputSchema>;

@@ -21,6 +21,6 @@ jobs:
         with:
           node-version: 24
       - run: npm ci
-      - run: npx prisma generate
+      - run: npx prisma generate --schema ../../libs/db/prisma/schema.prisma
       - run: npm run typecheck
       - run: npm test

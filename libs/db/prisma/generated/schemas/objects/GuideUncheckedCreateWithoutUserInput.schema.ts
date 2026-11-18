@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import type { Prisma } from '../../../../generated/prisma/client';
+import type { Prisma } from '../../../../generated/prisma/browser';
 import { NullableJsonNullValueInputSchema } from '../enums/NullableJsonNullValueInput.schema';
 import { GuideStatusSchema } from '../enums/GuideStatus.schema';
 import { GuideProgressStatusSchema } from '../enums/GuideProgressStatus.schema';

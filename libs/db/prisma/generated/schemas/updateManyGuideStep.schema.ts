@@ -1,4 +1,4 @@
-import type { Prisma } from '../../../generated/prisma/client';
+import type { Prisma } from '../../../generated/prisma/browser';
 import * as z from 'zod';
 import { GuideStepUpdateManyMutationInputObjectSchema as GuideStepUpdateManyMutationInputObjectSchema } from './objects/GuideStepUpdateManyMutationInput.schema';
 import { GuideStepWhereInputObjectSchema as GuideStepWhereInputObjectSchema } from './objects/GuideStepWhereInput.schema';

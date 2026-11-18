@@ -15,8 +15,8 @@ export const GuideInputSchema = z.object({
     answeredQuestions: z.unknown().optional().nullable(),
     status: GuideStatusSchema,
     progressStatus: GuideProgressStatusSchema,
-    createdAt: z.date(),
-    updatedAt: z.date()
+    createdAt: z.coerce.date(),
+    updatedAt: z.coerce.date()
 }).strict();
 
 export type GuideInputType = z.infer<typeof GuideInputSchema>;

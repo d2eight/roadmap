@@ -1,17 +1,18 @@
-import type { Prisma } from '../../../generated/prisma/client';
+import type { Prisma } from '../../../generated/prisma/browser';
 import * as z from 'zod';
 import { GuideStepIncludeObjectSchema as GuideStepIncludeObjectSchema } from './objects/GuideStepInclude.schema';
 import { GuideStepOrderByWithRelationInputObjectSchema as GuideStepOrderByWithRelationInputObjectSchema } from './objects/GuideStepOrderByWithRelationInput.schema';
 import { GuideStepWhereInputObjectSchema as GuideStepWhereInputObjectSchema } from './objects/GuideStepWhereInput.schema';
 import { GuideStepWhereUniqueInputObjectSchema as GuideStepWhereUniqueInputObjectSchema } from './objects/GuideStepWhereUniqueInput.schema';
 import { GuideStepScalarFieldEnumSchema } from './enums/GuideStepScalarFieldEnum.schema';
+import { GuideArgsObjectSchema as GuideArgsObjectSchema } from './objects/GuideArgs.schema';
 
 // Select schema needs to be in file to prevent circular imports
 //------------------------------------------------------
 
 export const GuideStepFindFirstSelectSchema: z.ZodType<Prisma.GuideStepSelect> = z.object({
     id: z.boolean().optional(),
-    guide: z.boolean().optional(),
+    guide: z.union([z.boolean(), z.lazy(() => GuideArgsObjectSchema)]).optional(),
     guideId: z.boolean().optional(),
     title: z.boolean().optional(),
     description: z.boolean().optional(),
@@ -22,7 +23,7 @@ export const GuideStepFindFirstSelectSchema: z.ZodType<Prisma.GuideStepSelect> =
 
 export const GuideStepFindFirstSelectZodSchema = z.object({
     id: z.boolean().optional(),
-    guide: z.boolean().optional(),
+    guide: z.union([z.boolean(), z.lazy(() => GuideArgsObjectSchema)]).optional(),
     guideId: z.boolean().optional(),
     title: z.boolean().optional(),
     description: z.boolean().optional(),

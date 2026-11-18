@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import type { Prisma } from '../../../../generated/prisma/client';
+import type { Prisma } from '../../../../generated/prisma/browser';
 import { GuideWhereUniqueInputObjectSchema as GuideWhereUniqueInputObjectSchema } from './GuideWhereUniqueInput.schema';
 import { GuideUpdateWithoutUserInputObjectSchema as GuideUpdateWithoutUserInputObjectSchema } from './GuideUpdateWithoutUserInput.schema';
 import { GuideUncheckedUpdateWithoutUserInputObjectSchema as GuideUncheckedUpdateWithoutUserInputObjectSchema } from './GuideUncheckedUpdateWithoutUserInput.schema'
