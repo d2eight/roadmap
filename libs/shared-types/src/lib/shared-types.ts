@@ -215,9 +215,3 @@ export type UsersStatistics = {
 export type ProcessedSearchParamsInfo = {
     processedSearchParams: URLSearchParams
 } & paramsSchemaType;
-
-
-export interface PageProps {
-    params: Promise<{ id: string }>;
-    searchParams: Promise<Record<string, string | string[] | undefined>>;
-}

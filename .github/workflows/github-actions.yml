@@ -22,7 +22,8 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npx prisma generate --schema libs/db/prisma/schema.prisma
+      - run: npm run db:generate
+      - run: npm run next-types
       - run: npm run typecheck
       - run: npm run test
       - run: npm run lint
