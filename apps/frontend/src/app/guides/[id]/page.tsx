@@ -13,8 +13,9 @@ import { GuidePageFooter } from '../../../components/custom-ui/GuidePageFooter';
 import { getQueryClient } from '../../../query/getQueryClient';
 import { ParamsContextProvider } from '../../../context/ParamsContext';
 import getSearchParamsAndParse from '../../../utils/getSearchParams';
+import { PageProps } from 'shared-types';
 
-export default async function GuideServerPage(props: PageProps<'/guides/[id]'>) {
+export default async function GuideServerPage(props: PageProps) {
     const session = await getSession({
         headers: await headers(),
     });
