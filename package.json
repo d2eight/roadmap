@@ -9,7 +9,7 @@
         "typecheck": "tsc -p apps/frontend/tsconfig.json --noEmit && tsc -p apps/backend/tsconfig.app.json --noEmit",
         "db:generate": "prisma generate --config libs/db/prisma.config.ts",
         "db:migrate": "prisma migrate dev --config libs/db/prisma.config.ts",
-        "next-types": "npx next typegen apps/frontend",
+        "next-types": "cd apps/frontend && npx next typegen",
         "test": "jest"
     },
     "devDependencies": {
