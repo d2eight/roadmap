@@ -20,6 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: npm
       - run: npm ci
       - run: npx prisma generate --schema libs/db/prisma/schema.prisma
       - run: npm run typecheck
