@@ -1,0 +1,48 @@
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    env:
+      DATABASE_URL: postgresql://user:password@localhost:5432/db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      NEXT_URL: http://localhost:4444
+      EXPRESS_URL: http://localhost:3333
+      BETTER_AUTH_URL: http://localhost:3333
+      BETTER_AUTH_SECRET: ci-only-fake-secret-not-used-anywhere
+      OPENAI_MODEL: gpt-5.4-mini
+      OPENAI_API_KEY: sk-ci-fake
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+  build:
+    runs-on: ubuntu-22.04
+    needs: test
+    env:
+      DATABASE_URL: postgresql://user:password@localhost:5432/db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      NEXT_URL: http://localhost:4444
+      EXPRESS_URL: http://localhost:3333
+      BETTER_AUTH_URL: http://localhost:3333
+      BETTER_AUTH_SECRET: ci-only-fake-secret-not-used-anywhere
+      OPENAI_MODEL: gpt-5.4-mini
+      OPENAI_API_KEY: sk-ci-fake
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npx nx run-many -t build
