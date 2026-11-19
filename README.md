@@ -53,7 +53,7 @@
 
 ### Simply recreate guide
 
-<img width="1918" height="958" alt="simpleRecreate" src="https://github.com/user-attachments/assets/ae5e97de-040e-4b37-a273-080e0acd5f0c" />
+<img width="1524" height="884" alt="simple" src="https://github.com/user-attachments/assets/6f028308-73a3-4288-bcfa-883c6d6e4dc3" />
 
 ### Change, modify your initial prompts
 
