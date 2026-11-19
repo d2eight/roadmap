@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/d2eight/roadmap/actions/workflows/github-actions.yml/badge.svg)](https://github.com/d2eight/roadmap/actions/workflows/github-actions.yml)
 
-<img width="1901" height="958" alt="allPagesFlow" src="https://github.com/user-attachments/assets/05408f37-77d7-42e2-9c81-c9302b97ab89" />
+<img width="899" height="942" alt="allPagesFlow" src="https://github.com/user-attachments/assets/e799c748-4876-47b5-8849-e3b9ff73d9ae" />
 
 ## Table of contents
 
@@ -39,6 +39,38 @@
 4. Tracking progress on steps
 5. Dashboard and activity chart
 -->
+### Basic guide generetion
+
+<img width="1109" height="856" alt="defaultGenFlow" src="https://github.com/user-attachments/assets/b93a2f3c-37f9-4d0f-a58e-00501f4377c2" />
+
+### Advanced guide generation, with external ai questions
+
+<img width="1109" height="856" alt="questionsFlow" src="https://github.com/user-attachments/assets/f0fc637c-dad2-4bda-82b0-2c0cf707dc31" />
+
+### Update your progress
+
+<img width="1109" height="856" alt="updateSteps" src="https://github.com/user-attachments/assets/6b50254a-cb61-4690-b978-a4852f89e006" />
+
+### Simply recreate guide
+
+<img width="1918" height="958" alt="simpleRecreate" src="https://github.com/user-attachments/assets/ae5e97de-040e-4b37-a273-080e0acd5f0c" />
+
+### Change, modify your initial prompts
+
+<img width="1918" height="958" alt="changePrompt" src="https://github.com/user-attachments/assets/b74bfb0d-14ee-4906-ada5-baf6a9933448" />
+
+### Change your answers on the ai questions
+
+<img width="1918" height="958" alt="changeAnswers" src="https://github.com/user-attachments/assets/c173ef74-badf-4f78-a23e-1184a2485640" />
+
+### Look through all of your guides, filter them by date and progress status
+
+<img width="1918" height="958" alt="filterFlow" src="https://github.com/user-attachments/assets/9cd69eb2-e95a-41b1-ab52-de5fd36dc72c" />
+
+### Get detailed statistics about your overall progress on the home page 
+
+<img width="906" height="856" alt="homePageFlow" src="https://github.com/user-attachments/assets/3d5e513b-2712-4eaa-9f27-e684f633f7d2" />
+
 
 ## Tech stack
 
