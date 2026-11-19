@@ -28,7 +28,7 @@ export const userSignUpSchema = z
         confirmPassword: z.string(),
     })
     .refine((data) => data.password === data.confirmPassword, {
-        message: 'Passwords must be similar',
+        message: 'Passwords must match',
         path: ['confirmPassword'],
     });
 
