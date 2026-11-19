@@ -53,7 +53,7 @@
 
 ### Simply recreate guide
 
-<img width="1524" height="884" alt="simple" src="https://github.com/user-attachments/assets/6f028308-73a3-4288-bcfa-883c6d6e4dc3" />
+<img width="1917" height="963" alt="simplerec" src="https://github.com/user-attachments/assets/293b5355-082d-47f5-bcdc-49c1f70a6363" />
 
 ### Change, modify your initial prompts
 
