@@ -61,7 +61,7 @@
 
 ### Change your answers on the ai questions
 
-<img width="1918" height="958" alt="changeAnswers" src="https://github.com/user-attachments/assets/c173ef74-badf-4f78-a23e-1184a2485640" />
+<img width="1916" height="954" alt="answers" src="https://github.com/user-attachments/assets/96432940-c675-4714-a878-dd2f1468aa1d" />
 
 ### Look through all of your guides, filter them by date and progress status
 
