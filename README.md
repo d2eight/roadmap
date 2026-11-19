@@ -57,7 +57,7 @@
 
 ### Change, modify your initial prompts
 
-<img width="1918" height="958" alt="changePrompt" src="https://github.com/user-attachments/assets/b74bfb0d-14ee-4906-ada5-baf6a9933448" />
+<img width="1916" height="961" alt="ChangePrompt" src="https://github.com/user-attachments/assets/57b04dd4-4006-440d-84de-30cddf5c286c" />
 
 ### Change your answers on the ai questions
 
