@@ -65,7 +65,7 @@
 
 ### Look through all of your guides, filter them by date and progress status
 
-<img width="1918" height="958" alt="filterFlow" src="https://github.com/user-attachments/assets/9cd69eb2-e95a-41b1-ab52-de5fd36dc72c" />
+<img width="1037" height="962" alt="guidesPage" src="https://github.com/user-attachments/assets/c34a37a5-29f4-4d71-8e56-f32c910221a5" />
 
 ### Get detailed statistics about your overall progress on the home page 
 
