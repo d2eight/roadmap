@@ -2,7 +2,7 @@
 
 **AI-powered learning roadmaps.** Describe what you want to learn, optionally answer a few clarifying questions, and get a step-by-step guide you can track to completion.
 
-<!-- TODO: CI badge once .github/workflows/ci.yml exists -->
+[![CI](https://github.com/d2eight/roadmap/actions/workflows/github-actions.yml/badge.svg)](https://github.com/d2eight/roadmap/actions/workflows/github-actions.yml)
 
 <!-- TODO: hero screenshot or GIF of the dashboard -->
 
@@ -16,7 +16,9 @@
 - [Data fetching strategy](#data-fetching-strategy)
 - [Project structure](#project-structure)
 - [Getting started](#getting-started)
+- [Testing and CI](#testing-and-ci)
 - [Known limitations](#known-limitations)
+- [License](#license)
 
 ## Features
 
@@ -198,8 +200,23 @@ npm run dev             # frontend and backend in watch mode
 | `npm run build` | Build both apps |
 | `npm run lint` | Lint all projects |
 | `npm run typecheck` | Type-check both apps |
+| `npm run test` | Run unit tests (Jest) |
 | `npm run db:migrate` | Create and apply Prisma migrations |
 | `npm run db:generate` | Regenerate the Prisma client and Zod schemas |
+| `npm run next-types` | Generate Next.js route types (`PageProps`), required before `typecheck` on a fresh clone |
+
+## Testing and CI
+
+Unit tests use Jest via `@nx/jest` and live next to each app in `src/tests`:
+
+- **`defineGuideProgressStatus`** (backend): how a guide's overall status is derived from its steps, including the empty, mixed, all-done and all-rejected cases.
+- **`getSearchParamsAndParse`** (frontend): parsing and validation of the guides list URL params, with fallbacks to defaults for missing or invalid `page`, `orderBy` and `status`.
+
+```bash
+npm run test
+```
+
+Every push runs the GitHub Actions workflow (`.github/workflows/github-actions.yml`) on a clean checkout: `npm ci` → `db:generate` → `next-types` → `typecheck` → `test` → `lint` → `build`. The workflow uses placeholder environment variables, because the Prisma and Next.js configs validate env at load time. No real database or API key is needed.
 
 ## Known limitations
 
@@ -211,6 +228,8 @@ Trade-offs I'm aware of and would address next:
 - **No timeout on LLM calls** and a single worker per queue, so one hanging request blocks the queue.
 - **Missed WebSocket events are not replayed** after a reconnect; queries are not invalidated when the connection is restored.
 - **Password rules are enforced only on the client**, and there is no email verification.
-- <!-- TODO: tests -->
+- **Test coverage is limited to pure logic.** There are no integration tests for the API (Supertest against a test database) and no end-to-end tests.
 
-<!-- TODO: License -->
+## License
+
+[MIT](LICENSE)
