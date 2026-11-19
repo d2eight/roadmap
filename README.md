@@ -14,6 +14,7 @@
 - [Architecture](#architecture)
 - [Guide lifecycle](#guide-lifecycle)
 - [Data fetching strategy](#data-fetching-strategy)
+- [UI states](#ui-states)
 - [Project structure](#project-structure)
 - [Getting started](#getting-started)
 - [Testing and CI](#testing-and-ci)
@@ -32,42 +33,35 @@
 
 ## Demo
 
-<!-- TODO: user flow GIFs
-1. Sign up and create a guide from a prompt
-2. Guide with clarifying questions
-3. Real-time status updates while the guide is generated
-4. Tracking progress on steps
-5. Dashboard and activity chart
--->
-### Basic guide generetion
+### Generate a guide from a prompt
 
 <img width="1109" height="856" alt="defaultGenFlow" src="https://github.com/user-attachments/assets/b93a2f3c-37f9-4d0f-a58e-00501f4377c2" />
 
-### Advanced guide generation, with external ai questions
+### Generate a guide with clarifying questions
 
 <img width="1109" height="856" alt="questionsFlow" src="https://github.com/user-attachments/assets/f0fc637c-dad2-4bda-82b0-2c0cf707dc31" />
 
-### Update your progress
+### Update step statuses
 
 <img width="1109" height="856" alt="updateSteps" src="https://github.com/user-attachments/assets/6b50254a-cb61-4690-b978-a4852f89e006" />
 
-### Simply recreate guide
+### Regenerate a guide
 
 <img width="1917" height="963" alt="simplerec" src="https://github.com/user-attachments/assets/293b5355-082d-47f5-bcdc-49c1f70a6363" />
 
-### Change, modify your initial prompts
+### Edit the original prompt
 
 <img width="1916" height="961" alt="ChangePrompt" src="https://github.com/user-attachments/assets/57b04dd4-4006-440d-84de-30cddf5c286c" />
 
-### Change your answers on the ai questions
+### Change your answers to the AI's questions
 
 <img width="1916" height="954" alt="answers" src="https://github.com/user-attachments/assets/96432940-c675-4714-a878-dd2f1468aa1d" />
 
-### Look through all of your guides, filter them by date and progress status
+### Browse, filter and sort your guides
 
 <img width="1037" height="962" alt="guidesPage" src="https://github.com/user-attachments/assets/c34a37a5-29f4-4d71-8e56-f32c910221a5" />
 
-### Get detailed statistics about your overall progress on the home page 
+### Track your overall progress on the dashboard
 
 <img width="906" height="856" alt="homePageFlow" src="https://github.com/user-attachments/assets/3d5e513b-2712-4eaa-9f27-e684f633f7d2" />
 
@@ -174,6 +168,60 @@ On the frontend the guide context is a discriminated union over the status, so e
 - **`useSuspenseQuery` + `Suspense` + error boundaries per widget.** Loading and error states are isolated: one failing widget does not take down the page, and boundaries reset when filters change.
 - **URL as the source of truth for list state.** Filters, sorting and pagination live in search params, which the server parses and validates before rendering.
 - **WebSocket events update the cache directly.** A `guide_update` event patches the single-guide query and every cached page of the list (`setQueriesData` with the `['guides']` prefix), so the UI updates without refetching.
+
+## UI states
+
+Every block that loads data has its own loading, error and empty state, so the page never shows a blank area or a stuck spinner.
+
+Each widget is wrapped in the same pair:
+
+```tsx
+<QueryErrorBoundary>
+    <Suspense fallback={<GuidesLoader />}>
+        <GuidesSection />
+    </Suspense>
+</QueryErrorBoundary>
+```
+
+- **Loading:** `Suspense` shows a skeleton with the same layout as the content, so nothing jumps when the data arrives.
+- **Error:** `QueryErrorBoundary` combines `react-error-boundary` with React Query's `QueryErrorResetBoundary`. It shows a "Server error" card with a **Try again** button that resets the failed queries and refetches only that widget. The rest of the page keeps working.
+- **Empty:** when a request succeeds but returns nothing, the block shows an explanation instead of an empty container.
+
+| Block | Loading | Error | Empty |
+|---|---|---|---|
+| Guides list | Grid of card skeletons | Error card with retry; resets when filters change | "Not found" with a link to create a guide |
+| Guide page | Header and steps skeleton | Error card with retry | "Guide not found" card |
+| Dashboard: current / last done guide | Card skeleton | Error card with retry, per tab | "There is no such a guide, yet" |
+| Dashboard: progress summary | Table rows skeleton | Error card with retry | — |
+| Dashboard: activity chart | Chart-sized skeleton; switching the period keeps the old chart visible (`startTransition`) | Error card with retry | — |
+
+<details open>
+<summary><b>Screenshots</b></summary>
+
+**Loading:** skeletons from the server-streamed `Suspense` fallbacks
+
+| Dashboard | Guides list | Guide page |
+|---|---|---|
+| <img src="docs/ui-states/dashboard-loading.png" alt="Dashboard loading"> | <img src="docs/ui-states/guides-loading.png" alt="Guides list loading"> | <img src="docs/ui-states/guide-loading.png" alt="Guide page loading"> |
+
+**Error:** the activity chart failed, the rest of the dashboard is unaffected
+
+<img src="docs/ui-states/chart-error.png" alt="Activity chart error with retry">
+
+**Empty**
+
+| Dashboard | Guides list | Guide page |
+|---|---|---|
+| <img src="docs/ui-states/dashboard-empty.png" alt="Dashboard with no guides"> | <img src="docs/ui-states/guides-empty.png" alt="Guides list empty"> | <img src="docs/ui-states/guide-not-found.png" alt="Guide not found"> |
+
+</details>
+
+Beyond data loading:
+
+- **Generation in progress:** while a job is running, the guide page shows a shimmering placeholder ("Creating …") and the list cards show "Generating a guide / questions" with a spinner. Both switch to the result when the WebSocket event arrives.
+- **Generation failed:** the guide shows a failure state with a **Try again** menu that recreates it from the saved prompt and answers.
+- **Mutations:** while a form or action is being submitted, its fields are disabled and the content is blurred under a spinner, so it cannot be submitted twice.
+- **API errors from actions:** shown as toasts. Validation errors (`422`) are also mapped to the matching form fields, and `401` redirects to sign-in.
 
 ## Project structure
 
