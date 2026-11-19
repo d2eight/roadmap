@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/d2eight/roadmap/actions/workflows/github-actions.yml/badge.svg)](https://github.com/d2eight/roadmap/actions/workflows/github-actions.yml)
 
-<!-- TODO: hero screenshot or GIF of the dashboard -->
+<img width="1901" height="958" alt="allPagesFlow" src="https://github.com/user-attachments/assets/05408f37-77d7-42e2-9c81-c9302b97ab89" />
 
 ## Table of contents
 
